@@ -1,3 +1,8 @@
+import SignInForm from "../../components/Login_SignIn/SignInForm";
+
 export default function SignIn() {
-    return <h1>SignIn</h1>
+    return (<>
+    <SignInForm/>
+
+    </>)
 }

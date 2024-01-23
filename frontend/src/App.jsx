@@ -1,4 +1,4 @@
-import { useState } from 'react'
+
 
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import HomePage from './pages/MainPage/Hompage'
@@ -59,7 +59,7 @@ const router =createBrowserRouter([
   { path: "helpdetail", element: <HelpDetail /> },//글상세보기
   { path: "helpwriting", element: <HelpWriting/> }, //글쓰기
 ])
-
+export const PRIMARY_COLOR = '#4A3AFF'
 function App() {
 
   return (
