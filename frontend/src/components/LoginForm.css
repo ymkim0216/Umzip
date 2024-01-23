@@ -1,0 +1,147 @@
+:root {
+    --text-font-family: "Inter-Medium", Helvetica;
+    --text-font-size: 24px;
+    --text-font-style: normal;
+    --text-font-weight: 500;
+    --text-letter-spacing: 0px;
+    --text-line-height: 24px;
+  }
+  
+.box {
+    height: 397px;
+    position: relative;
+    width: 512px;
+  }
+  
+  .box .group {
+    height: 397px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 514px;
+  }
+  
+  .box .overlap {
+    border-radius: 86px;
+    height: 82px;
+    left: 1px;
+    position: absolute;
+    top: 315px;
+    width: 511px;
+  }
+  
+  .box .primary-BTN {
+    background-color: #4a3aff;
+    border-radius: 86px;
+    box-shadow: 0px 8px 22px #4a3aff42;
+    height: 82px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 511px;
+  }
+  
+  .box .button-text {
+    color: #ffffff;
+    font-family: "DM Sans-Bold", Helvetica;
+    font-size: 18px;
+    font-weight: 700;
+    left: 223px;
+    letter-spacing: 0;
+    line-height: 20px;
+    position: absolute;
+    text-align: center;
+    top: 29px;
+    width: 66px;
+  }
+  
+  .box .overlap-group-wrapper {
+    height: 81px;
+    left: 0;
+    position: absolute;
+    top: 70px;
+    width: 513px;
+  }
+  
+  .box .overlap-group {
+    background-color: #ffffff;
+    border: 1px solid;
+    border-color: #eff0f6;
+    border-radius: 46px;
+    box-shadow: 0px 2px 6px #12114112;
+    height: 81px;
+    position: relative;
+    width: 511px;
+  }
+  
+  .box .img {
+    height: 33px;
+    left: 454px;
+    position: absolute;
+    top: 23px;
+    width: 28px;
+  }
+  
+  .box .text-wrapper {
+    color: #6e6b8f;
+    font-family: "DM Sans-Regular", Helvetica;
+    font-size: 18px;
+    font-weight: 400;
+    left: 25px;
+    letter-spacing: 0;
+    line-height: 20px;
+    position: absolute;
+    top: 26px;
+    width: 58px;
+  }
+  
+  .box .div-wrapper {
+    height: 57px;
+    left: 4px;
+    position: absolute;
+    top: 0;
+    width: 141px;
+  }
+  
+  .box .div {
+    color: #170f49;
+    font-family: "DM Sans-Bold", Helvetica;
+    font-size: 34px;
+    font-weight: 700;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 46px;
+    position: absolute;
+    top: 0;
+    width: 139px;
+  }
+  
+  .box .overlap-wrapper {
+    height: 81px;
+    left: 0;
+    position: absolute;
+    top: 169px;
+    width: 513px;
+  }
+  
+  .box .text-wrapper-2 {
+    color: #6e6b8f;
+    font-family: "DM Sans-Regular", Helvetica;
+    font-size: 18px;
+    font-weight: 400;
+    left: 26px;
+    letter-spacing: 0;
+    line-height: 20px;
+    position: absolute;
+    top: 27px;
+    width: 102px;
+  }
+  
+  .box .group-2 {
+    height: 28px;
+    left: 459px;
+    position: absolute;
+    top: 25px;
+    width: 22px;
+  }
+  
