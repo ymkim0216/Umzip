@@ -30,18 +30,20 @@ const Header = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link mx-3 px-3" to="/trade">
-                  중고
+                <Link className="nav-link mx-3 px-3 d-flex align-items-center" to="/trade">
+                <img style={{width:17,height:17}} className='mb-1' src='/iconoir.png' alt='' />
+                  <p className='m-0'>중고</p>
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link mx-3 px-3" to="/help">
+                <Link className="nav-link mx-3 px-3 d-flex align-items-center" to="/help">
+                <img style={{width:17,height:17}} className='mb-1' src='/iconoir.png' alt='' />
                   도움
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link mx-3 px-3" to="/Alarm">
-                  알림
+                알림
                 </Link>
               </li>
               <li className="nav-item">
