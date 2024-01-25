@@ -1,17 +1,18 @@
 import React from 'react';
 import Status from './status';
 import Requests from './Request';
-const DUMMY_DATA={
+const DUMMY_DATA = {
 
 }
 
 
 
 const YourComponent = () => {
+
     return (
         <div style={{ margin: 20 }}>
             <div className="container-fluid px-3" >
-                <div className="row my-5" style={{ height: '75vh' }}>
+                <div className="row my-5 " style={{ height: '40rem' }}>
                     <div className="col-md-2 p-3 d-flex flex-column align-items-center justify-content-around text-center border-dark-subtle border-end">
                         {/* 좌측 컬럼 */}
                         <h3 className='mt-5'>OOO님</h3>
@@ -37,8 +38,8 @@ const YourComponent = () => {
                                 <Status />
                             </div>
                             <div className='d-flex gap-4'>
-                                <button type="button" className="btn btn-primary me-3">Primary</button>
-                                <button type="button" className="btn btn-primary me-3">Primary</button>
+                                <button type="button" class="btn btn-outline-primary rounded-5 shadow-5">용달 신청</button>
+                                <button type="button" class="btn btn-outline-primary rounded-5 shadow-5">청소 신청</button>
                             </div>
                         </div>
                         <div className=' rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center' style={{ background: "#D9E4FF" }}>
@@ -48,7 +49,7 @@ const YourComponent = () => {
                             <h5 className='m-0 col-md-2' >상태</h5>
                             <h5 className='m-0  col-md-2' >내가 보낸견적서</h5>
                         </div>
-                        <div style={{ width: '100%',  minHeight:"10rem"}}>
+                        <div style={{ width: '100%', minHeight: "10rem" }}>
                             <Requests date="2024.01.01" orderName="0112/명지/용달" orderNumber="FSEX101" status="예약확정" />
                         </div>
 

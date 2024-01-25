@@ -1,11 +1,33 @@
 // Header.js
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
+  const [scrollY, setScrollY] = useState(0);
+
+  const handleScroll = () => {
+    setScrollY(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
-    <header style={{ backgroundColor: '#fff' }}>
+    <div style={{
+      backgroundColor: '#fff',
+      position: 'fixed',
+      width: '100%',
+      zIndex: '1000',
+      top: '0',
+      boxShadow: scrollY > 0 ? '0px 8px 12px rgba(0, 0, 0, 0.1)' : 'none',
+      transition: 'box-shadow 0.5s ease',
+    }}>
       <div className="container-fluid">
         <div className="navbar navbar-expand-lg navbar-light">
           <Link className="navbar-brand p-3 " to="/">
@@ -31,19 +53,19 @@ const Header = () => {
               </li>
               <li className="nav-item">
                 <Link className="nav-link mx-3 px-3 d-flex align-items-center" to="/trade">
-                <img style={{width:17,height:17}} className='mb-1' src='/iconoir.png' alt='' />
+                  <img style={{ width: 17, height: 17 }} className='mb-1' src='/iconoir.png' alt='' />
                   <p className='m-0'>중고</p>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link mx-3 px-3 d-flex align-items-center" to="/help">
-                <img style={{width:17,height:17}} className='mb-1' src='/iconoir.png' alt='' />
+                  <img style={{ width: 17, height: 17 }} className='mb-1' src='/iconoir.png' alt='' />
                   도움
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link mx-3 px-3" to="/Alarm">
-                알림
+                  알림
                 </Link>
               </li>
               <li className="nav-item">
@@ -56,7 +78,7 @@ const Header = () => {
         </div>
       </div>
       <hr className="my-0" style={{ borderColor: '#000' }} /> {/* 검은색 선 추가 */}
-    </header>
+    </div>
   );
 };
 
