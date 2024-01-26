@@ -1,3 +1,11 @@
+import Chat from "../../components/Chat/Chat";
+import Header from "../../components/Header";
+import RecommendMain from "../../components/Recommend/RecommendMain";
+
 export default function Recommend() {
-    return <h1>Recommend</h1>
+    return <>
+    <Header/>
+    <Chat/> 
+    <RecommendMain/>
+    </>
 }
