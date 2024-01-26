@@ -86,7 +86,7 @@ const Chat = () => {
       <AnimatePresence>
         {/* Dropdown을 렌더링합니다. */}
         {isDropdownOpen && (
-          <motion.div style={{ position: 'fixed', bottom: '4.5rem', right: '1rem', zIndex: 1 }} variants={{
+          <motion.div style={{ position: 'fixed', bottom: '4.5rem', right: '1rem', zIndex:2 }} variants={{
             hidden:{opacity:0, y:30},
             visible : {opacity:1,y:0},
           }} 

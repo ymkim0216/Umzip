@@ -60,7 +60,7 @@ export default function Requests({ date, orderName, orderNumber, status }) {
     };
 
     return (
-        <div className='rounded-3 mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative' style={{ border: '1px solid #006EEE', minHeight: '6rem' }}>
+        <motion.div  className='rounded-3 mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative' style={{ border: '1px solid #006EEE', minHeight: '6rem' }}>
             <h5 className="m-0 col-md-2">{date}</h5>
             <h5 className="m-0 col-md-2">{orderName}</h5>
             <h5 className="m-0 col-md-2">{orderNumber}</h5>
@@ -71,6 +71,7 @@ export default function Requests({ date, orderName, orderNumber, status }) {
                 <motion.button
                     type="button"
                     onClick={toggleDropdown}
+                    whileHover={{scale:1.2}}
                     style={{ border: 'none', background: 'none', padding: 0 }}
                     animate={{ rotate: isDropdownOpen ? 180 : 0 }} // 이미지가 180도 회전하도록 설정
                     transition={{ duration: 0.3 }}
@@ -89,9 +90,13 @@ export default function Requests({ date, orderName, orderNumber, status }) {
                         >
                             {DIMMY_DATA.map((data, index) => (
                                 <motion.div
+                                className='shadow'
+                                style={{backgroundColor:"white"}}
                                     key={data.companyName}
                                     variants={{ visible: { opacity: 1, y: 0 } }} initial={{ opacity: 0, y: -20 }}
                                     exit={{opacity:0, y: 20 }}
+                                    whileHover={{scale:1.02}}
+                                    transition={{ duration: 0.3 }}
                                 >   
                                     <DropDown
                                         companyName={data.companyName}
@@ -105,6 +110,6 @@ export default function Requests({ date, orderName, orderNumber, status }) {
                     )}
                 </AnimatePresence>
             </div>
-        </div>
+        </motion.div>
     );
 }

@@ -63,7 +63,7 @@ const ChatModal = () => {
   return (
     <AnimatePresence>
       <motion.div
-        className={`${styles.chatModalContainer} ${styles.shadow} ${styles.chatModalContent} shadow-lg p-2 rounded-4`}
+        className={`${styles.chatModalContainer} ${styles.shadow} ${styles.chatModalContent}  shadow-lg p-2 rounded-4`}
         variants={{
           visible:{transition:{staggerChildren :0.1 }}
         }}
@@ -90,6 +90,7 @@ const ChatModal = () => {
               />
             </motion.div>
           ))}
+          
       </motion.div>
     </AnimatePresence>
   );

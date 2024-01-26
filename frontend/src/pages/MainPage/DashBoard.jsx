@@ -1,3 +1,4 @@
+import { AnimatePresence } from "framer-motion";
 import Chat from "../../components/Chat/Chat";
 import Header from "../../components/Header";
 
@@ -7,6 +8,8 @@ export default function DashBoard() {
     return (<>
     <Header/>
     <Chat/>
+    <AnimatePresence>
     <MainComponent/>
+    </AnimatePresence>
     </>)
 }

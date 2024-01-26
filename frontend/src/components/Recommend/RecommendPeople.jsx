@@ -44,10 +44,10 @@ export default function RecommendPeople({ name, rating }) {
                 </div>
                 <div className="d-flex col-md-8 flex-column justify-content-center gap-3">
                     <div className="gap-3 d-flex justify-content-center">
-                        <h5 className="m-0  col-md-3">{name}</h5>
-                        <div className=" col-md-3 ">
+                        <h5 className="m-0  col-md-3 fw-bold">{name}</h5>
+                        <div className=" col-md-3 d-flex flex-column justify-content-center align-items-center">
                             <StarRating rating={rating} />
-                            {rating}
+                            <p className="fw-bold">{rating}점</p>
                         </div>
                         <h1 className=" col-md-3"></h1>
                     </div>

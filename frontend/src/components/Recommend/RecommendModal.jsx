@@ -21,7 +21,7 @@ const RecommendModal = ({ isOpen, closeModal }) => {
         <motion.div
           key="modal"
           style={modalStyle}
-          className="d-flex justify-content-center align-items-center shadow-lg rounded-5"
+          className="d-flex justify-content-center align-items-center shadow-lg rounded-5 bg-white"
           initial={{ opacity: 0.1 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0.1 }}

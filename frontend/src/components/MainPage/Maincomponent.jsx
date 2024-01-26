@@ -1,36 +1,65 @@
 import React from 'react';
 import Status from './status';
 import Requests from './Request';
+import { motion } from "framer-motion"
 const DUMMY_DATA = {
 
 }
 
 
 
-const YourComponent = () => {
-
+const MainComponent = () => {
+    const buttonVariants = {
+        hover: {
+            scale: 1.05,
+            transition: {
+                duration: 0.3,
+            },
+        },
+    };
     return (
-        <div style={{ margin: 20 }}>
+        <motion.div style={{ margin: 20 }} initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{opacity: 0, y: 20 }}
+            transition={{ duration: 0.5 }}>
             <div className="container-fluid px-3" >
                 <div className="row my-5 " style={{ height: '40rem' }}>
                     <div className="col-md-2 p-3 d-flex flex-column align-items-center justify-content-around text-center border-dark-subtle border-end">
                         {/* 좌측 컬럼 */}
                         <h3 className='mt-5'>OOO님</h3>
                         <h3>안녕하세요</h3>
-                        <div className='d-flex flex-column justify-content-center gap-5 h-100 w-100'>
-                            <button type="button" className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center ">
+                        <div className='d-flex flex-column justify-content-center gap-5' style={{width: "11rem"}}>
+                            <motion.button
+                                type="button"
+                                className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center"
+                                variants={buttonVariants}
+                                whileHover="hover"
+                            >
                                 <img src='/store.png' alt='' /> 전체
-                            </button>
-                            <button type="button" className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center ">
+                            </motion.button>
+                            <motion.button
+                                type="button"
+                                className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center"
+                                variants={buttonVariants}
+                                whileHover="hover"
+                            >
                                 <img src='/mop (2) 1.png' alt='' /> 청소
-                            </button>
-                            <button type="button" className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center ">
+                            </motion.button>
+                            <motion.button
+                                type="button"
+                                className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center"
+                                variants={buttonVariants}
+                                whileHover="hover"
+                            >
                                 <img src='/truck 1.png' alt='' /><h5 className='m-0'>용달</h5>
-                            </button>
-                        </div>
-                        <button type="button" className="btn btn-light btn-lg w-100">
+                                
+                            </motion.button>
+                            <motion.button type="button" className="btn btn-light btn-lg" style={{width: "11rem"}} variants={buttonVariants}
+                            whileHover="hover">
                             상담하기 <img src='/Wavy_Help.png' alt='' />
-                        </button>
+                        </motion.button>
+                        </div>
+                        
                     </div>
                     <div className="col-md-10 p-5 gap-4 d-flex flex-column">
                         <div className='d-flex justify-content-between mx-5' >
@@ -56,8 +85,8 @@ const YourComponent = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
-export default YourComponent;
+export default MainComponent;

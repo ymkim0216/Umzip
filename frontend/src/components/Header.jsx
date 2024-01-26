@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import {motion} from "framer-motion"
 const Header = () => {
   const [scrollY, setScrollY] = useState(0);
 
@@ -30,10 +30,10 @@ const Header = () => {
     }}>
       <div className="container-fluid">
         <div className="navbar navbar-expand-lg navbar-light">
-          <Link className="navbar-brand p-3 " to="/">
+          <Link className="navbar-brand" to="/">
             Logo
           </Link>
-          <button
+          {/* <button
             className="navbar-toggler"
             type="button"
             data-toggle="collapse"
@@ -43,41 +43,49 @@ const Header = () => {
             aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
-          </button>
+          </button> */}
           <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
+            <ul className="navbar-nav d-flex justify-content-center align-items-center">
+              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bold", textDecoration: "underline"}}  className="nav-item">
                 <Link className="nav-link mx-3 px-3" to="/dashboard">
                   대시보드
                 </Link>
-              </li>
+              </motion.li >
               <li className="nav-item">
+              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bold", textDecoration: "underline"}}  className="nav-item">
                 <Link className="nav-link mx-3 px-3 d-flex align-items-center" to="/trade">
                   <img style={{ width: 17, height: 17 }} className='mb-1' src='/iconoir.png' alt='' />
                   <p className='m-0'>중고</p>
                 </Link>
+                </motion.li >
               </li>
               <li className="nav-item">
+              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bold", textDecoration: "underline"}}  className="nav-item">
                 <Link className="nav-link mx-3 px-3 d-flex align-items-center" to="/help">
                   <img style={{ width: 17, height: 17 }} className='mb-1' src='/iconoir.png' alt='' />
                   도움
                 </Link>
+                </motion.li >
               </li>
               <li className="nav-item">
+              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bold", textDecoration: "underline"}}  className="nav-item">
                 <Link className="nav-link mx-3 px-3" to="/Alarm">
                   알림
                 </Link>
+                </motion.li >
               </li>
               <li className="nav-item">
+              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bold", textDecoration: "underline"}}  className="nav-item">
                 <Link className="nav-link mx-3 px-3" to="/myprofile">
                   프로필
                 </Link>
+                </motion.li >
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <hr className="my-0" style={{ borderColor: '#000' }} /> {/* 검은색 선 추가 */}
+      {/* <hr className="my-0" style={{ borderColor: '#000' }} /> 검은색 선 추가 */}
     </div>
   );
 };
