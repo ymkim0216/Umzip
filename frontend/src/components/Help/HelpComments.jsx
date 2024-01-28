@@ -1,25 +1,11 @@
-import { Link } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
-function HelpCommend({ helps }) {
+function HelpComments() {
   return (
-    <div className={classes.helps}>
-      <h1>중고</h1>
-      <ul className={classes.list}>
-        {trades.map((trade) => (
-          <li key={trade.id} className={classes.item}>
-            <Link to={`/helps/${helps.id}`} helps={helps}>
-              <img src={trade.image} alt={trade.title} />
-              <div className={classes.content}>
-                <h2>{trade.title}</h2>
-                <address>{trade.region}</address>
-                <p>{trade.price}원</p>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <h4>댓글</h4>
+    </>
   );
 }
 
-export default TradesList;
+export default HelpComments;

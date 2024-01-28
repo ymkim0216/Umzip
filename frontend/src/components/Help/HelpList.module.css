@@ -1,3 +1,75 @@
+/* 헬프게시판 */
+.helps {
+  width: 60%; /* 전체 너비의 60%를 사용 */
+  margin: 0 auto; /* 상하 여백은 0, 좌우 여백은 자동으로 설정해서 중앙 정렬 */
+}
+
+/* 도움을 나눠요 게시판이름 */
+.logo {
+  font-family: 'Your font family', sans-serif;
+  color: #34A853;
+  font-size: 32px;
+  font-weight: bold;
+  text-shadow: 2px 2px #f0f0f0;
+}
+
+.logoContainer {
+  display: flex;
+  /* 양옆배치 */
+  justify-content: space-between;
+  /* 위아래중앙 */
+  align-items: center;
+}
+
+/* 검색 스타일 */
+.input-group {
+  
+  display: flex;
+  align-items: center;
+}
+
+/* 게시글 상단 */
+.head {
+  display: flex;
+  background-color: #f0f0f0; /* 배경색 설정 */
+  padding: 1rem; /* 내부 여백 설정 */
+  border-bottom: 2px solid #d0d0d0; /* 하단 경계선 설정 */
+}
+
+/* 각 항목 스타일 */
+.head span, .list-group-item span {
+  flex: 1; /* flex 항목으로 설정하여 가용 공간을 균등하게 차지 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+  padding: 0.5rem; /* 상하 좌우 여백 설정 */
+  border-right: 1px solid #d0d0d0; /* 항목 사이의 경계선 설정 */
+}
+
+/* 마지막 항목의 우측 경계선 제거 */
+.head span:last-child, .list-group-item span:last-child {
+  border-right: none;
+}
+
+/* 리스트 항목 스타일 */
+.list-group-item {
+  display: flex;
+  align-items: center; /* 내부 요소들을 수직 중앙 정렬 */
+  border-bottom: 1px solid #d0d0d0; /* 하단 경계선 설정 */
+}
+
+/* 마지막 리스트 항목의 하단 경계선 제거 */
+.list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* 추가적인 스타일 */
+.content {
+  display: flex;
+  width: 100%; /* 부모의 전체 너비 사용 */
+  align-items: center; /* 내부 요소들을 수직 중앙 정렬 */
+}
+
+
+/* 페이지네이션 */
 .pagination {
   display: flex;
   justify-content: center;

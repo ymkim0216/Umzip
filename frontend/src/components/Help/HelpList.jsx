@@ -31,10 +31,15 @@ function HelpList() {
 
   return (
     <div className={style.helps}>
-      <h1>도움을 나눠요</h1>
+      <div className={style.logoContainer}>
+        <span>
+          <span className={style.logo}>도움</span>
+          <span>을 나눠요</span>
+        </span>
+          <input onChange={(e) => { setSearch(e.target.value)}} value="검색어를 입력하세요"></input>
+      </div>
       {/* 검색조건식 넣기 */}
-      <input onChange={(e) => { setSearch(e.target.value)}}></input>
-      <div className={style.head}><span>글 종류</span><span>제목</span><span>포인트</span><span>날짜</span><span>작성자</span><span>지역</span></div>
+      <div className={style.head}><span>글 종류</span><span>제목(댓글)</span><span>포인트</span><span>날짜</span><span>작성자</span><span>지역</span><span>조회수</span></div>
       <ul className={style.list}>
       <ListGroup>
         {currentItems.map((helps, index) => (
@@ -49,6 +54,7 @@ function HelpList() {
                 <span>{helps.date}</span>
                 <span>{helps.userName}</span>
                 <span>{helps.region}</span>
+                <span>{helps.view}</span>
               </div>
             </Link>
           </ListGroup.Item>

@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import HelpContent from '../../components/Help/HelpContent';
+import HelpComments from '../../components/Help/HelpComments';
 
 
 export default function HelpDetail() {
@@ -11,6 +12,8 @@ export default function HelpDetail() {
     return (
     <>
     <HelpContent />
+    <div></div>
+    <HelpComments/>
     </>
     );
 }
