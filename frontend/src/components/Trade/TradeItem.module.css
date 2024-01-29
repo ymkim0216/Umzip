@@ -1,34 +1,13 @@
-.trade
- {
-  max-width: 50rem;
-  margin: 2rem auto;
-  text-align: center;
+.item {
+  margin-top: 0.5rem;
+  width: 100%;
 }
 
-.trade
- img {
-  width: 30rem;
-  border-radius: 4px;
-}
-
-.actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-.actions a,
-.actions button {
-  padding: 0.25rem 1rem;
-  text-decoration: none;
-  font: inherit;
-  cursor: pointer;
-}
-
-.actions button {
-  background-color: transparent;
-  border: none;
-  color: var(--color-primary-800);
+.content h2,
+.content address,
+.content p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }
