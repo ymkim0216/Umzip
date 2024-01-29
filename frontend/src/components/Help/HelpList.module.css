@@ -1,6 +1,6 @@
 /* 헬프게시판 */
 .helps {
-  width: 60%; /* 전체 너비의 60%를 사용 */
+  width: 70%; /* 전체 너비의 60%를 사용 */
   margin: 0 auto; /* 상하 여백은 0, 좌우 여백은 자동으로 설정해서 중앙 정렬 */
 }
 
@@ -23,7 +23,6 @@
 
 /* 검색 스타일 */
 .input-group {
-  
   display: flex;
   align-items: center;
 }
@@ -32,17 +31,38 @@
 .head {
   display: flex;
   background-color: #f0f0f0; /* 배경색 설정 */
-  padding: 1rem; /* 내부 여백 설정 */
   border-bottom: 2px solid #d0d0d0; /* 하단 경계선 설정 */
 }
+.headType {
+  flex:1.5
+}
 
-.head-title {
-  flex:6
+.headTitle {
+  flex:4
+}
+
+.headPoint {
+  flex:1
+}
+
+.headDate {
+  flex:1.5
+}
+
+.headUserName {
+  flex:1
+}
+
+.headLocation {
+  flex:2
+}
+
+.headView {
+  flex:1
 }
 
 /* 각 항목 스타일 */
 .head span, .list-group-item span {
-  flex: 1; /* flex 항목으로 설정하여 가용 공간을 균등하게 차지 */
   text-align: center; /* 텍스트 중앙 정렬 */
   padding: 0.5rem; /* 상하 좌우 여백 설정 */
   border-right: 1px solid #d0d0d0; /* 항목 사이의 경계선 설정 */
@@ -57,18 +77,11 @@
 
 .list {
   padding-left: 0px;
-
+  justify-content: space-between;
 }
 
-.list-group-item {
-  display: flex;
-  align-items: center; /* 내부 요소들을 수직 중앙 정렬 */
-  border-bottom: 1px solid #d0d0d0; /* 하단 경계선 설정 */
-}
-
-/* 마지막 리스트 항목의 하단 경계선 제거 */
-.list-group-item:last-child {
-  border-bottom: none;
+.listGrop {
+    padding: 0px;
 }
 
 /* 추가적인 스타일 */
@@ -78,6 +91,12 @@
   align-items: center; /* 내부 요소들을 수직 중앙 정렬 */
 }
 
+
+.content span{
+  text-align: center; /* 텍스트 중앙 정렬 */
+  padding: 0.5rem ; /* 상하 좌우 여백 설정 */
+  border-right: 1px solid #d0d0d0; /* 항목 사이의 경계선 설정 */
+}
 
 /* 페이지네이션 */
 .pagination {

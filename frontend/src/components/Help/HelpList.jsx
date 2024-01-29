@@ -39,22 +39,30 @@ function HelpList() {
         </span>
         <HelpSearchBar/>
       </div>
-      <div className={style.head}><span>글 종류</span><span className={style.headTitle}>제목(댓글)</span><span>포인트</span><span>날짜</span><span>작성자</span><span>지역</span><span>조회수</span></div>
+      <div className={style.head}>
+        <span className={style.headType}>글 종류</span>
+        <span className={style.headTitle}>제목(댓글)</span>
+        <span className={style.headPoint}>포인트</span>
+        <span className={style.headDate}>날짜</span>
+        <span className={style.headUserName}>작성자</span>
+        <span className={style.headLocation}>지역</span>
+        <span className={style.headView}>조회수</span>
+      </div>
       <ul  className={style.list}>
       <ListGroup>
         {currentItems.map((helps, index) => (
-          <ListGroup.Item key={helps.id}>
+          <ListGroup.Item className={style.listGrop} key={helps.id}>
             <Link to={`/helpdetail/${helps.id}`}>
               <div className={style.content}>
-                {helps.category === 1 && <span>도와주세요</span> }
-                {helps.category === 2 && <span>도와줄게요</span> }
-                {helps.category === 3 && <span>도와줬어요</span> }
-                <span>{helps.title}{`(${helps.comment})`}</span> 
-                <span>{helps.point}P</span>
-                <span>{helps.date}</span>
-                <span>{helps.userName}</span>
-                <span>{helps.region}</span>
-                <span>{helps.view}</span>
+                {helps.category === 1 && <span className={style.headType}>도와주세요</span> }
+                {helps.category === 2 && <span className={style.headType}>도와줄게요</span> }
+                {helps.category === 3 && <span className={style.headType}>도와줬어요</span> }
+                <span className={style.headTitle}>{helps.title}{`(${helps.comment})`}</span> 
+                <span className={style.headPoint}>{helps.point}P</span>
+                <span className={style.headDate}>{helps.date}</span>
+                <span className={style.headUserName}>{helps.userName}</span>
+                <span className={style.headLocation}>{helps.region}</span>
+                <span className={style.headView}>{helps.view}</span>
               </div>
             </Link>
           </ListGroup.Item>
