@@ -1,10 +1,12 @@
 import { useParams } from "react-router-dom";
 import classes from './HelpContent.module.css';
 import { useSelector, useDispatch } from "react-redux"
+import { selectFilteredHelps  } from '../../store/helpRedux'
+
 
 
 function HelpDetail() {
-  let helpsDetail = useSelector((state) => state.helps)
+  let helpsDetail = useSelector(selectFilteredHelps)
   console.log(helpsDetail);
   console.log('디테일페이지이동')
   // 받아온 아이디 디테일 페이지로 이동

@@ -9,11 +9,7 @@ import Chat from "../../components/Chat/Chat";
 
 
 function Help() {
-  let helpsDetail = useSelector((state) => {return state.helps})
 
-    const helps = [
-
-    ]
         return (
         <>
           <Header/>

@@ -36,6 +36,10 @@
   border-bottom: 2px solid #d0d0d0; /* 하단 경계선 설정 */
 }
 
+.head-title {
+  flex:6
+}
+
 /* 각 항목 스타일 */
 .head span, .list-group-item span {
   flex: 1; /* flex 항목으로 설정하여 가용 공간을 균등하게 차지 */
@@ -50,6 +54,12 @@
 }
 
 /* 리스트 항목 스타일 */
+
+.list {
+  padding-left: 0px;
+
+}
+
 .list-group-item {
   display: flex;
   align-items: center; /* 내부 요소들을 수직 중앙 정렬 */
