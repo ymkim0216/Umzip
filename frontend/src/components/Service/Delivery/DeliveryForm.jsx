@@ -8,7 +8,7 @@ import Car from "./Car";
 import { Link, useNavigate } from "react-router-dom";
 import CheckButton from "./Check_Button";
 import PhotoView from "./PhotoView";
-import ProgressBar from "./Progressbar";
+import ProgressBar from "./ProgressBar";
 const DUMMY_DATA = [
   { name: "다마스", car_description: "어쩌구 저쩌구" },
   { name: "핸들이 고장난 8톤트럭", car_description: " 어쩌구 저쩌구어쩌구 저쩌구" },
