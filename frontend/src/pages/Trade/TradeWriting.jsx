@@ -40,14 +40,15 @@ function TradeWriting() {
         </label>
         <Swiper
           modules={[Navigation, Pagination]}
-          spaceBetween={50}
+          spaceBetween={20}
           slidesPerView={1}
           navigation
-          pagination={{ clickable: true }}
+          pagination={{ clickable: false }}
+          style={{ width: '100%', height: '500px' }}
         >
           {showImages.map((image, id) => (
             <SwiperSlide key={id}>
-              <img src={image} alt={`image-${id}`} />
+              <img src={image} alt={`image-${id}`} style={{ width: '80%', height: '100%', objectFit: 'cover' }}/>
               <button onClick={() => handleDeleteImage(id)}>X</button>
             </SwiperSlide>
           ))}
