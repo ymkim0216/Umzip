@@ -34,9 +34,9 @@ const router = createBrowserRouter([
   { path: 'dashboard', element: <DashBoard /> },
 
   //청소요청
-  { path: 'requestclining', element: <RequestClining /> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
-  { path: 'requestcliningform', element: <RequestCliningForm /> }, // 계산기 통해서 예산 견적
-  { path: 'submitcliningestimate', element: <SubmitCliningEstimate /> }, //  업체입장에서 다시 제안 아마 페이지가 아니라 컴포넌트
+  { path: 'requestcleaning', element: <RequestClining /> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
+  { path: 'requestcleaning', element: <RequestCliningForm /> }, // 계산기 통해서 예산 견적
+  { path: 'submitcleaningestimate', element: <SubmitCliningEstimate /> }, //  업체입장에서 다시 제안 아마 페이지가 아니라 컴포넌트
   //용달
   { path: 'requestdelivery', element: <RequestDelivery /> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
   { path: 'requestdeliveryform', element: <RequestDeliveryForm /> }, // 계산기 통해서 예산 견적
