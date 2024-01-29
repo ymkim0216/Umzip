@@ -1,3 +1,10 @@
+import Chat from "../../../components/Chat/Chat";
+import Header from "../../../components/Header";
+
 export default function RequestClining() {
-    return <h1>RequestClining</h1>
+    return <>
+    <Header/>
+    <Chat/>
+    
+    </>
 }

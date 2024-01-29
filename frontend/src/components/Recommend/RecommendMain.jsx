@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import RecommendPeople from "./RecommendPeople";
 import { motion } from "framer-motion"
+import { useNavigate } from "react-router-dom";
 const DUMMY_DATA = [
     { name: "미친개", rating: 4.5 },
     { name: "미친개가용달을", rating: 4.0 },
@@ -21,13 +22,16 @@ const DUMMY_DATA = [
 ];
 
 export default function RecommendMain() {
+    const navigate = useNavigate()
     const itemsPerPage = 5;
     const [visibleItems, setVisibleItems] = useState(itemsPerPage);
 
     const handleLoadMore = () => {
         setVisibleItems((prev) => prev + itemsPerPage);
     };
-
+    const handlesubmit =()=>{
+        navigate("/dashboard")
+    }
     const containerVariants = {
         visible: {
           transition: {
@@ -61,13 +65,17 @@ export default function RecommendMain() {
                 {visibleItems < DUMMY_DATA.length && (
                     <motion.button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-light d-flex justify-content-center align-items-center gap-2 shadow"
                     onClick={handleLoadMore}
                     whileHover={{ y: -5 }} // Adjust the value based on your preference
                   >
-                    더 보기
-                  </motion.button>
+                    <div className="d-flex align-items-center  justify-content-center rounded-circle bg-black text-white" style={{ width: "1rem", height: "1rem" }}>
+                  +
+                </div>
+                   <p className="m-0">더보기</p>
+                  </motion.button>            
                 )}
+                <button onClick={handlesubmit} className="btn btn-primary">견적 전달</button>
             </div>
         </div>
     );
