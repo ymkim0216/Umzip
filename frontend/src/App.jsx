@@ -62,7 +62,7 @@ const router = createBrowserRouter([
 
   //도움
   { path: 'help', element: <Help /> }, // 글목록
-  { path: 'helpdetail', element: <HelpDetail /> }, //글상세보기
+  { path: 'helpdetail/:id', element: <HelpDetail /> }, //글상세보기
   { path: 'helpwriting', element: <HelpWriting /> }, //글쓰기
 ]);
 export const PRIMARY_COLOR = '#4A3AFF';
