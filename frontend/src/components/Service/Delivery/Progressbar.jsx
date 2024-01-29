@@ -1,7 +1,7 @@
 // ProgressBar.js
 
-import React from 'react';
-import './ProgressBar.css'; // CSS 파일을 import 젠킨스 수정
+import React from 'react'; 
+import './Progressbar.css'; // CSS 파일을 import 젠킨스 수정 ㄹㅇ fdfdfd
 import { AnimatePresence, motion } from "framer-motion"
 const ProgressBar = ({ steps, activeStep }) => {
     const progressBarWidth = (activeStep / steps) * 100 + '%';
