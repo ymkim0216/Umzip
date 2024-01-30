@@ -1,6 +1,8 @@
 .trades {
   margin: 2rem auto;
   width: 80%;
+  background-color: #F8F6F6;
+  border-radius: 4px;
 }
 
 .list {
@@ -23,14 +25,13 @@
   text-decoration: none;
   color: inherit;
   display: flex;
-  background-color: var(--color-gray-800);
+  background-color: var(--color-gray-800); /* Moved here */
   border-radius: 4px;
   width: 100%; /* 부모 요소의 전체 너비를 차지 */
 }
 
 .item a:hover {
   transform: scale(1.02);
-  background-color: var(--color-gray-700);
 }
 
 .item img {

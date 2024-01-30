@@ -10,7 +10,7 @@ function TradeItem({ trade }) {
         <div className={classes.content}>
           <h2>{trade.title}</h2>
           <address>{trade.region}</address>
-          <p>{trade.price}원</p>
+          <p className={classes.price}>{trade.price}원</p>
         </div>
       </div>
     </Link>

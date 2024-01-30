@@ -1,5 +1,5 @@
-import { useSubmit } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useSubmit, useNavigate } from 'react-router-dom';
+import Chat from '../Chat/Chat';
 import { useState } from 'react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,6 +9,12 @@ import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 
 import classes from './TradeItemDetail.module.css';
+
+const data = {
+  name: '아무개',
+  chat: '그래서 어쩌라고',
+  degree: '40.5도',
+};
 
 function ReportModal({ onClose }) {
   return (
@@ -28,19 +34,18 @@ function ReportModal({ onClose }) {
 function TradeItemDetail({ trade }) {
   const submit = useSubmit();
 
-  let navigate = useNavigate();
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const toggleChat = () => {
+    setIsChatOpen(!isChatOpen);
+  };
 
   const [modalShow, setModalShow] = useState(false);
 
   const showModal = () => {
-    console.log('모달 보이기'); // 디버깅 메시지
     setModalShow(true);
   };
   const hideModal = () => setModalShow(false);
-
-  function goToChat() {
-    navigate('/chat');
-  }
 
   function startDeleteHandler() {
     const proceed = window.confirm('Are you sure?');
@@ -50,8 +55,17 @@ function TradeItemDetail({ trade }) {
     }
   }
 
+  let navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(-1); // or history.goBack() for React Router v5
+  };
+
   return (
-    <article className={classes.trade}>
+    <article className={classes.trade} style={{ marginTop: '4rem' }}>
+      <div className={classes.back}>
+        <button onClick={goBack}>뒤로</button>
+      </div>
       <Swiper
         modules={[Navigation, Pagination]}
         spaceBetween={20}
@@ -70,24 +84,47 @@ function TradeItemDetail({ trade }) {
           </SwiperSlide>
         ))}
       </Swiper>
-      <p>{trade.region}</p>
+      <div style={{ width: '85%', marginLeft: 'auto', marginRight: 'auto' }}>
+        <div className="d-flex flex-row p-2 justify-content-between m-1">
+          <div className="d-flex gap-2">
+            <img
+              style={{ width: '3rem', height: '3rem' }}
+              src="/randomimg.png"
+              alt="랜덤 이미지"
+            ></img>
+            <div className="text-start">
+              <p className="m-0">{data.name}</p>
+              <p>{trade.region}</p>
+            </div>
+          </div>
+          <div className="position-relative p-2">
+            <small className="form-text text-muted">{data.degree}</small>
+          </div>
+        </div>
+      </div>
       <div className={classes.article}>
-        <h1 className={classes.title}>{trade.title}</h1>
+        <h2 className={classes.title}>{trade.title}</h2>
         <div className={classes.price}>
           <p>{trade.price}원</p>
           <p className={classes.date}>{trade.date}</p>
         </div>
         <p>{trade.isDirectTranscation ? '직거래' : '택배배송'}</p>
         <p className={classes.content}>{trade.content}</p>
-        <div>
+        <div className={classes.report}>
           <button onClick={showModal}>신고하기</button>
           {modalShow && <ReportModal onClose={hideModal} />}
         </div>
-        <menu className={classes.actions}>
-          <button onClick={startDeleteHandler}>삭제</button>
-        </menu>
+        <div className={classes.actions}>
+          <menu className={classes.edit}>
+            <button>수정</button>
+          </menu>
+          <menu className={classes.cancle}>
+            <button onClick={startDeleteHandler}>삭제</button>
+          </menu>
+        </div>
         <menu className={classes.chat}>
-          <button onClick={goToChat}>채팅</button>
+          <button onClick={toggleChat}>채팅</button>
+          {isChatOpen && <Chat />}
         </menu>
       </div>
     </article>
