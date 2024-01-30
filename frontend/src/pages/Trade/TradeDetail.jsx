@@ -1,6 +1,10 @@
 import { useParams } from 'react-router-dom';
 
 import TradeItemDetail from '../../components/Trade/TradeItemDetail';
+import Header from '../../components/Header';
+import Chat from '../../components/Chat/Chat';
+
+import axios from 'axios';
 
 function TradeDetail() {
   const trades = [
@@ -11,8 +15,7 @@ function TradeDetail() {
       isDirectTranscation: true,
       region: '대구 북구 침산2동',
       date: '2024-01-23',
-      content:
-        `모서리에 약간 찍힌 자국이 있습니다. 
+      content: `모서리에 약간 찍힌 자국이 있습니다. 
         액정은 한번 갈아서 필름 벗기시면 깨끗합니다.뒷면에 카메라로는 안보이는 약간의 기스가 하나 있는데, 눈으로도 잘 안보입니다.`,
       image: Array.from(
         { length: 5 },
@@ -210,7 +213,27 @@ function TradeDetail() {
   const { tradeId } = useParams();
   const trade = trades.find((t) => t.id === parseInt(tradeId));
 
-  return <>{trade && <TradeItemDetail trade={trade} />}</>;
+  const sendRequest = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/users/test/'); // Replace with your API endpoint
+      console.log('Response:', response.data);
+      // Handle response data
+    } catch (error) {
+      console.error('Error occurred:', error);
+      // Handle error
+    }
+  };
+
+  return (
+    <>
+      <Header />
+      <Chat />
+      {trade && <TradeItemDetail trade={trade} />}
+      {/* <div>
+        <button onClick={sendRequest}>Send Request</button>
+      </div> */}
+    </>
+  );
 }
 
 export default TradeDetail;
