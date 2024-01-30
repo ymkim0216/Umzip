@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import classes from './HelpContent.module.css';
 import { useSelector, useDispatch } from "react-redux"
-import { selectFilteredHelps  } from '../../store/helpRedux'
+import { selectFilteredHelps  } from '../../store/helpRedux'  // 리덕스에서 불러온 데이터
 // wiper 임포트들
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -11,13 +11,13 @@ import { Navigation, Pagination } from 'swiper/modules';
 
 
 function HelpDetail() {
-  let helpsDetail = useSelector(selectFilteredHelps)
+  let helpsDetail = useSelector(selectFilteredHelps)  // 데이터 변수에넣고
   console.log(helpsDetail);
   console.log('디테일페이지이동')
   // 받아온 아이디 디테일 페이지로 이동
   let { id } = useParams();
   id = parseInt(id);
-  let helpDetail = helpsDetail.find(function (x) {
+  let helpDetail = helpsDetail.find(function (x) {  // 받은 id를 찾기
     return x.id === id;
   });
   return (
