@@ -2,7 +2,7 @@
 import { useState } from "react";
 import UsedProfile from "../SellProduct/UsedProfile";
 import { AnimatePresence, motion } from "framer-motion"
-import HelpMeTopeopleProfile from "./HelpMeTopeopleProfile";
+import HelpMeToPeopleProfile from "./HelpMeToPeopleProfile";
 const DUMMY_DATA = [
     { title: "p1", point: 1,},
     { title: "p2", point: 2,},
@@ -23,7 +23,7 @@ const DUMMY_DATA = [
 ]
 const ITEMS_PER_PAGE = 5;
 
-export default function     () {
+export default function HelpMeToPeopleView() {
     const [currentPage, setCurrentPage] = useState(1);
 
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
@@ -37,7 +37,7 @@ export default function     () {
                 <AnimatePresence mode="wait">
                     <motion.div  className="d-flex flex-column gap-4" >
                         {currentItems.map((item) => (
-                            <HelpMeTopeopleProfile key={item.title} title={item.title} point={item.point} />
+                            <HelpMeToPeopleProfile key={item.title} title={item.title} point={item.point} />
                         ))}
                     </motion.div>
                 </AnimatePresence>
