@@ -18,8 +18,7 @@ let helps = createSlice({
         region: '서울 강남 강남구청', // 피그마에는 없는데 필요하겠지?
         content:
           '집에 바쿠ㅣㅣㅣ으ㅏ아조ㅓㅁ잡ㅇ저요.',
-        image:
-          '',
+        image:['https://picsum.photos/200/300', 'https://picsum.photos/200/300', 'https://picsum.photos/200/300'],
       },
       {
         id: 2,
