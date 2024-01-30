@@ -1,9 +1,10 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { configureStore, createSlice, createSelector } from '@reduxjs/toolkit'
 
 
 let helps = createSlice({
     name : 'helps',
-    initialState: [
+    initialState: {
+      list : [
       {
         id: 1,
         userName: '베어그릴스',
@@ -17,8 +18,7 @@ let helps = createSlice({
         region: '서울 강남 강남구청', // 피그마에는 없는데 필요하겠지?
         content:
           '집에 바쿠ㅣㅣㅣ으ㅏ아조ㅓㅁ잡ㅇ저요.',
-        image:
-          '',
+        image:['https://picsum.photos/200/300', 'https://picsum.photos/200/300', 'https://picsum.photos/200/300'],
       },
       {
         id: 2,
@@ -213,15 +213,39 @@ let helps = createSlice({
           '',
       },
     ],
+  filter:'',
+},
     reducers : {
-      goHelpsDetail(state, action){
-        // action은 함수(받는숫자) 에서 받는숫자가 action임
-        let helpsDetail = state.findIndex((a)=>{return a.id === action.payload})
-        console.log(helpsDetail)
-      },
+      // goHelpsDetail(state, action){
+      //   // action은 함수(받는숫자) 에서 받는숫자가 action임
+      //   let helpsDetail = state.findIndex((a)=>{return a.id === action.payload})
+      //   console.log(helpsDetail)
+      // },
+      helpFilter(state, action) {
+        state.filter = action.payload
+      }
     }
 })
 
-export let { goHelpsDetail } = helps.actions
+// 필터링된 helps 항목을 선택하는 셀렉터
+export const selectFilteredHelps = createSelector(
+  // 첫번쨰 인자는 배열로, 스토어에서 필요한 부분을 선택
+  // state.helps.list와 state.helps.fulter를 선택
+  // 
+  [(state) => state.helps.list, (state) => state.helps.filter],
+  // list,fulter를 받아 필터링 로직수행
+  (list, filter) => {
+    // 필터가 비어있지 않다면 밑에 리턴을 수행
+    // 그게 아니면 리스트
+    if (!filter) return list;
+    // 소문자로 변환, title과userName에서 필터
+    return list.filter((help) => {
+      const searchTerm = filter.toLowerCase();
+      return help.title.toLowerCase().includes(searchTerm) || help.userName.toLowerCase().includes(searchTerm);
+    });
+  }
+);
+
+export const { goHelpsDetail, helpFilter } = helps.actions
 
 export default helps
