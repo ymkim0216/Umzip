@@ -2,7 +2,7 @@
 import { useState } from "react";
 import UsedProfile from "../SellProduct/UsedProfile";
 import { AnimatePresence, motion } from "framer-motion"
-import HelpMeTopeopleProfile from "./HelpMeToPeoPleProfile";
+import HelpMeTopeopleProfile from "./HelpMeTopeopleProfile";
 const DUMMY_DATA = [
     { title: "p1", point: 1,},
     { title: "p2", point: 2,},
