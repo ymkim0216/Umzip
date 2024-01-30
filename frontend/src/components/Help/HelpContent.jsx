@@ -33,23 +33,34 @@ function HelpDetail() {
       <span>{helpDetail.date}</span>
       <div>{helpDetail.content}</div>
       <div></div>
-      <span>{helpDetail.view}</span>
-      <span>{helpDetail.comment}</span>
+      <span>조회수 : {helpDetail.view}</span>
+      <span>댓글 수 : {helpDetail.comment}</span>
     </div>
     <Swiper
         modules={[Navigation, Pagination]}
-        spaceBetween={20}
-        slidesPerView={1}
+        slidesPerView={2}
+        centeredSlides = {true}
+        spaceBetween={5}
         navigation
-        pagination={{ clickable: false }} // clickable을 true로 설정하여 페이지네이션 사용
-        style={{ width: '100%', height: '500px' }}
+        pagination={{ clickable: true }} // clickable을 true로 설정하여 페이지네이션 사용
+        loop={false}
+        effect="coverflow" // coverflow 효과 설정
+        coverflowEffect={{ rotate: 0, stretch: 100, depth: 100, modifier: 1, slideShadows: true }} // coverflow 효과의 설정
+  style={{ width: '1100px', height: '500px' }}
       >
         {helpDetail.image.map((img, index) => (
           <SwiperSlide key={index}>
             <img
               src={img}
               alt={`${helpDetail.title} image ${index}`}
-              style={{ width: '80%', height: '100%', objectFit: 'cover' }}
+              style={{ 
+                width: '300px', // 너비를 700px로 설정
+                height: '300px', // 높이를 300px로 설정
+                margin: '0 auto', // 가로 중앙 정렬을 위한 margin 설정
+                display: 'flex', // Flex 사용
+                justifyContent: 'center', // 가로 중앙 정렬
+                alignItems: 'center', // 세로 중앙 정렬
+            }}
             />
           </SwiperSlide>
         ))}
