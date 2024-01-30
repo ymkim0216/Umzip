@@ -1,7 +1,23 @@
+h1 {
+  margin-left: 10%;
+}
+
 .writing {
-  margin-left: 12%;
+  margin-left: 10%;
+  background-color: #336DFF;
+  color: white;
+  border: none;
+  border-radius: 40px;
+  font-size: 20px;
+  line-height: 30px;
 }
 
 .more {
   text-align: center;
+}
+
+.moreBtn {
+  background-color: white;
+  border: none;
+  font-size: 20px;
 }

@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import classes from './SearchBar.module.css';
 
 function SearchBar({ onSearch }) {
@@ -14,15 +16,18 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className={classes.search}>
+    <div className={classes.search}>
+      <form onSubmit={handleSubmit} className={classes.searchBox}>
         <input
+          className={classes.searchTxt}
           type="text"
           placeholder="검색어 입력"
           value={searchTerm}
           onChange={handleSearchChange}
         />
-        <button type="submit">검색</button>
+        <button className={classes.searchBtn} type="submit">
+          <FontAwesomeIcon icon={faMagnifyingGlass} />
+        </button>
       </form>
     </div>
   );
