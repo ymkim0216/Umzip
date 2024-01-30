@@ -36,6 +36,7 @@ function HelpDetail() {
       <span>조회수 : {helpDetail.view}</span>
       <span>댓글 수 : {helpDetail.comment}</span>
     </div>
+    {helpDetail.image && helpDetail.image.length > 0 && ( //사진이 없을 경우엔 나타내지 않음
     <Swiper
         modules={[Navigation, Pagination]}
         slidesPerView={2}
@@ -46,25 +47,26 @@ function HelpDetail() {
         loop={false}
         effect="coverflow" // coverflow 효과 설정
         coverflowEffect={{ rotate: 0, stretch: 100, depth: 100, modifier: 1, slideShadows: true }} // coverflow 효과의 설정
-  style={{ width: '1100px', height: '500px' }}
-      >
+        style={{ width: '1100px', height: '500px' }}
+    >
         {helpDetail.image.map((img, index) => (
-          <SwiperSlide key={index}>
-            <img
-              src={img}
-              alt={`${helpDetail.title} image ${index}`}
-              style={{ 
-                width: '300px', // 너비를 700px로 설정
-                height: '300px', // 높이를 300px로 설정
-                margin: '0 auto', // 가로 중앙 정렬을 위한 margin 설정
-                display: 'flex', // Flex 사용
-                justifyContent: 'center', // 가로 중앙 정렬
-                alignItems: 'center', // 세로 중앙 정렬
-            }}
-            />
-          </SwiperSlide>
+            <SwiperSlide key={index}>
+                <img
+                    src={img}
+                    alt={`${helpDetail.title} image ${index}`}
+                    style={{ 
+                        width: '300px', // 너비를 700px로 설정
+                        height: '300px', // 높이를 300px로 설정
+                        margin: '0 auto', // 가로 중앙 정렬을 위한 margin 설정
+                        display: 'flex', // Flex 사용
+                        justifyContent: 'center', // 가로 중앙 정렬
+                        alignItems: 'center', // 세로 중앙 정렬
+                    }}
+                />
+            </SwiperSlide>
         ))}
-      </Swiper>
+    </Swiper>
+)}
     </>
   );
 }
