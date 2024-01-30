@@ -76,8 +76,8 @@ const MainComponent = () => {
                                 <Status />
                             </div>
                             <div className='d-flex gap-4'>
-                                <button onClick={hadleDelivery} type="button" class="btn btn-outline-primary rounded-5 shadow-5 " >용달 청소</button>
-                                <button onClick={hadleCleaning} type="button" class="btn btn-outline-primary rounded-5 shadow-5">청소 신청</button>
+                                <button onClick={hadleDelivery} type="button" className="btn btn-outline-primary rounded-5 shadow-5 " >용달 청소</button>
+                                <button onClick={hadleCleaning} type="button" className="btn btn-outline-primary rounded-5 shadow-5">청소 신청</button>
                             </div>
                         </div>
                         <div className=' rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center' style={{ background: "#D9E4FF" }}>

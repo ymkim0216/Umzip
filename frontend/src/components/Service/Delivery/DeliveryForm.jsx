@@ -9,6 +9,9 @@ import { Link, useNavigate } from "react-router-dom";
 import CheckButton from "./Check_Button";
 import PhotoView from "./PhotoView";
 import ProgressBar from "./Progressbar"; // 대소문자 이슈
+import "./DeliveryForm.css"
+import Address from "./Address";
+import Map from "./Map";
 const DUMMY_DATA = [
   { name: "다마스", car_description: "어쩌구 저쩌구" },
   { name: "핸들이 고장난 8톤트럭", car_description: " 어쩌구 저쩌구어쩌구 저쩌구" },
@@ -37,9 +40,11 @@ export default function DeliveryForm() {
   const navigate = useNavigate()
   const [activeStep, setActiveStep] = useState(1);
   const totalSteps = 3; // 전체 단계 수에 맞게 수정
+  const [whatModal, setWhatModal] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-
-
+  const [whereStart, setwhereStart] = useState({})
+  const [whereEnd, setwhereEnd] = useState({})
   const hadleElavator = (event) => {
     setisElavator(event.target.innerText)
   }
@@ -84,6 +89,10 @@ export default function DeliveryForm() {
   const handleUserInput = (event) => {
     setuserinput(event.target.value);
   };
+  const hadleModal = (event) => {
+    setWhatModal(event)
+    setIsModalOpen(true)
+  }
   return (<>
     <div style={{
       position: 'absolute', width: '20%', top: '15%',
@@ -91,6 +100,33 @@ export default function DeliveryForm() {
     }}>
       <ProgressBar steps={totalSteps} activeStep={activeStep} />
     </div>
+    <AnimatePresence>
+      {isModalOpen && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색 및 투명도 조절
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <div style={{
+            position: 'relative',
+            width: '40%',
+            backgroundColor: 'white', // 내용의 배경색
+            padding: '20px',
+            borderRadius: '8px', // 내용의 모서리 둥글게
+          }}>
+            <Address whatModal={whatModal} setwhereStart={setwhereStart} setwhereEnd={setwhereEnd} setIsModalOpen={setIsModalOpen} />
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+
     <AnimatePresence mode="wait">
 
       {isActive === "first" && <motion.div key="firstForm">
@@ -256,15 +292,26 @@ export default function DeliveryForm() {
             <div className="col-6 d-flex flex-column gap-4 p-3">
               <div className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "2rem" }}>
                 <div className="col-1 fw-bold">출발 : </div>
-                <div className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} ><p className="m-0">ㅁㄴㄹㄹ</p></div>
-                <button className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
+                <div className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} ><p placeholder="adsf" className="m-0"> {whereStart.address ? (
+                  <p className="m-0">{whereStart.address}</p>
+                ) : (
+                  <p className="m-0 text-muted">출발지를 입력해주세요.</p>
+                )}</p></div>
+                <button onClick={() => hadleModal("start")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
               </div>
               <div className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "2rem" }}>
                 <div className="col-1 fw-bold">도착 : </div>
-                <div className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} ><p className="m-0">ㅁㄴㄹㄹ</p></div>
-                <button className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
+                <div className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }}>
+                  {whereEnd.address ? (
+                    <p className="m-0">{whereEnd.address}</p>
+                  ) : (
+                    <p className="m-0 text-muted">도착지를 입력해주세요.</p>
+                  )}
+                </div>
+                <button onClick={() => hadleModal("end")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
               </div>
-              <div style={{ height: "16rem", width: "100%", border: "solid 1px #006EEE" }} className="mt-3 p-3 shadow rounded-5">지도</div>
+              
+              <div style={{ height: "100%", width: "100%", border: "solid 1px #006EEE" }} className="mt-3 p-3 shadow rounded-5">{whereEnd.address && whereStart.address && <Map  start_lat={whereStart.lat} start_lon={whereStart.lon} end_lat={whereEnd.lat} end_lon={whereEnd.lon}/>}</div>
             </div>
 
             <div className="col-6 p-3 gap-4 d-flex flex-column" >
@@ -465,7 +512,6 @@ export default function DeliveryForm() {
       }
 
     </AnimatePresence>
-
 
 
   </>
