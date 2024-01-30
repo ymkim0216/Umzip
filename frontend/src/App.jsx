@@ -7,9 +7,6 @@ import Login from './pages/Login_SignIn/Login';
 import MyProfile from './pages/MainPage/MyProfile';
 import Payment from './pages/Service/Payment';
 import Recommend from './pages/Service/Recommend';
-import RequestClining from './pages/Service/Clining/RequestClining';
-import RequestCliningForm from './pages/Service/Clining/RequestCliningForm';
-import SubmitCliningEstimate from './pages/Service/Clining/SubmitCliningEstimate';
 import RequestDelivery from './pages/Service/Delivery/RequestDelivery';
 import RequestDeliveryForm from './pages/Service/Delivery/RequestDeliveryForm';
 import SubmitDeliveryEstimate from './pages/Service/Delivery/SubmitDeliveryEstimate';
@@ -20,6 +17,9 @@ import TradeDetail from './pages/Trade/TradeDetail';
 import TradeWriting from './pages/Trade/TradeWriting';
 import HelpDetail from './pages/Help/HelpDetail';
 import HelpWriting from './pages/Help/HelpWriting';
+import RequestCleaning from './pages/Service/Cleaning/RequestCleaning';
+import RequestCleaningForm from './pages/Service/Cleaning/RequestCleaningForm';
+import SubmitCleaningEstimate from './pages/Service/Cleaning/SubmitCleaningEstimate';
 
 const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
@@ -34,9 +34,9 @@ const router = createBrowserRouter([
   { path: 'dashboard', element: <DashBoard /> },
 
   //청소요청
-  { path: 'requestcleaning', element: <RequestClining /> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
-  { path: 'requestcleaning', element: <RequestCliningForm /> }, // 계산기 통해서 예산 견적
-  { path: 'submitcleaningestimate', element: <SubmitCliningEstimate /> }, //  업체입장에서 다시 제안 아마 페이지가 아니라 컴포넌트
+  { path: 'requestcleaning', element: <RequestCleaning /> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
+  { path: 'requestcleaning', element: <RequestCleaningForm /> }, // 계산기 통해서 예산 견적
+  { path: 'submitcleaningestimate', element: <SubmitCleaningEstimate /> }, //  업체입장에서 다시 제안 아마 페이지가 아니라 컴포넌트
   //용달
   { path: 'requestdelivery', element: <RequestDelivery /> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
   { path: 'requestdeliveryform', element: <RequestDeliveryForm /> }, // 계산기 통해서 예산 견적

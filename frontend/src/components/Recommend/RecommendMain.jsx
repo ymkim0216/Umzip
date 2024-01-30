@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import RecommendPeople from "./RecommendPeople";
 import { motion } from "framer-motion"
 import { useNavigate } from "react-router-dom";
+import  "./RecommendMain.css"
 const DUMMY_DATA = [
     { name: "미친개", rating: 4.5 },
     { name: "미친개가용달을", rating: 4.0 },
@@ -40,7 +41,7 @@ export default function RecommendMain() {
         },
       };
     return (
-        <div className="d-flex justify-content-center p-5 flex-column align-items-center gap-5 " >
+        <div className="d-flex justify-content-center p-5 flex-column align-items-center gap-5 removescroll" >
             <div className="d-flex justify-content-center flex-column align-items-center col-md-8 gap-3" style={{marginTop:"5rem"}}>
                 <h3>이런 기사님은 어떠세요?</h3>
                 <small className="form-text text-muted">

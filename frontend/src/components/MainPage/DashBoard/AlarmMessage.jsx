@@ -15,7 +15,7 @@ const AlarmMessage = ({message,status,date}) => {
         animate="visible"
         whileHover={{y:-10}}
         variants={containerVariants}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.3 }}
         style={{ backgroundColor: "#EAEBEE" }}
         className="shadow rounded-5 p-3 d-flex align-items-center gap-5 position-relative"
       >
