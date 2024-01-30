@@ -1,6 +1,6 @@
 
 import {motion} from "framer-motion"
-export default function HelpMeTopeopleProfile({title,point}) {
+export default function HelpMeToPeopleProfile({title,point}) {
     return <>
         <motion.div className="d-flex p-2 rounded-4 shadow align-items-center gap-3"  initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}> 
             <div>
