@@ -2,6 +2,11 @@ import { useParams } from "react-router-dom";
 import classes from './HelpContent.module.css';
 import { useSelector, useDispatch } from "react-redux"
 import { selectFilteredHelps  } from '../../store/helpRedux'
+// wiper 임포트들
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+
+
 
 
 
@@ -16,6 +21,7 @@ function HelpDetail() {
     return x.id === id;
   });
   return (
+    <>
     <div className={classes.helps}>
       {helpDetail.category === 1 && <span>도와주세요</span> }
       {helpDetail.category === 2 && <span>도와줄게요</span> }
@@ -30,6 +36,25 @@ function HelpDetail() {
       <span>{helpDetail.view}</span>
       <span>{helpDetail.comment}</span>
     </div>
+    <Swiper
+        modules={[Navigation, Pagination]}
+        spaceBetween={20}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: false }} // clickable을 true로 설정하여 페이지네이션 사용
+        style={{ width: '100%', height: '500px' }}
+      >
+        {helpDetail.image.map((img, index) => (
+          <SwiperSlide key={index}>
+            <img
+              src={img}
+              alt={`${helpDetail.title} image ${index}`}
+              style={{ width: '80%', height: '100%', objectFit: 'cover' }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </>
   );
 }
 
