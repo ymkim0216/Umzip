@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import StarRating from "../../Recommend/StarRating";
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 import { AnimatePresence, motion } from "framer-motion"
 import UsedProfile from "./SellProduct/UsedProfile";
@@ -82,7 +83,7 @@ export default function UserProfile() {
                         <p className="m-0">보유포인트 : </p>
                         <p className="m-0">3950P</p>
                     </div>
-                    <p className="mb-0 text-muted" style={{ fontSize: "0.75rem", marginLeft: "auto" }}>내역조회</p>
+                    <Link to={`/mypoint/1`} style={{ fontSize: "0.75rem", marginLeft: "auto" }}>내역조회</Link>
                 </div>
 
                 <div className="d-flex justify-content-center gap-3" style={{ width: "100%" }}>

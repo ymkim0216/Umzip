@@ -1,10 +1,16 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import Header from "../../components/Header";
+import PointDetails from "../../components/MainPage/Myprofile/PointDetails/PointDetails"
 
 
 
 export default function PointHistory() {
-  return (<h1>포인트내역</h1>
-    
+
+  return (
+  <>
+    <Header />
+    <PointDetails/>
+  </>
   );
 }

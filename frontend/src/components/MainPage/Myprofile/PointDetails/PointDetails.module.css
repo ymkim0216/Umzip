@@ -1,0 +1,38 @@
+/* 포인트게시판 */
+.pointsContainer {
+    width: 70%; /* 전체 너비의 60%를 사용 */
+    padding-top: 5rem;
+    margin: 0 auto; /* 상하 여백은 0, 좌우 여백은 자동으로 설정해서 중앙 정렬 */
+  }
+
+/* 포인트 상단 */
+.head {
+    display: flex;
+    background-color: #f0f0f0; /* 배경색 설정 */
+    border-bottom: 2px solid #d0d0d0; /* 하단 경계선 설정 */
+  }
+
+.headDate{
+    flex:3
+}
+
+.headContent{
+    flex:7
+}
+
+.headPoint{
+    flex:3
+}
+.listContainer{
+    padding: 0px;
+}
+
+.head span, .listContainer span {
+    text-align: center; /* 텍스트 중앙 정렬 */
+    padding: 0.5rem; /* 상하 좌우 여백 설정 */
+    border-right: 1px solid #d0d0d0; /* 항목 사이의 경계선 설정 */
+  }
+
+.listContainer{
+    display: flex;
+}

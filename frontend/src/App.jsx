@@ -31,7 +31,7 @@ const router = createBrowserRouter([
   { path: 'login', element: <Login /> },
   //프로필보기
   { path: 'myprofile', element: <MyProfile /> },
-  //프로필보기
+  //포인트적립내역
   { path: 'mypoint/:id', element: <PoinHistory /> },
   // 대시보드
   { path: 'dashboard', element: <DashBoard /> },
