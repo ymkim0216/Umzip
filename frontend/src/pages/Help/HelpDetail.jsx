@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import HelpContent from '../../components/Help/HelpContent';
 import HelpComments from '../../components/Help/HelpComments';
 import Header from "../../components/Header";
-
+import BackButton from "../../components/PublicUse/BackButton";
 
 
 export default function HelpDetail() {
@@ -14,6 +14,7 @@ export default function HelpDetail() {
     return (
     <>
     <Header />
+    <BackButton />
     <HelpContent />
     <div></div>
     <HelpComments/>
