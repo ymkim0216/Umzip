@@ -1,5 +1,36 @@
 import React, { useState } from "react";
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup'
+// import styled from 'styled-components'
+
 import { PRIMARY_COLOR } from "../../App";
+
+const schema = yup.object().shape({
+  name: yup.string()
+    .min(2, "이름은 최소 2글자 이상입니다!")
+    .max(10, "이름은 최대 10글자입니다!")
+    .matches(
+      /^[가-힣a-zA-Z][^!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?\s]*$/)
+    .required('이름을 입력해주세요'),
+  // checkNickname: yup.boolean().required('중복체크해주세요'),
+  certifi_email: yup.string()
+  .email('이메일형식이 적합하지 않습니다.')
+  .required('이메일 인증해주세요'),
+  pw: yup.string()
+    .max(16, "비밀번호는 최대 16자리입니다!")
+    .matches(
+      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}[^\s]*$/,
+      "알파벳, 숫자, 공백을 제외한 특수문자를 모두 포함한 8자리 이상 입력해주세요"
+  )
+    // .matches(regexPasswd, '비밀번호를 8~16자로 영문 대소문자, 숫자, 특수기호를 조합해서 사용하세요.')
+    .required('비밀번호를 입력해주세요'),
+  checkPw: yup
+    .string()
+    .oneOf([yup.ref('pw'), null], '비밀번호가 일치하지 않습니다')
+    .required('비밀번호를 한번 더 입력해주세요'),
+})
+
 const SignInForm = () => {
   const [selectedButton, setSelectedButton] = useState(null);
   const [serviceButton, setserviceButton] = useState(null);
