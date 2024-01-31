@@ -36,3 +36,26 @@
 .listContainer{
     display: flex;
 }
+
+/* 페이지네이션 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .pageItem {
+    margin: 0 5px;
+  }
+  
+  .pageLink {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    color: blue;
+    cursor: pointer;
+  }
+  
+  .pageLink:hover {
+    background-color: #ddd;
+  }
