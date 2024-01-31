@@ -27,12 +27,12 @@ const MainComponent = () => {
         navigate('/requestcleaning');
     }
     return (
-        <motion.div style={{ margin: 20 }} initial={{ opacity: 0 }}
+        <motion.div  initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{opacity: 0 }}
             transition={{ duration: 0.5 }}>
             <div className="container-fluid px-3" >
-                <div className="row my-5 " style={{ height: '40rem' }}>
+                <div className="row my-5 " style={{ height: '40rem' }}  >
                     <div className="col-2 p-3 d-flex flex-column align-items-center justify-content-around text-center border-dark-subtle border-end" >
                         {/* 좌측 컬럼 */}
                         <h3 className='mt-5'>OOO님</h3>
@@ -40,31 +40,35 @@ const MainComponent = () => {
                         <div className='d-flex flex-column justify-content-center gap-5' style={{width: "11rem"}}>
                             <motion.button
                                 type="button"
-                                className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center"
+                                className="btn btn-primary btn-lg  d-flex justify-content-center gap-4 align-items-center"
                                 variants={buttonVariants}
+                                style={{width:"10rem"}}
                                 whileHover="hover"
                             >
-                                <img src='/store.png' alt='' /> 전체
+                                <img src='/store.png' alt='' style={{width:"2rem" ,height:"2rem"}} /> 전체
                             </motion.button>
                             <motion.button
                                 type="button"
-                                className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center"
+                                className="btn btn-primary btn-lg  d-flex justify-content-center gap-4 align-items-center"
                                 variants={buttonVariants}
                                 whileHover="hover"
+                                style={{width:"10rem"}}
                             >
-                                <img src='/mop (2) 1.png' alt='' /> 청소
+                                <img style={{width:"2rem" ,height:"2rem"}} src='/mop (2) 1.png' alt='' /> 청소
                             </motion.button>
                             <motion.button
                                 type="button"
-                                className="btn btn-primary btn-lg w-100 d-flex justify-content-center gap-4 align-items-center"
+                                className="btn btn-primary btn-lg  d-flex justify-content-center gap-4 align-items-center"
                                 variants={buttonVariants}
                                 whileHover="hover"
+                                style={{width:"10rem"}}
                             >
-                                <img src='/truck 1.png' alt='' /><h5 className='m-0'>용달</h5>
+                                <img style={{width:"2rem" ,height:"2rem"}} src='/truck 1.png' alt='' /><h5 className='m-0'>용달</h5>
                                 
                             </motion.button>
                             <motion.button type="button" className="btn btn-light btn-lg" s variants={buttonVariants}
-                            whileHover="hover">
+                            whileHover="hover"
+                            style={{width:"10rem"}}>
                             상담하기 <img src='/Wavy_Help.png' alt='' />
                         </motion.button>
                         </div>
@@ -72,11 +76,11 @@ const MainComponent = () => {
                     </div>
                     <div className="col-md-10 p-5 gap-4 d-flex flex-column">
                         <div className='d-flex justify-content-between mx-5' >
-                            <div className='bg-white shadow rounded-3 ' style={{ minWidth: 500 }}>
+                            <div className='bg-white shadow rounded-3 p-2  justify-content-center align-items-center '>
                                 <Status />
                             </div>
                             <div className='d-flex gap-4'>
-                                <button onClick={hadleDelivery} type="button" className="btn btn-outline-primary rounded-5 shadow-5 " >용달 청소</button>
+                                <button onClick={hadleDelivery} type="button" className="btn btn-outline-primary rounded-5 shadow-5 " >용달 신청</button>
                                 <button onClick={hadleCleaning} type="button" className="btn btn-outline-primary rounded-5 shadow-5">청소 신청</button>
                             </div>
                         </div>
