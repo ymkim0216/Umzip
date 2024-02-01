@@ -20,6 +20,7 @@ import HelpWriting from './pages/Help/HelpWriting';
 import RequestCleaning from './pages/Service/Cleaning/RequestCleaning';
 import RequestCleaningForm from './pages/Service/Cleaning/RequestCleaningForm';
 import SubmitCleaningEstimate from './pages/Service/Cleaning/SubmitCleaningEstimate';
+import PoinHistory from './pages/MainPage/PointHistory';
 
 const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
@@ -30,6 +31,8 @@ const router = createBrowserRouter([
   { path: 'login', element: <Login /> },
   //프로필보기
   { path: 'myprofile', element: <MyProfile /> },
+  //포인트적립내역
+  { path: 'mypoint/:id', element: <PoinHistory /> },
   // 대시보드
   { path: 'dashboard', element: <DashBoard /> },
 
