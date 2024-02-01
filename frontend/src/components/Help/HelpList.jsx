@@ -1,33 +1,36 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import style from './HelpList.module.css';
-import { useSelector, useDispatch } from "react-redux"
 import HelpSearchBar from './HelpSearchBar'
-import { selectFilteredHelps  } from '../../store/helpRedux'
+import useStore from '../../store/axiosTest';
 
 
 function HelpList() {
-  const filterHelps = useSelector(selectFilteredHelps);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const data = useStore(state => state.data);
+  const loading = useStore(state => state.loading);
+  const error = useStore(state => state.error);
+  const fetchData = useStore(state => state.fetchData); // fetchData 함수를 가져옵니다.
 
-  // 현재 페이지에 맞는 게시물을 계산
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filterHelps.slice(indexOfFirstItem, indexOfLastItem);
+  useEffect(() => {
+    fetchData(); // 컴포넌트 마운트 시 데이터를 가져옵니다.
+  }, [fetchData]); // fetchData가 변경될 때마다 호출됩니다.
 
-  // 페이지 번호를 계산
-  const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filterHelps.length / itemsPerPage); i++) {
-    pageNumbers.push(i);
+  // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  // 페이지 번호를 클릭했을 때 실행될 함수
-  const paginate = (pageNumber) => {
-    console.log(`Current page before update: ${currentPage}`);
-    setCurrentPage(pageNumber);
-    console.log(`Current page after update: ${pageNumber}`);
+  // 에러가 있으면 에러 메시지를 표시합니다.
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+  
+  const content = data?.result?.content;
+  // 데이터가 로드되면, 해당 데이터를 사용하여 무언가를 렌더링합니다.
+  if (!content) {
+    // 데이터가 비어있으면 메시지를 표시합니다.
+    return <div>No data found.</div>;
   }
 
   return (
@@ -50,38 +53,26 @@ function HelpList() {
       </div>
       <ul  className={style.list}>
       <ListGroup>
-        {currentItems.map((helps, index) => (
+        {content.map((helps, index) => (
           <ListGroup.Item className={style.listGrop} key={helps.id}>
             <Link to={`/helpdetail/${helps.id}`}>
               <div className={style.content}>
-                {helps.category === 1 && <span className={style.headType}>도와주세요</span> }
-                {helps.category === 2 && <span className={style.headType}>도와줄게요</span> }
-                {helps.category === 3 && <span className={style.headType}>도와줬어요</span> }
-                <span className={style.headTitle}>{helps.title}{`(${helps.comment})`}</span> 
-                <span className={style.headPoint}>{helps.point}P</span>
-                <span className={style.headDate}>{helps.date}</span>
-                <span className={style.headUserName}>{helps.userName}</span>
-                <span className={style.headLocation}>{helps.region}</span>
-                <span className={style.headView}>{helps.view}</span>
+                {helps.codeSmallId === 401 && <span className={style.headType}>도와주세요</span> }
+                {helps.codeSmallId === 402 && <span className={style.headType}>도와줄게요</span> }
+                {helps.codeSmallId === 403 && <span className={style.headType}>도와줬어요</span> }
+                <span className={style.headTitle}>{helps.title}{`(${helps.commentCnt})`}</span> 
+                <span className={style.headPoint}>{helps.rewardPoint}P</span>
+                <span className={style.headDate}>{helps.createDt}</span>
+                <span className={style.headUserName}>{helps.writerName}</span>
+                <span className={style.headLocation}>{helps.sigungu}</span>
+                <span className={style.headView}>{helps.readCnt}</span>
               </div>
             </Link>
           </ListGroup.Item>
         ))}
         </ListGroup>
       </ul>
-      <nav>
-        <ul className={style.pagination}>
-          {pageNumbers.map(number => (
-            <li key={number} className={style.pageItem}>
-              <button type="button" onClick={() => paginate(number)} className={style.pageLink}>
-                {number}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
     </div>
   );
 }
-
 export default HelpList;
