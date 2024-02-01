@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from 'react';
 import { selectFilteredHelps  } from '../../store/helpRedux'  // 리덕스에서 불러온 데이터
 import { useSelector, useDispatch } from "react-redux"
-import useStore from '../../store/axiosTest';
+import useStore from '../../store/helpData';
 
 
 

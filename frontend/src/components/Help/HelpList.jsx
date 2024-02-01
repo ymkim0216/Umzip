@@ -3,18 +3,19 @@ import { useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import style from './HelpList.module.css';
 import HelpSearchBar from './HelpSearchBar'
-import useStore from '../../store/axiosTest';
+import useStore from '../../store/helpData';
 
 
 function HelpList() {
-  const data = useStore(state => state.data);
-  const loading = useStore(state => state.loading);
-  const error = useStore(state => state.error);
-  const fetchData = useStore(state => state.fetchData); // fetchData 함수를 가져옵니다.
+  const { data, loading, error, fetchData } = useStore();
 
   useEffect(() => {
     fetchData(); // 컴포넌트 마운트 시 데이터를 가져옵니다.
   }, [fetchData]); // fetchData가 변경될 때마다 호출됩니다.
+
+  // useEffect(() => { 실시간 변화 감지
+  //   fetchData(); // keyword가 변경될 때마다 데이터를 가져옵니다.
+  // }, [keyword, fetchData]); // keyword의 변화를 감지합니다.
 
   // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
   if (loading) {
