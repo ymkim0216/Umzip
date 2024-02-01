@@ -19,7 +19,6 @@ function HelpSearchBar() {
       };
 
   return (
-    <>
     <div className={style.inputbox}>
       <input 
       required="required" 
@@ -30,14 +29,6 @@ function HelpSearchBar() {
       <span>검색</span>
       <i></i>
     </div>
-      {/* <input 
-        type="text"
-        onChange={handleKeywordChange} // onChange 핸들러 추가
-        onKeyDown={handleKeyDown} // Enter 키 입력 처리를 위한 이벤트 핸들러 추가
-        placeholder="검색어를 입력하세요">
-      </input>
-      <button onClick={fetchData}>검색</button> */}
-    </>
   );
 }
 
