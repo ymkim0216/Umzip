@@ -15,7 +15,7 @@ const useStore = create((set, get) => ({
   setcodeSmall: (codeSmall) => set({ codeSmall }),
 
   page: 1,
-  setpage: (page) => set({ page }),
+  setPage: (page) => set({ page }),
 
   fetchData: async () => {
 

@@ -7,11 +7,11 @@ import useStore from '../../store/helpData';
 
 
 function HelpList() {
-  const { data, loading, error, fetchData } = useStore();
+  const { data, loading, error, fetchData, page } = useStore();
 
   useEffect(() => {
     fetchData(); // 컴포넌트 마운트 시 데이터를 가져옵니다.
-  }, [fetchData]); // fetchData가 변경될 때마다 호출됩니다.
+  }, [fetchData, page]); // fetchData가 변경될 때마다 호출됩니다.
 
   // useEffect(() => { 실시간 변화 감지
   //   fetchData(); // keyword가 변경될 때마다 데이터를 가져옵니다.

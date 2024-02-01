@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import useStore from '../../store/helpData';
 import style from './HelpSearchBar.module.css'
 
@@ -5,15 +6,16 @@ import style from './HelpSearchBar.module.css'
 function HelpSearchBar() {
   // 변화감지 변수
   const { setKeyword, fetchData } = useStore();
-  // handleFilterChange는 helpFilter라는 함수안에 입력내용을 넣으면 실시간으로 변화를 감지하고 실시간 변환
+  const [localKeyword, setLocalKeyword] = useState(''); // 로컬 상태 추가\\
 
   const handleKeywordChange = (e) => {
-    setKeyword(e.target.value);
+    setLocalKeyword(e.target.value)
   }
 
       // Enter 키를 눌렀을 때 검색을 실행하는 함수
       const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
+          setKeyword(localKeyword);
           fetchData();
         }
       };
@@ -23,6 +25,7 @@ function HelpSearchBar() {
       <input 
       required="required" 
       type="text"
+      value={localKeyword}
       onChange={handleKeywordChange}
       onKeyDown={handleKeyDown}
       />
