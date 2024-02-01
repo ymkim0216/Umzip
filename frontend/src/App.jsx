@@ -3,14 +3,14 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import HomePage from './pages/MainPage/Hompage';
 import DashBoard from './pages/MainPage/DashBoard';
 import Help from './pages/Help/Help';
-import Login from './pages/Login_SignIn/Login';
+import Login from './pages/Login_SignUp/Login';
 import MyProfile from './pages/MainPage/MyProfile';
 import Payment from './pages/Service/Payment';
 import Recommend from './pages/Service/Recommend';
 import RequestDelivery from './pages/Service/Delivery/RequestDelivery';
 import RequestDeliveryForm from './pages/Service/Delivery/RequestDeliveryForm';
 import SubmitDeliveryEstimate from './pages/Service/Delivery/SubmitDeliveryEstimate';
-import SignIn from './pages/Login_SignIn/SignIn';
+import SignUp from './pages/Login_SignUp/SignUp';
 import Trade from './pages/Trade/Trade';
 import Alarm from './pages/MainPage/Alarm';
 import TradeDetail from './pages/Trade/TradeDetail';
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
 
   // 회원가입
-  { path: 'signin', element: <SignIn /> },
+  { path: 'signup', element: <SignUp /> },
   //로그인
   { path: 'login', element: <Login /> },
   //프로필보기

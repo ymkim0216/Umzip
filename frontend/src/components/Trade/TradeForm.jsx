@@ -41,7 +41,7 @@ function TradeForm({ method, trade }) {
     let sigungu = data.sigungu;
     let sigunguCode = data.sigunguCode;
 
-    console.log(sigungu + sigunguCode)
+    // console.log(sigungu + sigunguCode)
     setIsModalOpen(false);
     setAddress(fullAddress);
   }
