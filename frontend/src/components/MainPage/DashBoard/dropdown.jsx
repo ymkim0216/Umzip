@@ -1,7 +1,15 @@
 import StatusButton from "./Statusbutton"
 
-export default function DropDown({companyName,price,text,status}){
+export default function DropDown({companyName,text,status,img,price}){
     const newprice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    const newstatus = status%100
+    let realstatus = ""
+    if(newstatus===1){realstatus = "신청중"}
+    else if(newstatus===2){realstatus = "검토중"}
+    else if(newstatus===3){realstatus = "예약완료"}
+    else if(newstatus===4){realstatus = "거절"}
+    else if(newstatus===5){realstatus = "취소"}
+    else if(newstatus===6){realstatus = "예약확정"}
     return (<>
         <div className='rounded-3 p-2 d-flex justify-content-around text-center align-items-center position-relative' style={{ border: '1px solid #006EEE', minHeight: "8rem"  }}>
             <img src="/randomimg.png" style={{width:70 ,height:70}} ></img>
@@ -11,7 +19,7 @@ export default function DropDown({companyName,price,text,status}){
         
             </div>
             <p className="m-0 col-md-2">{text}</p>
-            <p className="m-0 col-md-2">{status}</p>
+            <p className="m-0 col-md-2">{realstatus}</p>
             <div className="d-flex gap-1 flex-column align-items-center col-md-2">
              <StatusButton  status={status}/>
             </div>
