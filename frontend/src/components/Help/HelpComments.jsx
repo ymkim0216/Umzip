@@ -1,8 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from 'react';
-import { selectFilteredHelps  } from '../../store/helpRedux'  // 리덕스에서 불러온 데이터
-import { useSelector, useDispatch } from "react-redux"
-import useStore from '../../store/helpData';
+import useStore from '../../store/helpDetailData';
 
 
 
@@ -15,30 +13,31 @@ import useStore from '../../store/helpData';
 // }  ]
 
 function HelpComments() {
-  // axios test
-  const data = useStore(state => state.data);
-  const loading = useStore(state => state.loading);
-  const error = useStore(state => state.error);
-  const fetchData = useStore(state => state.fetchData);
+  const { fetchData, data, loading, error } = useStore();
+
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
 
-  console.log(data)
-  // axios
+    // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+  
+    // 에러가 있으면 에러 메시지를 표시합니다.
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    }
+    
+    const content = data?.result?.commentList;
+    // 데이터가 로드되면, 해당 데이터를 사용하여 무언가를 렌더링합니다.
+    if (!content) {
+      // 데이터가 비어있으면 메시지를 표시합니다.
+      return <div>No data found.</div>;
+    }
 
-
-  let helpsDetail = useSelector(selectFilteredHelps)  // 데이터 변수에넣고
-  let { id } = useParams();
-  id = parseInt(id); // id고유번호 받아와서
-
-  let helpDetail = helpsDetail.find(function (x) {  // 받은 id를 찾기
-    return x.id === id;
-  });
   return (
     <>
       <h4>map함수 돌리기 댓글</h4>

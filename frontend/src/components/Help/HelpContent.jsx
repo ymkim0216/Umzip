@@ -1,42 +1,55 @@
 import { useParams } from "react-router-dom";
+import { useEffect } from 'react';
 import classes from './HelpContent.module.css';
-import { useSelector, useDispatch } from "react-redux"
-import { selectFilteredHelps  } from '../../store/helpRedux'  // 리덕스에서 불러온 데이터
-// wiper 임포트들
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 
-
-
-
+import useStore from '../../store/helpDetailData';
 
 function HelpDetail() {
-  let helpsDetail = useSelector(selectFilteredHelps)  // 데이터 변수에넣고
-  console.log(helpsDetail);
-  console.log('디테일페이지이동')
-  // 받아온 아이디 디테일 페이지로 이동
-  let { id } = useParams();
-  id = parseInt(id);
-  let helpDetail = helpsDetail.find(function (x) {  // 받은 id를 찾기
-    return x.id === id;
-  });
+  const { boardId } = useParams();
+  const { setBoardId, fetchData, data, loading, error } = useStore();
+  console.log(boardId)
+  useEffect(() => {
+    setBoardId(boardId);
+    fetchData();
+  }, [ boardId, setBoardId, fetchData]);
+
+    // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+  
+    // 에러가 있으면 에러 메시지를 표시합니다.
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    }
+    
+    const content = data?.result;
+    // 데이터가 로드되면, 해당 데이터를 사용하여 무언가를 렌더링합니다.
+    if (!content) {
+      // 데이터가 비어있으면 메시지를 표시합니다.
+      return <div>No data found.</div>;
+    }
+    console.log(content)
+    console.log(content.content)
   return (
     <>
     <div className={classes.helps}>
-      {helpDetail.category === 1 && <span>도와주세요</span> }
-      {helpDetail.category === 2 && <span>도와줄게요</span> }
-      {helpDetail.category === 3 && <span>도와줬어요</span> }
-      <span>{helpDetail.title}</span>
-      <span>{helpDetail.point}</span>
+      {content.codeSmallId === 401 && <span>도와주세요</span> }
+      {content.codeSmallId === 403 && <span>도와줄게요</span> }
+      {content.codeSmallId === 402 && <span>도와줬어요</span> }
+      <span>{content.boardTitle}</span>
+      <span>{content.rewardPoint}</span>
       <div></div>
-      <span>{helpDetail.userName}</span>
-      <span>{helpDetail.date}</span>
-      <div>{helpDetail.content}</div>
+      <span>{content.writerName}</span>
+      <span>{content.boardCreateDt}</span>
+      <div>{content.boardContent}</div>
       <div></div>
-      <span>조회수 : {helpDetail.view}</span>
-      <span>댓글 수 : {helpDetail.comment}</span>
+      <span>조회수 : {content.view}</span>
+      <span>댓글 수 : {content.boardCommentCnt}</span>
     </div>
-    {helpDetail.image && helpDetail.image.length > 0 && ( //사진이 없을 경우엔 나타내지 않음
+    {content.image && content.image.length > 0 && ( //사진이 없을 경우엔 나타내지 않음
     <Swiper
         modules={[Navigation, Pagination]}
         slidesPerView={2}

@@ -7,7 +7,7 @@ import useStore from '../../store/helpData';
 
 
 function HelpList() {
-  const { data, loading, error, fetchData, page } = useStore();
+  const { data, loading, error, fetchData, page, setBoardId } = useStore();
 
   useEffect(() => {
     fetchData(); // 컴포넌트 마운트 시 데이터를 가져옵니다.
