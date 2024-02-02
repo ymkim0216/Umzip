@@ -38,8 +38,8 @@ const Header = () => {
         transition: 'box-shadow 0.5s ease',
       }}
     >
-      <div className="container-fluid">
-        <div className="navbar navbar-expand-lg navbar-light">
+      <div className="">
+        <div className="navbar navbar-expand-lg navbar-light" style={{height:"6vh"}}>
           <Link className="navbar-brand" to="/">
             로고
           </Link>

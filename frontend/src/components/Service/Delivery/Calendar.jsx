@@ -2,7 +2,7 @@ import { forwardRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const Calendar = ({ setStartDate, startDate, isTime, setIsTime }) => {
+const Calendar = ({ setStartDate, startDate}) => {
   const ExampleCustomInput = forwardRef(({ value, onClick }, ref) => (
     <button
       className="btn btn-primary rounded-5 d-flex justify-content-center align-items-center gap-2 p-2"
@@ -17,13 +17,14 @@ const Calendar = ({ setStartDate, startDate, isTime, setIsTime }) => {
 
   const handleDateChange = (date) => {
     // Update the startDate state
+    // console.log(date)
     setStartDate(date);
-
     // Extract the time from the formatted date string
-    const timeIncluded = date && date.getHours() > 0;
+    // const timeIncluded = date && date.getHours() > 0;
 
     // Update the isTime state
-    setIsTime(`${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일`)
+    // setIsTime(`${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일`)
+    // console.log(isTime)
   };
 
   return (
