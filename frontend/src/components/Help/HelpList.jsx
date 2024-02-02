@@ -7,15 +7,11 @@ import useStore from '../../store/helpData';
 
 
 function HelpList() {
-  const { data, loading, error, fetchData, page, setBoardId } = useStore();
+  const { data, loading, error, fetchData, page } = useStore();
 
   useEffect(() => {
     fetchData(); // 컴포넌트 마운트 시 데이터를 가져옵니다.
   }, [fetchData, page]); // fetchData가 변경될 때마다 호출됩니다.
-
-  // useEffect(() => { 실시간 변화 감지
-  //   fetchData(); // keyword가 변경될 때마다 데이터를 가져옵니다.
-  // }, [keyword, fetchData]); // keyword의 변화를 감지합니다.
 
   // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
   if (loading) {
@@ -54,7 +50,7 @@ function HelpList() {
       </div>
       <ul  className={style.list}>
       <ListGroup>
-        {content.map((helps, index) => (
+        {content.map((helps) => (
           <ListGroup.Item className={style.listGrop} key={helps.id}>
             <Link to={`/helpdetail/${helps.id}`}>
               <div className={style.content}>

@@ -17,7 +17,7 @@ export default function HelpDetail() {
     <BackButton />
     <HelpContent />
     <div></div>
-    {/* <HelpComments/> */}
+    <HelpComments/>
     </>
     );
 }

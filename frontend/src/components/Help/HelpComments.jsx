@@ -1,16 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from 'react';
 import useStore from '../../store/helpDetailData';
-
-
-
-// "comment: [  {
-//   "writerID": long,
-//   "writerName": String,
-//   "writerRole": String,
-//   "comment": String,
-//   "creationDate": String,
-// }  ]
+import ListGroup from 'react-bootstrap/ListGroup';
+import style from './HelpList.module.css';
 
 function HelpComments() {
   const { fetchData, data, loading, error } = useStore();
@@ -40,7 +32,17 @@ function HelpComments() {
 
   return (
     <>
-      <h4>map함수 돌리기 댓글</h4>
+      <ListGroup>
+        {content.map((item) => (
+          <ListGroup.Item className={style.listGrop} key={item.id}>
+              <div className={style.content}>
+                <span className={style.headPoint}>{item.writerName}P</span>
+                <span className={style.headDate}>{item.createDt}</span>
+                <span className={style.headUserName}>{item.comment}</span>
+              </div>
+          </ListGroup.Item>
+        ))}
+        </ListGroup>
     </>
   );
 }

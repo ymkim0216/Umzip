@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect } from 'react';
-import classes from './HelpContent.module.css';
+import style from './HelpContent.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 
@@ -35,7 +35,7 @@ function HelpDetail() {
     console.log(content.content)
   return (
     <>
-    <div className={classes.helps}>
+    <div className={style.helps}>
       {content.codeSmallId === 401 && <span>도와주세요</span> }
       {content.codeSmallId === 403 && <span>도와줄게요</span> }
       {content.codeSmallId === 402 && <span>도와줬어요</span> }
@@ -48,9 +48,11 @@ function HelpDetail() {
       <div></div>
       <span>조회수 : {content.view}</span>
       <span>댓글 수 : {content.boardCommentCnt}</span>
+
     </div>
-    {content.image && content.image.length > 0 && ( //사진이 없을 경우엔 나타내지 않음
-    <Swiper
+    {/* 사진유무 넣으면 수정 */}
+    {content.imagePathList != "https://umzip-service.s3.ap-northeast-2.amazonaws.com/boardHelp/179d2fd1-9b51-4b9e-a724-fad1c504c205backende804b5bd-542a-4596-993c-5572b431cd76." ? ( //사진이 없을 경우엔 나타내지 않음
+    <Swiper 
         modules={[Navigation, Pagination]}
         slidesPerView={2}
         centeredSlides = {true}
@@ -60,13 +62,18 @@ function HelpDetail() {
         loop={false}
         effect="coverflow" // coverflow 효과 설정
         coverflowEffect={{ rotate: 0, stretch: 100, depth: 100, modifier: 1, slideShadows: true }} // coverflow 효과의 설정
-        style={{ width: '1100px', height: '500px' }}
+        style={{ 
+          width: '100%', /* 부모 요소의 전체 너비를 차지하도록 설정 */
+          maxWidth: '1100px', /* 최대 너비 제한 */
+          height: '500px', /* 고정 높이 설정 */
+          margin: 'auto', /* 가운데 정렬 */
+         }}
     >
-        {helpDetail.image.map((img, index) => (
+        {content.imagePathList.map((img, index) => (
             <SwiperSlide key={index}>
                 <img
                     src={img}
-                    alt={`${helpDetail.title} image ${index}`}
+                    alt={`상세 이미지 image ${index}`}
                     style={{ 
                         width: '300px', // 너비를 700px로 설정
                         height: '300px', // 높이를 300px로 설정
@@ -79,7 +86,7 @@ function HelpDetail() {
             </SwiperSlide>
         ))}
     </Swiper>
-)}
+) : null}
     </>
   );
 }
