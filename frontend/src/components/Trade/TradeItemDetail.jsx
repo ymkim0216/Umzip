@@ -94,7 +94,7 @@ function TradeItemDetail({ trade }) {
             ></img>
             <div className="text-start">
               <p className="m-0">{data.name}</p>
-              <p>{trade.region}</p>
+              <p>{trade.place}</p>
             </div>
           </div>
           <div className="position-relative p-2">
