@@ -50,8 +50,7 @@ function HelpDetail() {
       <span>댓글 수 : {content.boardCommentCnt}</span>
 
     </div>
-    {/* 사진유무 넣으면 수정 */}
-    {content.imagePathList != "https://umzip-service.s3.ap-northeast-2.amazonaws.com/boardHelp/179d2fd1-9b51-4b9e-a724-fad1c504c205backende804b5bd-542a-4596-993c-5572b431cd76." ? ( //사진이 없을 경우엔 나타내지 않음
+    {content.imagePathList && content.imagePathList.length > 0 && ( //사진이 없을 경우엔 나타내지 않음
     <Swiper 
         modules={[Navigation, Pagination]}
         slidesPerView={2}
@@ -86,7 +85,7 @@ function HelpDetail() {
             </SwiperSlide>
         ))}
     </Swiper>
-) : null}
+)}
     </>
   );
 }
