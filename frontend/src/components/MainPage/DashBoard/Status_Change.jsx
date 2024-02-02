@@ -1,10 +1,11 @@
 export default function StatusChange({status}){
+    const newstatus = status%100
     let color = null
-    if(status ==="신청중") {color = "#8FFF00"}
-    else if(status ==="검토중") {color = "#ffc107"}
-    else if(status ==="취소" || status === "거절") {color = "#dc3545"}
-    else if(status ==="예약확정") {color = "#006EEE"}
-    else if(status ==="완료") {color = "#979797"}
+    if(newstatus ===1) {color = "#8FFF00"}
+    else if(newstatus ===2) {color = "#ffc107"}
+    else if(newstatus ===4 || status === 5) {color = "#dc3545"}
+    else if(newstatus ===3) {color = "#006EEE"}
+    else if(newstatus ===6) {color = "#979797"}
 
     return <>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20">

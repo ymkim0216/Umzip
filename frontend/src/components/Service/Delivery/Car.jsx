@@ -2,9 +2,11 @@
 import "./Car.css";
 import { motion } from "framer-motion";
 
-export default function Car({ data, setisWhatCar, toggleCarDropdown }) {
-  const handleCar = (name) => {
-    setisWhatCar(name);
+export default function Car({ data, setisWhatCar, toggleCarDropdown ,setCarID}) {
+  const handleCar = (info) => {
+    setisWhatCar(info.name);
+    setCarID(info.carId)
+    // console.log(info.carId)
     toggleCarDropdown();
   };
 
@@ -15,13 +17,13 @@ export default function Car({ data, setisWhatCar, toggleCarDropdown }) {
           {data.map((info) => (
             <motion.div
               key={info.name}
-              onClick={() => handleCar(info.name)}
+              onClick={() => handleCar(info)}
               className="car-option"
               whileHover={{ cursor: "pointer"  }}
             >
               {info.name}
               <motion.div className="car-description-container" >
-                {info.car_description}
+                {info.description}
               </motion.div>
             </motion.div>
             

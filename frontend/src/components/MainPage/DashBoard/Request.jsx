@@ -42,7 +42,7 @@ const DIMMY_DATA = [
     },
 ];
 
-export default function Requests({ date, orderName, orderNumber, status }) {
+export default function Requests({ date, orderName, orderNumber, status,list }) {
     const containerVariants = {
         visible: {
          opacity: 1, y: 0 ,
@@ -60,7 +60,7 @@ export default function Requests({ date, orderName, orderNumber, status }) {
     };
 
     return (
-        <motion.div  className='rounded-3 mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative' style={{ border: '1px solid #006EEE', minHeight: '6rem' }}>
+        <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}  className='rounded-3 mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative' style={{ border: '1px solid #006EEE', minHeight: '6rem' }}>
             <h5 className="m-0 col-md-2">{date}</h5>
             <h5 className="m-0 col-md-2">{orderName}</h5>
             <h5 className="m-0 col-md-2">{orderNumber}</h5>
@@ -88,7 +88,7 @@ export default function Requests({ date, orderName, orderNumber, status }) {
                         animate="visible"
                         variants={containerVariants}
                         >
-                            {DIMMY_DATA.map((data, index) => (
+                            {list.map((data, index) => (
                                 <motion.div
                                 className='shadow'
                                 style={{backgroundColor:"white"}}
@@ -101,8 +101,9 @@ export default function Requests({ date, orderName, orderNumber, status }) {
                                     <DropDown
                                         companyName={data.companyName}
                                         price={data.price}
-                                        text={data.text}
-                                        status={data.status}
+                                        text={data.detail}
+                                        status={data.codeSmallId}
+                                        img={data.imageUrl}
                                     />
                                 </motion.div>
                             ))}

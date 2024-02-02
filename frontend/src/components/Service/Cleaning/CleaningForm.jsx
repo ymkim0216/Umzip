@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, stagger, useAnimate } from "framer-motion";
 import ReactDatePicker from "react-datepicker";
 import Calendar from "./Calendar";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,7 +11,7 @@ import ProgressBar from "./Progressbar"; // 대소문자 이슈
 
 import Address from "./Address";
 import AddButton from "./AddButton";
-import { faL } from "@fortawesome/free-solid-svg-icons";
+// import { faL } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -37,13 +37,16 @@ export default function CleaningFrom() {
   const [whereEnd, setwhereEnd] = useState({})
   const [isBalkoni, setIsBalkoni] = useState(null)
   const [isBok, setIsBok] = useState(null)
-  const [detailAddress, setDetailAddress] = useState("")
+  const [detailAddress, setDetailAddress] = useState(null)
   const [ispyung, setIsPyung] = useState("m^2")
   const [whatHouse, setWhatHouse] = useState(null)
-  const [roomCounts, setRoomCounts] = useState("")
-  const [windowCounts, setWindowCounts] = useState("")
-
-
+  const [roomCounts, setRoomCounts] = useState(null)
+  const [windowCounts, setWindowCounts] = useState(null)
+  const [scope,animate] =useAnimate()
+  const [newscope,newanimate] =useAnimate()
+  const getToday = (value) => {
+    return value.toISOString().split('T')[0];
+  };
   const handleOptionChange = (value) => {
     setSelectedOption(value);
   };
@@ -54,12 +57,58 @@ export default function CleaningFrom() {
   };
 
 
-  const goToNextForm = () => {
+  const goToNextForm = async () => {
 
-    if (isActive === "first") { setIsActive("second") }
-    else if (isActive === "second") { setIsActive("third") }
-    if (activeStep < totalSteps) {
-      setActiveStep(activeStep + 1);
+    if (isActive === "first") {
+      if (startDate && selectedOption && isWhatTime) {
+        const today = new Date()
+        if (getToday(startDate) === getToday(today)) {
+          const currentTime = new Date().getHours() * 60 + new Date().getMinutes();
+          let targetHour = parseInt(isWhatTime.split(':')[0]) % 12;
+          const targetMinute = parseInt(isWhatTime.split(':')[1]);
+          const targetOption = isWhatTime.split(' ')[1];
+
+          // selectedOption이 PM이면 targetHour에 12를 더해줌
+          if (selectedOption === "PM") {
+            targetHour += 12;
+          }
+
+          const targetTime = targetHour * 60 + targetMinute;
+
+          // 이미 지나간 시간인 경우
+          if (currentTime > targetTime) {
+            alert("잘못된 시간입니다!")
+            return;
+          }
+          else {
+            setIsActive("second")
+            if (activeStep < totalSteps) {
+              setActiveStep(activeStep + 1);
+            }
+          }
+        } else {
+          setIsActive("second")
+          if (activeStep < totalSteps) {
+            setActiveStep(activeStep + 1);
+          }
+        }
+
+      } else {
+        animate("#inputcomponent", { x: [-10, 0, 20, 0] }, { type: "spring", duration: 1, delay: stagger(0.05) })
+
+
+      }
+    }
+    else if (isActive === "second") {
+      if (whereStart && detailAddress && roomCounts && windowCounts && isBalkoni && isBok && whatHouse ) {
+        console.log(data)
+        setIsActive("third")
+        if (activeStep < totalSteps) {
+          setActiveStep(activeStep + 1);
+        }
+      } newanimate("#secondcomponent", {  x: [-10, 0, 20, 0] }, { type: "spring", duration: 1, delay: stagger(0.05) })
+
+
     }
   }
   const hadlesubmit = () => {
@@ -174,7 +223,7 @@ export default function CleaningFrom() {
           <motion.p className="m-0" style={{ color: "#006EEE" }}>다음으로&rarr;</motion.p>
 
         </motion.h5>
-        <motion.div initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }} >
+        <motion.div ref={scope} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }} >
           <motion.div style={{ position: 'relative' }} whileHover={{ fontWeight: "bold" }} >
             {/* 나가기 버튼 이미지 */}
 
@@ -194,7 +243,7 @@ export default function CleaningFrom() {
               <div>
                 <div className="d-flex gap-5 align-items-center">
                   {/* 첫 번째 라디오 버튼 */}
-                  <div className="d-flex gap-3  ">
+                  <div className="d-flex gap-3  " id={selectedOption ? "" :"inputcomponent"}>
                     <motion.div
                       whileHover={{ cursor: "pointer", scale: 1.1 }}
                       className={`d-flex gap-3 justify-content-center align-items-center ${selectedOption === 'AM' ? 'checked' : ''}`}
@@ -224,7 +273,7 @@ export default function CleaningFrom() {
                   </div>
                   {/* 드롭다운 버튼 */}
                   <div style={{ position: "relative" }} className="d-flex align-items-center gap-4">
-                    <button className="btn btn-primary rounded-5 d-flex  align-items-center gap-2 p-2 " style={{ width: "10rem", height: "4rem" }} onClick={toggleClockDropdown}>
+                    <button id={isWhatTime ? "" : "inputcomponent"} className="btn btn-primary rounded-5 d-flex  align-items-center gap-2 p-2 " style={{ width: "10rem", height: "4rem" }} onClick={toggleClockDropdown}>
                       <p className="m-0 col-10">{isWhatTime || "시간선택"}</p><img className="col-2" src='/clock.png' style={{ width: "1rem", height: "1rem" }} />
                     </button>
                     <AnimatePresence>
@@ -271,10 +320,10 @@ export default function CleaningFrom() {
           />
           <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
         </motion.h5>
-        <motion.div className="col-12 d-flex justify-content-center " style={{ marginTop: "14rem" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
+        <motion.div ref={newscope} className="col-12 d-flex justify-content-center " style={{ marginTop: "14rem" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
           <div className="col-8 d-flex gap-3 ">
             <div className="col-6 d-flex flex-column gap-5 p-3 justify-content-center align-items-center">
-              <div className="d-flex  gap-1 align-items-center " style={{ width: "100%", height: "2rem" }}>
+              <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex  gap-1 align-items-center " style={{ width: "100%", height: "2rem" }}>
                 <div className="col-2 fw-bold">집주소 : </div>
                 <div className="col-8 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} >{whereStart.address ? (
                   <p className="m-0">{whereStart.address}</p>
@@ -284,12 +333,12 @@ export default function CleaningFrom() {
                 <button onClick={() => hadleModal("start")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "2rem" }}><p className="m-0">찾기</p></button>
               </div>
 
-              <div className="col-9 d-flex " style={{ width: "100%" }} >
+              <div className="col-9 d-flex " id={detailAddress? "" :"secondcomponent"} style={{ width: "100%" }} >
                 <div className="col-2 fw-bold">상세주소 : </div>
                 <input style={{ border: "none" }} className="col-10 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setDetailAddress(event.target.value)} ></input>
               </div>
 
-              <div className="col-9 d-flex " style={{ width: "100%" }} >
+              <div id={whatHouse? "" :"secondcomponent"} className="col-9 d-flex " style={{ width: "100%" }} >
                 <div className="col-2 fw-bold">집크기 : </div>
                 <div className="col-12 d-flex gap-2 " >
                   <input style={{ border: "none" }} className="col-8 shadow fw-bold text-center rounded-4 " placeholder="집크기를 입력해주세요!" type="number" onChange={(event) => setWhatHouse(event.target.value)} ></input>
@@ -297,23 +346,20 @@ export default function CleaningFrom() {
                 </div>
               </div>
               <div className="d-flex col-12  gap-4">
-                <div className=" d-flex col-6 gap-1 align-items-center"  >
+                <div id={roomCounts? "" :"secondcomponent"} className=" d-flex col-6 gap-1 align-items-center"  >
                   <div className=" col-4 fw-bold">방개수 : </div>
-                  <input style={{ border: "none", height: "2rem" }} className="col-6 shadow fw-bold text-center rounded-4 " placeholder="방개수" type="number" onChange={(event) => setRoomCounts(event.target.value)}
-
-
-                  ></input>
+                  <input style={{ border: "none", height: "2rem" }} className="col-6 shadow fw-bold text-center rounded-4 " placeholder="방개수" type="number" onChange={(event) => setRoomCounts(event.target.value)}></input>
                   <div className="d-flex  align-items-center fw-bold">개</div>
                 </div>
 
-                <div className="d-flex col-6 gap-1 align-items-center"  >
+                <div id={windowCounts? "" :"secondcomponent"}  className="d-flex col-6 gap-1 align-items-center"  >
                   <div className="col-4 fw-bold">창개수 : </div>
                   <input style={{ border: "none", height: "2rem" }} className="col-6 shadow fw-bold text-center rounded-4 " placeholder="창개수" type="number" onChange={(event) => setWindowCounts(event.target.value)} ></input>
                   <div className="d-flex  align-items-center fw-bold ">개</div>
                 </div>
               </div>
 
-              <div className="d-flex justify-content-center gap-3 align-items-center  col-12">
+              <div id={isBalkoni? "" :"secondcomponent"}  className="d-flex justify-content-center gap-3 align-items-center  col-12">
                 <p className="m-0 col-3 fw-bold">발코니/베란다</p>
                 <div className="col-3">
                   <CheckButton checkPacking={() => setIsBalkoni("있음")} isActive={isBalkoni === "있음"} name="있음" />
@@ -324,7 +370,7 @@ export default function CleaningFrom() {
                 <div className="col-3"></div>
               </div>
 
-              <div className="d-flex justify-content-center gap-3 align-items-center col-12">
+              <div id={isBok? "" :"secondcomponent"}  className="d-flex justify-content-center gap-3 align-items-center col-12">
                 <p className="m-0 col-3 fw-bold">복층인가요?</p>
                 <div className="col-3">
                   <CheckButton checkPacking={() => setIsBok("네")} isActive={isBok === "네"} name="네" />
