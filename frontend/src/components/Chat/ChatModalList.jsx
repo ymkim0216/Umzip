@@ -6,13 +6,13 @@ import { Client } from "@stomp/stompjs";
 
 
 
-export default function ChatModalList({ name, chat, date, img, chatroomId, receiverId }) {
+export default function ChatModalList({ unReadCount, name, chat, date, img, chatroomId, receiverId }) {
   const [openModal, setOpenModal] = useState(false);
   const [talkHistory, setTalkHistory] = useState([]);
   const chatContainerRef = useRef();
   const [userinput, setuserinput] = useState(null);
   const stompClientRef = useRef(null);
-
+  const [unReadMessage , setUnReadMessage] =useState(unReadCount)
   useEffect(() => {
     // 스크롤 위치를 항상 맨 아래로 조절
     if (chatContainerRef.current) {
@@ -24,22 +24,22 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
     setuserinput(event.target.value);
   };
 
-  const toggleModal = async() => {
+  const toggleModal = async () => {
     setOpenModal(true);
-
+    setUnReadMessage(0)
     // 모달이 열릴 때만 대화 내용을 불러옴
     if (!talkHistory.length) {
-      
       const stompClient = socket();
       const talk = await axios_detailChat();
+      // console.log(talk)
       setTalkHistory(talk)
       stompClientRef.current = stompClient;
       // console.log(stompClient)
-      
+
       stompClient.onConnect(
         stompClient.activate()
       )
-      
+
       // stompClient.activate() 호출 후에 구독을 시도
       // stompClient.activate().then(() => {
 
@@ -48,13 +48,16 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   };
 
   const socket = () => {
+    const accessToken = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg`;
     const client = new Client({
-      brokerURL:  "ws://192.168.30.145:8080/ws",
+      brokerURL: `ws://172.30.1.54:8080/ws?accessToken=${accessToken}`,
+
       // 여기에 다른 설정도 추가할 수 있습니다.
       onConnect: (frame) => {
-        console.log('Connected: ' + frame);
+        console.log('Connected: ' + frame);  
         client.subscribe(`/topic/chatroom/${chatroomId}`, (message) => {
-          console.log('Received message: ' + message.body);
+          // console.log('Received message: ' + message.body);
+          // console.log(talkHistory)
           showReceivedMessage(message.body);
         });
       },
@@ -63,7 +66,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
         console.error('Additional details: ' + frame.body);
       }
     });
-  
+
     return client;
   };
 
@@ -74,32 +77,45 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
     const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg`;
 
     try {
-      const response = await axios.get(`http://192.168.30.145:8080/api/chat/rooms/${chatroomId}`, {
+      const response = await axios.get(`http://172.30.1.54:8080/api/chat/rooms/${chatroomId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
+      console.log(response.data.result)
       return response.data.result
-      
-      // console.dir(stompClient.subscribe)
-      ;
+        // console.log(response.data.result)
+        // console.dir(stompClient.subscribe)
+        ;
     } catch (error) {
       console.error(error);
     }
   };
 
   const showReceivedMessage = (message) => {
-    console.log('Received message:', message);
-    // const currentTalkHistory = [...talkHistory];
-    // currentTalkHistory.push(message)
-    // setTalkHistory(currentTalkHistory);
+    try {
+      // console.log(message)
+      
+      const jsonData = JSON.parse(message);
+      // console.log(jsonData);
+
+      setTalkHistory((prevTalkHistory) => {
+        const updatedHistory = [...prevTalkHistory, jsonData];
+        // console.log(updatedHistory);
+        return updatedHistory;
+        
+      })
+    
+    } catch (error) {
+      console.error('Error parsing received message:', error);
+    }
   };
 
   const sendMessage = () => {
     // userinput을 사용하도록 수정
     const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg`;
     if (userinput && stompClientRef.current.active) {
-      console.log('메시지 보낸다');
+      // console.log('메시지 보낸다');
       stompClientRef.current.publish({
         destination: `/app/chat/${chatroomId}`,
         body: JSON.stringify({
@@ -110,7 +126,6 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
           'Authorization': `Bearer ${token}`
         }
       });
-      setuserinput(""); // 입력 필드를 비웁니다.
     } else {
       console.error('Message is empty or stomp client is not connected.');
     }
@@ -144,9 +159,9 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
                 ref={chatContainerRef}
                 style={{ width: "100%", display: "flex", flexDirection: "column", maxHeight: "40rem", overflowY: "auto" }}
               >
-                {talkHistory.map((items) => (
+                {talkHistory  && talkHistory.map((items, index) => (
                   <div
-                    key={items.id}
+                    key={index}
                     style={{
                       alignSelf: items.requesterId.toString() !== items.senderId ? "flex-start" : "flex-end",
                       maxWidth: "70%",
@@ -160,11 +175,13 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
                     {items.content}
                   </div>
                 ))}
-                <div className='d-flex gap-4'>
-                  <input className='col-8' type='text' onChange={handleinput}></input>
-                  <button  onClick={sendMessage} className='btn btn-primary'>제출</button>
-                </div>
-                <div>
+                
+                  <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
+                    <input  value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                    <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
+                  </form>
+                    
+                <div> 
 
                 </div>
               </div>
@@ -187,9 +204,17 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
               <p className='m-0'>{chat}</p>
             </div>
           </div>
-          <div className='position-relative p-2'>
+          <div className='d-flex flex-column '>
             <small className="form-text text-muted">{date}</small>
+            <div className='col-12 d-flex justify-content-end'>
+              {unReadMessage !== 0 ? <span className="col-4   badge rounded-pill bg-danger">
+                {unReadMessage}
+              </span> : null}
+            </div>
+
           </div>
+
+
         </div>
       </motion.button>
     </>

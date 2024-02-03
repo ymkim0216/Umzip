@@ -14,7 +14,7 @@
   
   .unread-message-indicator {
     position: absolute;
-    top: 95%;
+    top: 0%;
     start: 70%;
     transform: translate(-50%, -50%);
     padding: 0.5rem;
