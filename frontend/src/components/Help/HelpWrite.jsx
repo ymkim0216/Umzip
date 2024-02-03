@@ -20,18 +20,12 @@ function HelpWrite() {
   // 이미지 미리보기를 위한 상대경로
   const handleAddImages = (event) => {
     const imageLists = event.target.files;
-    let imageUrlLists = [...showImages];
-
-    for (let i = 0; i < imageLists.length; i++) {
-      const currentImageUrl = URL.createObjectURL(imageLists[i]);
-      imageUrlLists.push(currentImageUrl);
+    if (imageLists.length + showImages.length > 10) {
+      alert('이미지는 최대 10개까지 업로드 가능합니다.');
+      return;
     }
-
-    if (imageUrlLists.length > 10) {
-      imageUrlLists = imageUrlLists.slice(0, 10);
-    }
-
-    setShowImages(imageUrlLists);
+  
+    setShowImages([...showImages, ...imageLists]);
   };
   
   const handleSubmit = (e) => {
@@ -50,10 +44,16 @@ function HelpWrite() {
     Bulletin.append('boardHelp', new Blob([JSON.stringify(boardHelp)], { type: "application/json" }));
 
       // 이미지 파일을 Bulletin 추가
-  for (let i = 0; i < showImages.length; i++) {
-    console.log(showImages[i])
-    Bulletin.append('imageFileList', showImages[i]);
-  }
+
+      showImages.forEach((file) => {
+        // 파일 객체를 개별적으로 추가
+        Bulletin.append('imageFileList', file);
+      });
+
+  // for (let i = 0; i < showImages.length; i++) {
+  //   console.log(showImages[i])
+  //   Bulletin.append('imageFileList', showImages[i]);
+  // }
 
   // useStore의 sendPostBulletin 함수를 호출하여 FormData 전송
   sendPostBulletin(Bulletin);
