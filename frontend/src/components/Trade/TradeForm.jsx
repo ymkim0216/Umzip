@@ -45,7 +45,6 @@ function TradeForm({ method }) {
     setIsModalOpen(false);
     setAddress(fullAddress);
   }
-  console.log(typeof(sigungu))
 
   const handleSubmit = async (event) => {
     event.preventDefault();
