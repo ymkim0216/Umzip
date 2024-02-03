@@ -45,15 +45,21 @@ function HelpWrite() {
 
       // 이미지 파일을 Bulletin 추가
 
-      showImages.forEach((file) => {
-        // 파일 객체를 개별적으로 추가
-        Bulletin.append('imageFileList', file);
-      });
+      // showImages.forEach((file) => {
+      //   // 파일 객체를 개별적으로 추가
+      //   Bulletin.append('imageFileList', file);
+      // });
 
-  // for (let i = 0; i < showImages.length; i++) {
-  //   console.log(showImages[i])
-  //   Bulletin.append('imageFileList', showImages[i]);
-  // }
+  for (let i = 0; i < showImages.length; i++) {
+    if (showImages[i]) { // 이미지 파일이 실제로 존재하는지 확인
+      console.log(showImages[i]);
+      Bulletin.append('imageFileList', showImages[i]);
+    } else { // 이미지 파일x
+      console.log(showImages)
+      Bulletin.append('imageFileList', showImages);
+    }
+  }
+  console.log(showImages)
 
   // useStore의 sendPostBulletin 함수를 호출하여 FormData 전송
   sendPostBulletin(Bulletin);
@@ -68,6 +74,30 @@ function HelpWrite() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        {/* 카테고리선택 */}
+        <div>
+          <input
+            type="radio"
+            id="needHelp"
+            name="codeSmall"
+            value={401}
+            checked={codeSmall === 401}
+            onChange={(e) => setCodeSmall(401)}
+          />
+          <label htmlFor="needHelp">도와줘요</label>
+
+          <input
+            type="radio"
+            id="willHelp"
+            name="codeSmall"
+            value={403}
+            checked={codeSmall === 403}
+            onChange={(e) => setCodeSmall(403)}
+          />
+          <label htmlFor="willHelp">도와줄게요</label>
+        </div>
+
+        {/* 제목 입력 */}
         <div>
           <label htmlFor="title">제목:</label>
           <input
@@ -77,6 +107,8 @@ function HelpWrite() {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
+
+        {/* 콘텐트 입력 */}
         <div>
           <label htmlFor="content">본문:</label>
           <textarea
@@ -85,27 +117,53 @@ function HelpWrite() {
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
+
+        {/* 포인트 입력 */}
+        <div>
+          <label htmlFor="pointRange">포인트 설정: {point}</label>
+          <input
+            type="range"
+            id="pointRange"
+            min={50}
+            max={500}
+            step={50}
+            value={point}
+            onChange={(e) => setPoint(Number(e.target.value))}
+          />
+        </div>
+
+        {/* 이미지 업로드 */}
         <div>
           <label htmlFor="imageUploa">이미지 업로드:</label>
           <input onChange={handleAddImages} id="image" type="file" multiple />
         </div>
-        <button type="submit" className={style.submitButton}>글 등록</button>
+
+        {/* 보내기버튼 */}
+        <button type="submit" className={style.submitButton}>
+          글 등록
+        </button>
       </form>
+
+      {/* 이미지 미리보기 툴 */}
       <Swiper
-          modules={[Navigation, Pagination]}
-          spaceBetween={20}
-          slidesPerView={3}
-          navigation
-          pagination={{ clickable: false }}
-          style={{ width: '100px%', height: '100px' }}
-        >
-          {showImages.map((image, id) => (
-            <SwiperSlide key={id}>
-              <img src={image} alt={`image-${id}`} style={{ width: '80%', height: '100%', objectFit: 'cover' }}/>
-              <button onClick={() => handleDeleteImage(id)}>X</button>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        modules={[Navigation, Pagination]}
+        spaceBetween={20}
+        slidesPerView={3}
+        navigation
+        pagination={{ clickable: false }}
+        style={{ width: '100px%', height: '100px' }}
+      >
+        {showImages.map((image, id) => (
+          <SwiperSlide key={id}>
+            <img
+              src={image}
+              alt={`image-${id}`}
+              style={{ width: '80%', height: '100%', objectFit: 'cover' }}
+            />
+            <button onClick={() => handleDeleteImage(id)}>X</button>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 }

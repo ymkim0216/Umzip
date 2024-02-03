@@ -69,7 +69,7 @@ const useStore = create((set, get) => ({
         const response = await axios.post(`${api}helps`, Bulletin, {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
+            // 'Content-Type': 'multipart/form-data', 콘텐트 타입을변경해주는건데 없어도됨
           }
         });
         console.log('게시글 추가됨:', response.data);
