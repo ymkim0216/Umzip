@@ -9,8 +9,8 @@ import { Navigation, Pagination } from 'swiper/modules';
 function HelpWrite() {
   const { sendPostBulletin } = useStore();
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState(null);
+  const [content, setContent] = useState(null);
   // 여러장의 사진을 보여주기 위한 state
   const [showImages, setShowImages] = useState([]);
   //  401: 도와줘요, 402: 도와줄게요, 403: 도와줬어요
@@ -30,6 +30,17 @@ function HelpWrite() {
   
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // 입력값이 있는지 확인
+    if (!title) {
+      alert('제목을 입력해주세요');
+      return; // 함수를 여기서 종료하여 데이터 전송을 중지합니다.
+    }
+  
+    if (!content) {
+      alert('내용을 입력해주세요');
+      return; // 함수를 여기서 종료하여 데이터 전송을 중지합니다.
+    }
 
       // 서버로 보낼 묶음
   const boardHelp = {

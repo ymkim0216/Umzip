@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
 
 // 디테일 페이지 가져온 정보
@@ -64,6 +65,7 @@ const useStore = create((set, get) => ({
         console.log(key, value);
         console.log(typeof(key))
       });
+      const history = useHistory();
       set({ loading: true });
       try {
         const response = await axios.post(`${api}helps`, Bulletin, {
@@ -76,6 +78,7 @@ const useStore = create((set, get) => ({
         set({ loading: false });
         // 여기에서 추가적인 상태 업데이트나 액션을 취할 수 있습니다.
         // 예: 새로운 댓글 데이터를 상태에 추가하는 등
+        history.push('/help');
       } catch (error) {
         console.error('게시글 추가 실패:', error.response?.data || error);
   alert(error.response?.data?.message || '게시글 추가 중 오류가 발생했습니다.');
