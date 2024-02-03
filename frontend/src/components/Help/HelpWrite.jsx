@@ -13,7 +13,7 @@ function HelpWrite() {
   const [content, setContent] = useState('');
   // 여러장의 사진을 보여주기 위한 state
   const [showImages, setShowImages] = useState([]);
-  //  401: 도와줘요, 402: 도와줬어요, 403: 도와줄게요
+  //  401: 도와줘요, 402: 도와줄게요, 403: 도와줬어요
   const [ codeSmall, setCodeSmall ] = useState(401);
   const [ point, setPoint ] = useState(100);
 
@@ -90,9 +90,9 @@ function HelpWrite() {
             type="radio"
             id="willHelp"
             name="codeSmall"
-            value={403}
-            checked={codeSmall === 403}
-            onChange={(e) => setCodeSmall(403)}
+            value={402}
+            checked={codeSmall === 402}
+            onChange={(e) => setCodeSmall(402)}
           />
           <label htmlFor="willHelp">도와줄게요</label>
         </div>
