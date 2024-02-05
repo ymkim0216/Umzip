@@ -14,6 +14,7 @@ import Address from "./Address";
 import Map from "./Map";
 import axios from "axios";
 import Wave from "../../MainPage/DashBoard/Wave";
+import { api } from "../../../services/api";
 
 
 
@@ -203,10 +204,10 @@ export default function DeliveryForm() {
     setIsModalOpen(true)
   }
   const axios_car_list = async () => {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
+    
 
     try {
-      const response = await axios.get('http://192.168.30.145:8080/api/delivery/user/car', {
+      const response = await api.get('/delivery/user/car', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -219,7 +220,7 @@ export default function DeliveryForm() {
   };
   
   const axios_cal = async () => {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
+    
     let packaging = ""
     let move = ""
     let elevator = ""
@@ -234,7 +235,7 @@ export default function DeliveryForm() {
     else { parking = false }
     setIsLoading(true)
     try {
-      const response = await axios.post('http://192.168.30.145:8080/api/delivery/user/calculation',
+      const response = await api.post('/delivery/user/calculation',
         {
           "carId": carId,
           "departureX": whereStart.lon,
@@ -249,7 +250,7 @@ export default function DeliveryForm() {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`
+      
           }
         }
       );
@@ -270,12 +271,12 @@ export default function DeliveryForm() {
   }
 
   const axios_CallDel = async () => {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
+    
     console.log(`${getToday(startDate)} ${isWhatTime}`)
     console.log(sigungu)
     try {
-      const response = await axios.post(
-        'http://192.168.30.145:8080/api/delivery/user/company-list',
+      const response = await api.post(
+        '/delivery/user/company-list',
         {
           startTime: `${getToday(startDate)} ${isWhatTime}`, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
           endTime: endTime, // 실제 종료 시간을 올바른 날짜 및 시간 형식으로 교체
@@ -284,7 +285,6 @@ export default function DeliveryForm() {
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`
           }
         }
       );

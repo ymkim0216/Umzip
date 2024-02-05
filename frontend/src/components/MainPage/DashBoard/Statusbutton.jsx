@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useScroll } from "framer-motion";
 import { useState } from "react";
+import { api } from "../../../services/api";
 
 export default function StatusButton({ setChatRoom, companyId, toggleModal, status, requestList }) {
     let returnButton = null
@@ -10,7 +11,7 @@ export default function StatusButton({ setChatRoom, companyId, toggleModal, stat
 
     }
     const MakeRoom = async () => {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
+        
         let service = "";
         if (requestList === "용달") {
             service = "deliver";
@@ -19,13 +20,13 @@ export default function StatusButton({ setChatRoom, companyId, toggleModal, stat
         }
 
         try {
-            const response = await axios.post(
-                `http://192.168.30.145:8080/api/chat/${service}/${companyId}`,
+            const response = await api.post(
+                `/chat/${service}/${companyId}`,
                 // 요청 바디를 올바른 위치에 추가
                 {},  // 만약 바디가 있다면 여기에 추가하세요.
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        
                     }
                 }
             );

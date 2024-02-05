@@ -3,6 +3,7 @@ import styles from './ChatModalList.module.css';
 import { AnimatePresence, motion } from "framer-motion"
 import axios from 'axios';
 import { Client } from "@stomp/stompjs";
+import { api } from '../../services/api';
 
 
 
@@ -92,12 +93,11 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
 
 
   const axios_detailChat = async () => {
-    const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
+    
 
     try {
-      const response = await axios.get(`http://192.168.30.145:8080/api/chat/rooms/${chatroomId}`, {
+      const response = await api.get(`/chat/rooms/${chatroomId}`, {
         headers: {
-          Authorization: `Bearer ${token}`
         }
       });
       console.log(response.data.result.chatMessages)
@@ -131,7 +131,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
 
   const sendMessage = () => {
     // userinput을 사용하도록 수정
-    const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
+    
     if (userinput && stompClientRef.current.active) {
       console.log('메시지 보낸다');
       stompClientRef.current.publish({

@@ -13,6 +13,7 @@ import Address from "./Address";
 import AddButton from "./AddButton";
 import axios from "axios";
 import Wave from "../../MainPage/DashBoard/Wave";
+import { api } from "../../../services/api";
 // import { faL } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -117,13 +118,10 @@ export default function CleaningFrom() {
     }
   }
   const axios_CallCle = async () => {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
-    console.log(`${getToday(startDate)} ${isWhatTime}`)
-    console.log(sigungu)
-    console.log(1)
+    
     try {
-      const response = await axios.post(
-        'http://192.168.30.145:8080/api/clean/user/company-list',
+      const response = await api.post(
+        '/clean/user/company-list',
         {
           reservationTime: `${getToday(startDate)} ${isWhatTime}`, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
           sigungu: sigungu, // 실제 sigungu 값으로 교체 (정수)
@@ -216,7 +214,7 @@ export default function CleaningFrom() {
     return serviceNameMap[key] || key; // key에 해당하는 값이 없을 경우 key 그대로 반환
   };
   const axios_cal = async () => {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
+    
     const roomSize = parseInt(whatHouse, 10)
     const roomCount = parseInt(roomCounts, 10)
     const windowCount = parseInt(windowCounts, 10)
@@ -235,7 +233,7 @@ export default function CleaningFrom() {
 
     setIsLoading(true)
     try {
-      const response = await axios.post('http://192.168.30.145:8080/api/clean/user/calculation',
+      const response = await api.post('/clean/user/calculation',
         {
           "reservationTime": `${getToday(startDate)} ${isWhatTime}`,
           "roomSize": roomSize,

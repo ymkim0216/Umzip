@@ -1,20 +1,22 @@
+import { useEffect } from "react";
 import Recommend from "../../pages/Service/Recommend";
 import RecommendReview from "./RecommendReview";
 import StarRating from "./StarRating";
 import axios from "axios";
+import { api } from "../../services/api";
+
 
 
 export default function RecommendModalComponent() {
-
+    useEffect(()=>{
         axios_detail()
     }, [])
     const axios_detail = async () => {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
+        
 
         try {
-            const response = await axios.get(`http://192.168.30.145:8080/api/company/${companyId}`, {
+            const response = await api.get(`/company/${companyId}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`
                 }
             });
             console.log(response.data.result)

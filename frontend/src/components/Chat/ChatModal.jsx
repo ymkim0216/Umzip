@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import ChatModalList from './ChatModalList';
 import styles from './ChatModal.module.css'; // Import the CSS module
 import axios from 'axios';
+import { api } from '../../services/api';
 
 
 
@@ -13,11 +14,11 @@ const ChatModal = () => {
   const [openModal, setOpenModal] = useState()
   const [ChatList, setChatList] = useState()
   const Chat_Call = async () => {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
+    
     try {
-      const response = await axios.get('http://192.168.30.145:8080/api/chat/rooms', {
+      const response = await api.get('/chat/rooms', {
         headers: {
-          Authorization: `Bearer ${token}`
+        
         }
       });
       setChatList(response.data.result)
