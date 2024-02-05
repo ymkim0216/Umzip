@@ -3,11 +3,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import StarRating from "./StarRating";
 import RecommendModal from "./RecommendModal";
 
-export default function RecommendPeople({companyId, name, rating, tag ,img}) {
+export default function RecommendPeople({ name, rating }) {
     const [imageSrc, setImageSrc] = useState("/truck.png");
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const handleModal = () => {
-        setIsModalOpen((prev) => !prev)
+    const handleModal =() =>{
+        setIsModalOpen((prev)=>!prev)
     }
     const handleClick = () => {
         // 클릭 시 이미지 소스 변경
@@ -18,7 +18,7 @@ export default function RecommendPeople({companyId, name, rating, tag ,img}) {
 
     return (
         <>
-            <RecommendModal img={img} companyId={companyId} isOpen={isModalOpen} closeModal={handleModal} />
+        <RecommendModal isOpen={isModalOpen} closeModal={handleModal} />
             <motion.div
                 style={{ backgroundColor: "#F4F9FF", width: "100%" }}
                 className="rounded-4 d-flex  p-3 shadow postion-relative"
@@ -29,7 +29,7 @@ export default function RecommendPeople({companyId, name, rating, tag ,img}) {
                 <div className="d-flex flex-column justify-content-center  align-items-center gap-2 col-md-2">
                     <motion.img
                         className="rounded-pill shadow"
-                        src={img}
+                        src="/randomimg.png"
                         style={{ height: "6rem", width: "6rem" }}
                         alt="Random Image"
                         whileHover={{ scale: 1.1, cursor: "pointer" }}
@@ -52,9 +52,15 @@ export default function RecommendPeople({companyId, name, rating, tag ,img}) {
                         <h1 className=" col-md-3"></h1>
                     </div>
                     <div className="gap-3 d-flex justify-content-center">
-                        {tag && tag.map((item, index) => (<div key={index} className="border border-primary rounded-5 bg-white col-md-3 text-center">
-                            {item} 
-                        </div>))}
+                        <div className="border border-primary rounded-5 bg-white col-md-3 text-center">
+                            asdf
+                        </div>
+                        <div className="border border-primary rounded-5 bg-white col-md-3 text-center">
+                            asdf
+                        </div>
+                        <div className="border border-primary rounded-5 bg-white col-md-3 text-center">
+                            asdf
+                        </div>
                     </div>
                 </div>
                 <AnimatePresence>
@@ -74,10 +80,10 @@ export default function RecommendPeople({companyId, name, rating, tag ,img}) {
                             transition={{ duration: 0.5 }} // 트랜지션 지속 시간
                         />
                     </motion.div>
-
+                    
                 </AnimatePresence>
             </motion.div>
-
+            
         </>
     );
 }

@@ -52,7 +52,7 @@ const SignUpForm = () => {
   // 이메일 중복 확인
   const checkEmail = async (email) => {
     try {
-      const response = await axios.post('http://172.30.1.54:8080/api/auth/email', { email });
+      const response = await axios.post('http://192.168.30.206:8080/api/auth/email', { email });
       if (response.data.isSuccess) {
         alert('사용가능한 이메일 입니다.');
         setIsEmailValid(true);
@@ -117,7 +117,7 @@ const SignUpForm = () => {
     const { name, email, phone, password } = data;
     try {
       const response = await axios.post(
-        'http://172.30.1.54:8080/api/users',
+        'http://192.168.30.145:8080/api/users',
         {
           name,
           email,
@@ -128,7 +128,6 @@ const SignUpForm = () => {
           addressDetail,
         }
       );
-      console.log(response.data);
 
       if (response.data.isSuccess) {
         alert('Join Success!');
