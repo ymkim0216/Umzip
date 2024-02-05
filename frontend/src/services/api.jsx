@@ -6,7 +6,7 @@ const api = axios.create({
   // baseURL: 'http://192.168.30.206:8080/api' 동현
   // 192.168.30.145/api 민수
   // https://i10e108.p.ssafy.io 빌드 주소
-  baseURL: 'http://192.168.30.206:8080/api'
+  baseURL: 'https://i10e108.p.ssafy.io'
 });
 
 api.interceptors.request.use((config) => {
