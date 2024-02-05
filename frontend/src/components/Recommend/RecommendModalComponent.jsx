@@ -1,26 +1,29 @@
 import Recommend from "../../pages/Service/Recommend";
 import RecommendReview from "./RecommendReview";
 import StarRating from "./StarRating";
-const DUMMY_DATA = [
-    {
-        name:"미친놈",
-        date:"2024.01.01",
-        rating:5.0,
-        text: "아오 이새끼 운전 개같이함"
-    },{
-        name:"어허",
-        date:"2024.01.02",
-        rating:4.5,
-        text: "음해 ㄴ"
-    },{
-        name:"진짜 또라인가",
-        date:"2024.01.03",
-        rating:3.5,
-        text: "아오 이새끼 운전 개같이함"
-    }]
+import axios from "axios";
+
 
 export default function RecommendModalComponent() {
 
+        axios_detail()
+    }, [])
+    const axios_detail = async () => {
+        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
+
+        try {
+            const response = await axios.get(`http://192.168.30.145:8080/api/company/${companyId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log(response.data.result)
+            setData(response.data.result)
+            return response
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
 
     return (

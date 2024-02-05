@@ -13,8 +13,7 @@ const ChatModal = () => {
   const [openModal, setOpenModal] = useState()
   const [ChatList, setChatList] = useState()
   const Chat_Call = async () => {
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
-
+    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
     try {
       const response = await axios.get('http://192.168.30.145:8080/api/chat/rooms', {
         headers: {
@@ -23,7 +22,6 @@ const ChatModal = () => {
       });
       setChatList(response.data.result)
       console.log(response.data.result)
-      console.lo
     } catch (error) {
       console.error(error);
     }
