@@ -37,11 +37,12 @@ const useStore = create((set, get) => ({
     sendPostRequest: async (commentText) => {
       console.log(commentText)
       console.log(typeof(commentText))
+      const commentNow = {comment : commentText}
       const { boardId } = get();
 
       set({ loading: true });
       try {
-        const response = await api.post(`/helps/detail/comments/${boardId}`, commentText, { 
+        const response = await api.post(`/helps/detail/comments/${boardId}`, commentNow, { 
           headers: {
             'Content-Type': 'application/json',
             // Authorization: `Bearer ${token}`
