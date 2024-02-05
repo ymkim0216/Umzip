@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { useLocation, useNavigate } from "react-router-dom";
 import "./RecommendMain.css"
 import axios from "axios";
+import { api } from "../../services/api";
 
 
 export default function RecommendMain() {
@@ -62,8 +63,8 @@ export default function RecommendMain() {
             formData.append(`imageFileList[${index}]`, fileObj.file);
         });
         try {
-            const response = await axios.post(
-                'http://192.168.30.125:8080/api/delivery/user/reservation',
+            const response = await api.post(
+                '/delivery/user/reservation',
                 formData,
                 {
                     headers: {
@@ -114,8 +115,8 @@ export default function RecommendMain() {
             formData.append(`imageFileList[${index}]`, fileObj.file);
         });
         try {
-            const response = await axios.post(
-                'http://192.168.30.125:8080/api/clean/user/reservation',
+            const response = await api.post(
+                '/clean/user/reservation',
                 formData,
                 {
                     headers: {

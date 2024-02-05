@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { Link, useNavigate } from 'react-router-dom';
 import Status from './Status';
 import axios from "axios"
+import { api } from '../../../services/api';
 
 
 
@@ -22,10 +23,10 @@ const MainComponent = () => {
         },
     };
     const CLE_Call = async () => {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
+        
 
         try {
-            const response = await axios.get('http://192.168.30.145:8080/api/clean/user/reservation', {
+            const response = await api.get('/clean/user/reservation', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -38,10 +39,10 @@ const MainComponent = () => {
     };
 
     const ALL_Call = async () => {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
+        
 
         try {
-            const response = await axios.get('http://192.168.30.125:8080/api/dashboard', {
+            const response = await api.get('/api/dashboard', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -53,10 +54,10 @@ const MainComponent = () => {
         }
     };
     const DEL_Call = async () => {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
+        
 
         try {   
-            const response = await axios.get('http://192.168.30.145:8080/api/delivery/user/reservation', {
+            const response = await api.get('/delivery/user/reservation', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
