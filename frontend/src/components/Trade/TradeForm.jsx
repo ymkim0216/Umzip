@@ -3,8 +3,6 @@ import {
   useNavigate,
   useNavigation,
   useActionData,
-  json,
-  redirect,
 } from 'react-router-dom';
 
 import React, { useState } from 'react';
@@ -12,8 +10,9 @@ import { motion } from 'framer-motion';
 import PhotoView from '../Service/Delivery/PhotoView';
 import DaumPostcode from 'react-daum-postcode';
 import classes from './TradeForm.module.css';
+import { api } from '../../services/api';
 
-function TradeForm({ method, trade }) {
+function TradeForm({ method }) {
   const data = useActionData();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -22,11 +21,13 @@ function TradeForm({ method, trade }) {
 
   const isSubmitting = navigation.state === 'submitting';
 
-  const [selectedOption, setSelectedOption] = useState('직거래');
+  const [selectedOption, setSelectedOption] = useState('option1');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [address, setAddress] = useState('');
+  const [sigungu, setSigungu] = useState(undefined);
+  const [sigunguName, setSigunguName] = useState('');
 
   const handleRadioChange = (event) => {
     setSelectedOption(event.target.value);
@@ -38,13 +39,53 @@ function TradeForm({ method, trade }) {
 
   function onCompletePost(data) {
     let fullAddress = data.address;
-    let sigungu = data.sigungu;
-    let sigunguCode = data.sigunguCode;
+    setSigunguName(data.sigungu);
+    setSigungu(parseInt(data.sigunguCode, 10));
 
-    // console.log(sigungu + sigunguCode)
     setIsModalOpen(false);
     setAddress(fullAddress);
   }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+  
+    const boardTrade = {
+      title: event.target.title.value,
+      price: event.target.price.value,
+      isDirect: selectedOption === 'option1' ? true : false,
+      sigungu: sigungu,
+      sigunguName: sigunguName,
+      address: address,
+      content: event.target.content.value,
+    };
+
+    const formData = new FormData();
+    formData.append(
+      "boardTrade",
+      new Blob([JSON.stringify(boardTrade)], { type: "application/json" })
+    );
+  
+    selectedFiles.forEach((fileObj) => {
+      // 파일 객체를 개별적으로 추가
+      formData.append('imageFileList', fileObj.file);
+    });
+
+
+    try {
+      // 이미지 파일 전송
+      const response = await api.post('/trade-items', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log(response);
+      navigate('/trade');
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // 에러 처리
+    }
+  };
 
   return (
     <>
@@ -79,7 +120,7 @@ function TradeForm({ method, trade }) {
           </div>
         </motion.div>
       )}
-      <Form method={method} className={classes.form}>
+      <Form method={method} onSubmit={handleSubmit} className={classes.form}>
         {data && data.errors && (
           <ul>
             {Object.values(data.errors).map((err) => (
@@ -116,9 +157,9 @@ function TradeForm({ method, trade }) {
           <div style={{ fontWeight: 'bold' }}>상세 설정</div>
           <div className={classes.option}>
             <input
-              id="cost"
+              id="price"
               type="int"
-              name="cost"
+              name="price"
               placeholder="판매 가격"
               style={{
                 backgroundColor: '#F6F6F6',
@@ -150,20 +191,21 @@ function TradeForm({ method, trade }) {
             <div style={{ fontWeight: 'bold' }}>거래 장소 지정</div>
             <div className={classes.place}>
               <input
-                id="region"
+                id="place"
                 type="text"
-                name="region"
+                name="place"
                 placeholder={address ? address : '직거래 주소'}
                 style={{
                   backgroundColor: '#F6F6F6',
                   border: 'none',
                   outline: 'none',
                   borderRadius: '4px',
-                  width: '80%'
+                  width: '80%',
                 }}
-                required
+                // required
               />
               <button
+                type="button"
                 onClick={() => setIsModalOpen(true)}
                 className="btn btn-primary"
               >
@@ -203,12 +245,12 @@ function TradeForm({ method, trade }) {
           </div>
         </div>
         <p style={{ marginTop: '0.5rem' }}>
-          <label htmlFor="description" style={{ fontWeight: 'bold' }}>
+          <label htmlFor="content" style={{ fontWeight: 'bold' }}>
             상세 내용 작성
           </label>
           <textarea
-            id="description"
-            name="description"
+            id="content"
+            name="content"
             rows="5"
             required
             style={{
@@ -220,7 +262,12 @@ function TradeForm({ method, trade }) {
           />
         </p>
         <div className={classes.actions}>
-          <button className={classes.cancle} type="button" onClick={cancelHandler} disabled={isSubmitting}>
+          <button
+            className={classes.cancle}
+            type="button"
+            onClick={cancelHandler}
+            disabled={isSubmitting}
+          >
             취소
           </button>
           <button className={classes.save} disabled={isSubmitting}>
@@ -233,30 +280,3 @@ function TradeForm({ method, trade }) {
 }
 
 export default TradeForm;
-
-export async function action({ request, params }) {
-  const formData = await request.formData();
-  const method = request.method;
-
-  let url = 'http://localhost:8080/trade';
-
-  if (method === 'PATCH') {
-    const tradeId = params.tradeId;
-    url += `/${tradeId}`;
-  }
-
-  const response = await fetch(url, {
-    method: method,
-    body: formData,
-  });
-
-  if (response.status === 422) {
-    return response;
-  }
-
-  if (!response.ok) {
-    throw json({ message: 'Could not save trade.' }, { status: 500 });
-  }
-
-  return redirect('/trade');
-}

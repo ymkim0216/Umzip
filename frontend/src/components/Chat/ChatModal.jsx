@@ -47,10 +47,9 @@ const ChatModal = () => {
             }}
             exit={{ opacity: 1, y: 30 }}
             transition={{ type: 'tween' }}
-            onClick={() => setOpenModal(true)}
+            onClick={()=>setOpenModal(true)}
           >
             <ChatModalList
-              unReadCount={data.unReadCount}
               img={data.receiverProfileImage}
               name={data.receiverName}
               chat={data.lastContent}
@@ -58,7 +57,7 @@ const ChatModal = () => {
               chatroomId={data.chatRoomId}
               receiverId={data.receiverId}
             />
-
+            
           </motion.div>
         ))}
 

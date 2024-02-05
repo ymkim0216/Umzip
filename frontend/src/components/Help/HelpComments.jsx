@@ -1,47 +1,71 @@
-import { useParams } from "react-router-dom";
-import { useEffect } from 'react';
-import { selectFilteredHelps  } from '../../store/helpRedux'  // 리덕스에서 불러온 데이터
-import { useSelector, useDispatch } from "react-redux"
-import useStore from '../../store/helpData';
-
-
-
-// "comment: [  {
-//   "writerID": long,
-//   "writerName": String,
-//   "writerRole": String,
-//   "comment": String,
-//   "creationDate": String,
-// }  ]
+import { useEffect,useState } from 'react';
+import useStore from '../../store/helpDetailData';
+import ListGroup from 'react-bootstrap/ListGroup';
+import style from './HelpList.module.css';
 
 function HelpComments() {
-  // axios test
-  const data = useStore(state => state.data);
-  const loading = useStore(state => state.loading);
-  const error = useStore(state => state.error);
-  const fetchData = useStore(state => state.fetchData);
+  const { fetchData, data, loading, error, sendPostRequest } = useStore();
+  const [commentText, setCommentText] = useState(''); // 댓글 텍스트 상태
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+    const handleCommentChange = (e) => {
+    setCommentText(e.target.value); // 입력 값으로 댓글 텍스트 상태 업데이트
+  };
 
-  console.log(data)
-  // axios
+  const handleCommentSubmit = () => {
+    sendPostRequest(commentText); // sendPostRequest 함수 호출
+    setCommentText(''); // 폼을 제출한 후 입력 필드 초기화
+  };
 
 
-  let helpsDetail = useSelector(selectFilteredHelps)  // 데이터 변수에넣고
-  let { id } = useParams();
-  id = parseInt(id); // id고유번호 받아와서
+    // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+  
+    // 에러가 있으면 에러 메시지를 표시합니다.
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    }
+    
+    const content = data?.result?.commentList;
+    // 데이터가 로드되면, 해당 데이터를 사용하여 무언가를 렌더링합니다.
+    if (!content) {
+      // 데이터가 비어있으면 메시지를 표시합니다.
+      return <div>No data found.</div>;
+    }
 
-  let helpDetail = helpsDetail.find(function (x) {  // 받은 id를 찾기
-    return x.id === id;
-  });
   return (
     <>
-      <h4>map함수 돌리기 댓글</h4>
+    {/* 댓글 입력 폼 */}
+    <div className={style.commentForm}>
+        <input
+          type="text"
+          value={commentText}
+          onChange={handleCommentChange}
+          className={style.commentInput}
+          placeholder="댓글을 입력하세요"
+        />
+        <button onClick={handleCommentSubmit} className={style.commentSubmit}>
+          댓글 달기
+        </button>
+      </div>
+
+      {/* 댓글 리스트 */}
+      <ListGroup>
+        {content.map((item) => (
+          <ListGroup.Item className={style.listGrop} key={item.id}>
+              <div className={style.content}>
+                <span className={style.headPoint}>{item.writerName}P</span>
+                <span className={style.headDate}>{item.createDt}</span>
+                <span className={style.headUserName}>{item.comment}</span>
+              </div>
+          </ListGroup.Item>
+        ))}
+        </ListGroup>
     </>
   );
 }

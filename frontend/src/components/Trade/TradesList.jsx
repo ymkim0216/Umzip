@@ -6,7 +6,7 @@ function TradesList({ trades }) {
     <div className={classes.trades}>
       <ul className={classes.list}>
         {trades.map((trade) => (
-          <li key={trade.id} className={classes.item}>
+          <li key={trade.boardId} className={classes.item}>
             <TradeItem trade={trade} />
           </li>
         ))}

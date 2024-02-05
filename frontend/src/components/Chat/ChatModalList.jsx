@@ -6,7 +6,7 @@ import { Client } from "@stomp/stompjs";
 
 
 
-export default function ChatModalList({ unReadCount, name, chat, date, img, chatroomId, receiverId }) {
+export default function ChatModalList({ name, chat, date, img, chatroomId, receiverId }) {
   const [openModal, setOpenModal] = useState(false);
   const [talkHistory, setTalkHistory] = useState([]);
   const chatContainerRef = useRef();
@@ -30,20 +30,20 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
     setuserinput(event.target.value);
   };
 
-  const toggleModal = async () => {
+  const toggleModal = async() => {
     setOpenModal(true);
-    setUnReadMessage(0)
+
     // 모달이 열릴 때만 대화 내용을 불러옴
     if (!talkHistory.length) {
+      
       const stompClient = socket();
       console.log(stompClient)
       const talk = await axios_detailChat();
-      // console.log(talk)
       setTalkHistory(talk)
        stompClientRef.current = stompClient;
     // stompClient.onConnect(stompClient.activate());
       // console.log(stompClient)
-
+      
       stompClient.onConnect(
         stompClient.activate()
       )
@@ -74,8 +74,7 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
         });
 
         client.subscribe(`/topic/chatroom/${chatroomId}`, (message) => {
-          // console.log('Received message: ' + message.body);
-          // console.log(talkHistory)
+          console.log('Received message: ' + message.body);
           showReceivedMessage(message.body);
         });
       },
@@ -85,7 +84,7 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
         console.error('Additional details: ' + frame.body);
       }
     });
-
+  
     return client;
   };
 
@@ -134,7 +133,7 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
     // userinput을 사용하도록 수정
     const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
     if (userinput && stompClientRef.current.active) {
-      // console.log('메시지 보낸다');
+      console.log('메시지 보낸다');
       stompClientRef.current.publish({
         destination: `/app/chat/${chatroomId}`,
         body: JSON.stringify({
@@ -145,6 +144,7 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
           'Authorization': `Bearer ${token}`
         }
       });
+      setuserinput(""); // 입력 필드를 비웁니다.
     } else {
       console.error('Message is empty or stomp client is not connected.');
     }
@@ -180,7 +180,7 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
               >
                 {userId && talkHistory &&talkHistory.map((items, index) => (
                   <div
-                    key={index}
+                    key={items.id}
                     style={{
                       alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
                       maxWidth: "70%",
@@ -223,17 +223,9 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
               <p className='m-0'>{chat}</p>
             </div>
           </div>
-          <div className='d-flex flex-column '>
+          <div className='position-relative p-2'>
             <small className="form-text text-muted">{date}</small>
-            <div className='col-12 d-flex justify-content-end'>
-              {unReadMessage !== 0 ? <span className="col-4   badge rounded-pill bg-danger">
-                {unReadMessage}
-              </span> : null}
-            </div>
-
           </div>
-
-
         </div>
       </motion.button>
     </>

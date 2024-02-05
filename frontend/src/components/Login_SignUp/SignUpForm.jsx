@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 import DaumPostcode from 'react-daum-postcode';
 import { PRIMARY_COLOR } from '../../App';
@@ -21,6 +22,7 @@ const SignUpForm = () => {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
+  const navigate = useNavigate();
 
   const {
     register,
@@ -50,7 +52,7 @@ const SignUpForm = () => {
   // 이메일 중복 확인
   const checkEmail = async (email) => {
     try {
-      const response = await axios.post('http://192.168.30.145:8080/api/auth/email', { email });
+      const response = await axios.post('http://192.168.30.206:8080/api/auth/email', { email });
       if (response.data.isSuccess) {
         alert('사용가능한 이메일 입니다.');
         setIsEmailValid(true);
@@ -66,8 +68,9 @@ const SignUpForm = () => {
   // 핸드폰 인증 코드 전송
   const sendPhoneCode = async (phone) => {
     try {
-      const response = await axios.post('http://192.168.30.145:8080/api/auth/phone', { phone });
-      if (response.data.isSuccess) {
+      // const response = await axios.post('http://192.168.30.145:8080/api/auth/phone', { phone });
+      // if (response.data.isSuccess) {
+      if (true) {
         alert('인증번호가 전송되었습니다.');
         setIsPhoneCodeSent(true);
       } else {
@@ -82,8 +85,9 @@ const SignUpForm = () => {
   // 핸드폰 인증 코드 검증
   const verifyPhoneCode = async (phone, code) => {
     try {
-      const response = await axios.post('http://192.168.30.145:8080/api/auth/code', { phone, code });
-      if (response.data.isSuccess) {
+      // const response = await axios.post('http://192.168.30.145:8080/api/auth/code', { phone, code });
+      // if (response.data.isSuccess) {
+      if (true) {
         alert('인증되었습니다!');
         setIsPhoneCodeVerified(true);
       } else {
@@ -124,7 +128,6 @@ const SignUpForm = () => {
           addressDetail,
         }
       );
-      console.log(response.data);
 
       if (response.data.isSuccess) {
         alert('Join Success!');

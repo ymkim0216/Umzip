@@ -1,5 +1,10 @@
 import './App.css';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from 'react-router-dom';
+import useAuthStore from './store/store';
 import HomePage from './pages/MainPage/Hompage';
 import DashBoard from './pages/MainPage/DashBoard';
 import Help from './pages/Help/Help';
@@ -22,9 +27,19 @@ import RequestCleaningForm from './pages/Service/Cleaning/RequestCleaningForm';
 import SubmitCleaningEstimate from './pages/Service/Cleaning/SubmitCleaningEstimate';
 import PoinHistory from './pages/MainPage/PointHistory';
 
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuthStore(); // Access the user state
+
+  if (!user) {
+    // If not authenticated, redirect to the login page
+    return <Navigate to="/login" replace />;
+  }
+
+  return children; // If authenticated, render the children components
+};
+
 const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
-
   // 회원가입
   { path: 'signup', element: <SignUp /> },
   //로그인
@@ -34,7 +49,14 @@ const router = createBrowserRouter([
   //포인트적립내역
   { path: 'mypoint/:id', element: <PoinHistory /> },
   // 대시보드
-  { path: 'dashboard', element: <DashBoard /> },
+  {
+    path: 'dashboard',
+    element: (
+      <ProtectedRoute>
+        <DashBoard />
+      </ProtectedRoute>
+    ),
+  },
 
   //청소요청
   { path: 'requestcleaning', element: <RequestCleaning /> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
@@ -65,7 +87,7 @@ const router = createBrowserRouter([
 
   //도움
   { path: 'help', element: <Help /> }, // 글목록
-  { path: 'helpdetail/:id', element: <HelpDetail /> }, //글상세보기
+  { path: 'helpdetail/:boardId', element: <HelpDetail /> }, //글상세보기
   { path: 'helpwriting', element: <HelpWriting /> }, //글쓰기
 ]);
 export const PRIMARY_COLOR = '#4A3AFF';

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import React from "react";
 import RecommendModalComponent from "./RecommendModalComponent";
 
-const RecommendModal = ({img, isOpen, closeModal ,companyId }) => {
+const RecommendModal = ({ isOpen, closeModal }) => {
   const modalStyle = {
     height: "85%",
     width: "78%",
@@ -32,7 +32,7 @@ const RecommendModal = ({img, isOpen, closeModal ,companyId }) => {
             className="bg-white p-3 rounded-4 position-relative"
           >
             {/* 모달 내용 */}
-            <RecommendModalComponent  img={img}  companyId={companyId} />
+            <RecommendModalComponent />
             {/* 모달 닫기 버튼 */}
             <button
               onClick={closeModal}

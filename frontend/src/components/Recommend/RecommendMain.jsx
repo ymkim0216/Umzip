@@ -159,13 +159,13 @@ export default function RecommendMain() {
                     style={{ width: "100%" }}
                     className="d-flex flex-column gap-3"
                 >
-                    {data && data.map((item, index) => (
+                    {DUMMY_DATA.slice(0, visibleItems).map((item, index) => (
                         <motion.div key={index} variants={{ visible: { opacity: 1, y: 0 } }} initial={{ opacity: 0, y: 20 }}>
                             <RecommendPeople userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.ceo} rating={3.8} img={item.imageUrl} />
                         </motion.div>
                     ))}
                 </motion.div>
-                {visibleItems < data.length && (
+                {visibleItems < DUMMY_DATA.length && (
                     <motion.button
                         type="button"
                         className="btn btn-light d-flex justify-content-center align-items-center gap-2 shadow"

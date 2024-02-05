@@ -4,12 +4,12 @@ import classes from './TradeItem.module.css';
 
 function TradeItem({ trade }) {
   return (
-    <Link to={`/trade/${trade.id}`}>
+    <Link to={`/trade/${trade.boardId}`}>
       <div className={classes.item}>
-        <img src={trade.image} alt={trade.title} />
+        <img src={trade.thumbnailPath} alt={trade.title} />
         <div className={classes.content}>
           <h2>{trade.title}</h2>
-          <address>{trade.region}</address>
+          <address>{trade.sigunguName}</address>
           <p className={classes.price}>{trade.price}원</p>
         </div>
       </div>

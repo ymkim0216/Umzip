@@ -51,7 +51,7 @@ export default function DeliveryForm() {
   const [carData, setCarData] = useState("")
   const [scope, animate] = useAnimate()
   const [newscope, newanimate] = useAnimate()
-  const [sigungu, setSigungu] = useState("")
+  const [sigungu , setSigungu] = useState("")
   const hadleElavator = (event) => {
     setisElavator(event.target.innerText)
   }
@@ -255,8 +255,8 @@ export default function DeliveryForm() {
       );
 
       setcalresult(response.data.result.price)
-
-      const endtimee = new Date(response.data.result.endTime)
+      
+      const endtimee  = new Date(response.data.result.endTime) 
       console.log(endtimee.toISOString().slice(0, 16).replace('T', ' '))
       setEndTime(endtimee.toISOString().slice(0, 16).replace('T', ' '))
       setIsLoading(false)
@@ -288,7 +288,7 @@ export default function DeliveryForm() {
           }
         }
       );
-      // console.log(response)
+      console.log(response)
       return response
     }
     catch (e) {
@@ -736,21 +736,21 @@ export default function DeliveryForm() {
 
               <div className="d-flex text-center">
                 <p className="m-0 col-4">가구사진</p>
-                {console.log(selectedFiles)}
+                { console.log(selectedFiles)}
                 {
-                  selectedFiles && selectedFiles.length !== 0 && (
-                    <div className="col-8 d-flex gap-3 justify-content-center shadow" style={{ overflowX: "auto" }}>
-                      {selectedFiles.map((file, index) => (
-                        <div key={index} className="d-flex flex-column justify-content-center align-items-center">
-                          <img
-                            src={file.previewURL}
-                            alt={`선택된 파일 ${index + 1} 미리보기`}
-                            style={{ width: "7rem", height: "7rem" }}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                selectedFiles && selectedFiles.length !== 0 && (
+                  <div className="col-8 d-flex gap-3 justify-content-center shadow" style={{ overflowX: "auto" }}>
+                    {selectedFiles.map((file, index) => (
+                      <div key={index} className="d-flex flex-column justify-content-center align-items-center">
+                        <img
+                          src={file.previewURL}
+                          alt={`선택된 파일 ${index + 1} 미리보기`}
+                          style={{ width: "7rem", height: "7rem" }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
 
 
               </div>

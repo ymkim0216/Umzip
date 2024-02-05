@@ -1,17 +1,21 @@
 import { useState } from 'react'
-import style from './HelpList.module.css';
+import style from './HelpWrite.module.css';
+import useStore from '../../store/helpDetailData';
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
-// import 'swiper/css';
-// import 'swiper/css/navigation';
-// import 'swiper/css/pagination';
 
 
 function HelpWrite() {
+  const { sendPostBulletin } = useStore();
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   // 여러장의 사진을 보여주기 위한 state
   const [showImages, setShowImages] = useState([]);
+  //  401: 도와줘요, 402: 도와줬어요, 403: 도와줄게요
+  const [ codeSmall, setCodeSmall ] = useState(401);
+  const [ point, setPoint ] = useState(100);
 
   // 이미지 미리보기를 위한 상대경로
   const handleAddImages = (event) => {
@@ -32,10 +36,28 @@ function HelpWrite() {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 타이틀,콘텐트,이미지로 데이터 처리
-    console.log({ title, content, showImages });
-    // API 호출을 통해 서버에 데이터를 전송할 수 있습니다.
+
+      // 서버로 보낼 묶음
+  const boardHelp = {
+    codeSmallId: codeSmall,
+    title: title,
+    content: content, 
+    point: point,
   };
+  
+    const Bulletin = new FormData();
+    // 게시글 정보를 JSON 문자열로 변환하여 Bulletin 추가
+    Bulletin.append('boardHelp', new Blob([JSON.stringify(boardHelp)], { type: "application/json" }));
+
+      // 이미지 파일을 Bulletin 추가
+  for (let i = 0; i < showImages.length; i++) {
+    console.log(showImages[i])
+    Bulletin.append('imageFileList', showImages[i]);
+  }
+
+  // useStore의 sendPostBulletin 함수를 호출하여 FormData 전송
+  sendPostBulletin(Bulletin);
+};
 
     // X버튼 클릭 시 이미지 삭제하는 함수
     const handleDeleteImage = (id) => {
@@ -67,6 +89,7 @@ function HelpWrite() {
           <label htmlFor="imageUploa">이미지 업로드:</label>
           <input onChange={handleAddImages} id="image" type="file" multiple />
         </div>
+        <button type="submit" className={style.submitButton}>글 등록</button>
       </form>
       <Swiper
           modules={[Navigation, Pagination]}
