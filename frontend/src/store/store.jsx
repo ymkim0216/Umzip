@@ -14,7 +14,6 @@ const useAuthStore = create((set) => {
       set({ isLoading: true, error: null });
       try {
         const response = await api.post('/login', { email, pwd });
-        console.log(response.data);
         const { accessToken, refreshToken } = response.data.result;
         localStorage.setItem('token', accessToken);
         localStorage.setItem('refreshToken', refreshToken);

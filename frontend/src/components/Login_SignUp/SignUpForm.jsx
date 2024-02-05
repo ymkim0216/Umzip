@@ -117,7 +117,7 @@ const SignUpForm = () => {
     const { name, email, phone, password } = data;
     try {
       const response = await axios.post(
-        'http://192.168.30.206:8080/api/users',
+        'http://192.168.30.145:8080/api/users',
         {
           name,
           email,
@@ -128,7 +128,6 @@ const SignUpForm = () => {
           addressDetail,
         }
       );
-      console.log(response.data);
 
       if (response.data.isSuccess) {
         alert('Join Success!');

@@ -3,7 +3,7 @@ import DaumPostcode from 'react-daum-postcode';
 
 const apiKey = '1e72bab546a7e14fc79fcd64e5163474';
 
-export default function Address({ whatModal, setwhereStart, setwhereEnd, setIsModalOpen }) {
+export default function Address({ whatModal, setwhereStart, setwhereEnd, setIsModalOpen ,setSigungu}) {
     const onCompletePost = async (data) => {
         const address = data.address;
 
@@ -18,8 +18,11 @@ export default function Address({ whatModal, setwhereStart, setwhereEnd, setIsMo
             const latitude = location.y;
             const longitude = location.x;
             // console.log(`위도: ${latitude}, 경도: ${longitude}`);
-
-            if (whatModal === "start") { setwhereStart({ address: address, lat: latitude, lon: longitude }) }
+            if (whatModal === "start") {
+                console.log(data.sigunguCode)
+                setSigungu(data.sigunguCode)
+                setwhereStart({ address: address, lat: latitude, lon: longitude })
+            }
             else { setwhereEnd({ address: address, lat: latitude, lon: longitude }) }
 
         } catch (error) {
