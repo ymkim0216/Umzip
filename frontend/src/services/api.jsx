@@ -2,8 +2,11 @@ import axios from 'axios';
 import useAuthStore from '../store/store';
 
 const api = axios.create({
-  baseURL: 'http://192.168.30.145:8080/api'
-  // baseURL: 'http://192.168.30.206:8080/api' //동현
+  // 172.30.1.68:8080/api 윤민이 API
+  // baseURL: 'http://192.168.30.206:8080/api' 동현
+  // 192.168.30.145/api 민수
+  // https://i10e108.p.ssafy.io 빌드 주소
+  baseURL: 'https://i10e108.p.ssafy.io'
 });
 
 api.interceptors.request.use((config) => {
@@ -18,9 +21,7 @@ export const fetchProtectedData = async () => {
   try {
     const response = await api.get('/protected');
     return response.data;
-  } catch (error) {
-    throw error;
-  }
+  } catch (error) { console.log(error);}
 };
 
 export const refreshToken = async () => {
@@ -32,9 +33,7 @@ export const refreshToken = async () => {
     localStorage.setItem('token', `Bearer ${accessToken}`);
     localStorage.setItem('refreshToken', refreshToken);
     return { accessToken, refreshToken };
-  } catch (error) {
-    throw error;
-  }
+  } catch (error) { console.log(error);}
 };
 
 export { api };

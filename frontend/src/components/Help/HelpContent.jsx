@@ -13,7 +13,7 @@ function HelpDetail() {
   useEffect(() => {
     setBoardId(boardId);
     fetchData();
-  }, [ boardId, setBoardId, fetchData]);
+  }, [ boardId, setBoardId, fetchData ]);
 
     // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
     if (loading) {
@@ -37,8 +37,8 @@ function HelpDetail() {
     <>
     <div className={style.helps}>
       {content.codeSmallId === 401 && <span>도와주세요</span> }
-      {content.codeSmallId === 403 && <span>도와줄게요</span> }
-      {content.codeSmallId === 402 && <span>도와줬어요</span> }
+      {content.codeSmallId === 402 && <span>도와줄게요</span> }
+      {content.codeSmallId === 403 && <span>도와줬어요</span> }
       <span>{content.boardTitle}</span>
       <span>{content.rewardPoint}</span>
       <div></div>
@@ -48,7 +48,12 @@ function HelpDetail() {
       <div></div>
       <span>조회수 : {content.view}</span>
       <span>댓글 수 : {content.boardCommentCnt}</span>
-
+      { content.sameMember === true && (
+        <div>
+      <button>글 수정</button>
+      <button>글 삭제</button>
+      </div>
+      )}
     </div>
     {content.imagePathList && content.imagePathList.length > 0 && ( //사진이 없을 경우엔 나타내지 않음
     <Swiper 
