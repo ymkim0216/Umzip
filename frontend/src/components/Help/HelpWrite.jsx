@@ -64,18 +64,9 @@ function HelpWrite() {
     Bulletin.append('boardHelp', new Blob([JSON.stringify(boardHelp)], { type: "application/json" }));
 
       // 이미지 파일 추가
-  // showImages.forEach((file) => {
-  //   Bulletin.append('imageFileList', file);
-  // });
-  for (let i = 0; i < showImages.length; i++) {
-    if (showImages[i]) { // 이미지 파일이 실제로 존재하는지 확인
-      console.log(showImages[i]);
-      Bulletin.append('imageFileList', showImages[i]);
-    } else { // 이미지 파일x
-      console.log(showImages)
-      Bulletin.append('imageFileList', showImages);
-    }
-  }
+  showImages.forEach((file) => {
+    Bulletin.append('imageFileList', file);
+  });
   console.log(showImages)
 
   // useStore의 sendPostBulletin 함수를 호출하여 FormData 전송
@@ -83,8 +74,8 @@ function HelpWrite() {
     await sendPostBulletin(Bulletin); // 비동기 호출
     navigate('/help'); // 성공 시 페이지 이동
   } catch (error) {
-    console.error('게시글 등록 실패:', error);
-    alert('게시글 등록에 실패했습니다.');
+    console.error("게시글 등록 실패:", error);
+    alert("게시글 등록에 실패했습니다.");
   }
 };
 
@@ -109,7 +100,7 @@ function HelpWrite() {
             name="codeSmall"
             value={401}
             checked={codeSmall === 401}
-            onChange={(e) => setCodeSmall(401)}
+            onChange={() => setCodeSmall(401)}
           />
           <label htmlFor="needHelp">도와줘요</label>
 
@@ -119,7 +110,7 @@ function HelpWrite() {
             name="codeSmall"
             value={402}
             checked={codeSmall === 402}
-            onChange={(e) => setCodeSmall(402)}
+            onChange={() => setCodeSmall(402)}
           />
           <label htmlFor="willHelp">도와줄게요</label>
         </div>

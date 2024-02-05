@@ -35,16 +35,18 @@ const useStore = create((set, get) => ({
 
     // 댓글을 게시하는 함수
     sendPostRequest: async (commentText) => {
+      console.log(commentText)
+      console.log(typeof(commentText))
       const { boardId } = get();
-      const commentData = commentText
 
       set({ loading: true });
       try {
-        const response = await api.post(`/helps/detail/comments/${boardId}`, commentData, {
+        const response = await api.post(`/helps/detail/comments/${boardId}`, commentText, { 
           headers: {
             'Content-Type': 'application/json',
             // Authorization: `Bearer ${token}`
-          }
+          },
+          // body: JSON.stringify(commentText)
         });
         console.log('댓글 추가됨:', response.data);
         set({ loading: false });
@@ -54,6 +56,22 @@ const useStore = create((set, get) => ({
         console.error('댓글 추가 실패:', error.response?.data || error);
   alert(error.response?.data?.message || '댓글 추가 중 오류가 발생했습니다.');
         set({ error, loading: false });
+      }
+    },
+
+    // 댓글 채택
+    commentChoic: async (commentId) => {
+      set({ loading: true });
+      try {
+        const response = await api.post(`/helps/detail/comments/adopt/${commentId}`, {
+          headers:{}
+        })
+        console.log('채택 되었습니다.', response.data)
+        set({ loading: false });
+      } catch (error) {
+        console.error('채택중 오류: ')
+        alert('채택중 오류가 발생했습니다.')
+        set({ error, loading: false })
       }
     },
 
