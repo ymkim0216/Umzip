@@ -10,12 +10,6 @@ import { Navigation, Pagination } from 'swiper/modules';
 
 import classes from './TradeItemDetail.module.css';
 
-const data = {
-  name: '아무개',
-  chat: '그래서 어쩌라고',
-  degree: '40.5도',
-};
-
 function ReportModal({ onClose }) {
   return (
     <div className={classes.modal}>
@@ -32,7 +26,18 @@ function ReportModal({ onClose }) {
 }
 
 function TradeItemDetail({ trade }) {
+  console.log(trade);
   const submit = useSubmit();
+
+  const createTime = new Date(trade.createDt);
+  const now = new Date();
+  const diffTime = Math.abs(now - createTime);
+  const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+
+  // Formatting the date part as YY-MM-DD
+  const yy = createTime.getFullYear().toString();
+  const mm = ('0' + (createTime.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed
+  const dd = ('0' + createTime.getDate()).slice(-2);
 
   const [isChatOpen, setIsChatOpen] = useState(false);
 
@@ -58,7 +63,7 @@ function TradeItemDetail({ trade }) {
   let navigate = useNavigate();
 
   const goBack = () => {
-    navigate(-1); // or history.goBack() for React Router v5
+    navigate(-1);
   };
 
   return (
@@ -74,7 +79,7 @@ function TradeItemDetail({ trade }) {
         pagination={{ clickable: false }} // clickable을 true로 설정하여 페이지네이션 사용
         style={{ width: '100%', height: '500px' }}
       >
-        {trade.image.map((img, index) => (
+        {trade.filePathList.map((img, index) => (
           <SwiperSlide key={index}>
             <img
               src={img}
@@ -93,26 +98,34 @@ function TradeItemDetail({ trade }) {
               alt="랜덤 이미지"
             ></img>
             <div className="text-start">
-              <p className="m-0">{data.name}</p>
-              <p>{trade.place}</p>
+              <p className="m-0">{trade.writerName}</p>
+              <p>{trade.writerAddress}</p>
             </div>
           </div>
           <div className="position-relative p-2">
-            <small className="form-text text-muted">{data.degree}</small>
+            <small className="form-text text-muted">{trade.writerRating}</small>
           </div>
         </div>
       </div>
       <div className={classes.article}>
-        <h2 className={classes.title}>{trade.title}</h2>
+        <h2 className={classes.title}>제목: {trade.title}</h2>
         <div className={classes.price}>
           <p>{trade.price}원</p>
-          <p className={classes.date}>{trade.date}</p>
+          <p className={classes.date}>
+            {diffHours < 24 ? `${diffHours} 시간 전` : `${yy}-${mm}-${dd}`}
+          </p>
         </div>
-        <p>{trade.isDirectTranscation ? '직거래' : '택배배송'}</p>
+        <p>{trade.direct ? '직거래' : '택배배송'}</p>
         <p className={classes.content}>{trade.content}</p>
         <div className={classes.report}>
-          <button onClick={showModal}>신고하기</button>
-          {modalShow && <ReportModal onClose={hideModal} />}
+          {trade.writer ? (
+            ''
+          ) : (
+            <div>
+              <button onClick={showModal}>신고하기</button>
+              {modalShow && <ReportModal onClose={hideModal} />}
+            </div>
+          )}
         </div>
         <div className={classes.actions}>
           <menu className={classes.edit}>
@@ -122,10 +135,18 @@ function TradeItemDetail({ trade }) {
             <button onClick={startDeleteHandler}>삭제</button>
           </menu>
         </div>
-        <menu className={classes.chat}>
-          <button onClick={toggleChat}>채팅</button>
-          {isChatOpen && <Chat />}
-        </menu>
+        <div>
+          {trade.writer ? (
+            <menu className={classes.sold}>
+              <button>판매완료</button>
+            </menu>
+          ) : (
+            <menu className={classes.chat}>
+              <button onClick={toggleChat}>채팅</button>
+              {isChatOpen && <Chat />}
+            </menu>
+          )}
+        </div>
       </div>
     </article>
   );

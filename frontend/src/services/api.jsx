@@ -2,9 +2,8 @@ import axios from 'axios';
 import useAuthStore from '../store/store';
 
 const api = axios.create({
-  // baseURL: 'http://192.168.30.145:8080/api' //민수
+  baseURL: 'http://192.168.30.145:8080/api'
   // baseURL: 'http://192.168.30.206:8080/api' //동현
-  baseURL: 'http://172.30.1.54:8080/api'
 });
 
 api.interceptors.request.use((config) => {
