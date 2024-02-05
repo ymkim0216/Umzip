@@ -16,7 +16,7 @@ const useAuthStore = create((set) => {
         const response = await api.post('/login', { email, pwd });
         console.log(response.data);
         const { accessToken, refreshToken } = response.data.result;
-        localStorage.setItem('token', `Bearer ${accessToken}`);
+        localStorage.setItem('token', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         localStorage.setItem('userInfo', JSON.stringify({ email }));
         set({ user: { email }, token: accessToken, isLoading: false });

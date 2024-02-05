@@ -1,34 +1,43 @@
 import { useState } from 'react'
 import style from './HelpWrite.module.css';
 import useStore from '../../store/helpDetailData';
-
+import { useNavigate  } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 
 
 function HelpWrite() {
   const { sendPostBulletin } = useStore();
-
+  const navigate = useNavigate();
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
   // 여러장의 사진을 보여주기 위한 state
   const [showImages, setShowImages] = useState([]);
+  const [ showNow, setShowNow] = useState([]);
   //  401: 도와줘요, 402: 도와줄게요, 403: 도와줬어요
   const [ codeSmall, setCodeSmall ] = useState(401);
   const [ point, setPoint ] = useState(100);
 
   // 이미지 미리보기를 위한 상대경로
-  const handleAddImages = (event) => {
-    const imageLists = event.target.files;
+  const handleAddImages = (e) => {
+    const imageLists = e.target.files;
     if (imageLists.length + showImages.length > 10) {
       alert('이미지는 최대 10개까지 업로드 가능합니다.');
       return;
     }
-  
+
+    const imageUrlLists = [...showNow];
+    for (let i = 0; i < imageLists.length; i++) {
+      const imageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(imageUrl);
+    }
+    
+    // 보여줄 이미지들 => URL
+    setShowNow(imageUrlLists);
     setShowImages([...showImages, ...imageLists]);
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // 입력값이 있는지 확인
@@ -54,13 +63,10 @@ function HelpWrite() {
     // 게시글 정보를 JSON 문자열로 변환하여 Bulletin 추가
     Bulletin.append('boardHelp', new Blob([JSON.stringify(boardHelp)], { type: "application/json" }));
 
-      // 이미지 파일을 Bulletin 추가
-
-      // showImages.forEach((file) => {
-      //   // 파일 객체를 개별적으로 추가
-      //   Bulletin.append('imageFileList', file);
-      // });
-
+      // 이미지 파일 추가
+  // showImages.forEach((file) => {
+  //   Bulletin.append('imageFileList', file);
+  // });
   for (let i = 0; i < showImages.length; i++) {
     if (showImages[i]) { // 이미지 파일이 실제로 존재하는지 확인
       console.log(showImages[i]);
@@ -73,12 +79,22 @@ function HelpWrite() {
   console.log(showImages)
 
   // useStore의 sendPostBulletin 함수를 호출하여 FormData 전송
-  sendPostBulletin(Bulletin);
+  try {
+    await sendPostBulletin(Bulletin); // 비동기 호출
+    navigate('/help'); // 성공 시 페이지 이동
+  } catch (error) {
+    console.error('게시글 등록 실패:', error);
+    alert('게시글 등록에 실패했습니다.');
+  }
 };
 
     // X버튼 클릭 시 이미지 삭제하는 함수
     const handleDeleteImage = (id) => {
       setShowImages(showImages.filter((_, index) => index !== id));
+      setShowNow(showNow.filter((_, index) => index !== id));
+      console.log(showImages)
+      console.log(showNow)
+
     };
 
 
@@ -164,7 +180,7 @@ function HelpWrite() {
         pagination={{ clickable: false }}
         style={{ width: '100px%', height: '100px' }}
       >
-        {showImages.map((image, id) => (
+        {showNow.map((image, id) => (
           <SwiperSlide key={id}>
             <img
               src={image}
