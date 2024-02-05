@@ -10,16 +10,22 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
   const [openModal, setOpenModal] = useState(false);
   const [talkHistory, setTalkHistory] = useState([]);
   const chatContainerRef = useRef();
-  const [userinput, setuserinput] = useState(null);
+  const [userinput, setuserinput] = useState("");
   const stompClientRef = useRef(null);
-  const [unReadMessage , setUnReadMessage] =useState(unReadCount)
-  useEffect(() => {
+  const [userId, setUserId] = useState(null)
+  const [unReadMessage, setUnReadMessage] = useState(unReadCount)
+  
+  const scrollToBottom = () => {
     // 스크롤 위치를 항상 맨 아래로 조절
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
+  };
+  useEffect(() => {
+    scrollToBottom();
   }, [talkHistory, openModal]);
 
+  
   const handleinput = (event) => {
     setuserinput(event.target.value);
   };
@@ -30,16 +36,17 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
     // 모달이 열릴 때만 대화 내용을 불러옴
     if (!talkHistory.length) {
       const stompClient = socket();
+      console.log(stompClient)
       const talk = await axios_detailChat();
       // console.log(talk)
       setTalkHistory(talk)
-      stompClientRef.current = stompClient;
+       stompClientRef.current = stompClient;
+    // stompClient.onConnect(stompClient.activate());
       // console.log(stompClient)
 
       stompClient.onConnect(
         stompClient.activate()
       )
-
       // stompClient.activate() 호출 후에 구독을 시도
       // stompClient.activate().then(() => {
 
@@ -48,19 +55,31 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
   };
 
   const socket = () => {
-    const accessToken = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg`;
+    const accessToken = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
     const client = new Client({
-      brokerURL: `ws://172.30.1.54:8080/ws?accessToken=${accessToken}`,
+      brokerURL: `ws:/192.168.30.145:8080/ws?accessToken=${accessToken}`,
 
       // 여기에 다른 설정도 추가할 수 있습니다.
       onConnect: (frame) => {
-        console.log('Connected: ' + frame);  
+        console.log('Connected: ' + frame);
+
+        client.subscribe(`/topic/user/${accessToken}`, (message) => {
+          console.log(message.body)
+         
+          setUserId((prev) => {
+            const updatedHistory = message.body
+            // console.log(updatedHistory);
+            return updatedHistory;
+          })
+        });
+
         client.subscribe(`/topic/chatroom/${chatroomId}`, (message) => {
           // console.log('Received message: ' + message.body);
           // console.log(talkHistory)
           showReceivedMessage(message.body);
         });
       },
+
       onStompError: (frame) => {
         console.error('Broker reported error: ' + frame.headers['message']);
         console.error('Additional details: ' + frame.body);
@@ -74,16 +93,16 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
 
 
   const axios_detailChat = async () => {
-    const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg`;
+    const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
 
     try {
-      const response = await axios.get(`http://172.30.1.54:8080/api/chat/rooms/${chatroomId}`, {
+      const response = await axios.get(`http://192.168.30.145:8080/api/chat/rooms/${chatroomId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log(response.data.result)
-      return response.data.result
+      console.log(response.data.result.chatMessages)
+      return response.data.result.chatMessages
         // console.log(response.data.result)
         // console.dir(stompClient.subscribe)
         ;
@@ -95,17 +114,17 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
   const showReceivedMessage = (message) => {
     try {
       // console.log(message)
-      
+
       const jsonData = JSON.parse(message);
-      // console.log(jsonData);
+      console.log(jsonData);
 
       setTalkHistory((prevTalkHistory) => {
         const updatedHistory = [...prevTalkHistory, jsonData];
         // console.log(updatedHistory);
         return updatedHistory;
-        
+
       })
-    
+
     } catch (error) {
       console.error('Error parsing received message:', error);
     }
@@ -113,7 +132,7 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
 
   const sendMessage = () => {
     // userinput을 사용하도록 수정
-    const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg`;
+    const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
     if (userinput && stompClientRef.current.active) {
       // console.log('메시지 보낸다');
       stompClientRef.current.publish({
@@ -159,29 +178,29 @@ export default function ChatModalList({ unReadCount, name, chat, date, img, chat
                 ref={chatContainerRef}
                 style={{ width: "100%", display: "flex", flexDirection: "column", maxHeight: "40rem", overflowY: "auto" }}
               >
-                {talkHistory  && talkHistory.map((items, index) => (
+                {userId && talkHistory &&talkHistory.map((items, index) => (
                   <div
                     key={index}
                     style={{
-                      alignSelf: items.requesterId.toString() !== items.senderId ? "flex-start" : "flex-end",
+                      alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
                       maxWidth: "70%",
                       margin: "5px",
                       padding: "10px",
-                      background: items.requesterId.toString() !== items.senderId ? "#e6e6e6" : "#4caf50",
+                      background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
                       borderRadius: "10px",
-                      color: items.requesterId.toString() !== items.senderId ? "#000" : "#fff",
+                      color: userId !== items.senderId ? "#000" : "#fff",
                     }}
                   >
                     {items.content}
                   </div>
                 ))}
-                
-                  <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
-                    <input  value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                    <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
-                  </form>
-                    
-                <div> 
+
+                <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
+                  <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                  <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
+                </form>
+
+                <div>
 
                 </div>
               </div>

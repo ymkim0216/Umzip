@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import StarRating from "./StarRating";
 import RecommendModal from "./RecommendModal";
 
-export default function RecommendPeople({companyId, name, rating, tag ,img}) {
+export default function RecommendPeople({userChoice,setUserChoice,companyId, name, rating, tag ,img}) {
     const [imageSrc, setImageSrc] = useState("/truck.png");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleModal = () => {
@@ -14,8 +14,21 @@ export default function RecommendPeople({companyId, name, rating, tag ,img}) {
         setImageSrc((prevSrc) =>
             prevSrc === "/truck.png" ? "/checked_truck.png" : "/truck.png"
         );
+    
+        // /userChoice 배열 안에 companyId가 있는지 확인
+        const isCompanySelected = userChoice.some((choice) => choice.companyId === companyId);
+    
+        // 만약 있다면 제거하고, 없다면 추가
+        setUserChoice((prevChoices) => {
+            if (isCompanySelected) {
+                // 이미 선택된 기업이면 제거
+                return prevChoices.filter((choice) => choice.companyId !== companyId);
+            } else {
+                // 선택되지 않은 기업이면 추가
+                return [...prevChoices, { companyId }];
+            }
+        });
     };
-
     return (
         <>
             <RecommendModal img={img} companyId={companyId} isOpen={isModalOpen} closeModal={handleModal} />

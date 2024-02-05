@@ -9,7 +9,7 @@ import axios from "axios"
 
 
 const MainComponent = () => {
-
+    const [requestAllList, setRequestAllList] = useState([])
     const [requestDelList, setRequestDelList] = useState([])
     const [requestCLEList, setRequestCLEList] = useState([])
     const [requestList, setrequestList] = useState("용달")
@@ -21,16 +21,47 @@ const MainComponent = () => {
             },
         },
     };
+    const CLE_Call = async () => {
+        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
 
-    const DEL_Call = async () => {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
-
-        try {   
-            const response = await axios.get('http://172.30.1.54:8080/api/delivery/user/reservation', {
+        try {
+            const response = await axios.get('http://192.168.30.145:8080/api/clean/user/reservation', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
+            setRequestCLEList(response.data.result)
+            console.log(response.data.result)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const ALL_Call = async () => {
+        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
+
+        try {
+            const response = await axios.get('http://192.168.30.125:8080/api/dashboard', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setRequestAllList(response.data.result)
+            console.log(response.data.result)
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const DEL_Call = async () => {
+        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY';
+
+        try {   
+            const response = await axios.get('http://192.168.30.145:8080/api/delivery/user/reservation', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log(response.data.result)
             setRequestDelList(response.data.result)
         } catch (error) {
             console.error(error);
@@ -38,6 +69,8 @@ const MainComponent = () => {
     };
     useEffect(() => {
         DEL_Call();
+        CLE_Call();
+        ALL_Call();
     }, []);
 
     const navigate = useNavigate()
@@ -125,19 +158,23 @@ const MainComponent = () => {
                                 <h5 className='m-0  col-md-2' >내가 보낸견적서</h5>
                             </div>
                             <motion.div style={{ width: '100%', minHeight: "10rem" }}>
-                                {
-                                    (requestList === "용달" ? requestDelList : requestCLEList).map((item) => {
+                            {
+                                    (requestList === "용달" ? requestDelList : requestCLEList).map((item,index) => {
                                         const originalDate = new Date(item.createDt);
-                                        const orderDate = new Date(item.startTime);
+                                        let orderDate=""
+                                        { requestList==="용달" ? orderDate = new Date(item.startTime) :orderDate = new Date(item.reservationTime) }
+                                        let orderAddress = ""
+                                        {requestList==="용달" ? orderAddress = item.departure : orderAddress =item.address}
                                         const formatDate = `${originalDate.getFullYear()}.${(originalDate.getMonth() + 1).toString().padStart(2, '0')}.${originalDate.getDate().toString().padStart(2, '0')}`;
-                                        const formatoder = `${(orderDate.getMonth() + 1).toString().padStart(2, '0')}${orderDate.getDate().toString().padStart(2, '0')}/${item.departure}/${requestList}`;
+                                        const formatoder = `${(orderDate.getMonth() + 1).toString().padStart(2, '0')}${orderDate.getDate().toString().padStart(2, '0')}/${orderAddress}/${requestList}`;
                                         let orderName = "";
                                         if(requestList==="용달"){orderName="DEL"}
                                         else{orderName="CLE"}
-                                        
-                                        const orderN = (item.id * item.id).toString().padStart(3, '0');
+                                        let orderN=""
+                                        {requestList==="용달" ? orderN=(item.id * item.id).toString().padStart(3, '0'): orderN=(item.cleanId * item.cleanId).toString().padStart(3, '0'); }
+                                         
                                         // requests 컴포넌트 반환
-                                        return <Requests list={item.list} key={item.id} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.status} />;
+                                        return <Requests requestList={requestList} list={item.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.status} />;
                                     })
                                 }
 

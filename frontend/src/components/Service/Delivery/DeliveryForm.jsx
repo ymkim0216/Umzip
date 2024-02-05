@@ -141,7 +141,8 @@ export default function DeliveryForm() {
 
   const hadlesubmit = async () => {
     try {
-      const result = await axios_CallDel();
+      const result = await axios_CallDel(); 
+      console.log(result)
 
       let packaging = ""
       let move = ""
@@ -159,9 +160,10 @@ export default function DeliveryForm() {
 
       navigate('/recommend', {
         state: {
+          type: "용달",
           axios_data: result.data, 
           userInput: {
-            "imageFileList": [], // 필요한 경우 이미지 파일 배열로 교체
+            "imageFileList": [selectedFiles], // 필요한 경우 이미지 파일 배열로 교체
             "price":calresult, // 실제 가격 값으로 교체 (긴 정수)
             "delivery": {
               "carId": carId, // 실제 carId 값으로 교체 (긴 정수)
@@ -204,7 +206,7 @@ export default function DeliveryForm() {
     const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
 
     try {
-      const response = await axios.get('http://172.30.1.54:8080/api/delivery/user/car', {
+      const response = await axios.get('http://192.168.30.145:8080/api/delivery/user/car', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -215,65 +217,7 @@ export default function DeliveryForm() {
       console.error(error);
     }
   };
-  // const axios_reservation = async () => {
-  //   const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
-  // let packaging = ""
-  // let move = ""
-  // let elevator = ""
-  // let parking = ""
-  // if (whatPacking === "포장") { packaging = true }
-  // else { packaging = false }
-  // if (whatRiding === "탑승") { move = true }
-  // else { move = false }
-  // if (isElavator === "있음") { elevator = true }
-  // else { elevator = false }
-  // if (isCarStation === "있읍") { parking = true }
-  // else { parking = false }
-  //   setIsLoading(true)
-  //   try {
-  //     const response = await axios.post('http://192.168.30.125:8080/api/delivery/user/reservation',
-  //       {
-  //         "companys": [
-  //           {
-  //             "memberId": 123 // 실제 memberId 값으로 교체 (정수)
-  //           }
-  //         ],
-          // "imageFileList": [], // 필요한 경우 이미지 파일 배열로 교체
-          // "price":calresult, // 실제 가격 값으로 교체 (긴 정수)
-          // "delivery": {
-          //   "carId": carId, // 실제 carId 값으로 교체 (긴 정수)
-          //   "startTime": `${getToday(startDate)} ${isWhatTime}`, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
-          //   "endTime": endTime, // 실제 종료 시간을 올바른 날짜 및 시간 형식으로 교체
-          //   "departure":whereStart.address, // 실제 출발지 값으로 교체 (문자열)
-          //   "departureDetail": startDetailAddress, // 실제 출발지 상세정보 값으로 교체 (문자열)
-          //   "destination": whereEnd.address, // 실제 도착지 값으로 교체 (문자열)
-          //   "destinationDetail": endDetailAddress, // 실제 도착지 상세정보 값으로 교체 (문자열)
-          //   "packaging": packaging, // 실제 값으로 교체 (부울)
-          //   "move": move, // 실제 값으로 교체 (부울)
-          //   "elevator": elevator, // 실제 값으로 교체 (부울)
-          //   "parking": parking, // 실제 값으로 교체 (부울)
-          //   "moveList": userinput, // 실제 이사 목록 값으로 교체 (문자열)
-          //   "sigungu": 123 // 실제 sigungu 값으로 교체 (긴 정수)
-          // }
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`
-  //         }
-  //       }
-  //     );
-
-
-  //     setcalresult(response.data.result.price)
-  //     setEndTime(response.data.result.endTime)
-  //     setIsLoading(false)
-
-  //     return response
-  //   } catch (error) {
-  //     console.error(error);
-  //     return error
-  //   }
-  // }
+  
   const axios_cal = async () => {
     const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
     let packaging = ""
@@ -290,7 +234,7 @@ export default function DeliveryForm() {
     else { parking = false }
     setIsLoading(true)
     try {
-      const response = await axios.post('http://172.30.1.54:8080/api/delivery/user/calculation',
+      const response = await axios.post('http://192.168.30.145:8080/api/delivery/user/calculation',
         {
           "carId": carId,
           "departureX": whereStart.lon,
@@ -331,7 +275,7 @@ export default function DeliveryForm() {
     console.log(sigungu)
     try {
       const response = await axios.post(
-        'http://172.30.1.68:8080/api/delivery/user/company-list',
+        'http://192.168.30.145:8080/api/delivery/user/company-list',
         {
           startTime: `${getToday(startDate)} ${isWhatTime}`, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
           endTime: endTime, // 실제 종료 시간을 올바른 날짜 및 시간 형식으로 교체
