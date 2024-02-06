@@ -25,9 +25,9 @@ export default function ReviewToMeProfile({ name, rating, review }) {
                 </div>
 
             </div>
-            <text className="col-12  p-2 rounded-3" style={{backgroundColor:"#ECECEC"}}>
+            <div className="col-12  p-2 rounded-3" style={{backgroundColor:"#ECECEC"}}>
                 {review}
-            </text>
+            </div>
             </div>
         </motion.div >
     </>

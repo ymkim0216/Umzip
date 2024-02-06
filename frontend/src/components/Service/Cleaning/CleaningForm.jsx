@@ -118,7 +118,7 @@ export default function CleaningFrom() {
     }
   }
   const axios_CallCle = async () => {
-    
+
     try {
       const response = await api.post(
         '/clean/user/company-list',
@@ -126,11 +126,7 @@ export default function CleaningFrom() {
           reservationTime: `${getToday(startDate)} ${isWhatTime}`, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
           sigungu: sigungu, // 실제 sigungu 값으로 교체 (정수)
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+
       );
       return response
     }
@@ -147,7 +143,7 @@ export default function CleaningFrom() {
       const roomCount = parseInt(roomCounts, 10)
       const windowCount = parseInt(windowCounts, 10)
       let balconyExistence = ""
-      let duplex=""
+      let duplex = ""
       if (isBalkoni === "있음") { balconyExistence = true }
       else { balconyExistence = false }
 
@@ -214,7 +210,7 @@ export default function CleaningFrom() {
     return serviceNameMap[key] || key; // key에 해당하는 값이 없을 경우 key 그대로 반환
   };
   const axios_cal = async () => {
-    
+
     const roomSize = parseInt(whatHouse, 10)
     const roomCount = parseInt(roomCounts, 10)
     const windowCount = parseInt(windowCounts, 10)
@@ -246,11 +242,6 @@ export default function CleaningFrom() {
           "houseSyndrome": option.isNewHous,
           "removeSticker": option.isSticker,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
       );
       setcalResult(response.data.result)
 
@@ -299,7 +290,7 @@ export default function CleaningFrom() {
           }}>
           <div style={{
             position: 'relative',
-            width: '40%',
+            width: '50%',
             backgroundColor: 'white', // 내용의 배경색
             padding: '20px',
             borderRadius: '8px', // 내용의 모서리 둥글게
@@ -373,7 +364,7 @@ export default function CleaningFrom() {
           <motion.p className="m-0" style={{ color: "#006EEE" }}>다음으로&rarr;</motion.p>
 
         </motion.h5>
-        <motion.div ref={scope} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }} >
+        <motion.div ref={scope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }} >
           <motion.div style={{ position: 'relative' }} whileHover={{ fontWeight: "bold" }} >
             {/* 나가기 버튼 이미지 */}
 
@@ -381,7 +372,7 @@ export default function CleaningFrom() {
 
           </motion.div>
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
-            <div className="col-6 gap-5 d-flex flex-column" style={{ marginTop: "20rem", }}>
+            <div className="col-6 gap-5 d-flex flex-column" >
 
               <div className="mb-3 d-flex align-items-center ">
                 <div className="col-3">
@@ -470,117 +461,118 @@ export default function CleaningFrom() {
           />
           <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
         </motion.h5>
-        <motion.div ref={newscope} className="col-12 d-flex justify-content-center " style={{ marginTop: "14rem" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
-          <div className="col-8 d-flex gap-3 ">
-            <div className="col-6 d-flex flex-column gap-5 p-3 justify-content-center align-items-center">
-              <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex  gap-1 align-items-center " style={{ width: "100%", height: "2rem" }}>
-                <div className="col-2 fw-bold">집주소 : </div>
-                <div className="col-8 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} >{whereStart.address ? (
-                  <p className="m-0">{whereStart.address}</p>
-                ) : (
-                  <p className="m-0 text-muted">주소를 입력해주세요!</p>
-                )}</div>
-                <button onClick={() => hadleModal("start")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "2rem" }}><p className="m-0">찾기</p></button>
-              </div>
-
-              <div className="col-9 d-flex " id={detailAddress ? "" : "secondcomponent"} style={{ width: "100%" }} >
-                <div className="col-2 fw-bold">상세주소 : </div>
-                <input style={{ border: "none" }} className="col-10 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setDetailAddress(event.target.value)} ></input>
-              </div>
-
-              <div id={whatHouse ? "" : "secondcomponent"} className="col-9 d-flex " style={{ width: "100%" }} >
-                <div className="col-2 fw-bold">집크기 : </div>
-                <div className="col-12 d-flex gap-2 " >
-                  <input style={{ border: "none" }} className="col-8 shadow fw-bold text-center rounded-4 " placeholder="집크기를 입력해주세요!" type="number" onChange={(event) => setWhatHouse(event.target.value)} ></input>
-                  <button style={{ height: "2rem" }} onClick={handleIsPyung} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" ><p className="m-0">{ispyung}</p></button>
-                </div>
-              </div>
-              <div className="d-flex col-12  gap-4">
-                <div id={roomCounts ? "" : "secondcomponent"} className=" d-flex col-6 gap-1 align-items-center"  >
-                  <div className=" col-4 fw-bold">방개수 : </div>
-                  <input style={{ border: "none", height: "2rem" }} className="col-6 shadow fw-bold text-center rounded-4 " placeholder="방개수" type="number" onChange={(event) => setRoomCounts(event.target.value)}></input>
-                  <div className="d-flex  align-items-center fw-bold">개</div>
+        <div style={{width:"100%" ,height:"100%"}}>
+        <motion.div ref={newscope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }} >
+            <div className="col-8 d-flex gap-3 ">
+              <div className="col-6 d-flex flex-column gap-5 p-3 justify-content-center align-items-center">
+                <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex  gap-1 align-items-center " style={{ width: "100%", height: "2rem" }}>
+                  <div className="col-2 fw-bold">집주소 : </div>
+                  <div className="col-8 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} >{whereStart.address ? (
+                    <p className="m-0">{whereStart.address}</p>
+                  ) : (
+                    <p className="m-0 text-muted">주소를 입력해주세요!</p>
+                  )}</div>
+                  <button onClick={() => hadleModal("start")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "2rem" }}><p className="m-0">찾기</p></button>
                 </div>
 
-                <div id={windowCounts ? "" : "secondcomponent"} className="d-flex col-6 gap-1 align-items-center"  >
-                  <div className="col-4 fw-bold">창개수 : </div>
-                  <input style={{ border: "none", height: "2rem" }} className="col-6 shadow fw-bold text-center rounded-4 " placeholder="창개수" type="number" onChange={(event) => setWindowCounts(event.target.value)} ></input>
-                  <div className="d-flex  align-items-center fw-bold ">개</div>
+                <div className="col-9 d-flex " id={detailAddress ? "" : "secondcomponent"} style={{ width: "100%" }} >
+                  <div className="col-2 fw-bold">상세주소 : </div>
+                  <input style={{ border: "none" }} className="col-10 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setDetailAddress(event.target.value)} ></input>
                 </div>
+
+                <div id={whatHouse ? "" : "secondcomponent"} className="col-9 d-flex " style={{ width: "100%" }} >
+                  <div className="col-2 fw-bold">집크기 : </div>
+                  <div className="col-12 d-flex gap-2 " >
+                    <input style={{ border: "none" }} className="col-8 shadow fw-bold text-center rounded-4 " placeholder="집크기를 입력해주세요!" type="number" onChange={(event) => setWhatHouse(event.target.value)} ></input>
+                    <button style={{ height: "2rem" }} onClick={handleIsPyung} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" ><p className="m-0">{ispyung}</p></button>
+                  </div>
+                </div>
+                <div className="d-flex col-12  gap-4">
+                  <div id={roomCounts ? "" : "secondcomponent"} className=" d-flex col-6 gap-1 align-items-center"  >
+                    <div className=" col-4 fw-bold">방개수 : </div>
+                    <input style={{ border: "none", height: "2rem" }} className="col-6 shadow fw-bold text-center rounded-4 " placeholder="방개수" type="number" onChange={(event) => setRoomCounts(event.target.value)}></input>
+                    <div className="d-flex  align-items-center fw-bold">개</div>
+                  </div>
+
+                  <div id={windowCounts ? "" : "secondcomponent"} className="d-flex col-6 gap-1 align-items-center"  >
+                    <div className="col-4 fw-bold">창개수 : </div>
+                    <input style={{ border: "none", height: "2rem" }} className="col-6 shadow fw-bold text-center rounded-4 " placeholder="창개수" type="number" onChange={(event) => setWindowCounts(event.target.value)} ></input>
+                    <div className="d-flex  align-items-center fw-bold ">개</div>
+                  </div>
+                </div>
+
+                <div id={isBalkoni ? "" : "secondcomponent"} className="d-flex justify-content-center gap-3 align-items-center  col-12">
+                  <p className="m-0 col-3 fw-bold">발코니/베란다</p>
+                  <div className="col-3">
+                    <CheckButton checkPacking={() => setIsBalkoni("있음")} isActive={isBalkoni === "있음"} name="있음" />
+                  </div>
+                  <div className="col-3">
+                    <CheckButton checkPacking={() => setIsBalkoni("없음")} isActive={isBalkoni === "없음"} name="없음" />
+                  </div>
+                  <div className="col-3"></div>
+                </div>
+
+                <div id={isBok ? "" : "secondcomponent"} className="d-flex justify-content-center gap-3 align-items-center col-12">
+                  <p className="m-0 col-3 fw-bold">복층인가요?</p>
+                  <div className="col-3">
+                    <CheckButton checkPacking={() => setIsBok("네")} isActive={isBok === "네"} name="네" />
+                  </div>
+                  <div className="col-3">
+                    <CheckButton checkPacking={() => setIsBok("아니요")} isActive={isBok === "아니요"} name="아니요" />
+                  </div>
+                  <div className="col-3"></div>
+                </div>
+
               </div>
 
-              <div id={isBalkoni ? "" : "secondcomponent"} className="d-flex justify-content-center gap-3 align-items-center  col-12">
-                <p className="m-0 col-3 fw-bold">발코니/베란다</p>
-                <div className="col-3">
-                  <CheckButton checkPacking={() => setIsBalkoni("있음")} isActive={isBalkoni === "있음"} name="있음" />
-                </div>
-                <div className="col-3">
-                  <CheckButton checkPacking={() => setIsBalkoni("없음")} isActive={isBalkoni === "없음"} name="없음" />
-                </div>
-                <div className="col-3"></div>
-              </div>
+              <div className="col-6 p-3 gap-4 d-flex flex-column" >
 
-              <div id={isBok ? "" : "secondcomponent"} className="d-flex justify-content-center gap-3 align-items-center col-12">
-                <p className="m-0 col-3 fw-bold">복층인가요?</p>
-                <div className="col-3">
-                  <CheckButton checkPacking={() => setIsBok("네")} isActive={isBok === "네"} name="네" />
-                </div>
-                <div className="col-3">
-                  <CheckButton checkPacking={() => setIsBok("아니요")} isActive={isBok === "아니요"} name="아니요" />
-                </div>
-                <div className="col-3"></div>
-              </div>
 
+
+
+                <div className="d-flex flex-column  gap-2">
+                  <p style={{ width: "100%" }} className="m-0 col-3 fw-bold ">필요 추가 서비스를 선택해 주세요</p>
+                  <div className="d-flex gap-3 align-items-center">
+                    <div className="col" >
+                      <AddButton value="isGom" handleAddButtonClick={handleAddButtonClick} isActive={option.isGom} name="곰팡이 청소" />
+                    </div>
+                    <div className="col">
+                      <AddButton value="isOutsideWindow" handleAddButtonClick={handleAddButtonClick} isActive={option.isOutsideWindow} name="외부 유리창 청소" />
+                    </div>
+                    <div className="col" >
+                      <AddButton value="isNewHous" handleAddButtonClick={handleAddButtonClick} isActive={option.isNewHous} name="세집 증후군 제거" />
+                    </div>
+                    <div className="col">
+                      <AddButton value="isSticker" handleAddButtonClick={handleAddButtonClick} isActive={option.isSticker} name="스티커&스트지 제거" />
+                    </div>
+                  </div>
+
+                </div>
+
+                <div className="d-flex justify-content-center gap-2  text-center">
+                  <p className="m-0 col-3 fw-bold">참고 사진</p>
+                  <div className="col-9 d-flex">
+                    <PhotoView selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
+                  </div>
+                </div>
+                <div className="d-flex justify-content-center gap-2  text-center">
+                  <p className="m-0 col-3 fw-bold">추가사항</p>
+                  <div className="col-9 d-flex">
+                    <textarea
+                      className="shadow border rounded-3 p-3"
+                      value={userinput}
+                      onChange={handleUserInput}
+                      placeholder="여기에 추가사항을 입력하세요..."
+                      rows={4}  // 원하는 행 수로 조절
+                      style={{ width: "100%", resize: "none" }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="col-6 p-3 gap-4 d-flex flex-column" >
-
-
-
-
-              <div className="d-flex flex-column  gap-2">
-                <p style={{ width: "100%" }} className="m-0 col-3 fw-bold ">필요 추가 서비스를 선택해 주세요</p>
-                <div className="d-flex gap-3 align-items-center">
-                  <div className="col" >
-                    <AddButton value="isGom" handleAddButtonClick={handleAddButtonClick} isActive={option.isGom} name="곰팡이 청소" />
-                  </div>
-                  <div className="col">
-                    <AddButton value="isOutsideWindow" handleAddButtonClick={handleAddButtonClick} isActive={option.isOutsideWindow} name="외부 유리창 청소" />
-                  </div>
-                  <div className="col" >
-                    <AddButton value="isNewHous" handleAddButtonClick={handleAddButtonClick} isActive={option.isNewHous} name="세집 증후군 제거" />
-                  </div>
-                  <div className="col">
-                    <AddButton value="isSticker" handleAddButtonClick={handleAddButtonClick} isActive={option.isSticker} name="스티커&스트지 제거" />
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="d-flex justify-content-center gap-2  text-center">
-                <p className="m-0 col-3 fw-bold">참고 사진</p>
-                <div className="col-9 d-flex">
-                  <PhotoView selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
-                </div>
-              </div>
-              <div className="d-flex justify-content-center gap-2  text-center">
-                <p className="m-0 col-3 fw-bold">추가사항</p>
-                <div className="col-9 d-flex">
-                  <textarea
-                    className="shadow border rounded-3 p-3"
-                    value={userinput}
-                    onChange={handleUserInput}
-                    placeholder="여기에 추가사항을 입력하세요..."
-                    rows={4}  // 원하는 행 수로 조절
-                    style={{ width: "100%", resize: "none" }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </motion.div>
-
+          </motion.div>
+        </div>
       </motion.div>}
       {isActive === "third" && <div>
         {/* <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={goToNextForm} className="d-flex align-items-center gap-2" style={{
@@ -610,11 +602,11 @@ export default function CleaningFrom() {
           />
           <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
         </motion.h5>
-
+        
         {calResult && <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 100 }} transition={{ duration: 0.3 }}
-          className="col-12 d-flex justify-content-center align-items-center" style={{ marginTop: "11rem" }}>
+          className="col-12 d-flex justify-content-center align-items-center" style={{  width: "100vw", height: "100vh" }}>
           <div className="col-5 p-3 d-flex flex-column ">
-            <div style={{ borderBottom: "solid 1px #006EEE" }} className="d-flex flex-column gap-3 p-3">
+            <div style={{ borderBottom: "solid 1px #006EEE" }} className="d-flex flex-column gap-4 p-3">
               <div className="d-flex text-center">
                 <p className="m-0 col-4">일시</p>
                 <div className="col-8 d-flex  gap-3  justify-content-center">
@@ -656,7 +648,7 @@ export default function CleaningFrom() {
               </div>
             </div>
 
-            <div style={{ borderBottom: "solid 1px #006EEE" }} className="d-flex flex-column gap-2 p-3">
+            <div style={{ borderBottom: "solid 1px #006EEE" }} className="d-flex flex-column gap-4 p-3">
               <div className="d-flex text-center">
                 <p className="m-0 col-4">발코니/베란다</p>
                 <div className="col-8 d-flex  gap-3  justify-content-center">
@@ -688,7 +680,7 @@ export default function CleaningFrom() {
 
               <div className="d-flex text-center">
                 <p className="m-0 col-4">가구사진</p>
-                <div className="col-8 d-flex  gap-3  justify-content-center shadow " style={{ overflowX: "auto" }}>
+                {selectedFiles.length !== 0  && <div className="col-8 d-flex  gap-3  justify-content-center shadow " style={{ overflowX: "auto" }}>
                   {selectedFiles.map((file, index) => (
                     <div key={index} className="d-flex flex-column justify-content-center align-items-center">
                       <img
@@ -698,7 +690,7 @@ export default function CleaningFrom() {
                       />
                     </div>
                   ))}
-                </div>
+                </div>}
               </div>
 
               <div className="d-flex text-center ">

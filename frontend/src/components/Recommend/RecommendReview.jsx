@@ -1,6 +1,6 @@
-import { motion,AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import StarRating from "./StarRating"
-export default function RecommendReview({name,date,rating,text}) {
+export default function RecommendReview({ tag, img, name, date, rating, text }) {
     return <>
         <motion.div
             style={{ backgroundColor: "#F4F9FF", width: "100%" }}
@@ -12,7 +12,7 @@ export default function RecommendReview({name,date,rating,text}) {
             <div className="d-flex flex-column justify-content-center  align-items-center gap-2 col-md-2">
                 <motion.img
                     className="rounded-pill shadow"
-                    src="/randomimg.png"
+                    src={img}
                     style={{ height: "4rem", width: "4rem" }}
                     alt="Random Image"
                     initial={{ opacity: 0 }} // 초기 상태
@@ -20,7 +20,7 @@ export default function RecommendReview({name,date,rating,text}) {
                     transition={{ duration: 0.5 }} // 트랜지션 지속 시간
                 />
                 <div className="d-flex align-items center gap-2 justify-content-center" >
-                    <StarRating rating={rating}/>
+                    <StarRating rating={rating} />
                     {rating}
                 </div>
             </div>
@@ -32,15 +32,10 @@ export default function RecommendReview({name,date,rating,text}) {
                     </div>
                 </div>
                 <div className="gap-3 d-flex justify-content-start">
-                    <div className="d-flex border border-primary rounded-5 bg-white col-md-2 align-items-center justify-content-center " style={{fontSize:"13px"}}>
-                        asdf
-                    </div>
-                    <div className="d-flex border border-primary rounded-5 bg-white col-md-2 align-items-center justify-content-center " style={{fontSize:"13px"}} >
-                        asdf
-                    </div>
-                    <div className="d-flex border border-primary rounded-5 bg-white col-md-2 align-items-center justify-content-center " style={{fontSize:"13px"}}>
-                        asdf
-                    </div>
+                    {tag.map(item => <div className="d-flex border border-primary rounded-5 bg-white col-md-2 align-items-center justify-content-center " style={{ fontSize: "13px" }}>
+                        {item}
+                    </div>)}
+
                 </div>
                 <text>
                     {text}

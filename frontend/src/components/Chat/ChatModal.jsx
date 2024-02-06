@@ -17,9 +17,7 @@ const ChatModal = () => {
     
     try {
       const response = await api.get('/chat/rooms', {
-        headers: {
-        
-        }
+
       });
       setChatList(response.data.result)
       console.log(response.data.result)

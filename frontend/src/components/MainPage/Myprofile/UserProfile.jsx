@@ -15,6 +15,33 @@ import ReviewToPeopleView from "./ReviewToPeople/ReviewToMeView";
 
 export default function UserProfile() {
    const [changeButton,setChangeButton] = useState("판매 물품")
+   const [offset,setOffSet] = useState(0)
+//    const myReceive = async () => {
+    
+//     console.log(`${getToday(startDate)} ${isWhatTime}`)
+//     console.log(sigungu)
+//     try {
+//       const response = await api.post(
+//         '/reviews/myReceive',
+//         {
+//           "memberId":
+//           "role" : a
+          
+//           "limit": 5 // 실제 limit 값으로 교체 (정수)
+//           "offset": offset
+//         },
+//         {
+//           headers: {
+//           }
+//         }
+//       );
+//       console.log(response)
+//       return response
+//     }
+//     catch (e) {
+
+//     }
+//   }
     const handleChangeButton = ( event)  =>{
         setChangeButton(event.target.innerText)
         setShowUsedDropDown(false);
@@ -61,8 +88,8 @@ export default function UserProfile() {
         setshowreviewDropDown(!showreviewDropDown);
     };
     return <>
-        <div className="d-flex col-8 gap-5 align-items-start p-3">
-            <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
+        <div className="d-flex col-8 gap-5 align-items-start p-3" style={{height:"100%"}}>
+            <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-5 p-5 shadow" style={{height:"100%"}}>
                 <div className="d-flex justify-content-center align-items-center gap-2">
                     <img style={{ width: "5rem", height: "5rem" }} src="./randomimg.png" />
                     <div className="text-center">
