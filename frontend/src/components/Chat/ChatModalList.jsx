@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion"
 import axios from 'axios';
 import { Client } from "@stomp/stompjs";
 import { api } from '../../services/api';
+import useAuthStore from '../../store/store';
 
 
 
@@ -56,15 +57,15 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   };
 
   const socket = () => {
-    const accessToken = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
+    const { token } = useAuthStore.getState();
     const client = new Client({
-      brokerURL: `ws:/192.168.30.145:8080/ws?accessToken=${accessToken}`,
+      brokerURL: `ws:/https://i10e108.p.ssafy.io/ws?accessToken=${token}`,
 
       // 여기에 다른 설정도 추가할 수 있습니다.
       onConnect: (frame) => {
         console.log('Connected: ' + frame);
 
-        client.subscribe(`/topic/user/${accessToken}`, (message) => {
+        client.subscribe(`/topic/user/${token}`, (message) => {
           console.log(message.body)
          
           setUserId((prev) => {
@@ -97,8 +98,6 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
 
     try {
       const response = await api.get(`/chat/rooms/${chatroomId}`, {
-        headers: {
-        }
       });
       console.log(response.data.result.chatMessages)
       return response.data.result.chatMessages
@@ -131,7 +130,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
 
   const sendMessage = () => {
     // userinput을 사용하도록 수정
-    
+    const { token } = useAuthStore.getState();
     if (userinput && stompClientRef.current.active) {
       console.log('메시지 보낸다');
       stompClientRef.current.publish({

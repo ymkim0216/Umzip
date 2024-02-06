@@ -208,9 +208,7 @@ export default function DeliveryForm() {
 
     try {
       const response = await api.get('/delivery/user/car', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+
       });
 
       setCarData(response.data.result)
@@ -526,7 +524,7 @@ export default function DeliveryForm() {
         </motion.h5>
         <motion.div ref={newscope} className="col-12 d-flex justify-content-center align-items-center " style={{ height: "100vh", widt: "100vw" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
           <div className="col-8 d-flex gap-3 ">
-            <motion.div className="col-6 d-flex flex-column gap-4 p-3">
+            <motion.div className="col-6 d-flex flex-column gap-4 p-3 justify-content-center">
               <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "2rem" }}>
                 <div className="col-1 fw-bold">출발 : </div>
                 <div className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} > {whereStart.address ? (
@@ -570,7 +568,7 @@ export default function DeliveryForm() {
               </div>
             </motion.div>
 
-            <div className="col-6 p-3 gap-4 d-flex flex-column" >
+            <div className="col-6 p-3 gap-4 d-flex flex-column justify-content-center" >
               <div id={whatPacking ? "" : "secondcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
                 <p className="m-0 col-3 fw-bold">포장여부</p>
                 <div className="col-3">
@@ -736,7 +734,7 @@ export default function DeliveryForm() {
 
               <div className="d-flex text-center">
                 <p className="m-0 col-4">가구사진</p>
-                { console.log(selectedFiles)}
+                {/* { console.log(selectedFiles)} */}
                 {
                 selectedFiles && selectedFiles.length !== 0 && (
                   <div className="col-8 d-flex gap-3 justify-content-center shadow" style={{ overflowX: "auto" }}>

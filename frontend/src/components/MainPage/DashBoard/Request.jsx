@@ -3,8 +3,9 @@ import DropDown from './dropdown';
 import { AnimatePresence, motion } from "framer-motion";
 import StatusChange from './Status_Change';
 import { Client } from "@stomp/stompjs";
+import useAuthStore from '../../../store/store';
 
-export default function Requests({ requestList, date, orderName, orderNumber, status, list }) {
+export default function Requests({ isAll,setRequestList, requestList, date, orderName, orderNumber, status, list }) {
     const [chatRoom, setChatRoom] = useState("")
     const scrollToBottom = () => {
         // 스크롤 위치를 항상 맨 아래로 조절
@@ -12,7 +13,7 @@ export default function Requests({ requestList, date, orderName, orderNumber, st
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
     };
-    const [userId ,setUserId] = useState("")
+    const [userId, setUserId] = useState("")
     const [talkHistory, setTalkHistory] = useState([])
     const chatContainerRef = useRef();
     const [userinput, setuserinput] = useState("");
@@ -23,7 +24,7 @@ export default function Requests({ requestList, date, orderName, orderNumber, st
     };
     useEffect(() => {
         scrollToBottom();
-    }, [openModal]);
+    }, [openModal, talkHistory]);
 
     const toggleModal = async (res) => {
         setOpenModal(true)
@@ -33,7 +34,7 @@ export default function Requests({ requestList, date, orderName, orderNumber, st
         stompClientRef.current = stompClient;
         stompClient.onConnect(
             stompClient.activate()
-          )
+        )
     }
     const containerVariants = {
         visible: {
@@ -51,39 +52,40 @@ export default function Requests({ requestList, date, orderName, orderNumber, st
         setDropdownOpen(!isDropdownOpen);
     };
     const socket = (res) => {
-        const accessToken = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
+        const { token } = useAuthStore.getState();
+        console.log(res)
         const client = new Client({
-          brokerURL: `ws:/192.168.30.145:8080/ws?accessToken=${accessToken}`,
-    
-          // 여기에 다른 설정도 추가할 수 있습니다.
-          onConnect: (frame) => {
-            console.log('Connected: ' + frame);
-    
-            client.subscribe(`/topic/user/${accessToken}`, (message) => {
-              console.log(message.body)
-             
-              setUserId((prev) => {
-                const updatedHistory = message.body
-                // console.log(updatedHistory);
-                return updatedHistory;
-              })
-            });
-    
-            client.subscribe(`/topic/chatroom/${res}`, (message) => {
-              console.log('Received message: ' + message.body);
-              // console.log(talkHistory)
-              showReceivedMessage(message.body);
-            });
-          },
-    
-          onStompError: (frame) => {
-            console.error('Broker reported error: ' + frame.headers['message']);
-            console.error('Additional details: ' + frame.body);
-          }
+            brokerURL: `ws:/https://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+
+            // 여기에 다른 설정도 추가할 수 있습니다.
+            onConnect: (frame) => {
+                console.log('Connected: ' + frame);
+
+                client.subscribe(`/topic/user/${token}`, (message) => {
+                    console.log(message.body)
+
+                    setUserId((prev) => {
+                        const updatedHistory = message.body
+                        // console.log(updatedHistory);
+                        return updatedHistory;
+                    })
+                });
+
+                client.subscribe(`/topic/chatroom/${res}`, (message) => {
+                    console.log('Received message: ' + message.body);
+                    // console.log(talkHistory)
+                    showReceivedMessage(message.body);
+                });
+            },
+
+            onStompError: (frame) => {
+                console.error('Broker reported error: ' + frame.headers['message']);
+                console.error('Additional details: ' + frame.body);
+            }
         });
-    
+
         return client;
-      };
+    };
     const showReceivedMessage = (message) => {
         try {
             // console.log(message)
@@ -105,7 +107,7 @@ export default function Requests({ requestList, date, orderName, orderNumber, st
 
     const sendMessage = () => {
         // userinput을 사용하도록 수정
-        const token = `eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IkNMRUFOIiwiaWQiOjQsInNpZ3VuZ3UiOjEyMzQ1LCJpYXQiOjE3MDcwOTc3NDksImV4cCI6MTcwNzUyOTc0OX0.YGc_QVfUuUT7UGEji4AgvZupbT1SZKW_ebLwkV4_6tY`;
+        const { token } = useAuthStore.getState();
         if (userinput && stompClientRef.current.active) {
             // console.log('메시지 보낸다');
             stompClientRef.current.publish({
@@ -151,7 +153,7 @@ export default function Requests({ requestList, date, orderName, orderNumber, st
                                 ref={chatContainerRef}
                                 style={{ width: "100%", display: "flex", flexDirection: "column", maxHeight: "40rem", overflowY: "auto" }}
                             >
-                                {userId &&talkHistory && talkHistory.map((items, index) => (
+                                {userId && talkHistory && talkHistory.map((items, index) => (
                                     <div
                                         key={index}
                                         style={{
@@ -212,6 +214,7 @@ export default function Requests({ requestList, date, orderName, orderNumber, st
                             >
                                 {list.map((data, index) => (
                                     <motion.div
+
                                         className='shadow'
                                         style={{ backgroundColor: "white" }}
                                         key={data.companyName}
@@ -221,6 +224,9 @@ export default function Requests({ requestList, date, orderName, orderNumber, st
                                         transition={{ duration: 0.3 }}
                                     >
                                         <DropDown
+                                        isAll={isAll}
+                                            setRequestList={setRequestList}
+                                            mappingId={data.mappingId}
                                             setChatRoom={setChatRoom}
                                             companyId={data.companyId}
                                             toggleModal={toggleModal}
