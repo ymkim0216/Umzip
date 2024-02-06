@@ -1,11 +1,5 @@
-import React from 'react';
 import Status from './status';
 import Requests from './Request';
-const DUMMY_DATA={
-
-}
-
-
 
 const YourComponent = () => {
     return (

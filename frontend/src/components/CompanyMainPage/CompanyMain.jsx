@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
-
-import Requests from './Request';
+import companyDeliveryReservation from '../../store/companyDeliveryReservation'
 import { motion } from "framer-motion"
-import { Link, useNavigate } from 'react-router-dom';
 import Status from './Status';
-import axios from "axios"
-import { api } from '../../../services/api';
-
 
 
 const CompanyMain = () => {
-    const [requestAllList, setRequestAllList] = useState([])
-    const [requestDelList, setRequestDelList] = useState([])
-    const [requestCLEList, setRequestCLEList] = useState([])
-    const [requestList, setrequestList] = useState("용달")
+    // const [requestList, setrequestList] = useState("용달")
     const buttonVariants = {
         hover: {
             scale: 1.05,
@@ -22,73 +14,24 @@ const CompanyMain = () => {
             },
         },
     };
-    const CLE_Call = async () => {
-        
+    const aaa = sessionStorage.getItem('userInfo')
+    console.log(aaa)
 
-        try {
-            const response = await api.get('/clean/user/reservation', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setRequestCLEList(response.data.result)
-            console.log(response.data.result)
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    const {fetchData, data} = companyDeliveryReservation()
 
-    const ALL_Call = async () => {
-        
-
-        try {
-            const response = await api.get('/api/dashboard', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            setRequestAllList(response.data.result)
-            console.log(response.data.result)
-        } catch (error) {
-            console.error(error);
-        }
-    };
-    const DEL_Call = async () => {
-        
-
-        try {   
-            const response = await api.get('/delivery/user/reservation', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            console.log(response.data.result)
-            setRequestDelList(response.data.result)
-        } catch (error) {
-            console.error(error);
-        }
-    };
     useEffect(() => {
-        DEL_Call();
-        CLE_Call();
-        ALL_Call();
-    }, []);
+        fetchData();
+      }, [ fetchData ]);
 
-    const navigate = useNavigate()
-    const hadleDelivery = () => {
-        navigate('/requestdelivery');
-    }
-    const hadleCleaning = () => {
-        navigate('/requestcleaning');
-    }
-    const handlestatus = (target) => {
-        if (target === "용달") {
-            setrequestList("용달")
-        }
-        else {
-            setrequestList("청소")
-        }
-    }
+
+    // const handlestatus = (target) => {
+    //     if (target === "용달") {
+    //         setrequestList("용달")
+    //     }
+    //     else {
+    //         setrequestList("청소")
+    //     }
+    // }
     return (
         <div className='d-flex  justify-content-center align-items-center' style={{ height: "100vh", width: "100%" }} >
             <motion.div initial={{ opacity: 0 }}
@@ -110,16 +53,7 @@ const CompanyMain = () => {
                                     style={{ width: "10rem" }}
                                     whileHover="hover"
                                 >
-                                    <img src='/store.png' alt='' style={{ width: "2rem", height: "2rem" }} /> 전체
-                                </motion.button>
-                                <motion.button
-                                    type="button"
-                                    className="btn btn-primary btn-lg  d-flex justify-content-center gap-4 align-items-center"
-                                    variants={buttonVariants}
-                                    whileHover="hover"
-                                    style={{ width: "10rem" }}
-                                    onClick={() => handlestatus("청소")}
-                                >
+
                                     <img style={{ width: "2rem", height: "2rem" }} src='/mop (2) 1.png' alt='' /> 청소
                                 </motion.button>
                                 <motion.button
@@ -128,7 +62,7 @@ const CompanyMain = () => {
                                     variants={buttonVariants}
                                     whileHover="hover"
                                     style={{ width: "10rem" }}
-                                    onClick={() => handlestatus("용달")}
+                                    // onClick={() => handlestatus("용달")}
                                 >
                                     <img style={{ width: "2rem", height: "2rem" }} src='/truck 1.png' alt='' /><h5 className='m-0'>용달</h5>
 
@@ -147,8 +81,8 @@ const CompanyMain = () => {
                                     <Status />
                                 </div>
                                 <div className='d-flex gap-4'>
-                                    <button onClick={hadleDelivery} type="button" className="btn btn-outline-primary rounded-5 shadow-5 " >용달 신청</button>
-                                    <button onClick={hadleCleaning} type="button" className="btn btn-outline-primary rounded-5 shadow-5">청소 신청</button>
+                                    <button  type="button" className="btn btn-outline-primary rounded-5 shadow-5 " >용달 신청</button>
+                                    <button  type="button" className="btn btn-outline-primary rounded-5 shadow-5">청소 신청</button>
                                 </div>
                             </div>
                             <div className=' rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center' style={{ background: "#D9E4FF" }}>
@@ -159,25 +93,7 @@ const CompanyMain = () => {
                                 <h5 className='m-0  col-md-2' >내가 보낸견적서</h5>
                             </div>
                             <motion.div style={{ width: '100%', minHeight: "10rem" }}>
-                            {
-                                    (requestList === "용달" ? requestDelList : requestCLEList).map((item,index) => {
-                                        const originalDate = new Date(item.createDt);
-                                        let orderDate=""
-                                        { requestList==="용달" ? orderDate = new Date(item.startTime) :orderDate = new Date(item.reservationTime) }
-                                        let orderAddress = ""
-                                        {requestList==="용달" ? orderAddress = item.departure : orderAddress =item.address}
-                                        const formatDate = `${originalDate.getFullYear()}.${(originalDate.getMonth() + 1).toString().padStart(2, '0')}.${originalDate.getDate().toString().padStart(2, '0')}`;
-                                        const formatoder = `${(orderDate.getMonth() + 1).toString().padStart(2, '0')}${orderDate.getDate().toString().padStart(2, '0')}/${orderAddress}/${requestList}`;
-                                        let orderName = "";
-                                        if(requestList==="용달"){orderName="DEL"}
-                                        else{orderName="CLE"}
-                                        let orderN=""
-                                        {requestList==="용달" ? orderN=(item.id * item.id).toString().padStart(3, '0'): orderN=(item.cleanId * item.cleanId).toString().padStart(3, '0'); }
-                                         
-                                        // requests 컴포넌트 반환
-                                        return <Requests requestList={requestList} list={item.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.status} />;
-                                    })
-                                }
+
                             </motion.div>
                         </div>
                     </div>

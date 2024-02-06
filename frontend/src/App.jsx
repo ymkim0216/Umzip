@@ -61,7 +61,7 @@ const router = createBrowserRouter([
   // 대시보드 업체
   {
     path: 'dashbordcompany', element: <CompanyDashBord />
-  }
+  },
 
   //청소요청
   { path: 'requestcleaning', element: <RequestCleaning /> }, // 날짜,차량,시간,위치,짐종류 같은거 제출

@@ -5,7 +5,7 @@ import Chat from "../../components/Chat/Chat";
 
 
 
-function Help() {
+function CompanyDsahBord() {
         return (
         <>
             <Header />
@@ -15,4 +15,4 @@ function Help() {
         </>
         );
 }
-export default Help;
+export default CompanyDsahBord;
