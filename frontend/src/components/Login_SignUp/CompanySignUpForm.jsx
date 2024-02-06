@@ -39,7 +39,7 @@ const CompanySignUpForm = () => {
     const { name, email, phone, password } = data;
     try {
       const response = await axios.post(
-        'http://192.168.30.145:8080/api/users',
+        'https://i10e108.p.ssafy.io/api/users',
         {
           name,
           email,
