@@ -8,7 +8,7 @@ import useStore from '../../store/helpData';
 
 
 function HelpList() {
-  const { data, loading, error, fetchData, page, codeSmall } = useStore();
+  const { data, loading, error, fetchData, page } = useStore();
   const navigate = useNavigate();
   function navigateHandler() {
     navigate('/helpwriting');
