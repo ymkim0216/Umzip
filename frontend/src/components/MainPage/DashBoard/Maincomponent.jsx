@@ -152,6 +152,10 @@ const MainComponent = () => {
                                                 const formatoder = `${(orderDate.getMonth() + 1).toString().padStart(2, '0')}${orderDate.getDate().toString().padStart(2, '0')}/${orderAddress.slice(0, 2)}/용달`;
                                                 let orderName = "DLE";
 
+  const handleLogout = async (event) => {
+    event.preventDefault();
+    await logout(navigate);
+  };
 
                                                 let orderN = (item.deliveryReservationDto.id * item.deliveryReservationDto.id).toString().padStart(3, '0').slice(0, 3)
                                                 return <Requests isAll={true} setRequestList={setRequestAllList} requestList="용달" list={item.deliveryReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.deliveryReservationDto.status} />;
@@ -218,9 +222,101 @@ const MainComponent = () => {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+                <div className="d-flex gap-4">
+                  <button
+                    onClick={hadleDelivery}
+                    type="button"
+                    className="btn btn-outline-primary rounded-5 shadow-5 "
+                  >
+                    용달 신청
+                  </button>
+                  <button
+                    onClick={hadleCleaning}
+                    type="button"
+                    className="btn btn-outline-primary rounded-5 shadow-5"
+                  >
+                    청소 신청
+                  </button>
+                </div>
+              </div>
+              <div
+                className=" rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center"
+                style={{ background: '#D9E4FF' }}
+              >
+                <h5 className="m-0 col-md-2">일시</h5>
+                <h5 className="m-0 col-md-2">주문명</h5>
+                <h5 className="m-0 col-md-2">주문번호</h5>
+                <h5 className="m-0 col-md-2">상태</h5>
+                <h5 className="m-0  col-md-2">내가 보낸견적서</h5>
+              </div>
+              <motion.div style={{ width: '100%', minHeight: '10rem' }}>
+                {(requestList === '용달' ? requestDelList : requestCLEList).map(
+                  (item, index) => {
+                    const originalDate = new Date(item.createDt);
+                    let orderDate = '';
+                    {
+                      requestList === '용달'
+                        ? (orderDate = new Date(item.startTime))
+                        : (orderDate = new Date(item.reservationTime));
+                    }
+                    let orderAddress = '';
+                    {
+                      requestList === '용달'
+                        ? (orderAddress = item.departure)
+                        : (orderAddress = item.address);
+                    }
+                    const formatDate = `${originalDate.getFullYear()}.${(
+                      originalDate.getMonth() + 1
+                    )
+                      .toString()
+                      .padStart(2, '0')}.${originalDate
+                      .getDate()
+                      .toString()
+                      .padStart(2, '0')}`;
+                    const formatoder = `${(orderDate.getMonth() + 1)
+                      .toString()
+                      .padStart(2, '0')}${orderDate
+                      .getDate()
+                      .toString()
+                      .padStart(2, '0')}/${orderAddress}/${requestList}`;
+                    let orderName = '';
+                    if (requestList === '용달') {
+                      orderName = 'DEL';
+                    } else {
+                      orderName = 'CLE';
+                    }
+                    let orderN = '';
+                    {
+                      requestList === '용달'
+                        ? (orderN = (item.id * item.id)
+                            .toString()
+                            .padStart(3, '0'))
+                        : (orderN = (item.cleanId * item.cleanId)
+                            .toString()
+                            .padStart(3, '0'));
+                    }
+
+                    // requests 컴포넌트 반환
+                    return (
+                      <Requests
+                        requestList={requestList}
+                        list={item.list}
+                        key={index}
+                        date={formatDate}
+                        orderName={formatoder}
+                        orderNumber={`${orderName}${orderN}`}
+                        status={item.status}
+                      />
+                    );
+                  }
+                )}
+              </motion.div>
+            </div>
+          </div>
         </div>
-    );
+      </motion.div>
+    </div>
+  );
 };
 
 export default MainComponent;

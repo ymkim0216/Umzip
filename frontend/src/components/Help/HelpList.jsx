@@ -1,13 +1,18 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import style from './HelpList.module.css';
 import HelpSearchBar from './HelpSearchBar'
+import HelpCategorySelect from './HelpCategorySelect';
 import useStore from '../../store/helpData';
 
 
 function HelpList() {
   const { data, loading, error, fetchData, page } = useStore();
+  const navigate = useNavigate();
+  function navigateHandler() {
+    navigate('/helpwriting');
+  }
 
   useEffect(() => {
     fetchData(); // 컴포넌트 마운트 시 데이터를 가져옵니다.
@@ -38,6 +43,7 @@ function HelpList() {
           <span>을 나눠요</span>
         </span>
         <HelpSearchBar/>
+        <HelpCategorySelect />
       </div>
       <div className={style.head}>
         <span className={style.headType}>글 종류</span>
@@ -69,6 +75,7 @@ function HelpList() {
         ))}
         </ListGroup>
       </ul>
+      <button onClick={navigateHandler}>글쓰기</button>
     </div>
   );
 }

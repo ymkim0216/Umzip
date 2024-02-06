@@ -1,6 +1,6 @@
-import React from "react";
-import "./Login.css";
-import LoginForm from "../../components/Login_SignUp/LoginForm";
+import React from 'react';
+import './Login.css';
+import LoginForm from '../../components/Login_SignUp/LoginForm';
 
 export default function Login() {
   return (
@@ -12,7 +12,11 @@ export default function Login() {
           </div>
           <div className="col-md-6">
             <div>
-              로고
+              <img
+                src="/umzipLogo.png"
+                alt=""
+                style={{ width: '500px', height: 'auto' }}
+              />
             </div>
           </div>
         </div>
