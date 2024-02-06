@@ -5,12 +5,20 @@ import { motion } from 'framer-motion';
 const Header = () => {
   const [scrollY, setScrollY] = useState(0);
 
+  const [profileImage, setProfileImage] = useState('');
+
   const handleScroll = () => {
     setScrollY(window.scrollY);
   };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+
+    const storedUserInfo = localStorage.getItem('userInfo');
+    if (storedUserInfo) {
+      const { profileImage } = JSON.parse(storedUserInfo);
+      setProfileImage(profileImage || ''); // Fallback to an empty string if profilePic is not found
+    }
 
     // Clean up the event listener when the component unmounts
     return () => {
@@ -39,40 +47,98 @@ const Header = () => {
       }}
     >
       <div className="">
-        <div className="navbar navbar-expand-lg navbar-light" style={{height:"6vh"}}>
-          <Link className="navbar-brand" to="/">
-            로고
+        <div
+          className="navbar navbar-expand-lg navbar-light"
+          style={{ height: '6vh' }}
+        >
+          <Link className="navbar-brand" to="/dashboard">
+            <img
+              src="/umzipLogo.png"
+              alt=""
+              style={{ width: '60px', height: 'auto' }}
+            />
           </Link>
-          <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <div
+            className="collapse navbar-collapse justify-content-end"
+            id="navbarNav"
+          >
             <ul className="navbar-nav d-flex justify-content-center align-items-center">
-              <motion.li whileHover={navItemVariants.hover} className="nav-item">
+              <motion.li
+                whileHover={navItemVariants.hover}
+                className="nav-item"
+              >
                 <Link className="nav-link mx-3 px-3" to="/dashboard">
                   대시보드
                 </Link>
-              </motion.li >
-              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bold", textDecoration: "underline"}}  className="nav-item">
-                <Link className="nav-link mx-3 px-3 d-flex align-items-center" to="/trade">
-                  <img style={{ width: 17, height: 17 }} className='mb-1' src='/iconoir.png' alt='' />
-                  <p className='m-0'>중고</p>
+              </motion.li>
+              <motion.li
+                whileHover={{
+                  translateY: -3,
+                  fontWeight: 'bold',
+                  textDecoration: 'underline',
+                }}
+                className="nav-item"
+              >
+                <Link
+                  className="nav-link mx-3 px-3 d-flex align-items-center"
+                  to="/trade"
+                >
+                  <img
+                    style={{ width: 17, height: 17 }}
+                    className="mb-1"
+                    src="/iconoir.png"
+                    alt=""
+                  />
+                  <p className="m-0">중고</p>
                 </Link>
-                </motion.li >
-              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bold", textDecoration: "underline"}}  className="nav-item">
-                <Link className="nav-link mx-3 px-3 d-flex align-items-center" to="/help">
-                  <img style={{ width: 17, height: 17 }} className='mb-1' src='/iconoir.png' alt='' />
+              </motion.li>
+              <motion.li
+                whileHover={{
+                  translateY: -3,
+                  fontWeight: 'bold',
+                  textDecoration: 'underline',
+                }}
+                className="nav-item"
+              >
+                <Link
+                  className="nav-link mx-3 px-3 d-flex align-items-center"
+                  to="/help"
+                >
+                  <img
+                    style={{ width: 17, height: 17 }}
+                    className="mb-1"
+                    src="/iconoir.png"
+                    alt=""
+                  />
                   도움
                 </Link>
-                </motion.li >
-              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bolder", textDecoration: "underline"}}  className="nav-item ">
+              </motion.li>
+              <motion.li
+                whileHover={{
+                  translateY: -3,
+                  fontWeight: 'bolder',
+                  textDecoration: 'underline',
+                }}
+                className="nav-item "
+              >
                 <Link className="nav-link mx-3 px-3" to="/Alarm">
                   알림
                 </Link>
-                </motion.li >
-              <motion.li whileHover={{ translateY: -3 ,fontWeight:"bold", textDecoration: "underline"}}  className="nav-item">
+              </motion.li>
+              <motion.li
+                whileHover={{
+                  translateY: -3,
+                  fontWeight: 'bold',
+                  textDecoration: 'underline',
+                }}
+                className="nav-item"
+              >
                 <Link className="nav-link mx-3 px-3" to="/myprofile">
+                <img src={profileImage} alt="Profile" style={{ maxWidth: '30px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }}/>
                   프로필
                 </Link>
-                </motion.li >
-                </ul>
+              </motion.li>
+            </ul>
           </div>
         </div>
       </div>

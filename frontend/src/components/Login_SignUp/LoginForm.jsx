@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../../store/store';
 
 const LoginForm = () => {
@@ -9,10 +9,11 @@ const LoginForm = () => {
   const login = useAuthStore((state) => state.login);
   const isLoading = useAuthStore((state) => state.isLoading);
   const error = useAuthStore((state) => state.error);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await login(email, password, navigate);
+    await login(email, password, navigate, rememberMe);
   };
 
   return (
@@ -59,6 +60,8 @@ const LoginForm = () => {
                 type="checkbox"
                 className="form-check-input"
                 id="rememberMe"
+                checked={rememberMe}
+                onChange={(event) => setRememberMe(event.target.checked)}
               />
               <label className="form-check-label" htmlFor="rememberMe">
                 Remember me
@@ -78,6 +81,28 @@ const LoginForm = () => {
             >
               Log in
             </button>
+            <div
+              style={{
+                margin: '15px 0',
+                textAlign: 'center',
+                fontSize: '16px',
+                color: '#666666',
+              }}
+            >
+              아직 회원이 아니신가요?
+              <Link
+                to="/signup"
+                style={{
+                  color: '#2681d9',
+                  textDecoration: 'none',
+                  hover: {
+                    textDecoration: 'underline',
+                  },
+                }}
+              >
+                회원가입
+              </Link>
+            </div>
           </form>
           {error && <p>Error: {error}</p>}
           {isLoading && <p>Loading...</p>}

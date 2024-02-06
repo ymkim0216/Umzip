@@ -10,15 +10,20 @@ const useAuthStore = create((set) => {
     token: token,
     isLoading: false,
     error: null,
-    login: async (email, pwd, navigate) => {
+    login: async (email, pwd, navigate, rememberMe) => {
       set({ isLoading: true, error: null });
       try {
         const response = await api.post('/login', { email, pwd });
-        const { accessToken, refreshToken } = response.data.result;
-        localStorage.setItem('token', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('userInfo', JSON.stringify({ email }));
-        set({ user: { email }, token: accessToken, isLoading: false });
+        const { who, accessToken, refreshToken, name, profileImage, role } = response.data.result;
+        const storage = rememberMe ? localStorage : sessionStorage;
+
+        storage.setItem('token', accessToken);
+        storage.setItem('refreshToken', refreshToken);
+
+        const userInfo = { who, email, name, profileImage, role };
+        storage.setItem('userInfo', JSON.stringify(userInfo));
+
+        set({ user: userInfo, token: accessToken, isLoading: false });
 
         // 액세스 토큰 만료 시간을 고정값으로 설정 (예: 3600초)
         const expiresIn = 3600 * 24 * 5; // 5일
@@ -34,8 +39,24 @@ const useAuthStore = create((set) => {
         });
       }
     },
+    logout: async (navigate) => {
+      try {
+        const response = await api.post('/logout');
+        console.log('Logout successful:', response);
 
-    logout: () => set({ user: null, token: null }),
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userInfo');
+        sessionStorage.clear();
+
+        set({ user: null, token: null, isLoading: false });
+
+        navigate('/login');
+      } catch (error) {
+        console.error('Error during logout:', error);
+        set({ error: error.response?.data?.message || 'Logout failed' });
+      }
+    },
   };
 });
 

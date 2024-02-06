@@ -6,126 +6,24 @@ import { useNavigate, Link } from 'react-router-dom';
 
 import DaumPostcode from 'react-daum-postcode';
 import { PRIMARY_COLOR } from '../../App';
-import CompanySignUpForm from './CompanySignUpForm';
 
-const SignUpForm = () => {
+const CompanySignUpForm = () => {
   const [selectedButton, setSelectedButton] = useState('');
-  const [selectedService, setSelectedService] = useState(null);
+  const [serviceButton, setserviceButton] = useState('');
   const [address, setAddress] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
   const [sigungu, setSigungu] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const addressDetailRef = useRef(null);
   const [loading, setLoading] = useState(false);
-  const [isEmailValid, setIsEmailValid] = useState(false);
-  const [isPhoneCodeSent, setIsPhoneCodeSent] = useState(false);
-  const [isPhoneCodeVerified, setIsPhoneCodeVerified] = useState(false);
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [code, setCode] = useState('');
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [companyRequestDtoList, setCompanyRequestDtoList] = useState([]);
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
-  const password = useRef({});
-  password.current = watch('password', '');
-
-  // 이메일 입력 필드의 onChange 핸들러
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  // 전화번호 입력 필드의 onChange 핸들러
-  const handlePhoneChange = (event) => {
-    setPhone(event.target.value);
-  };
-
-  // 인증코드 입력 필드의 onChange 핸들러
-  const handleCodeChange = (event) => {
-    setCode(event.target.value);
-  };
-
-  // 이메일 중복 확인
-  const checkEmail = async (email) => {
-    try {
-      const response = await axios.post(
-        'http://192.168.30.206:8080/api/auth/email',
-        { email }
-      );
-      if (response.data.isSuccess) {
-        alert('사용가능한 이메일 입니다.');
-        setIsEmailValid(true);
-      } else {
-        alert('중복된 이메일 입니다.');
-      }
-    } catch (error) {
-      console.error('이메일 중복 검사 에러:', error);
-      alert('이메일 중복 검사 중 오류가 발생했습니다.');
-    }
-  };
-
-  // 핸드폰 인증 코드 전송
-  const sendPhoneCode = async (phone) => {
-    try {
-      // const response = await axios.post('http://192.168.30.145:8080/api/auth/phone', { phone });
-      // if (response.data.isSuccess) {
-      if (true) {
-        alert('인증번호가 전송되었습니다.');
-        setIsPhoneCodeSent(true);
-      } else {
-        alert('인증 코드 전송 실패');
-      }
-    } catch (error) {
-      console.error('인증 코드 전송 에러:', error);
-      alert('인증 코드 전송 중 오류가 발생했습니다.');
-    }
-  };
-
-  // 핸드폰 인증 코드 검증
-  const verifyPhoneCode = async (phone, code) => {
-    try {
-      // const response = await axios.post('http://192.168.30.145:8080/api/auth/code', { phone, code });
-      // if (response.data.isSuccess) {
-      if (true) {
-        alert('인증되었습니다!');
-        setIsPhoneCodeVerified(true);
-      } else {
-        alert('인증 실패');
-      }
-    } catch (error) {
-      console.error('인증 코드 검증 에러:', error);
-      alert('인증 코드 검증 중 오류가 발생했습니다.');
-    }
-  };
-
-  const handleServiceClick = (serviceType) => {
-    if (selectedService === serviceType && isFormVisible) {
-
-      const formData = saveFormData();
-      setCompanyRequestDtoList([...companyRequestDtoList, formData]);
-
-      setIsFormVisible(false);
-      setSelectedService(null);
-    } else {
-      setIsFormVisible(true);
-      setSelectedService(serviceType);
-    }
-  };
-
-  const saveFormData = () => {
-    if (selectedService === 'clean') {
-      return { CompanyCode: -1, ...otherFormData };
-    } else if (selectedService === 'delivery') {
-      return { CompanyCode: 1, ...otherFormData };
-    }
-  };
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -169,9 +67,13 @@ const SignUpForm = () => {
 
   const handleButtonClick = (buttonType) => {
     if (selectedButton === 'normal') {
-      setSelectedService('');
+      setserviceButton('');
     }
     setSelectedButton(buttonType);
+  };
+
+  const handleServiceClick = (buttonType) => {
+    setserviceButton(buttonType);
   };
 
   function onCompletePost(data) {
@@ -261,36 +163,13 @@ const SignUpForm = () => {
               className="rounded p-4 border shadow-sm mx-auto"
               style={{ width: '100%', maxWidth: '70%' }}
             >
-              <h2 className="mb-4">Sign Up</h2>
-              <button
-                type="button"
-                className={`btn ${
-                  selectedButton === 'normal'
-                    ? 'btn-primary text-white'
-                    : 'btn-outline-primary text-dark'
-                } rounded-pill py-3 mx-2`}
-                onClick={() => handleButtonClick('normal')}
-              >
-                일반 가입
-              </button>
-              <button
-                type="button"
-                className={`btn ${
-                  selectedButton === 'company'
-                    ? 'btn-primary text-white'
-                    : 'btn-outline-primary text-dark'
-                } rounded-pill py-3 mx-2`}
-                onClick={() => handleButtonClick('company')}
-              >
-                업체 가입
-              </button>
               <div className="form-group mb-4">
-                <label htmlFor="name">이름</label>
+                <label htmlFor="name">업체 이름</label>
                 <input
                   id="name"
                   className="form-control rounded-pill py-4"
                   type="text"
-                  placeholder="이름"
+                  placeholder="업체 이름"
                   {...register('name', {
                     required: '이름을 입력해주세요',
                     pattern: {
@@ -322,12 +201,10 @@ const SignUpForm = () => {
                       },
                     })}
                     value={email}
-                    onChange={handleEmailChange}
                   />
                   <button
                     type="button"
                     className="btn btn-secondary rounded-pill py-3"
-                    onClick={() => checkEmail(email)}
                     style={{
                       marginLeft: '-1px',
                       backgroundColor: PRIMARY_COLOR,
@@ -359,12 +236,10 @@ const SignUpForm = () => {
                       },
                     })}
                     value={phone}
-                    onChange={handlePhoneChange}
                   />
                   <button
                     type="button"
                     className="btn btn-secondary rounded-pill py-3"
-                    onClick={() => sendPhoneCode(phone)}
                     style={{
                       marginLeft: '-1px',
                       backgroundColor: PRIMARY_COLOR,
@@ -389,13 +264,10 @@ const SignUpForm = () => {
                     id="enterCode"
                     placeholder="Enter code"
                     required
-                    value={code}
-                    onChange={handleCodeChange}
                   />
                   <button
                     type="button"
                     className="btn btn-secondary rounded-pill py-3"
-                    onClick={() => verifyPhoneCode(phone, code)}
                     style={{
                       marginLeft: '-1px',
                       backgroundColor: PRIMARY_COLOR,
@@ -470,76 +342,6 @@ const SignUpForm = () => {
                   required
                 />
               </div>
-              {selectedButton === 'company' && (
-                <div className="mt-3">
-                  <button
-                    type="button"
-                    className={`btn ${
-                      selectedService === 'clean'
-                        ? 'btn-primary text-white'
-                        : 'btn-outline-primary text-dark'
-                    } rounded-pill py-3 mx-2`}
-                    style={{ minWidth: '120px' }}
-                    onClick={() => handleServiceClick('clean')}
-                  >
-                    청소
-                  </button>
-                  <button
-                    type="button"
-                    className={`btn ${
-                      selectedService === 'delivery'
-                        ? 'btn-primary text-white'
-                        : 'btn-outline-primary text-dark'
-                    } rounded-pill py-3 mx-2`}
-                    style={{ minWidth: '120px' }}
-                    onClick={() => handleServiceClick('delivery')}
-                  >
-                    용달
-                  </button>
-                  {isFormVisible && (
-                    <div className="mt-3">
-                      <CompanySignUpForm
-                        CompanyCode={selectedService === 'clean' ? -1 : 1}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-primary rounded-pill py-3"
-                style={{
-                  width: '100%',
-                  marginTop: '5px',
-                  marginBottom: '5px',
-                  backgroundColor: '#4A3AFF',
-                }}
-              >
-                Sign Up
-              </button>
-              <div
-                style={{
-                  margin: '15px 0',
-                  textAlign: 'center',
-                  fontSize: '16px',
-                  color: '#666666',
-                }}
-              >
-                이미 회원이신가요?
-                <Link
-                  to="/login"
-                  style={{
-                    color: '#2681d9',
-                    textDecoration: 'none',
-                    hover: {
-                      textDecoration: 'underline',
-                    },
-                  }}
-                >
-                  로그인
-                </Link>
-              </div>
             </form>
           </div>
         </div>
@@ -548,4 +350,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default CompanySignUpForm;
