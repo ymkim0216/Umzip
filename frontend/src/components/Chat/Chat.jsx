@@ -16,7 +16,7 @@ const Chat = () => {
 
   return (
     <>
-    {!isDropdownOpen ?  <motion.button
+      {!isDropdownOpen ? <motion.button
         whileHover={{
           scale: 1.1,
           backgroundColor: "#1E5EFF",
@@ -70,14 +70,14 @@ const Chat = () => {
           style={{
             height: "2.0rem",
             width: "2.0rem",
-            margin:"2.5px",
+            margin: "2.5px",
           }}
           src="/Close_MD.png"
           alt="채팅 아이콘"
         />
       </motion.button>}
-      
-      
+
+
 
 
 
@@ -86,12 +86,12 @@ const Chat = () => {
       <AnimatePresence>
         {/* Dropdown을 렌더링합니다. */}
         {isDropdownOpen && (
-          <motion.div style={{ position: 'fixed', bottom: '4.5rem', right: '1rem', zIndex:2 }} variants={{
-            hidden:{opacity:0, y:30},
-            visible : {opacity:1,y:0},
-          }} 
-          initial="hidden" animate="visible" exit="hidden"  >
-              
+          <motion.div style={{ position: 'fixed', bottom: '4.5rem', right: '1rem', zIndex: 2 }} variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { opacity: 1, y: 0 },
+          }}
+            initial="hidden" animate="visible" exit="hidden"  >
+
             <ChatModal onClose={closeDropdown} />
           </motion.div>
         )}

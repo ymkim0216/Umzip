@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import RecommendPeople from "./RecommendPeople";
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { useLocation, useNavigate } from "react-router-dom";
 import "./RecommendMain.css"
 import axios from "axios";
 import { api } from "../../services/api";
+import useAuthStore from "../../store/store";
 
 
 export default function RecommendMain() {
@@ -16,24 +17,39 @@ export default function RecommendMain() {
     // location.state에서 데이터를 추출합니다.
 
     const data = location.state.axios_data.result
+    // console.log(data)
     // console.log(location.state)
     // console.log(location.state.userInput)
     const userInput = location.state.userInput
-    const [userChoice,setUserChoice] =useState([])
+    const [userChoice, setUserChoice] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const handleLoadMore = () => {
         setVisibleItems((prev) => prev + itemsPerPage);
     };
     const handlesubmit = () => {
-        console.log(userChoice)
-        if(status==="용달"){userChoice.map((item)=>axios_DEL_reservation(item.companyId) )}
-        else{userChoice.map((item)=>axios_CLE_reservation(item.companyId) )}
-        
-        navigate("/dashboard")
-    }
+        console.log(status);
+
+        // 용달 또는 청소에 대한 예약 처리
+        if (status === "용달") {
+            axios_DEL_reservation(userChoice);
+        } else {
+            axios_CLE_reservation(userChoice);
+        }
+        const { token } = useAuthStore.getState();
+        console.log(token)
+        // 로딩 상태 변경
+        setIsLoading(true);
+
+        // 3초 후에 isLoading을 다시 false로 변경
+        setTimeout(() => {
+            setIsLoading(false);
+            navigate("/dashboard");
+        }, 3000);
+        // 필요에 따라 이동 처리
+    };
+
     const axios_DEL_reservation = async (memberId) => {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
-        setIsLoading(true)
+
         const delivery = {
             "carId": userInput.delivery.carId, // 실제 carId 값으로 교체 (긴 정수)
             "startTime": userInput.delivery.startTime, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
@@ -49,9 +65,12 @@ export default function RecommendMain() {
             "moveList": userInput.delivery.moveList, // 실제 이사 목록 값으로 교체 (문자열)
             "sigungu": userInput.delivery.sigungu // 실제 sigungu 값으로 교체 (긴 정수)
         }
-        
+
         const price = userInput.price
-        const companys = [{ "memberId": memberId }]
+        console.log(memberId)
+        const companys = memberId
+        // console.log(companys)
+
         const selectedFiles = userInput.imageFileList[0]
         const formData = new FormData()
         formData.append("delivery", new Blob([JSON.stringify(delivery)], { type: "application/json" }));
@@ -62,19 +81,18 @@ export default function RecommendMain() {
         selectedFiles.forEach((fileObj, index) => {
             formData.append(`imageFileList[${index}]`, fileObj.file);
         });
+        console.log(formData)
         try {
             const response = await api.post(
                 '/delivery/user/reservation',
                 formData,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
                     }
                 }
             );
-    
-            setIsLoading(false)
+
             console.log(response)
             return response
         } catch (error) {
@@ -83,27 +101,25 @@ export default function RecommendMain() {
         }
     }
     const axios_CLE_reservation = async (memberId) => {
-        const token = 'eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRlc3QxMjM0Iiwicm9sZSI6IlVTRVIiLCJpZCI6NCwic2lndW5ndSI6MTAwLCJpYXQiOjE3MDY3NDc2NzYsImV4cCI6MTcwNzE3OTY3Nn0.0UtQe8QKEO6KriOAAGD5iJTkmyWIqM0WCCpslvOJWLg';
-        setIsLoading(true)
+
         const clean = {
-            "carId": userInput.delivery.carId,
             "reservationTime": userInput.clean.reservationTime, // 실제 carId 값으로 교체 (긴 정수)
-            "address": userInput.clean.reservationTime, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
-            "addressDetail": userInput.clean.reservationTime, // 실제 종료 시간을 올바른 날짜 및 시간 형식으로 교체
-            "sigungu": userInput.clean.reservationTime, // 실제 출발지 값으로 교체 (문자열)
-            "roomSize": userInput.clean.reservationTime,
-            "roomCount": userInput.clean.reservationTime,
-            "windowCount": userInput.clean.reservationTime,
+            "address": userInput.clean.address, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
+            "addressDetail": userInput.clean.addressDetail, // 실제 종료 시간을 올바른 날짜 및 시간 형식으로 교체
+            "sigungu": userInput.clean.sigungu, // 실제 출발지 값으로 교체 (문자열)
+            "roomSize": userInput.clean.roomSize,
+            "roomCount": userInput.clean.roomCount,
+            "windowCount": userInput.clean.windowCount,
             "balconyExistence": userInput.clean.balconyExistence,
             "duplex": userInput.clean.duplex,
             "mold": userInput.clean.mold,
-            "externalWindow":userInput.clean.externalWindow,
-            "houseSyndrome":userInput.clean.houseSyndrome,
-            "removeSticker":userInput.clean.removeSticker
+            "externalWindow": userInput.clean.externalWindow,
+            "houseSyndrome": userInput.clean.houseSyndrome,
+            "removeSticker": userInput.clean.removeSticker
         }
-        
         const price = userInput.price
-        const companys = [{ "memberId": memberId }]
+        const companys = memberId
+        console.log(companys)
         const selectedFiles = userInput.imageFileList[0]
         const formData = new FormData()
         formData.append("clean", new Blob([JSON.stringify(clean)], { type: "application/json" }));
@@ -120,13 +136,12 @@ export default function RecommendMain() {
                 formData,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data',
                     }
                 }
             );
-    
-            setIsLoading(false)
+
+
             console.log(response)
             return response
         } catch (error) {
@@ -143,7 +158,44 @@ export default function RecommendMain() {
             },
         },
     };
-    return (
+    return (<>
+        <AnimatePresence>
+            {(
+                isLoading && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    style={{
+                        zIndex: "99",
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색 및 투명도 조절
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <div className="d-flex align-items-center  justify-content-center gap-5" style={{
+                        position: 'relative',
+                        width: '40%',
+                        height: "40%",
+                        backgroundColor: 'white', // 내용의 배경색
+                        padding: '20px',
+                        borderRadius: '8px', // 내용의 모서리 둥글게
+                    }}>
+                        {status === "용달" && <div className="d-flex justify-content-center align-items-center gap-5 bg-white " >
+                            <img style={{ width: "20rem", height: "20rem" }} src="./free-animated-icon-delivery-truck-11933537.gif" />
+                            <h3 style={{ color: "black" }}>배달 준비중...</h3>
+                            {/* <Wave /> */}
+                        </div>}
+                        {status === "청소" && <div className="d-flex justify-content-center align-items-center gap-5 bg-white " >
+                            <img style={{ width: "20rem", height: "20rem" }} src="./free-animated-icon-cleaning-13275288.gif" />
+                            <h3 style={{ color: "black" }}>청소 준비중...</h3>
+                            {/* <Wave /> */}
+                        </div>}
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
         <div className="d-flex justify-content-center p-5 flex-column align-items-center gap-5 removescroll" >
             <div className="d-flex justify-content-center flex-column align-items-center col-md-8 gap-3" style={{ marginTop: "5rem" }}>
                 <h3>이런 기사님은 어떠세요?</h3>
@@ -160,13 +212,14 @@ export default function RecommendMain() {
                     style={{ width: "100%" }}
                     className="d-flex flex-column gap-3"
                 >
-                    {DUMMY_DATA.slice(0, visibleItems).map((item, index) => (
+                    {data && data.slice(0, visibleItems).map((item, index) => (
                         <motion.div key={index} variants={{ visible: { opacity: 1, y: 0 } }} initial={{ opacity: 0, y: 20 }}>
-                            <RecommendPeople userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.ceo} rating={3.8} img={item.imageUrl} />
+                            {status === "용달 " ? <RecommendPeople memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.companyName} rating={3.8} img={item.imageUrl} /> :
+                                <RecommendPeople memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.tags} name={item.companyName} rating={3.8} img={item.imageUrl} />}
                         </motion.div>
                     ))}
                 </motion.div>
-                {visibleItems < DUMMY_DATA.length && (
+                {visibleItems < data.length && (
                     <motion.button
                         type="button"
                         className="btn btn-light d-flex justify-content-center align-items-center gap-2 shadow"
@@ -182,5 +235,6 @@ export default function RecommendMain() {
                 <button onClick={handlesubmit} className="btn btn-primary">견적 전달</button>
             </div>
         </div>
+    </>
     );
 }

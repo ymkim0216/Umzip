@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import StarRating from "../../Recommend/StarRating";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 
 import { AnimatePresence, motion } from "framer-motion"
@@ -11,11 +11,149 @@ import HelpPeopleToMeView from "./HelpPeopleToMe/HelpPeopleToMeView";
 import BuyView from "./BuyProduct/BuyView";
 import ReviewToMeView from "./ReviewToMe/ReviewToMeView";
 import ReviewToPeopleView from "./ReviewToPeople/ReviewToMeView";
+import { api } from "../../../services/api";
 
 
 export default function UserProfile() {
-   const [changeButton,setChangeButton] = useState("판매 물품")
-    const handleChangeButton = ( event)  =>{
+    const [changeButton, setChangeButton] = useState("판매 물품")
+    const [offset, setOffSet] = useState(0)
+    const [myprofile, setMyprofile] = useState("")
+    
+    
+    //판매
+    const [sellList, setSellList] = useState(null)
+    const [sellTotalPages,setSellTotalPages]=useState(null)
+    // 구매
+    const [buyList, setBuyList] = useState(null)
+    const [buyTotalPages ,setBuyTotalPages] =useState(null)
+
+    //도움구인
+    const [helpMeList, setHelpMeList] = useState(null)
+    const [helpMeTotalPages ,setHelpMeTotalPages] =useState(null)
+    //도움내역
+    const [helpYouList, setHelpYouList] = useState(null)
+    const [helpYouTotalPages ,setHelpYouTotalPages] =useState(null)
+    //    const myReceiveReview = async () => {
+
+    //     console.log(`${getToday(startDate)} ${isWhatTime}`)
+    //     console.log(sigungu)
+    //     try {
+    //       const response = await api.post(
+    //         '/reviews/myReceive',
+    //         {
+    //           "memberId":
+    //           "role" : a
+
+    //           "limit": 5 // 실제 limit 값으로 교체 (정수)
+    //           "offset": offset
+    //         },
+    //         {
+    //           headers: {
+    //           }
+    //         }
+    //       );
+    //       console.log(response)
+    //       return response
+    //     }
+    //     catch (e) {
+
+    //     }
+    //   }
+    const axios_myprofile = async () => {
+
+        try {
+            const response = await api.get(
+                `/users/15`,
+            );
+            // console.log(response.data.result)
+            setMyprofile(response.data.result)
+            return response
+        }
+        catch (e) {
+
+        }
+    }
+
+    const axios_HelpYou = async () => {
+
+        try {
+            const response = await api.get(
+                `/helps/profiles/help-you?memberId=4&page=1&size=5`,
+
+            );
+            console.log(response.data.result)
+            setHelpYouList(response.data.result.content)
+            setHelpYouTotalPages(response.data.result.totalElements)
+            return response
+        }
+        catch (e) {
+
+        }
+    }
+
+    const axios_HelpMe = async () => {
+
+        try {
+            const response = await api.get(
+                `/helps/profiles/help-me?memberId=4&page=1&size=5`,
+
+            );
+            // console.log(response.data.result)
+            setHelpMeList(response.data.result.content)
+            setHelpMeTotalPages(response.data.result.totalElements)
+            return response
+        }
+        catch (e) {
+
+        }
+    }
+
+
+    const axios_SellList = async () => {
+
+        try {
+            const response = await api.get(
+                `/trade-items/profiles/sell?memberId=16&page=1&size=5`,
+                {
+                    "memberId": 16,
+                    "page": 1,
+                    "size": 5
+                }
+            );
+            // console.log(response)
+            setSellList(response.data.result.content)
+            setSellTotalPages(response.data.result.totalElements)
+            return response
+        }
+        catch (e) {
+
+        }
+    }
+    const axios_BuyList = async () => {
+
+        try {
+            const response = await api.get(
+                `/trade-items/profiles/buy?memberId=13&page=1&size=5`,
+
+            );
+            // console.log(response)
+            setBuyList(response.data.result.content)
+            setBuyTotalPages(response.data.result.totalElements)
+            
+            return response
+        }
+        catch (e) {
+
+        }
+    }
+    useEffect(() => {
+        axios_myprofile()
+        axios_SellList()
+        axios_BuyList()
+        axios_HelpMe()
+        axios_HelpYou()
+    }, [])
+    const handleChangeButton = (event) => {
         setChangeButton(event.target.innerText)
         setShowUsedDropDown(false);
         setShowshowHelpDropDown(false);
@@ -62,11 +200,11 @@ export default function UserProfile() {
     };
     return <>
         <div className="d-flex col-8 gap-5 align-items-start p-3">
-            <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
+            {myprofile && <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
                 <div className="d-flex justify-content-center align-items-center gap-2">
-                    <img style={{ width: "5rem", height: "5rem" }} src="./randomimg.png" />
+                    <img className="rounded-pill shadow" style={{ width: "5rem", height: "5rem" }} src={myprofile.imageUrl} />
                     <div className="text-center">
-                        <p className="m-0 fw-bold">OOO님</p>
+                        <p className="m-0 fw-bold">{myprofile.name}님</p>
                         <p className="m-0">반가워요 !</p>
                     </div>
                 </div>
@@ -77,12 +215,16 @@ export default function UserProfile() {
                 <div className="d-flex flex-column" style={{ width: "80%" }}>
                     <div className="d-flex justify-content-between">
                         <p>이메일 : </p>
-                        <p >we0620@naver.com</p>
+                        <p >{myprofile.email}</p>
                     </div>
                     <div className="d-flex justify-content-between">
                         <p className="m-0">보유포인트 : </p>
-                        <p className="m-0">3950P</p>
+                        <p className="m-0">{myprofile.point}</p>
                     </div>
+                    {myprofile.me && <div className="d-flex justify-content-between">
+                        <p className="m-0">전화번호 : </p>
+                        <p className="m-0">{myprofile.phone}</p>
+                    </div>}
                     <Link to={`/mypoint/1`} style={{ fontSize: "0.75rem", marginLeft: "auto" }}>내역조회</Link>
                 </div>
 
@@ -97,8 +239,8 @@ export default function UserProfile() {
                         <p className="m-0">asdf</p>
                     </div>
                 </div>
-                <h4 className="m-0">나의 평점 : 3.8점</h4>
-                <StarRating rating={3.8} />
+                <h4 className="m-0">나의 평점 : {myprofile.avgScore}</h4>
+                <StarRating rating={myprofile.avgScore} />
                 <div style={{ width: "100%" }} className="d-flex flex-column p-4 gap-2">
                     <div className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}  >
                         <p className="m-0">중고</p>
@@ -178,19 +320,20 @@ export default function UserProfile() {
 
 
                 </div>
-            </div>
-            <div className="d-flex col-8 flex-column " style={{height:"100%"}}>
-                {changeButton === "판매 물품" && <UsedView/> }
-                {changeButton === "구매 물품" && <BuyView/> } 
+            </div>}
 
-                {changeButton === "도움 구인" && <HelpPeopleToMeView/> }
-                {changeButton === "도움 내역" && <HelpMeToPeopleView/> }
+            <div className="d-flex col-8 flex-column " style={{ height: "100%" }}>
+                {changeButton === "판매 물품" && <UsedView setSellList={setSellList} sellList={sellList} sellTotalPages={sellTotalPages} />}
+                {changeButton === "구매 물품" && <BuyView  setBuyList={setBuyList} buyTotalPages={buyTotalPages} buyList={buyList} />}
+
+                {changeButton === "도움 구인" && <HelpPeopleToMeView setHelpMeList={setHelpMeList} helpMeList={helpMeList} helpMeTotalPages={helpMeTotalPages} />}
+                {changeButton === "도움 내역" && <HelpMeToPeopleView setHelpYouList={setHelpYouList} helpYouList={helpYouList} helpYouTotalPages={helpYouTotalPages} />}
 
                 {/* {changeButton === "알림 내역" && <UsedView/> }
                 {changeButton === "포인트 사용이력" && <UsedView/> }       */}
 
-                {changeButton === "받은 후기" && <ReviewToMeView/> }
-                {changeButton === "보낸 후기" && <ReviewToPeopleView/> }
+                {changeButton === "받은 후기" && <ReviewToMeView />}
+                {changeButton === "보낸 후기" && <ReviewToPeopleView />}
             </div>
         </div>
     </>

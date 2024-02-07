@@ -43,8 +43,24 @@ const useAuthStore = create((set) => {
         });
       }
     },
+    logout: async (navigate) => {
+      try {
+        const response = await api.post('/logout');
+        console.log('Logout successful:', response);
 
-    logout: () => set({ user: null, token: null }),
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userInfo');
+        sessionStorage.clear();
+
+        set({ user: null, token: null, isLoading: false });
+
+        navigate('/login');
+      } catch (error) {
+        console.error('Error during logout:', error);
+        set({ error: error.response?.data?.message || 'Logout failed' });
+      }
+    },
   };
 });
 
