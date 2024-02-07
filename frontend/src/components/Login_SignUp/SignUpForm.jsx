@@ -134,8 +134,6 @@ const SignUpForm = () => {
       setLoading(false);
       return;
     }
-
-<<<<<<< frontend/src/components/Login_SignUp/SignUpForm.jsx
     // Determine the endpoint based on the selectedButton
     const endpoint =
       selectedButton === 'normal'
