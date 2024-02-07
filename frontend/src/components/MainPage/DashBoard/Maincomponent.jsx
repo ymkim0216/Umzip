@@ -50,7 +50,7 @@ const MainComponent = () => {
         try {
             const response = await api.get('/dashboard', {});
             setRequestAllList(response.data.result);
-            console.log(response.data.result)
+            console.log(response.data)
         } catch (error) {
             console.error(error);
         }
