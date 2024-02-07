@@ -20,8 +20,9 @@ const MainComponent = () => {
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({ name: '', profileImage: '' });
     const [choicecompanyId, setChoiceCompanyId] = useState(null)
+    const profileload = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
     useEffect(() => {
-        const storedUserInfo = localStorage.getItem('userInfo');
+        const storedUserInfo = profileload;
         if (storedUserInfo) {
             const parsedInfo = JSON.parse(storedUserInfo);
             console.log(parsedInfo);
