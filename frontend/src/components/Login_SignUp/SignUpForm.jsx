@@ -56,7 +56,7 @@ const SignUpForm = () => {
   const checkEmail = async (email) => {
     try {
       const response = await axios.post(
-        'https://i10e108.p.ssafy.io/api/auth/email',
+        'http://192.168.123.102:8080/api/auth/email',
         { email }
       );
       if (response.data.isSuccess) {
@@ -137,8 +137,8 @@ const SignUpForm = () => {
     // Determine the endpoint based on the selectedButton
     const endpoint =
       selectedButton === 'normal'
-        ? 'https://i10e108.p.ssafy.io/api/users'
-        : 'https://i10e108.p.ssafy.io/api/company';
+        ? 'http://192.168.123.102:8080/api/users'
+        : 'http://192.168.123.102:8080/api/company';
 
     // Include companyFormData if the company option is selected
     const payload = {
