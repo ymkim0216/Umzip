@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import companyDeliveryReservation from '../../store/companyDeliveryReservation'
+import React, { useEffect, useState } from 'react';
+import companyCleanReservation from '../../store/companyCleanReservation'
 import { motion } from "framer-motion"
 import Status from './Status';
 import StatusChange from './StatusChange';
@@ -7,7 +7,7 @@ import StatusChange from './StatusChange';
 
 function DeliverReservation() {
 
-  const {fetchData, data, } = companyDeliveryReservation()
+  const {fetchData, data, } = companyCleanReservation()
   const [itemsToShow, setItemsToShow] = useState(2); // 한 번에 보여줄 아이템의 수
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
 
