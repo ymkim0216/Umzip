@@ -9,19 +9,48 @@ import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
 
 import classes from './TradeItemDetail.module.css';
+import { AnimatePresence, motion } from 'framer-motion';
 
 function ReportModal({ onClose }) {
   return (
-    <div className={classes.modal}>
-      <div className={classes.modalContent}>
-        <span className={classes.close} onClick={onClose}>
-          &times;
-        </span>
-        <h2>신고하기</h2>
-        <p>신고 사유를 작성해주세요.</p>
-        <button onClick={onClose}>신고 제출</button>
-      </div>
-    </div>
+    <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          style={{
+            zIndex: '99',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색 및 투명도 조절
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              position: 'relative',
+              width: '40%',
+              backgroundColor: 'white', // 내용의 배경색
+              padding: '20px',
+              borderRadius: '8px', // 내용의 모서리 둥글게
+            }}
+          >
+            <span onClick={onClose}>
+              &times;
+            </span>
+            <h2>신고하기</h2>
+            <p>신고 사유를 작성해주세요.</p>
+            <button onClick={onClose}>신고 제출</button>
+          </div>
+        </motion.div>
+      
+    </AnimatePresence>
   );
 }
 

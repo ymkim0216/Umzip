@@ -40,7 +40,14 @@ const ProtectedRoute = ({ children }) => {
 };
 
 const router = createBrowserRouter([
-  { path: '/', element: <HomePage /> },
+  {
+    path: '/',
+    element: (
+      <ProtectedRoute>
+        <DashBoard />
+      </ProtectedRoute>
+    ),
+  },
   // 회원가입
   { path: 'signup', element: <SignUp /> },
   //로그인
