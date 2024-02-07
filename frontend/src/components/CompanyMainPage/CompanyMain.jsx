@@ -1,5 +1,8 @@
 import { motion } from "framer-motion"
+import useAuthStore from '../../store/store';
 import DeliverReservation from "./DeliverReservation"
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -14,12 +17,21 @@ const CompanyMain = () => {
             },
         },
     };
-    const userData = JSON.parse(sessionStorage.getItem('userInfo'))
+    const userData = JSON.parse(localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo'))
     console.log(userData)
 
     // 현재 role상태에 따라 버튼 활성화를 위한 변수
     const hasDeliveryRole = userData.roleList.includes("DELIVER");
     const hasCleanupRole = userData.roleList.includes("CLEAN");
+    const logout = useAuthStore((state) => state.logout);
+    const navigate = useNavigate();
+
+
+    const handleLogout = async (event) => {
+      event.preventDefault();
+      await logout(navigate)
+
+  };
     
 
     return (
@@ -35,11 +47,25 @@ const CompanyMain = () => {
           className="col-10"
         >
           <div className="col-12 px-3">
-            <div className="row my-5 " style={{ height: "40rem" }}>
-              <div className="col-2 p-3 d-flex flex-column align-items-center justify-content-around text-center border-dark-subtle border-end">
+                        <div className="row my-5" style={{ height: '50%' }}>
+                            <div className="col-2 p-3 gap-3 d-flex flex-column align-items-center justify-content-center text-center border-dark-subtle border-end">
+                                <img src={userData.profileImage} alt="Profile" style={{ maxWidth: '100px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }} />
                 {/* 좌측 컬럼 */}
                 <h3 className="mt-5">{userData.name}님</h3>
                 <h3>안녕하세요</h3>
+                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    style={{
+                                        color: 'red',
+                                        border: 'none',
+                                        background: 'none',
+                                        padding: '0',
+                                        margin: '0',
+                                    }}
+                                >
+                                    로그아웃
+                                </button>
                 <div
                   className="d-flex flex-column justify-content-center gap-5"
                   style={{ width: "11rem" }}
