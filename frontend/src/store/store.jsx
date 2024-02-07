@@ -2,8 +2,9 @@ import { create } from 'zustand';
 import { api } from '../services/api';
 
 const useAuthStore = create((set) => {
-  const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-  const token = localStorage.getItem('token');
+
+  const userInfo = JSON.parse(localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo') ||'{}');
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
   return {
     user: userInfo.email ? userInfo : null,
@@ -14,15 +15,15 @@ const useAuthStore = create((set) => {
       set({ isLoading: true, error: null });
       try {
         const response = await api.post('/login', { email, pwd });
-        const { who, accessToken, refreshToken, name, profileImage, role } = response.data.result;
+        const { who, accessToken, refreshToken, name, profileImage, roleList } = response.data.result;
         const storage = rememberMe ? localStorage : sessionStorage;
-
+    
         storage.setItem('token', accessToken);
         storage.setItem('refreshToken', refreshToken);
-
-        const userInfo = { who, email, name, profileImage, role };
+    
+        const userInfo = { who, email, name, profileImage, roleList };
         storage.setItem('userInfo', JSON.stringify(userInfo));
-
+    
         set({ user: userInfo, token: accessToken, isLoading: false });
 
         // 액세스 토큰 만료 시간을 고정값으로 설정 (예: 3600초)
@@ -30,7 +31,10 @@ const useAuthStore = create((set) => {
         setTimeout(async () => {
           await refreshToken(); // 토큰 갱신 함수 호출
         }, (expiresIn - 60) * 1000); // 만료 1분 전에 갱신
-        navigate('/dashboard');
+        { who === 1 ?
+        navigate('/dashboard'):
+        navigate(`/dashbordcompany`)
+        }
       } catch (error) {
         console.error('Login error:', error);
         set({

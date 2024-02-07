@@ -271,6 +271,27 @@ const MainComponent = () => {
 
                                 </motion.div>
                             </div>
+                            <motion.div style={{ width: '100%', minHeight: "10rem" }}>
+                            {
+                                    (requestList === "용달" ? requestDelList : requestCLEList).map((item,index) => {
+                                        const originalDate = new Date(item.createDt);
+                                        let orderDate=""
+                                        { requestList==="용달" ? orderDate = new Date(item.startTime) :orderDate = new Date(item.reservationTime) }
+                                        let orderAddress = ""
+                                        {requestList==="용달" ? orderAddress = item.departure : orderAddress =item.address}
+                                        const formatDate = `${originalDate.getFullYear()}.${(originalDate.getMonth() + 1).toString().padStart(2, '0')}.${originalDate.getDate().toString().padStart(2, '0')}`;
+                                        const formatoder = `${(orderDate.getMonth() + 1).toString().padStart(2, '0')}${orderDate.getDate().toString().padStart(2, '0')}/${orderAddress}/${requestList}`;
+                                        let orderName = "";
+                                        if(requestList==="용달"){orderName="DEL"}
+                                        else{orderName="CLE"}
+                                        let orderN=""
+                                        {requestList==="용달" ? orderN=(item.id * item.id).toString().padStart(3, '0'): orderN=(item.cleanId * item.cleanId).toString().padStart(3, '0'); }
+                                        
+                                        // requests 컴포넌트 반환
+                                        return <Requests requestList={requestList} list={item.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.status} />;
+                                    })
+                                }
+                            </motion.div>
                         </div>
                     </div>
                 </motion.div>

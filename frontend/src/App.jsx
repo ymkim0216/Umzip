@@ -26,6 +26,7 @@ import RequestCleaning from './pages/Service/Cleaning/RequestCleaning';
 import RequestCleaningForm from './pages/Service/Cleaning/RequestCleaningForm';
 import SubmitCleaningEstimate from './pages/Service/Cleaning/SubmitCleaningEstimate';
 import PoinHistory from './pages/MainPage/PointHistory';
+import CompanyDashBord from './pages/CompanyPage/CompanyDashBord';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuthStore(); // Access the user state
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
   { path: 'myprofile', element: <MyProfile /> },
   //포인트적립내역
   { path: 'mypoint/:id', element: <PoinHistory /> },
-  // 대시보드
+  // 대시보드 유저
   {
     path: 'dashboard',
     element: (
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
         <DashBoard />
       </ProtectedRoute>
     ),
+  },
+  // 대시보드 업체
+  {
+    path: 'dashbordcompany', element: <CompanyDashBord />
   },
 
   //청소요청
