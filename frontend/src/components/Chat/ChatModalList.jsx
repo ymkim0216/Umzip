@@ -59,7 +59,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   const socket = () => {
     const { token } = useAuthStore.getState();
     const client = new Client({
-      brokerURL: `ws:/https://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+      brokerURL: `ws://i10e108.p.ssafy.io/ws?accessToken=${token}`,
 
       // 여기에 다른 설정도 추가할 수 있습니다.
       onConnect: (frame) => {
@@ -179,7 +179,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
               >
                 {userId && talkHistory &&talkHistory.map((items, index) => (
                   <div
-                    key={items.id}
+                    key={items.index}
                     style={{
                       alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
                       maxWidth: "70%",

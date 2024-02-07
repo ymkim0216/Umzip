@@ -21,7 +21,7 @@ export default function RecommendModalComponent({ companyId }) {
                 }
             });
             console.log(response.data.result)
-            setServiceInfo(response.data.result)
+            setServiceInfo(response.data.result) 
             return response
         } catch (error) {
             console.error(error);
@@ -33,7 +33,7 @@ export default function RecommendModalComponent({ companyId }) {
         <>
         { serviceInfo && <div className="modal-dialog modal-dialog-scrollable">
             <div className="p-3 mt-4 gap-2 d-flex flex-column align-items-center" style={{ width: "100%", borderBottom: "1px solid #888888" }} >
-                <img style={{ width: "7rem", height: "7rem" }} src="/randomimg.png" alt="Random Image" />
+                <img style={{ width: "7rem", height: "7rem" }} src={serviceInfo.imageUrl} alt="Random Image" />
                 <h5 className="m-0">{serviceInfo.name}</h5>
                 <div className="d-flex gap-2">
                     <StarRating rating={serviceInfo.averageScore} />

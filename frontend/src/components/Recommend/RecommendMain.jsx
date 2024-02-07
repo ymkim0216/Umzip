@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "./RecommendMain.css"
 import axios from "axios";
 import { api } from "../../services/api";
+import useAuthStore from "../../store/store";
 
 
 export default function RecommendMain() {
@@ -29,12 +30,13 @@ export default function RecommendMain() {
         console.log(status);
 
         // 용달 또는 청소에 대한 예약 처리
-        // if (status === "용달") {
-        //     axios_DEL_reservation(userChoice);
-        // } else {
-        //     axios_CLE_reservation(userChoice);
-        // }
-
+        if (status === "용달") {
+            axios_DEL_reservation(userChoice);
+        } else {
+            axios_CLE_reservation(userChoice);
+        }
+        const { token } = useAuthStore.getState();
+        console.log(token)
         // 로딩 상태 변경
         setIsLoading(true);
 
@@ -65,8 +67,10 @@ export default function RecommendMain() {
         }
 
         const price = userInput.price
+        console.log(memberId)
         const companys = memberId
-        console.log(companys)
+        // console.log(companys)
+
         const selectedFiles = userInput.imageFileList[0]
         const formData = new FormData()
         formData.append("delivery", new Blob([JSON.stringify(delivery)], { type: "application/json" }));
@@ -84,7 +88,6 @@ export default function RecommendMain() {
                 formData,
                 {
                     headers: {
-
                         'Content-Type': 'multipart/form-data',
                     }
                 }
@@ -211,7 +214,8 @@ export default function RecommendMain() {
                 >
                     {data && data.slice(0, visibleItems).map((item, index) => (
                         <motion.div key={index} variants={{ visible: { opacity: 1, y: 0 } }} initial={{ opacity: 0, y: 20 }}>
-                            {status === "용달 " ? <RecommendPeople status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.companyName} rating={3.8} img={item.imageUrl} /> : <RecommendPeople status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.tags} name={item.companyName} rating={3.8} img={item.imageUrl} />}
+                            {status === "용달 " ? <RecommendPeople memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.companyName} rating={3.8} img={item.imageUrl} /> :
+                                <RecommendPeople memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.tags} name={item.companyName} rating={3.8} img={item.imageUrl} />}
                         </motion.div>
                     ))}
                 </motion.div>

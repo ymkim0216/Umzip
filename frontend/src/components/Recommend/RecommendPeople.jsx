@@ -5,7 +5,7 @@ import RecommendModal from "./RecommendModal";
 import { Client } from "@stomp/stompjs";
 import useAuthStore from "../../store/store";
 import { api } from "../../services/api";
-export default function RecommendPeople({ status, userChoice, setUserChoice, companyId, name, rating, tag, img }) {
+export default function RecommendPeople({ status ,memberId, userChoice, setUserChoice, companyId, name, rating, tag, img }) {
 
     const [imageSrc, setImageSrc] = useState(null);
     if (imageSrc === null) {
@@ -50,7 +50,7 @@ export default function RecommendPeople({ status, userChoice, setUserChoice, com
         const { token } = useAuthStore.getState();
         console.log(res)
         const client = new Client({
-            brokerURL: `ws:/https://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+            brokerURL: `ws://i10e108.p.ssafy.io/ws?accessToken=${token}`,
 
             // 여기에 다른 설정도 추가할 수 있습니다.
             onConnect: (frame) => {
@@ -145,32 +145,34 @@ export default function RecommendPeople({ status, userChoice, setUserChoice, com
 
 
 
-    const handleClick = () => {
+    const handleClick = (memberId) => {
         if (status === "용달") {
-            setImageSrc((prevSrc) =>
-                prevSrc === "/truck.png" ? "/checked_truck.png" : "/truck.png"
-            );
+          setImageSrc((prevSrc) =>
+            prevSrc === "/truck.png" ? "/checked_truck.png" : "/truck.png"
+          );
+        } else {
+          setImageSrc((prevSrc) =>
+            prevSrc === "/clean.png" ? "/checked_clean.png" : "/clean.png"
+          );
         }
-        else {
-            setImageSrc((prevSrc) =>
-                prevSrc === "/clean.png" ? "/checked_clean.png" : "/clean.png"
-            );
-        }
-
-        // /userChoice 배열 안에 companyId가 있는지 확인
-        const isCompanySelected = userChoice.some((choice) => choice.memberId === companyId);
-
-        // 만약 있다면 제거하고, 없다면 추가
+        
         setUserChoice((prevChoices) => {
-            if (isCompanySelected) {
-                // 이미 선택된 기업이면 제거
-                return prevChoices.filter((choice) => choice.memberId !== companyId);
-            } else {
-                // 선택되지 않은 기업이면 추가
-                return [...prevChoices, {"memberId": companyId }];
-            }
+          // 이미 선택된 기업인지 확인
+          const isCompanySelected = prevChoices.some(
+            (choice) => choice.memberId === memberId
+          );
+      
+          if (isCompanySelected) {
+            // 이미 선택된 기업이면 제거
+            return prevChoices.filter((choice) => choice.memberId !== memberId);
+          } else {
+            // 선택되지 않은 기업이면 추가
+            return [...prevChoices, { memberId: memberId }];
+          }
+          
         });
-    };
+      };
+      
     return (
         <>
             <RecommendModal companyId={companyId} isOpen={isModalOpen} closeModal={handleModal} />
@@ -275,7 +277,7 @@ export default function RecommendPeople({ status, userChoice, setUserChoice, com
                     <motion.div
                         key={imageSrc}
                         className="d-flex col-md-2 p-2"
-                        onClick={handleClick}
+                        onClick={()=>handleClick(memberId)}
                         style={{ cursor: "pointer" }}
                         whileHover={{ scale: 1.05 }}
                     >
