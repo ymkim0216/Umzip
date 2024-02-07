@@ -173,7 +173,7 @@ const MainComponent = () => {
                                         else{orderName="CLE"}
                                         let orderN=""
                                         {requestList==="용달" ? orderN=(item.id * item.id).toString().padStart(3, '0'): orderN=(item.cleanId * item.cleanId).toString().padStart(3, '0'); }
-                                         
+                                        
                                         // requests 컴포넌트 반환
                                         return <Requests requestList={requestList} list={item.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.status} />;
                                     })
