@@ -20,7 +20,7 @@ const useAuthStore = create((set) => {
     
         storage.setItem('token', accessToken);
         storage.setItem('refreshToken', refreshToken);
-    
+
         const userInfo = { who, email, name, profileImage, roleList };
         storage.setItem('userInfo', JSON.stringify(userInfo));
     

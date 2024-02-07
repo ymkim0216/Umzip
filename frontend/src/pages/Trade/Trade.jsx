@@ -26,7 +26,7 @@ function Trade() {
     try {
       const queryString = `keyword=${searchTerm}&page=${page}&size=${pageSize}`;
       const response = await api.get(`/trade-items?${queryString}`);
-      const newTrades = response.data.result.content || [];
+      const newTrades = response.data.result || [];
 
       // Append new trades to the existing list
       setTrades((prevTrades) => [...prevTrades, ...newTrades]);
