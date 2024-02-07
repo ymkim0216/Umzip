@@ -9,10 +9,11 @@ const LoginForm = () => {
   const login = useAuthStore((state) => state.login);
   const isLoading = useAuthStore((state) => state.isLoading);
   const error = useAuthStore((state) => state.error);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await login(email, password, navigate);
+    await login(email, password, navigate, rememberMe);
   };
 
   return (
@@ -55,15 +56,17 @@ const LoginForm = () => {
             </div>
 
             <div className="form-group form-check mb-4">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="rememberMe"
-              />
-              <label className="form-check-label" htmlFor="rememberMe">
-                Remember me
-              </label>
-            </div>
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="rememberMe"
+            checked={rememberMe}
+            onChange={(event) => setRememberMe(event.target.checked)}
+          />
+          <label className="form-check-label" htmlFor="rememberMe">
+            Remember me
+          </label>
+        </div>
 
             <button
               type="submit"

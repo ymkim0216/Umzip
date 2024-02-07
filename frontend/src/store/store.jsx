@@ -2,8 +2,14 @@ import { create } from 'zustand';
 import { api } from '../services/api';
 
 const useAuthStore = create((set) => {
-  const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-  const token = localStorage.getItem('token');
+  const localUserInfo = localStorage.getItem('userInfo');
+  const sessionUserInfo = sessionStorage.getItem('userInfo');
+
+  const userInfo = JSON.parse(localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo') ||'{}');
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  // { tokenLocal ? 
+  // token = localStorage.getItem('token') :
+  // token = sessionStorage.getItem('token')}
 
   return {
     user: userInfo.email ? userInfo : null,

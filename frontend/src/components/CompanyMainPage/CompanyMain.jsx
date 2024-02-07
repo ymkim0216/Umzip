@@ -14,8 +14,9 @@ const CompanyMain = () => {
             },
         },
     };
-    const aaa = sessionStorage.getItem('userInfo')
-    console.log(aaa)
+    const userData = JSON.parse(sessionStorage.getItem('userInfo'))
+    console.log(typeof(userData))
+
 
     const {fetchData, data} = companyDeliveryReservation()
 
@@ -43,7 +44,7 @@ const CompanyMain = () => {
                     <div className="row my-5 " style={{ height: '40rem' }}  >
                         <div className="col-2 p-3 d-flex flex-column align-items-center justify-content-around text-center border-dark-subtle border-end" >
                             {/* 좌측 컬럼 */}
-                            <h3 className='mt-5'>OOO님</h3>
+                            <h3 className='mt-5'>{userData.name}님</h3>
                             <h3>안녕하세요</h3>
                             <div className='d-flex flex-column justify-content-center gap-5' style={{ width: "11rem" }}>
                                 <motion.button
