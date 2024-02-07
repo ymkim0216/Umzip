@@ -5,7 +5,7 @@ import StatusChange from './Status_Change';
 import { Client } from "@stomp/stompjs";
 import useAuthStore from '../../../store/store';
 
-export default function Requests({ isAll,setRequestList, requestList, date, orderName, orderNumber, status, list }) {
+export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
     const [chatRoom, setChatRoom] = useState("")
     const scrollToBottom = () => {
         // 스크롤 위치를 항상 맨 아래로 조절
@@ -55,7 +55,7 @@ export default function Requests({ isAll,setRequestList, requestList, date, orde
         const { token } = useAuthStore.getState();
         console.log(res)
         const client = new Client({
-            brokerURL: `ws:/https://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+            brokerURL: `ws://i10e108.p.ssafy.io/ws?accessToken=${token}`,
 
             // 여기에 다른 설정도 추가할 수 있습니다.
             onConnect: (frame) => {
@@ -224,7 +224,9 @@ export default function Requests({ isAll,setRequestList, requestList, date, orde
                                         transition={{ duration: 0.3 }}
                                     >
                                         <DropDown
-                                        isAll={isAll}
+                                            setOpenRecommendModal={setOpenRecommendModal}
+                                            setChoiceCompanyId={setChoiceCompanyId}
+                                            isAll={isAll}
                                             setRequestList={setRequestList}
                                             mappingId={data.mappingId}
                                             setChatRoom={setChatRoom}

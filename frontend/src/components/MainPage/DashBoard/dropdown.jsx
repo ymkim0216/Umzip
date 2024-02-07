@@ -3,10 +3,13 @@ import StatusButton from "./Statusbutton"
 import { AnimatePresence, motion } from "framer-motion";
 
 
-export default function DropDown({isAll,setRequestList,mappingId,setChatRoom,companyId, toggleModal, requestList, companyName, text, status, img, price }) {
+export default function DropDown({setOpenRecommendModal, setChoiceCompanyId,isAll,setRequestList,mappingId,setChatRoom,companyId, toggleModal, requestList, companyName, text, status, img, price }) {
     const newprice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
-
+    const handleClick = ()=>{
+        setChoiceCompanyId(companyId)
+        setOpenRecommendModal(true)
+    }
     const newstatus = status % 100
 
     let realstatus = ""
@@ -20,7 +23,7 @@ export default function DropDown({isAll,setRequestList,mappingId,setChatRoom,com
     return (<>
 
         <div className='rounded-3 p-2 d-flex justify-content-around text-center align-items-center position-relative' style={{ border: '1px solid #006EEE', minHeight: "8rem" }}>
-            <img src="/randomimg.png" style={{ width: 70, height: 70 }} ></img>
+            <motion.img whileHover={{scale:1.05, cursor:"pointer"}} className="shadow rounded-pill" onClick={handleClick} src={img} style={{ width: 70, height: 70 }} ></motion.img>
             <div className="col-md-2">
                 <p className="m-0">업체명 : {companyName} </p>
                 <p className="m-0">가격 : {newprice} </p>
