@@ -14,13 +14,13 @@ const useAuthStore = create((set) => {
       set({ isLoading: true, error: null });
       try {
         const response = await api.post('/login', { email, pwd });
-        const { who, accessToken, refreshToken, name, profileImage, role } = response.data.result;
+        const { who, accessToken, refreshToken, name, profileImage, roleList } = response.data.result;
         const storage = rememberMe ? localStorage : sessionStorage;
 
         storage.setItem('token', accessToken);
         storage.setItem('refreshToken', refreshToken);
 
-        const userInfo = { who, email, name, profileImage, role };
+        const userInfo = { who, email, name, profileImage, roleList };
         storage.setItem('userInfo', JSON.stringify(userInfo));
 
         set({ user: userInfo, token: accessToken, isLoading: false });

@@ -9,13 +9,14 @@ import { api } from '../../../services/api';
 import useAuthStore from '../../../store/store';
 
 const MainComponent = () => {
-  const [userInfo, setUserInfo] = useState({ name: '', profilePic: '' });
+  const [userInfo, setUserInfo] = useState({ name: '', profileImage: '' });
   const [requestAllList, setRequestAllList] = useState([]);
   const [requestDelList, setRequestDelList] = useState([]);
   const [requestCLEList, setRequestCLEList] = useState([]);
   const [requestList, setrequestList] = useState('용달');
   useEffect(() => {
     const storedUserInfo = localStorage.getItem('userInfo');
+    console.log(storedUserInfo);
     if (storedUserInfo) {
       const parsedInfo = JSON.parse(storedUserInfo);
       setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage });

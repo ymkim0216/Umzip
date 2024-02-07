@@ -24,7 +24,7 @@ const SignUpForm = () => {
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [companyRequestDtoList, setCompanyRequestDtoList] = useState([]);
+  const [companyFormData, setCompanyFormData] = useState({});
   const navigate = useNavigate();
 
   const {
@@ -56,7 +56,7 @@ const SignUpForm = () => {
   const checkEmail = async (email) => {
     try {
       const response = await axios.post(
-        'http://192.168.30.206:8080/api/auth/email',
+        'https://i10e108.p.ssafy.io/api/auth/email',
         { email }
       );
       if (response.data.isSuccess) {
@@ -106,25 +106,21 @@ const SignUpForm = () => {
   };
 
   const handleServiceClick = (serviceType) => {
+    // 동일한 서비스를 다시 클릭하면 폼을 숨김
     if (selectedService === serviceType && isFormVisible) {
-
-      const formData = saveFormData();
-      setCompanyRequestDtoList([...companyRequestDtoList, formData]);
-
       setIsFormVisible(false);
       setSelectedService(null);
     } else {
+      // 다른 서비스를 클릭하면, 폼을 보여주고 새로운 서비스로 업데이트
       setIsFormVisible(true);
       setSelectedService(serviceType);
     }
   };
 
-  const saveFormData = () => {
-    if (selectedService === 'clean') {
-      return { CompanyCode: -1, ...otherFormData };
-    } else if (selectedService === 'delivery') {
-      return { CompanyCode: 1, ...otherFormData };
-    }
+  const handleCompanyDataSubmit = (companyData) => {
+    setCompanyFormData(companyData);
+    setIsFormVisible(false);
+    console.log(companyData);
   };
 
   const onSubmit = async (data) => {
@@ -135,30 +131,35 @@ const SignUpForm = () => {
       alert(
         '이메일 중복 검사, 핸드폰 인증 코드 전송, 인증 코드 검증을 모두 완료해야 합니다.'
       );
+      setLoading(false);
       return;
     }
 
-    const { name, email, phone, password } = data;
-    try {
-      const response = await axios.post(
-        'http://192.168.30.145:8080/api/users',
-        {
-          name,
-          email,
-          phone,
-          password,
-          address,
-          sigungu,
-          addressDetail,
-        }
-      );
+    // Determine the endpoint based on the selectedButton
+    const endpoint =
+      selectedButton === 'normal'
+        ? 'https://i10e108.p.ssafy.io/api/users'
+        : 'https://i10e108.p.ssafy.io/api/company';
 
+    // Include companyFormData if the company option is selected
+    const payload = {
+      ...data,
+      address, // useForm에서 setValue를 통해 설정된 주소 값
+      sigungu,
+      addressDetail,
+      // selectedButton이 'company'일 경우 companyFormData 추가
+      ...(selectedButton === 'company' && companyFormData),
+    };
+    console.log(payload);
+    console.log(companyFormData);
+    console.log(selectedButton);
+    try {
+      const response = await axios.post(endpoint, payload);
       if (response.data.isSuccess) {
         alert('Join Success!');
         navigate('/login');
       } else {
-        let message = response.data.message;
-        alert(message);
+        alert(response.data.message);
       }
     } catch (error) {
       console.log(error);
@@ -206,6 +207,7 @@ const SignUpForm = () => {
 
       setIsModalOpen(false);
       setAddress(fullAddress + extraAddress);
+
       if (addressDetailRef.current) {
         addressDetailRef.current.focus();
       }
@@ -448,7 +450,7 @@ const SignUpForm = () => {
                 )}
               </div>
               <div className="form-group mb-4">
-                <label htmlFor="region">주소</label>
+                <label htmlFor="address">주소</label>
                 <input
                   id="address"
                   className="form-control rounded-pill py-4"
@@ -499,7 +501,8 @@ const SignUpForm = () => {
                   {isFormVisible && (
                     <div className="mt-3">
                       <CompanySignUpForm
-                        CompanyCode={selectedService === 'clean' ? -1 : 1}
+                        companyType={selectedService}
+                        onCompanyDataSubmit={handleCompanyDataSubmit}
                       />
                     </div>
                   )}
