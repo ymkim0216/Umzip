@@ -32,8 +32,8 @@ export default function Address({ whatModal, setwhereStart, setwhereEnd, setIsMo
     };
 
     return (
-        <div>
-            <DaumPostcode onComplete={onCompletePost} />
+        <div >
+            <DaumPostcode  onComplete={onCompletePost} />
         </div>
     );
 }

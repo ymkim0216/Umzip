@@ -2,11 +2,11 @@ import axios from 'axios';
 import useAuthStore from '../store/store';
 
 const api = axios.create({
-  // 172.30.1.68:8080/api 윤민이 API
+  // http://172.30.1.68:8080/api 윤민이 API
   // baseURL: 'http://192.168.30.206:8080/api' 동현
-  // 192.168.30.145/api 민수
-  baseURL: 'https://i10e108.p.ssafy.io/api' //빌드 주소
-  // baseURL: 'http://192.168.30.145:8080/api'
+  // http://192.168.30.145:8080/api 민수
+  // https://i10e108.p.ssafy.io/api 빌드 주소
+  baseURL: 'https://i10e108.p.ssafy.io/api'
 });
 
 api.interceptors.request.use((config) => {

@@ -208,9 +208,7 @@ export default function DeliveryForm() {
 
     try {
       const response = await api.get('/delivery/user/car', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+
       });
 
       setCarData(response.data.result)
@@ -303,7 +301,7 @@ export default function DeliveryForm() {
   }, []);
   return (<>
     <div style={{
-      position: 'absolute', width: '20%', top: '15%',
+      position: 'absolute', width: '20%', top: '10%',
       left: '70%',
     }}>
       <ProgressBar steps={totalSteps} activeStep={activeStep} />
@@ -377,6 +375,7 @@ export default function DeliveryForm() {
             position: 'absolute',
             top: '10%',
             left: '10%',
+            textDecoration:"none",
             // 이미지의 높이를 설정해주세요
             cursor: 'pointer',
           }}><img style={{
@@ -524,12 +523,12 @@ export default function DeliveryForm() {
           />
           <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
         </motion.h5>
-        <motion.div ref={newscope} className="col-12 d-flex justify-content-center align-items-center " style={{ height: "100vh", widt: "100vw" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
+        <motion.div style={{marginTop:"10rem"}} ref={newscope} className="col-12 d-flex justify-content-center align-items-center "  initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
           <div className="col-8 d-flex gap-3 ">
-            <motion.div className="col-6 d-flex flex-column gap-4 p-3">
-              <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "2rem" }}>
-                <div className="col-1 fw-bold">출발 : </div>
-                <div className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} > {whereStart.address ? (
+            <motion.div className="col-6 d-flex flex-column gap-4 p-3 justify-content-center">
+              <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "5%" }}>
+                <div className="col-1 fw-bold">출발</div>
+                <div onClick={() => hadleModal("start")} className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{height: "100%"  }} > {whereStart.address ? (
                   <p className="m-0">{whereStart.address}</p>
                 ) : (
                   <p className="m-0 text-muted">출발지를 입력해주세요.</p>
@@ -538,13 +537,13 @@ export default function DeliveryForm() {
               </div>
               <div id={startDetailAddress === "" ? "secondcomponent" : ""}>
                 <div className="col-9 d-flex " style={{ width: "100%" }} >
-                  <div className="col-2 fw-bold">출발상세주소 : </div>
-                  <input style={{ border: "none" }} className="col-10 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setStartDetailAddress(event.target.value)} ></input>
+                  <div  className="col-3 fw-bold">출발상세주소</div>
+                  <input style={{ border: "none" }} className="col-9 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setStartDetailAddress(event.target.value)} ></input>
                 </div>
               </div>
               <div id={whereEnd.address ? "" : "secondcomponent"} className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "2rem" }}>
-                <div className="col-1 fw-bold">도착 : </div>
-                <div className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }}>
+                <div className="col-1 fw-bold">도착</div>
+                <div  onClick={() => hadleModal("end")} className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }}>
                   {whereEnd.address ? (
                     <p className="m-0">{whereEnd.address}</p>
                   ) : (
@@ -554,8 +553,8 @@ export default function DeliveryForm() {
                 <button onClick={() => hadleModal("end")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
               </div>
               <div id={endDetailAddress === "" ? "secondcomponent" : ""} className="col-9 d-flex " style={{ width: "100%" }} >
-                <div className="col-2 fw-bold">도착상세주소 : </div>
-                <input style={{ border: "none" }} className="col-10 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setEndDetailAddress(event.target.value)} ></input>
+                <div className="col-3 fw-bold">도착상세주소</div>
+                <input style={{ border: "none" }} className="col-9 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setEndDetailAddress(event.target.value)} ></input>
               </div>
               <AnimatePresence>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="d-flex gap-3">
@@ -569,8 +568,8 @@ export default function DeliveryForm() {
 
               </div>
             </motion.div>
-
-            <div className="col-6 p-3 gap-4 d-flex flex-column" >
+                  <div className="col-1"></div>
+            <div className="col-5 p-3 gap-4 d-flex flex-column justify-content-center" >
               <div id={whatPacking ? "" : "secondcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
                 <p className="m-0 col-3 fw-bold">포장여부</p>
                 <div className="col-3">
@@ -736,7 +735,7 @@ export default function DeliveryForm() {
 
               <div className="d-flex text-center">
                 <p className="m-0 col-4">가구사진</p>
-                { console.log(selectedFiles)}
+                {/* { console.log(selectedFiles)} */}
                 {
                 selectedFiles && selectedFiles.length !== 0 && (
                   <div className="col-8 d-flex gap-3 justify-content-center shadow" style={{ overflowX: "auto" }}>

@@ -74,7 +74,7 @@ const SignUpForm = () => {
   // 핸드폰 인증 코드 전송
   const sendPhoneCode = async (phone) => {
     try {
-      // const response = await axios.post('http://192.168.30.145:8080/api/auth/phone', { phone });
+      // const response = await axios.post('https://i10e108.p.ssafy.io/api/auth/phone', { phone });
       // if (response.data.isSuccess) {
       if (true) {
         alert('인증번호가 전송되었습니다.');
@@ -91,7 +91,7 @@ const SignUpForm = () => {
   // 핸드폰 인증 코드 검증
   const verifyPhoneCode = async (phone, code) => {
     try {
-      // const response = await axios.post('http://192.168.30.145:8080/api/auth/code', { phone, code });
+      // const response = await axios.post('https://i10e108.p.ssafy.io/api/auth/code', { phone, code });
       // if (response.data.isSuccess) {
       if (true) {
         alert('인증되었습니다!');
@@ -135,6 +135,7 @@ const SignUpForm = () => {
       return;
     }
 
+<<<<<<< frontend/src/components/Login_SignUp/SignUpForm.jsx
     // Determine the endpoint based on the selectedButton
     const endpoint =
       selectedButton === 'normal'
