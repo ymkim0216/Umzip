@@ -8,7 +8,7 @@ import useAuthStore from '../../store/store';
 
 
 
-export default function ChatModalList({ name, chat, date, img, chatroomId, receiverId }) {
+export default function ChatModalList({ name, chat, date, img, chatroomId, receiverId, unReadCount }) {
   const [openModal, setOpenModal] = useState(false);
   const [talkHistory, setTalkHistory] = useState([]);
   const chatContainerRef = useRef();
@@ -16,7 +16,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   const stompClientRef = useRef(null);
   const [userId, setUserId] = useState(null)
   const [unReadMessage, setUnReadMessage] = useState(unReadCount)
-  
+
   const scrollToBottom = () => {
     // 스크롤 위치를 항상 맨 아래로 조절
     if (chatContainerRef.current) {
@@ -27,25 +27,25 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
     scrollToBottom();
   }, [talkHistory, openModal]);
 
-  
+
   const handleinput = (event) => {
     setuserinput(event.target.value);
   };
 
-  const toggleModal = async() => {
+  const toggleModal = async () => {
     setOpenModal(true);
 
     // 모달이 열릴 때만 대화 내용을 불러옴
     if (!talkHistory.length) {
-      
+
       const stompClient = socket();
       console.log(stompClient)
       const talk = await axios_detailChat();
       setTalkHistory(talk)
-       stompClientRef.current = stompClient;
-    // stompClient.onConnect(stompClient.activate());
+      stompClientRef.current = stompClient;
+      // stompClient.onConnect(stompClient.activate());
       // console.log(stompClient)
-      
+
       stompClient.onConnect(
         stompClient.activate()
       )
@@ -59,7 +59,8 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   const socket = () => {
     const { token } = useAuthStore.getState();
     const client = new Client({
-      brokerURL: `ws://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+      brokerURL: `wss://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+      // brokerURL: `ws://192.168.30.145:8080/ws?accessToken=${token}`,
 
       // 여기에 다른 설정도 추가할 수 있습니다.
       onConnect: (frame) => {
@@ -67,7 +68,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
 
         client.subscribe(`/topic/user/${token}`, (message) => {
           console.log(message.body)
-         
+
           setUserId((prev) => {
             const updatedHistory = message.body
             // console.log(updatedHistory);
@@ -86,7 +87,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
         console.error('Additional details: ' + frame.body);
       }
     });
-  
+
     return client;
   };
 
@@ -94,7 +95,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
 
 
   const axios_detailChat = async () => {
-    
+
 
     try {
       const response = await api.get(`/chat/rooms/${chatroomId}`, {
@@ -166,8 +167,10 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
               alignItems: 'center',
             }}>
             <div style={{
+              display: "flex",
               position: 'relative',
               width: '40%',
+              height: "70%",
               backgroundColor: 'white',
               padding: '20px',
               borderRadius: '8px',
@@ -175,11 +178,16 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
               <div
                 onClick={(e) => e.stopPropagation()}
                 ref={chatContainerRef}
-                style={{ width: "100%", display: "flex", flexDirection: "column", maxHeight: "40rem", overflowY: "auto" }}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  overflowY: "auto"
+                }}
               >
-                {userId && talkHistory &&talkHistory.map((items, index) => (
+                {userId && talkHistory && talkHistory.map((items, index) => (
                   <div
-                    key={items.index}
+                    key={index}
                     style={{
                       alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
                       maxWidth: "70%",
@@ -193,15 +201,13 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
                     {items.content}
                   </div>
                 ))}
-
-                <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
-                  <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                  <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
-                </form>
-
-                <div>
-
+                <div style={{ marginTop: "auto" }}>
+                  <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
+                    <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                    <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
+                  </form>
                 </div>
+
               </div>
             </div>
 

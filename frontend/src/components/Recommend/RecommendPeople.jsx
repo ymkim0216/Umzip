@@ -5,7 +5,7 @@ import RecommendModal from "./RecommendModal";
 import { Client } from "@stomp/stompjs";
 import useAuthStore from "../../store/store";
 import { api } from "../../services/api";
-export default function RecommendPeople({ status ,memberId, userChoice, setUserChoice, companyId, name, rating, tag, img }) {
+export default function RecommendPeople({ status, memberId, userChoice, setUserChoice, companyId, name, rating, tag, img }) {
 
     const [imageSrc, setImageSrc] = useState(null);
     if (imageSrc === null) {
@@ -50,8 +50,8 @@ export default function RecommendPeople({ status ,memberId, userChoice, setUserC
         const { token } = useAuthStore.getState();
         console.log(res)
         const client = new Client({
-            brokerURL: `ws://i10e108.p.ssafy.io/ws?accessToken=${token}`,
-
+            brokerURL: `wss://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+            // brokerURL: `ws://192.168.30.145:8080/ws?accessToken=${token}`,
             // 여기에 다른 설정도 추가할 수 있습니다.
             onConnect: (frame) => {
                 console.log('Connected: ' + frame);
@@ -147,32 +147,32 @@ export default function RecommendPeople({ status ,memberId, userChoice, setUserC
 
     const handleClick = (memberId) => {
         if (status === "용달") {
-          setImageSrc((prevSrc) =>
-            prevSrc === "/truck.png" ? "/checked_truck.png" : "/truck.png"
-          );
+            setImageSrc((prevSrc) =>
+                prevSrc === "/truck.png" ? "/checked_truck.png" : "/truck.png"
+            );
         } else {
-          setImageSrc((prevSrc) =>
-            prevSrc === "/clean.png" ? "/checked_clean.png" : "/clean.png"
-          );
+            setImageSrc((prevSrc) =>
+                prevSrc === "/clean.png" ? "/checked_clean.png" : "/clean.png"
+            );
         }
-        
+
         setUserChoice((prevChoices) => {
-          // 이미 선택된 기업인지 확인
-          const isCompanySelected = prevChoices.some(
-            (choice) => choice.memberId === memberId
-          );
-      
-          if (isCompanySelected) {
-            // 이미 선택된 기업이면 제거
-            return prevChoices.filter((choice) => choice.memberId !== memberId);
-          } else {
-            // 선택되지 않은 기업이면 추가
-            return [...prevChoices, { memberId: memberId }];
-          }
-          
+            // 이미 선택된 기업인지 확인
+            const isCompanySelected = prevChoices.some(
+                (choice) => choice.memberId === memberId
+            );
+
+            if (isCompanySelected) {
+                // 이미 선택된 기업이면 제거
+                return prevChoices.filter((choice) => choice.memberId !== memberId);
+            } else {
+                // 선택되지 않은 기업이면 추가
+                return [...prevChoices, { memberId: memberId }];
+            }
+
         });
-      };
-      
+    };
+
     return (
         <>
             <RecommendModal companyId={companyId} isOpen={isModalOpen} closeModal={handleModal} />
@@ -192,8 +192,10 @@ export default function RecommendPeople({ status ,memberId, userChoice, setUserC
                             alignItems: 'center',
                         }}>
                         <div style={{
+                            display: "flex",
                             position: 'relative',
                             width: '40%',
+                            height: "70%",
                             backgroundColor: 'white',
                             padding: '20px',
                             borderRadius: '8px',
@@ -201,11 +203,16 @@ export default function RecommendPeople({ status ,memberId, userChoice, setUserC
                             <div
                                 onClick={(e) => e.stopPropagation()}
                                 ref={chatContainerRef}
-                                style={{ width: "100%", display: "flex", flexDirection: "column", maxHeight: "40rem", overflowY: "auto" }}
+                                style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    overflowY: "auto"
+                                }}
                             >
-                                {talkHistory && talkHistory.map((items, index) => (
+                                {userId && talkHistory && talkHistory.map((items, index) => (
                                     <div
-                                        key={items.index}
+                                        key={index}
                                         style={{
                                             alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
                                             maxWidth: "70%",
@@ -219,15 +226,13 @@ export default function RecommendPeople({ status ,memberId, userChoice, setUserC
                                         {items.content}
                                     </div>
                                 ))}
-
-                                <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setUserInput(''); }}>
-                                    <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                                    <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
-                                </form>
-
-                                <div>
-
+                                <div style={{ marginTop: "auto" }}>
+                                    <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setUserInput(''); }}>
+                                        <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                                        <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
+                                    </form>
                                 </div>
+
                             </div>
                         </div>
 
@@ -277,7 +282,7 @@ export default function RecommendPeople({ status ,memberId, userChoice, setUserC
                     <motion.div
                         key={imageSrc}
                         className="d-flex col-md-2 p-2"
-                        onClick={()=>handleClick(memberId)}
+                        onClick={() => handleClick(memberId)}
                         style={{ cursor: "pointer" }}
                         whileHover={{ scale: 1.05 }}
                     >

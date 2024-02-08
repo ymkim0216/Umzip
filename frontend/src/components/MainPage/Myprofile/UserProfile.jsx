@@ -63,10 +63,11 @@ export default function UserProfile() {
 
         try {
             const response = await api.get(
-                `/users/15`,
+                `/users/-1`,
             );
-            // console.log(response.data.result)
+            console.log(response.data.result)
             setMyprofile(response.data.result)
+
             return response
         }
         catch (e) {
