@@ -37,7 +37,7 @@ export default function DeliveryForm() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const navigate = useNavigate()
   const [activeStep, setActiveStep] = useState(1);
-  const totalSteps = 3; // 전체 단계 수에 맞게 수정
+  const totalSteps = 4; // 전체 단계 수에 맞게 수정
   const [whatModal, setWhatModal] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [calresult, setcalresult] = useState(null)
@@ -52,7 +52,8 @@ export default function DeliveryForm() {
   const [carData, setCarData] = useState("")
   const [scope, animate] = useAnimate()
   const [newscope, newanimate] = useAnimate()
-  const [sigungu , setSigungu] = useState("")
+  const [thirdscope, thirdanimate] = useAnimate()
+  const [sigungu, setSigungu] = useState("")
   const hadleElavator = (event) => {
     setisElavator(event.target.innerText)
   }
@@ -81,7 +82,6 @@ export default function DeliveryForm() {
   };
   const [isLoading, setIsLoading] = useState(false)
   const goToNextForm = async () => {
-
 
     if (isActive === "first") {
       if (startDate && selectedOption && isWhatTime && isWhatCar) {
@@ -120,19 +120,28 @@ export default function DeliveryForm() {
 
       } else {
         animate("#inputcomponent", { x: [-10, 0, 20, 0] }, { type: "spring", duration: 1, delay: stagger(0.05) })
-
-
       }
     }
     else if (isActive === "second") {
-      if (whereStart && whereEnd && whatPacking && whatRiding && isElavator && isCarStation) {
-        const data = await axios_cal()
-        console.log(data)
+      if (whereStart.address && whereEnd.address && startDetailAddress && endDetailAddress) {
         setIsActive("third")
         if (activeStep < totalSteps) {
           setActiveStep(activeStep + 1);
         }
-      } newanimate("#secondcomponent", { x: [-10, 0, 20, 0] }, { type: "spring", duration: 1, delay: stagger(0.05) })
+      } else {
+        newanimate("#secondcomponent", { x: [-10, 0, 20, 0] }, { type: "spring", duration: 1, delay: stagger(0.05) })
+      }
+    }
+
+    else if (isActive === "third") {
+      if (whatPacking && whatRiding && isElavator && isCarStation) {
+        const data = await axios_cal()
+        console.log(data)
+        setIsActive("fourth")
+        if (activeStep < totalSteps) {
+          setActiveStep(activeStep + 1);
+        }
+      } thirdanimate("#thirdcomponent", { x: [-10, 0, 20, 0] }, { type: "spring", duration: 1, delay: stagger(0.05) })
 
 
     }
@@ -142,7 +151,7 @@ export default function DeliveryForm() {
 
   const hadlesubmit = async () => {
     try {
-      const result = await axios_CallDel(); 
+      const result = await axios_CallDel();
       console.log(result)
 
       let packaging = ""
@@ -162,15 +171,15 @@ export default function DeliveryForm() {
       navigate('/recommend', {
         state: {
           type: "용달",
-          axios_data: result.data, 
+          axios_data: result.data,
           userInput: {
             "imageFileList": [selectedFiles], // 필요한 경우 이미지 파일 배열로 교체
-            "price":calresult, // 실제 가격 값으로 교체 (긴 정수)
+            "price": calresult, // 실제 가격 값으로 교체 (긴 정수)
             "delivery": {
               "carId": carId, // 실제 carId 값으로 교체 (긴 정수)
               "startTime": `${getToday(startDate)} ${isWhatTime}`, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
               "endTime": endTime, // 실제 종료 시간을 올바른 날짜 및 시간 형식으로 교체
-              "departure":whereStart.address, // 실제 출발지 값으로 교체 (문자열)
+              "departure": whereStart.address, // 실제 출발지 값으로 교체 (문자열)
               "departureDetail": startDetailAddress, // 실제 출발지 상세정보 값으로 교체 (문자열)
               "destination": whereEnd.address, // 실제 도착지 값으로 교체 (문자열)
               "destinationDetail": endDetailAddress, // 실제 도착지 상세정보 값으로 교체 (문자열)
@@ -192,6 +201,7 @@ export default function DeliveryForm() {
   const goTobeforeForm = () => {
     if (isActive === "second") { setIsActive("first") }
     else if (isActive === "third") { setIsActive("second") }
+    else if (isActive === "fourth") { setIsActive("second") }
     if (activeStep > 1) {
       setActiveStep(activeStep - 1);
     }
@@ -204,7 +214,7 @@ export default function DeliveryForm() {
     setIsModalOpen(true)
   }
   const axios_car_list = async () => {
-    
+
 
     try {
       const response = await api.get('/delivery/user/car', {
@@ -216,9 +226,9 @@ export default function DeliveryForm() {
       console.error(error);
     }
   };
-  
+
   const axios_cal = async () => {
-    
+
     let packaging = ""
     let move = ""
     let elevator = ""
@@ -248,14 +258,14 @@ export default function DeliveryForm() {
         },
         {
           headers: {
-      
+
           }
         }
       );
 
       setcalresult(response.data.result.price)
-      
-      const endtimee  = new Date(response.data.result.endTime) 
+
+      const endtimee = new Date(response.data.result.endTime)
       console.log(endtimee.toISOString().slice(0, 16).replace('T', ' '))
       setEndTime(endtimee.toISOString().slice(0, 16).replace('T', ' '))
       setIsLoading(false)
@@ -269,7 +279,7 @@ export default function DeliveryForm() {
   }
 
   const axios_CallDel = async () => {
-    
+
     console.log(`${getToday(startDate)} ${isWhatTime}`)
     console.log(sigungu)
     try {
@@ -375,7 +385,7 @@ export default function DeliveryForm() {
             position: 'absolute',
             top: '10%',
             left: '10%',
-            textDecoration:"none",
+            textDecoration: "none",
             // 이미지의 높이를 설정해주세요
             cursor: 'pointer',
           }}><img style={{
@@ -400,7 +410,7 @@ export default function DeliveryForm() {
           <motion.p className="m-0" style={{ color: "#006EEE" }}>다음으로&rarr;</motion.p>
 
         </motion.h5>
-        <motion.div ref={scope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }} >
+        <motion.div ref={scope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -100 }} transition={{ duration: 0.3 }} >
 
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
             <div className="col-6 gap-5 d-flex flex-column" >
@@ -523,12 +533,13 @@ export default function DeliveryForm() {
           />
           <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
         </motion.h5>
-        <motion.div style={{marginTop:"10rem"}} ref={newscope} className="col-12 d-flex justify-content-center align-items-center "  initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
-          <div className="col-8 d-flex gap-3 ">
-            <motion.div className="col-6 d-flex flex-column gap-4 p-3 justify-content-center">
-              <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "5%" }}>
+        <motion.div style={{ height: "100vh" }} ref={newscope} className="col-12 d-flex justify-content-center align-items-center " initial={{ opacity: 0, x: 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
+          <div className="col-8 d-flex gap-3 " style={{ minHeight: "40%" }} >
+
+            <motion.div className="col-6 d-flex flex-column gap-5 p-3 justify-content-center" style={{ minHeight: "40%" }}>
+              <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "2rem" }}>
                 <div className="col-1 fw-bold">출발</div>
-                <div onClick={() => hadleModal("start")} className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{height: "100%"  }} > {whereStart.address ? (
+                <div onClick={() => hadleModal("start")} className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} > {whereStart.address ? (
                   <p className="m-0">{whereStart.address}</p>
                 ) : (
                   <p className="m-0 text-muted">출발지를 입력해주세요.</p>
@@ -536,14 +547,14 @@ export default function DeliveryForm() {
                 <button onClick={() => hadleModal("start")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
               </div>
               <div id={startDetailAddress === "" ? "secondcomponent" : ""}>
-                <div className="col-9 d-flex " style={{ width: "100%" }} >
-                  <div  className="col-3 fw-bold">출발상세주소</div>
-                  <input style={{ border: "none" }} className="col-9 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setStartDetailAddress(event.target.value)} ></input>
+                <div className="col-9 d-flex align-items-center " style={{ width: "100%" }} >
+                  <div className="col-3 fw-bold">출발상세주소</div>
+                  <input style={{ border: "none", height: "2rem" }} className="col-9 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setStartDetailAddress(event.target.value)} ></input>
                 </div>
               </div>
               <div id={whereEnd.address ? "" : "secondcomponent"} className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "2rem" }}>
                 <div className="col-1 fw-bold">도착</div>
-                <div  onClick={() => hadleModal("end")} className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }}>
+                <div onClick={() => hadleModal("end")} className="col-9 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }}>
                   {whereEnd.address ? (
                     <p className="m-0">{whereEnd.address}</p>
                   ) : (
@@ -552,10 +563,15 @@ export default function DeliveryForm() {
                 </div>
                 <button onClick={() => hadleModal("end")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
               </div>
-              <div id={endDetailAddress === "" ? "secondcomponent" : ""} className="col-9 d-flex " style={{ width: "100%" }} >
-                <div className="col-3 fw-bold">도착상세주소</div>
-                <input style={{ border: "none" }} className="col-9 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setEndDetailAddress(event.target.value)} ></input>
+              <div id={endDetailAddress === "" ? "secondcomponent" : ""} className="col-9 d-flex align-items-center " style={{ width: "100%" }} >
+                <div className="col-2 fw-bold">도착상세주소</div>
+                <input style={{ border: "none", height: "2rem" }} className="col-10 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setEndDetailAddress(event.target.value)} ></input>
               </div>
+
+
+
+            </motion.div>
+            <div className="col-6" style={{ minHeight: "70%" }}>
               <AnimatePresence>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="d-flex gap-3">
                   <p className="m-0">거리:{carDistance}</p>
@@ -563,14 +579,45 @@ export default function DeliveryForm() {
                 </motion.div>
               </AnimatePresence>
 
-              <div style={{ height: "100%", width: "100%", border: "solid 1px #006EEE" }} className=" p-3 shadow rounded-5">{whereEnd.address && whereStart.address && <Map key={`${whereStart.lat}-${whereStart.lon}-${whereEnd.lat}-${whereEnd.lon}`} start_lat={whereStart.lat} start_lon={whereStart.lon} end_lat={whereEnd.lat} end_lon={whereEnd.lon} setCarDistance={setCarDistance} setCarTime={setCarTime} />}</div>
-              <div>
+              <div style={{ height: "100%", width: "100%", border: "solid 1px #006EEE" }} className=" p-3 shadow rounded-5 ">{whereEnd.address && whereStart.address && <Map key={`${whereStart.lat}-${whereStart.lon}-${whereEnd.lat}-${whereEnd.lon}`} start_lat={whereStart.lat} start_lon={whereStart.lon} end_lat={whereEnd.lat} end_lon={whereEnd.lon} setCarDistance={setCarDistance} setCarTime={setCarTime} />}</div>
+            </div>
+          </div>
 
-              </div>
-            </motion.div>
-                  <div className="col-1"></div>
+        </motion.div>
+
+      </motion.div>}
+      {isActive === "third" &&
+        <motion.div  key="thirdForm">
+          <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={goToNextForm} className="d-flex align-items-center gap-2" style={{
+            position: 'absolute',
+            top: '85%',
+            left: '85%',
+            // 이미지의 높이를 설정해주세요
+            cursor: 'pointer',
+          }}>
+            <motion.p className="m-0" style={{ color: "#006EEE" }}>다음으로&rarr;</motion.p>
+
+          </motion.h5>
+
+          <motion.h5 initial={{ opacity: 0.1 }} animate={{ opacity: 1 }} exit={{ opacity: 0.1 }} transition={{ duration: 0.3 }} onClick={goTobeforeForm} to="/dashboard" className="d-flex align-items-center gap-2" style={{
+            position: 'absolute',
+            top: '10%',
+            left: '10%',
+            // 이미지의 높이를 설정해주세요
+            cursor: 'pointer',
+          }}><img style={{
+            width: '2rem', // 이미지의 너비를 설정해주세요
+            height: '2rem',
+          }}
+            src="/box-arrow-left.png"  // 나가기 버튼 이미지의 경로를 설정해주세요
+            alt="Exit Button"
+
+            />
+            <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
+          </motion.h5>
+          <motion.div ref={thirdscope} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -100 }} transition={{ duration: 0.3 }} style={{ width: "100vw", height: "100vh " }} className="d-flex flex-column justify-content-center align-items-center">
             <div className="col-5 p-3 gap-4 d-flex flex-column justify-content-center" >
-              <div id={whatPacking ? "" : "secondcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
+              <div id={whatPacking ? "" : "thirdcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
                 <p className="m-0 col-3 fw-bold">포장여부</p>
                 <div className="col-3">
                   <CheckButton checkPacking={checkPacking} isActive={whatPacking === "포장"} name="포장" />
@@ -583,7 +630,7 @@ export default function DeliveryForm() {
                 </div>
               </div>
 
-              <div id={whatRiding ? "" : "secondcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
+              <div id={whatRiding ? "" : "thirdcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
                 <p className="m-0 col-3 fw-bold">탑승여부</p>
                 <div className="col-3">
                   <CheckButton checkPacking={checkRiding} isActive={whatRiding === "탑승"} name="탑승" />
@@ -594,7 +641,7 @@ export default function DeliveryForm() {
                 <div className="col-3"></div>
               </div>
 
-              <div id={isElavator ? "" : "secondcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
+              <div id={isElavator ? "" : "thirdcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
                 <p className="m-0 col-3 fw-bold">엘레베이터</p>
                 <div className="col-3">
                   <CheckButton checkPacking={hadleElavator} isActive={isElavator === "있음"} name="있음" />
@@ -605,7 +652,7 @@ export default function DeliveryForm() {
                 <div className="col-3"></div>
               </div>
 
-              <div id={isCarStation ? "" : "secondcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
+              <div id={isCarStation ? "" : "thirdcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
                 <p className="m-0 col-3 fw-bold">주차장</p>
                 <div className="col-3">
                   <CheckButton checkPacking={hadleCarStation} isActive={isCarStation === "있음"} name="있음" />
@@ -635,12 +682,10 @@ export default function DeliveryForm() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-        </motion.div>
-
-      </motion.div>}
-      {isActive === "third" && <div>
+        </motion.div>}
+      {isActive === "fourth" && <div>
         {/* <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={goToNextForm} className="d-flex align-items-center gap-2" style={{
           position: 'absolute',
           top: '85%',
@@ -737,19 +782,19 @@ export default function DeliveryForm() {
                 <p className="m-0 col-4">가구사진</p>
                 {/* { console.log(selectedFiles)} */}
                 {
-                selectedFiles && selectedFiles.length !== 0 && (
-                  <div className="col-8 d-flex gap-3 justify-content-center shadow" style={{ overflowX: "auto" }}>
-                    {selectedFiles.map((file, index) => (
-                      <div key={index} className="d-flex flex-column justify-content-center align-items-center">
-                        <img
-                          src={file.previewURL}
-                          alt={`선택된 파일 ${index + 1} 미리보기`}
-                          style={{ width: "7rem", height: "7rem" }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
+                  selectedFiles && selectedFiles.length !== 0 && (
+                    <div className="col-8 d-flex gap-3 justify-content-center shadow" style={{ overflowX: "auto" }}>
+                      {selectedFiles.map((file, index) => (
+                        <div key={index} className="d-flex flex-column justify-content-center align-items-center">
+                          <img
+                            src={file.previewURL}
+                            alt={`선택된 파일 ${index + 1} 미리보기`}
+                            style={{ width: "7rem", height: "7rem" }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
 
               </div>

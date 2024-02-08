@@ -4,9 +4,12 @@ import { api } from "../../../services/api";
 export default function NewModal({ setRequestId, requestId }) {
     const [result, setResult] = useState(null)
     const [point, setPoint] = useState(null)
-
+    let startTime = ""
+    let endTime = ""
+    let resTime = ""
     useEffect(() => {
-        setRequestId({ "requestList": "청소", mappingId: "1", Id: "1", price: 1000000 })
+        const res=  reservationDetail()
+        // setRequestId({ "requestList": "청소", mappingId: "1", Id: "1", price: 1000000 })
         // setResult({
         //     "id": 2,
         //     "carName": "1톤트럭",
@@ -28,47 +31,57 @@ export default function NewModal({ setRequestId, requestId }) {
 
         //     ],
         // })
-        setResult({
-            "reservationTime": "2024-02-07",
-            "roomSize": 30,
-            "roomCount": 5,
-            "balconyExistence": true,
-            "windowCount": 10,
-            "duplexRoom": true,
-            "mold": false,
-            "externalWindow": true,
-            "houseSyndrome": true,
-            "removeSticker": false,
-            "address": "경상남도 남양산역",
-            "addressDetail": "반도유보라 5차 512동1602호",
-            "cleanImages": [
-                "./randomimg.png",
-                "./randomimg.png",
-                "./randomimg.png",
-                "./randomimg.png",
-                "./randomimg.png",
-                "./randomimg.png",
-                "./randomimg.png",
-                "./randomimg.png",
-                "./randomimg.png",
-            ],
-        })
+        // setResult({
+        //     "reservationTime": "2024-02-07",
+        //     "roomSize": 30,
+        //     "roomCount": 5,
+        //     "balconyExistence": true,
+        //     "windowCount": 10,
+        //     "duplexRoom": true,
+        //     "mold": false,
+        //     "externalWindow": true,
+        //     "houseSyndrome": true,
+        //     "removeSticker": false,
+        //     "address": "경상남도 남양산역",
+        //     "addressDetail": "반도유보라 5차 512동1602호",
+        //     "cleanImages": [
+        //         "./randomimg.png",
+        //         "./randomimg.png",
+        //         "./randomimg.png",
+        //         "./randomimg.png",
+        //         "./randomimg.png",
+        //         "./randomimg.png",
+        //         "./randomimg.png",
+        //         "./randomimg.png",
+        //         "./randomimg.png",
+        //     ],
+        // })
     }, [])
-    // const reservationDetail = async () => {
-    //     let service = ""
-    //     if (requestId.requestList === "용달") { service = "delivery" }
-    //     else { service = "clean" }
-    //     try {
-    //         const response = await api.get(
-    //             `/${service}/${requestId.Id}`,
+    const reservationDetail = async () => {
+        let service = ""
+        console.log(requestId)
+        if (requestId.requestList === "용달") { service = "delivery" }
+        else { service = "clean" }
+        console.log(service)
+        try {
+            const response = await api.get(
+                `/${service}/user/reservation/${requestId.Id}`,
 
-    //         );
-    //         setResult(response.data.result)
-    //         return response.data.result
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
+            );
+            setResult(response.data.result)
+            if (service==="용달"){
+                startTime = new Date(result.startTime).toISOString().split('T')[0];
+                endTime = new Date(result.endTime).toISOString().split('T')[0];
+            }
+            else{
+                resTime=  new Date(result.reservationTime).toISOString().split('T')[0];
+            }
+            console.log(response)
+            return response.data.result
+        } catch (error) {
+            console.error(error);
+        }
+    }
     // const MakeConfirm = async () => {
     //     let service = ""
     //     if (requestId.requestList === "용달") { service = "delivery" }
@@ -107,7 +120,7 @@ export default function NewModal({ setRequestId, requestId }) {
         }
     };
     return <>
-        {requestId && requestId.Id && requestId.mappingId && requestId.requestList && (
+        {result && requestId && requestId.Id && requestId.mappingId && requestId.requestList && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleClose}
                 style={{
                     zIndex: "99",
@@ -127,13 +140,13 @@ export default function NewModal({ setRequestId, requestId }) {
                     height: "50%",
                     overflow: "auto",
                     backgroundColor: 'white', // 내용의 배경색
-                    padding: '20px',
+                    padding: '3rem',
                     borderRadius: '8px', // 내용의 모서리 둥글게
                 }}>
                     {requestId.requestList === "용달" ? <div>
                         <div className="d-flex justify-content-between"><p>차량 </p><p>{result.carName}</p></div>
-                        <div className="d-flex justify-content-between"><p>시작 시간</p><p>{result.startTime}</p></div>
-                        <div className="d-flex justify-content-between"><p>끝나는 시간 </p><p>{result.endTime}</p></div>
+                        <div className="d-flex justify-content-between"><p>시작 시간</p><p>{startTime}</p></div>
+                        <div className="d-flex justify-content-between"><p>끝나는 시간 </p><p>{endTime}</p></div>
                         <div className="d-flex justify-content-between"><p>출발지 주소</p><p>{result.departure}</p></div>
                         <div className="d-flex justify-content-between"><p>출발지 상세주소</p><p>{result.departureDetail}</p></div>
                         <div className="d-flex justify-content-between"><p>도착지 주소</p><p>{result.destination}</p></div>
@@ -155,10 +168,10 @@ export default function NewModal({ setRequestId, requestId }) {
                             <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{requestId.price}</p></div>
                             <div style={{ borderBottom: '1px solid blue' }} className="d-flex justify-content-between"><p style={{ fontSize: "0.75rem", }}>사용포인트</p><div><input value={point} onChange={handleInput} className="text-end  m-0" type="number"></input>P</div></div>
                             <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{requestId.price - point}</p></div>
-                            <div className="d-flex"><button className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>포인트사용</p></button></div>
+                            <div className="d-flex"><button className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
                         </div>
                     </div> : <div className="d-flex flex-column p-3">
-                        <div className="d-flex justify-content-between"><p>예약시간 </p><p>{result.reservationTime}</p></div>
+                        <div className="d-flex justify-content-between"><p>예약시간 </p><p>{resTime}</p></div>
                         <div className="d-flex justify-content-between"><p>집크기 </p><p>{result.roomSize}</p></div>
                         <div className="d-flex justify-content-between"><p>방개수 </p><p>{result.roomCount}</p></div>
                         <div className="d-flex justify-content-between"><p>창문개수 </p><p>{result.windowCount}</p></div>
@@ -182,7 +195,7 @@ export default function NewModal({ setRequestId, requestId }) {
                             <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{requestId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
                             <div style={{ borderBottom: '1px solid blue' }} className="d-flex justify-content-between"><p style={{ fontSize: "0.75rem", }}>사용포인트</p><div><input value={point} onChange={handleInput} className="text-end  m-0" type="number"></input>P</div></div>
                             <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{(requestId.price - point).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div className="d-flex"><button className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>포인트사용</p></button></div>
+                            <div className="d-flex"><button className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
                         </div>
 
                     </div>}

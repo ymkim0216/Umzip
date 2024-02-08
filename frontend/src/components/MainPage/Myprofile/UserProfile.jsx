@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import StarRating from "../../Recommend/StarRating";
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { AnimatePresence, motion } from "framer-motion"
 import UsedProfile from "./SellProduct/UsedProfile";
@@ -18,7 +18,7 @@ export default function UserProfile() {
     const [changeButton, setChangeButton] = useState("판매 물품")
     const [offset, setOffSet] = useState(0)
     const [myprofile, setMyprofile] = useState("")
-    
+    const { id } = useParams();
     
     //판매
     const [sellList, setSellList] = useState(null)
@@ -63,7 +63,7 @@ export default function UserProfile() {
 
         try {
             const response = await api.get(
-                `/users/-1`,
+                `/users/${id}`,
             );
             console.log(response.data.result)
             setMyprofile(response.data.result)
@@ -79,7 +79,7 @@ export default function UserProfile() {
 
         try {
             const response = await api.get(
-                `/helps/profiles/help-you?memberId=4&page=1&size=5`,
+                `/helps/profiles/help-you?memberId=${id}&page=1&size=5`,
 
             );
             console.log(response.data.result)
@@ -96,7 +96,7 @@ export default function UserProfile() {
 
         try {
             const response = await api.get(
-                `/helps/profiles/help-me?memberId=4&page=1&size=5`,
+                `/helps/profiles/help-me?memberId=${id}&page=1&size=5`,
 
             );
             // console.log(response.data.result)
@@ -114,9 +114,9 @@ export default function UserProfile() {
 
         try {
             const response = await api.get(
-                `/trade-items/profiles/sell?memberId=16&page=1&size=5`,
+                `/trade-items/profiles/sell?memberId=${id}&page=1&size=5`,
                 {
-                    "memberId": 16,
+                    "memberId": id,
                     "page": 1,
                     "size": 5
                 }
@@ -134,7 +134,7 @@ export default function UserProfile() {
 
         try {
             const response = await api.get(
-                `/trade-items/profiles/buy?memberId=13&page=1&size=5`,
+                `/trade-items/profiles/buy?memberId=${id}&page=1&size=5`,
 
             );
             // console.log(response)
@@ -324,11 +324,11 @@ export default function UserProfile() {
             </div>}
 
             <div className="d-flex col-8 flex-column " style={{ height: "100%" }}>
-                {changeButton === "판매 물품" && <UsedView setSellList={setSellList} sellList={sellList} sellTotalPages={sellTotalPages} />}
-                {changeButton === "구매 물품" && <BuyView  setBuyList={setBuyList} buyTotalPages={buyTotalPages} buyList={buyList} />}
+                {changeButton === "판매 물품" && <UsedView id={id} setSellList={setSellList} sellList={sellList} sellTotalPages={sellTotalPages} />}
+                {changeButton === "구매 물품" && <BuyView id={id} setBuyList={setBuyList} buyTotalPages={buyTotalPages} buyList={buyList} />}
 
-                {changeButton === "도움 구인" && <HelpPeopleToMeView setHelpMeList={setHelpMeList} helpMeList={helpMeList} helpMeTotalPages={helpMeTotalPages} />}
-                {changeButton === "도움 내역" && <HelpMeToPeopleView setHelpYouList={setHelpYouList} helpYouList={helpYouList} helpYouTotalPages={helpYouTotalPages} />}
+                {changeButton === "도움 구인" && <HelpPeopleToMeView id={id} setHelpMeList={setHelpMeList} helpMeList={helpMeList} helpMeTotalPages={helpMeTotalPages} />}
+                {changeButton === "도움 내역" && <HelpMeToPeopleView id={id} setHelpYouList={setHelpYouList} helpYouList={helpYouList} helpYouTotalPages={helpYouTotalPages} />}
 
                 {/* {changeButton === "알림 내역" && <UsedView/> }
                 {changeButton === "포인트 사용이력" && <UsedView/> }       */}
