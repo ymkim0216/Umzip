@@ -6,6 +6,7 @@ const Header = () => {
   const [scrollY, setScrollY] = useState(0);
 
   const [profileImage, setProfileImage] = useState('');
+  const [checkWho, setWho] = useState(null)
 
   const handleScroll = () => {
     setScrollY(window.scrollY);
@@ -14,10 +15,12 @@ const Header = () => {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
-    const storedUserInfo = localStorage.getItem('userInfo');
+    const storedUserInfo = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
+    console.log(storedUserInfo)
     if (storedUserInfo) {
-      const { profileImage } = JSON.parse(storedUserInfo);
+      const { profileImage, who } = JSON.parse(storedUserInfo);
       setProfileImage(profileImage || ''); // Fallback to an empty string if profilePic is not found
+      setWho(who || '')
     }
 
     // Clean up the event listener when the component unmounts
@@ -67,7 +70,8 @@ const Header = () => {
                 whileHover={navItemVariants.hover}
                 className="nav-item"
               >
-                <Link className="nav-link mx-3 px-3" to="/dashboard">
+                <Link className="nav-link mx-3 px-3" 
+                to={checkWho === 1 ? "/dashboard":"/dashbordcompany"}>
                   대시보드
                 </Link>
               </motion.li>
