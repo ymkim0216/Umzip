@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Requests from './Request';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Status from './Status';
 import { api } from '../../../services/api';
@@ -120,8 +120,12 @@ const MainComponent = () => {
     }
     return (
         <>
-            {choicecompanyId && <RecommendModal companyId={choicecompanyId} isOpen={openRecommendModal} closeModal={handleModal} />}
-            {requestId&& requestId.price&& <NewModal setRequestId={setRequestId} requestId={requestId} setRequestMappingId={setRequestMappingId} requestMappingId={requestMappingId} isModalOpen={requestCheck} setIsModalOpen={setRequestCheck} />}
+            <AnimatePresence>
+                {choicecompanyId && <RecommendModal companyId={choicecompanyId} isOpen={openRecommendModal} closeModal={handleModal} />}
+            </AnimatePresence>
+            <AnimatePresence>
+                {requestId && requestId.price && <NewModal setRequestId={setRequestId} requestId={requestId} setRequestMappingId={setRequestMappingId} requestMappingId={requestMappingId} isModalOpen={requestCheck} setIsModalOpen={setRequestCheck} />}
+            </AnimatePresence>
             <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh', width: '100%', marginTop: "5rem" }}>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="col-10">
                     <div className="col-12 px-3">
@@ -214,7 +218,7 @@ const MainComponent = () => {
 
 
                                                         let orderN = (item.deliveryReservationDto.id * item.deliveryReservationDto.id).toString().padStart(3, '0').slice(0, 3)
-                                                        return <Requests setRequestId={setRequestId} Id={item.deliveryReservationDto.id}  setOpenRecommendModal={setOpenRecommendModal} setChoiceCompanyId={setChoiceCompanyId} isAll={true} setRequestList={setRequestAllList} requestList="용달" list={item.deliveryReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.deliveryReservationDto.status} />;
+                                                        return <Requests setRequestId={setRequestId} Id={item.deliveryReservationDto.id} setOpenRecommendModal={setOpenRecommendModal} setChoiceCompanyId={setChoiceCompanyId} isAll={true} setRequestList={setRequestAllList} requestList="용달" list={item.deliveryReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.deliveryReservationDto.status} />;
                                                     }
                                                     else {
 
@@ -226,7 +230,7 @@ const MainComponent = () => {
                                                         let orderName = "CLE";
                                                         let orderN = (item.cleanReservationDto.cleanId * item.cleanReservationDto.cleanId).toString().padStart(3, '0').slice(0, 3);
 
-                                                        return <Requests setRequestId={setRequestId} Id={item.cleanReservationDto.cleanId}  setOpenRecommendModal={setOpenRecommendModal} setChoiceCompanyId={setChoiceCompanyId} isAll={true} setRequestList={setRequestAllList} requestList="청소" list={item.cleanReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.cleanReservationDto.status} />;
+                                                        return <Requests setRequestId={setRequestId} Id={item.cleanReservationDto.cleanId} setOpenRecommendModal={setOpenRecommendModal} setChoiceCompanyId={setChoiceCompanyId} isAll={true} setRequestList={setRequestAllList} requestList="청소" list={item.cleanReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.cleanReservationDto.status} />;
                                                     }
                                                 }
                                                 else {

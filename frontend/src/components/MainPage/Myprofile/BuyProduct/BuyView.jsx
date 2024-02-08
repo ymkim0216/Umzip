@@ -14,14 +14,14 @@ import { api } from "../../../../services/api";
 // ]
 const ITEMS_PER_PAGE = 5;
 const MAX_DISPLAY_PAGES=5
-export default function BuyView({ setBuyList, buyTotalPages, buyList }) {
+export default function BuyView({ id,setBuyList, buyTotalPages, buyList }) {
     // console.log(buyTotalPages)
     const axios_BuyList = async (pageNumber) => {
         const number = pageNumber
 
         try {
             const response = await api.get(
-                `/trade-items/profiles/buy?memberId=13&page=${number}&size=5`,
+                `/trade-items/profiles/buy?memberId=${id}&page=${number}&size=5`,
 
             );
             console.log(response)
