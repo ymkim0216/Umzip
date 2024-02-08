@@ -14,7 +14,7 @@ const Header = () => {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
 
-    const storedUserInfo = localStorage.getItem('userInfo');
+    const storedUserInfo = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
     if (storedUserInfo) {
       const { profileImage } = JSON.parse(storedUserInfo);
       setProfileImage(profileImage || ''); // Fallback to an empty string if profilePic is not found
