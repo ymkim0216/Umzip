@@ -14,43 +14,48 @@ import { AnimatePresence, motion } from 'framer-motion';
 function ReportModal({ onClose }) {
   return (
     <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        style={{
+          zIndex: '99',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색 및 투명도 조절
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          onClick={(event) => {
+            // 이벤트 전파를 막기 위한 코드
+            event.stopPropagation();
+          }}
           style={{
-            zIndex: '99',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색 및 투명도 조절
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            position: 'relative',
+            width: '40%',
+            backgroundColor: 'white', // 내용의 배경색
+            padding: '20px',
+            borderRadius: '8px', // 내용의 모서리 둥글게
           }}
         >
-          <div
-            style={{
-              position: 'relative',
-              width: '40%',
-              backgroundColor: 'white', // 내용의 배경색
-              padding: '20px',
-              borderRadius: '8px', // 내용의 모서리 둥글게
-            }}
-          >
-            <span onClick={onClose}>
-              &times;
-            </span>
-            <h2>신고하기</h2>
-            <p>신고 사유를 작성해주세요.</p>
-            <button onClick={onClose}>신고 제출</button>
-          </div>
+          <span onClick={onClose}>&times;</span>
+          <h2>신고하기</h2>
+          <p>신고 사유를 작성해주세요.</p>
+          <button onClick={onClose}>신고 제출</button>
         </motion.div>
-      
+      </motion.div>
     </AnimatePresence>
+
   );
 }
 
@@ -62,7 +67,7 @@ function TradeItemDetail({ trade }) {
   const now = new Date();
   const diffTime = Math.abs(now - createTime);
   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-
+  const [userinput,setUserInput] = useState()
   // Formatting the date part as YY-MM-DD
   const yy = createTime.getFullYear().toString();
   const mm = ('0' + (createTime.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed
@@ -94,9 +99,11 @@ function TradeItemDetail({ trade }) {
   const goBack = () => {
     navigate(-1);
   };
-
+  const handleClick = ()=>{
+    navigate(`/myprofile/${trade.writerId}`)
+  }
   return (
-    <article className={classes.trade} style={{ marginTop: '4rem' }}>
+    <article className={classes.trade} style={{ marginTop: '8rem' }}>
       <div className={classes.back}>
         <button onClick={goBack}>뒤로</button>
       </div>
@@ -121,11 +128,14 @@ function TradeItemDetail({ trade }) {
       <div style={{ width: '85%', marginLeft: 'auto', marginRight: 'auto' }}>
         <div className="d-flex flex-row p-2 justify-content-between m-1">
           <div className="d-flex gap-2">
-            <img
+            <motion.img
+            onClick={handleClick}
+            whileHover={{y:-5,cursor:"pointer"}}
+            className='rounded-pill'
               style={{ width: '3rem', height: '3rem' }}
-              src="/randomimg.png"
+              src={trade.writerImageUrl}
               alt="랜덤 이미지"
-            ></img>
+            ></motion.img>
             <div className="text-start">
               <p className="m-0">{trade.writerName}</p>
               <p>{trade.writerAddress}</p>

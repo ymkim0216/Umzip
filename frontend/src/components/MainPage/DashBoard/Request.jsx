@@ -55,8 +55,8 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
         const { token } = useAuthStore.getState();
         console.log(res)
         const client = new Client({
-            brokerURL: `wss://i10e108.p.ssafy.io/ws?accessToken=${token}`,
-            // brokerURL: `ws://192.168.30.145:8080/ws?accessToken=${token}`,
+            // brokerURL: `wss://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+            brokerURL: `ws://192.168.30.125:8080/ws?accessToken=${token}`,
             // 여기에 다른 설정도 추가할 수 있습니다.
             onConnect: (frame) => {
                 console.log('Connected: ' + frame);
@@ -128,7 +128,7 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
         <>
             <AnimatePresence>
                 {openModal && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpenModal(false)}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}  onClick={() =>{ setOpenModal(false) ;setTalkHistory([])}}
                         style={{
                             zIndex: "99",
                             position: 'fixed',
@@ -178,7 +178,7 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
                                 ))}
                                 <div style={{ marginTop: "auto" }}>
                                     <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
-                                        <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                                        <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
                                         <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
                                     </form>
                                 </div>

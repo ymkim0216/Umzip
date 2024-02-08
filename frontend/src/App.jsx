@@ -53,7 +53,7 @@ const router = createBrowserRouter([
   //로그인
   { path: 'login', element: <Login /> },
   //프로필보기
-  { path: 'myprofile', element: <MyProfile /> },
+  { path: 'myprofile/:id', element: <MyProfile /> },
   //포인트적립내역
   { path: 'mypoint/:id', element: <PoinHistory /> },
   // 대시보드 유저

@@ -6,7 +6,7 @@ import { api } from "../../../../services/api";
 
 const ITEMS_PER_PAGE = 5;
 const MAX_DISPLAY_PAGES=5
-export default function ({ setHelpMeList, helpMeList, helpMeTotalPages }) {
+export default function ({id, setHelpMeList, helpMeList, helpMeTotalPages }) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
@@ -16,7 +16,7 @@ export default function ({ setHelpMeList, helpMeList, helpMeTotalPages }) {
 
         try {
             const response = await api.get(
-                `/helps/profiles/help-me?memberId=4&page=${pageNumber}&size=5`,
+                `/helps/profiles/help-me?memberId=${id}&page=${pageNumber}&size=5`,
 
             );
             console.log(response.data.result)

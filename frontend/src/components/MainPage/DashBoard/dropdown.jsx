@@ -24,13 +24,13 @@ export default function DropDown({setRequestId, Id,setOpenRecommendModal, setCho
 
         <div className='rounded-3 p-2 d-flex justify-content-around text-center align-items-center position-relative' style={{ border: '1px solid #006EEE', minHeight: "8rem" }}>
             <motion.img whileHover={{scale:1.05, cursor:"pointer"}} className="shadow rounded-pill" onClick={handleClick} src={img} style={{ width: 70, height: 70 }} ></motion.img>
-            <div className="col-md-2">
+            <div className="col-2">
                 <p className="m-0">업체명 : {companyName} </p>
                 <p className="m-0">가격 : {newprice} </p>
 
             </div>
-            <p className="m-0 col-md-2">{text}</p>
-            <p className="m-0 col-md-2">{realstatus}</p>
+            <p className="m-0 col-2">{text}</p>
+            <p className="m-0 col-2">{realstatus}</p>
             <div className="d-flex gap-1 flex-column align-items-center col-md-2">
                 <StatusButton price={price} setRequestId={setRequestId} Id={Id}  isAll={isAll} setRequestList={setRequestList}  mappingId={mappingId} setChatRoom={setChatRoom} companyId={companyId} toggleModal={toggleModal} requestList={requestList} status={status} />
             </div>

@@ -15,8 +15,6 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   const [userinput, setuserinput] = useState("");
   const stompClientRef = useRef(null);
   const [userId, setUserId] = useState(null)
-  const [unReadMessage, setUnReadMessage] = useState(unReadCount)
-
   const scrollToBottom = () => {
     // 스크롤 위치를 항상 맨 아래로 조절
     if (chatContainerRef.current) {
@@ -153,7 +151,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
     <>
       <AnimatePresence>
         {openModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpenModal(false)}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]) }}
             style={{
               zIndex: "99",
               position: 'fixed',
@@ -203,7 +201,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
                 ))}
                 <div style={{ marginTop: "auto" }}>
                   <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
-                    <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                    <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
                     <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
                   </form>
                 </div>
@@ -228,8 +226,12 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
               <p className='m-0'>{chat}</p>
             </div>
           </div>
-          <div className='position-relative p-2'>
+          <div className='d-= position-relative p-2'>
             <small className="form-text text-muted">{date}</small>
+            {unReadCount !== 0 ? <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {unReadCount}
+            </span> : null}
+
           </div>
         </div>
       </motion.button>

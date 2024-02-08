@@ -178,7 +178,7 @@ export default function RecommendPeople({ status, memberId, userChoice, setUserC
             <RecommendModal companyId={companyId} isOpen={isModalOpen} closeModal={handleModal} />
             <AnimatePresence>
                 {openModal && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpenModal(false)}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]) }}
                         style={{
                             zIndex: "99",
                             position: 'fixed',
@@ -228,7 +228,7 @@ export default function RecommendPeople({ status, memberId, userChoice, setUserC
                                 ))}
                                 <div style={{ marginTop: "auto" }}>
                                     <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setUserInput(''); }}>
-                                        <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                                        <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
                                         <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
                                     </form>
                                 </div>
