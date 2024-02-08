@@ -1,21 +1,34 @@
 import PropTypes from 'prop-types';
+import ReplyModal from './ReplyModal';
+import { useState } from 'react';
 
 
-
-function ReplyTo({ status }) {
+function ReplyTo({ status, id }) {
   // PropTypes를 사용하여 props 유형 검증
   ReplyTo.propTypes = {
     status: PropTypes.string, // 'codeSmall' prop이 문자열이어야 함을 선언
   };
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   const code = status;
+
   return (
     <div>
       {/* 견적제안과 거절 버튼 */}
       {code === 101 && (
         <>
-          <button>견적제안</button>
-          <button>거절</button>
-        </>
+        <button onClick={handleOpenModal}>견적제안</button>
+        <button>거절</button>
+        {showModal && (
+          <ReplyModal
+            onClose={handleCloseModal}
+            mappingId={id}
+          />
+        )}
+      </>
       )}
 
       {/* 취소 버튼 */}

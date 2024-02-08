@@ -18,7 +18,7 @@ function DeliverReservation() {
   const reservationList = data?.result || [];
 
   useEffect(() => {
-    setVisibleItems(reservationList.slice(0, itemsToShow));
+    setVisibleItems(reservationList ? reservationList.slice(0, itemsToShow) : null);
   }, [itemsToShow, reservationList]);
 
   const handleShowMore = () => {
@@ -45,7 +45,6 @@ function DeliverReservation() {
         </div>
         <motion.div style={{ width: "100%", minHeight: "10rem" }}>
           {visibleItems.map((item, index) => (
-            <>
               <motion.div
                 key={index}
                 initial={{ opacity: 0 }}
@@ -66,14 +65,9 @@ function DeliverReservation() {
                   <StatusChange status={item.codeSmallId} />
                 </div>
                 <h5 className="m-0 col-md-2">
-                  {item.codeSmallId} <ReplyTo status={item.codeSmallId} />
+                  {item.codeSmallId} <ReplyTo status={item.codeSmallId} id={item.mappingId} />
                 </h5>
-
-                {/* 이부분을 용달일경우에 */}
               </motion.div>
-
-              {/* 여기는 청소일경우 추가 */}
-            </>
           ))}
           {itemsToShow < reservationList.length && (
             <button onClick={handleShowMore}>더 보기</button>
