@@ -5,7 +5,7 @@ import StatusChange from './Status_Change';
 import { Client } from "@stomp/stompjs";
 import useAuthStore from '../../../store/store';
 
-export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
+export default function Requests({ setRequestId, Id, setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
     const [chatRoom, setChatRoom] = useState("")
     const scrollToBottom = () => {
         // 스크롤 위치를 항상 맨 아래로 조절
@@ -55,8 +55,8 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
         const { token } = useAuthStore.getState();
         console.log(res)
         const client = new Client({
-            brokerURL: `ws://i10e108.p.ssafy.io/ws?accessToken=${token}`,
-
+            brokerURL: `wss://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+            // brokerURL: `ws://192.168.30.145:8080/ws?accessToken=${token}`,
             // 여기에 다른 설정도 추가할 수 있습니다.
             onConnect: (frame) => {
                 console.log('Connected: ' + frame);
@@ -142,8 +142,10 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
                             alignItems: 'center',
                         }}>
                         <div style={{
+                            display: "flex",
                             position: 'relative',
                             width: '40%',
+                            height: "70%",
                             backgroundColor: 'white',
                             padding: '20px',
                             borderRadius: '8px',
@@ -151,7 +153,12 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
                             <div
                                 onClick={(e) => e.stopPropagation()}
                                 ref={chatContainerRef}
-                                style={{ width: "100%", display: "flex", flexDirection: "column", maxHeight: "40rem", overflowY: "auto" }}
+                                style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    overflowY: "auto"
+                                }}
                             >
                                 {userId && talkHistory && talkHistory.map((items, index) => (
                                     <div
@@ -169,15 +176,13 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
                                         {items.content}
                                     </div>
                                 ))}
-
-                                <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
-                                    <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                                    <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
-                                </form>
-
-                                <div>
-
+                                <div style={{ marginTop: "auto" }}>
+                                    <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
+                                        <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                                        <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
+                                    </form>
                                 </div>
+
                             </div>
                         </div>
 
@@ -224,6 +229,8 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
                                         transition={{ duration: 0.3 }}
                                     >
                                         <DropDown
+                                            setRequestId={setRequestId}
+                                            Id={Id}
                                             setOpenRecommendModal={setOpenRecommendModal}
                                             setChoiceCompanyId={setChoiceCompanyId}
                                             isAll={isAll}
