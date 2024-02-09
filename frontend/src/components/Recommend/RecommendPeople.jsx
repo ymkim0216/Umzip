@@ -5,7 +5,7 @@ import RecommendModal from "./RecommendModal";
 import { Client } from "@stomp/stompjs";
 import useAuthStore from "../../store/store";
 import { api } from "../../services/api";
-export default function RecommendPeople({ status, memberId, userChoice, setUserChoice, companyId, name, rating, tag, img }) {
+export default function RecommendPeople({ experience, status, memberId, userChoice, setUserChoice, companyId, name, rating, tag, img }) {
 
     const [imageSrc, setImageSrc] = useState(null);
     if (imageSrc === null) {
@@ -25,6 +25,22 @@ export default function RecommendPeople({ status, memberId, userChoice, setUserC
     const handleinput = (event) => {
         setUserInput(event.target.value);
     };
+    const experienceDate = new Date(experience);
+
+    // 현재 날짜를 가져오기
+    const currentDate = new Date();
+
+    // 경과 년수 계산
+    const yearsOfExperience = currentDate.getFullYear() - experienceDate.getFullYear();
+
+    // 경력에 따른 상 결정
+    let imgsrc = "";
+    if (yearsOfExperience >= 10) {
+        imgsrc = "./free-animated-icon-validation-14183494.gif";
+    } else if (yearsOfExperience >= 5) {
+        imgsrc = "./free-animated-icon-verified-7920876.gif";
+    }
+    console.log(imgsrc)
     const scrollToBottom = () => {
         // 스크롤 위치를 항상 맨 아래로 조절
         if (chatContainerRef.current) {
@@ -129,7 +145,7 @@ export default function RecommendPeople({ status, memberId, userChoice, setUserC
         // console.log(companyId)
         try {
             const response = await api.post(
-                `/chat/${service}/${companyId}`,
+                `/chat/${service}/${memberId}`,
                 // 요청 바디를 올바른 위치에 추가
             );
             setChatRoom(response.data.result)
@@ -263,11 +279,12 @@ export default function RecommendPeople({ status, memberId, userChoice, setUserC
                     </button>
                 </div>
                 <div className="d-flex col-md-8 flex-column justify-content-center gap-3">
-                    <div className="gap-3 d-flex justify-content-center">
-                        <h5 className="m-0  col-md-3 fw-bold">{name}</h5>
+                    <div className="gap-3 d-flex justify-content-center ">
+                        <div className="m-0  col-md-3 fw-bold d-flex align-items-center"> {imgsrc === "" ? null : <img src={imgsrc} style={{ width: "2.5rem", height: "2.5rem" }} />}<h5 className="m-0">{name}</h5></div>
+
                         <div className=" col-md-3 d-flex flex-column justify-content-center align-items-center">
                             <StarRating rating={rating} />
-                            <p className="fw-bold">{rating}점</p>
+                            <p className="fw-bold m-0">{rating}점</p>
                         </div>
                         <h1 className=" col-md-3"></h1>
                     </div>
