@@ -124,11 +124,20 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
             console.error('Message is empty or stomp client is not connected.');
         }
     };
+    const stopSocketCommunication = () => {
+        if (stompClientRef.current) {
+          
+          stompClientRef.current.deactivate();
+          console.log("연결X")
+        }
+      };
+
+
     return (
         <>
             <AnimatePresence>
                 {openModal && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}  onClick={() =>{ setOpenModal(false) ;setTalkHistory([]); setuserinput('')}}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}  onClick={() =>{ setOpenModal(false) ;setTalkHistory([]); setuserinput('') ;stopSocketCommunication()}}
                         style={{
                             zIndex: "99",
                             position: 'fixed',
@@ -229,6 +238,7 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
                                         transition={{ duration: 0.3 }}
                                     >
                                         <DropDown
+                                            memberId={memberId}
                                             setRequestId={setRequestId}
                                             Id={Id}
                                             setOpenRecommendModal={setOpenRecommendModal}
