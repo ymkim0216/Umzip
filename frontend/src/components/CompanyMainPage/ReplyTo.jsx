@@ -4,10 +4,7 @@ import { useState } from 'react';
 
 
 function ReplyTo({ role, status, id, price }) {
-  // PropTypes를 사용하여 props 유형 검증
-  ReplyTo.propTypes = {
-    status: PropTypes.string, // 'codeSmall' prop이 문자열이어야 함을 선언
-  };
+
   const [showModal, setShowModal] = useState(false);
 
   const handleOpenModal = () => setShowModal(true);
@@ -24,10 +21,10 @@ function ReplyTo({ role, status, id, price }) {
         <button>거절</button>
         {showModal && (
           <ReplyModal
+            role={role}
             onClose={handleCloseModal}
             mappingId={id}
             price={price}
-            role={role}
           />
         )}
       </>
@@ -47,5 +44,9 @@ function ReplyTo({ role, status, id, price }) {
     </div>
   );
 }
+  // PropTypes를 사용하여 props 유형 검증
+  ReplyTo.propTypes = {
+    status: PropTypes.string, // 'codeSmall' prop이 문자열이어야 함을 선언
+  };
   
   export default ReplyTo;
