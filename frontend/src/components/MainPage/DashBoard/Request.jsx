@@ -128,7 +128,7 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
         <>
             <AnimatePresence>
                 {openModal && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}  onClick={() =>{ setOpenModal(false) ;setTalkHistory([])}}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}  onClick={() =>{ setOpenModal(false) ;setTalkHistory([]); setuserinput('')}}
                         style={{
                             zIndex: "99",
                             position: 'fixed',
