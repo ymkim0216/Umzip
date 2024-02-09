@@ -206,7 +206,8 @@ export default function UserProfile() {
                     <img className="rounded-pill shadow" style={{ width: "5rem", height: "5rem" }} src={myprofile.imageUrl} />
                     <div className="text-center">
                         <p className="m-0 fw-bold">{myprofile.name}님</p>
-                        <p className="m-0">반가워요 !</p>
+                        {myprofile.me === true ? <p className="m-0">반가워요 !</p> : <p className="m-0" >의 프로필입니다!</p> }
+                        
                     </div>
                 </div>
                 <div className="d-flex gap-2">

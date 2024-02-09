@@ -25,7 +25,7 @@ export default function HelpPeopleToMeProfile({ createDt, codeSmallName, id, wri
             const formattedDate = `${createDtObject.getFullYear()}-${twoDigits(createDtObject.getMonth() + 1)}-${twoDigits(createDtObject.getDate())}`;
             setTimeDifference(formattedDate);
         }
-    }, [createDt]);s
+    }, [createDt]);
 
 
     const navigate = useNavigate()
