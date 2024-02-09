@@ -9,7 +9,7 @@ const Header = () => {
   const [profileImage, setProfileImage] = useState('');
   const [checkWho, setWho] = useState(null)
   const { user } = useAuthStore.getState();
-  const memberId = user.Id
+  const memberId = user.id
   const handleScroll = () => {
     setScrollY(window.scrollY);
   };

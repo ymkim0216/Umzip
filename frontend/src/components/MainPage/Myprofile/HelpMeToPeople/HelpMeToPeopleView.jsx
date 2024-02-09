@@ -48,6 +48,8 @@ export default function HelpMeToPeopleView({id, setHelpYouList, helpYouList, hel
                         {helpYouList.map((item, index) => (
                             <HelpMeToPeopleProfile createDt={item.createDt} writerName={item.writerName} codeSmallName={item.codeSmallName} id={item.boardId} key={index} title={item.title} point={item.point} />
                         ))}
+                        {helpYouList.length===0 && <div className="d-flex flex-column gap-3 justify-content-center align-items-center"><p>아직 작성 글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="./free-animated-icon-note-6172546.gif"/></div>}
+                        
                     </motion.div>
                 </AnimatePresence>
             </div>
