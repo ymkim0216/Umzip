@@ -194,7 +194,7 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
             <RecommendModal companyId={companyId} isOpen={isModalOpen} closeModal={handleModal} />
             <AnimatePresence>
                 {openModal && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]) }}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]),setUserInput("") }}
                         style={{
                             zIndex: "99",
                             position: 'fixed',
