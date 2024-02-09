@@ -126,7 +126,11 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
       console.error('Error parsing received message:', error);
     }
   };
-
+  const stopSocketCommunication = () => {
+    if (stompClientRef.current) {
+      stompClientRef.current.deactivate();
+    }
+  };
   const sendMessage = () => {
     // userinput을 사용하도록 수정
     const { token } = useAuthStore.getState();
@@ -151,7 +155,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
     <>
       <AnimatePresence>
         {openModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]);setuserinput("")}}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => {stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("") }}
             style={{
               zIndex: "99",
               position: 'fixed',
@@ -217,7 +221,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
         <div className='d-flex flex-row p-2 justify-content-between m-1'>
           <div className='d-flex gap-2'>
             <img
-              style={{ width: "3rem", height: "3rem" }} 
+              style={{ width: "3rem", height: "3rem" }}
               src={img}
               alt='랜덤 이미지'
             ></img>
