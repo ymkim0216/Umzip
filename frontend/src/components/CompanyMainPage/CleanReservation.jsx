@@ -70,11 +70,7 @@ function DeliverReservation() {
                   {item.deliveryId}
                   <ReplyTo status={item.codeSmallId} />
                 </h5>
-
-                {/* 이부분을 용달일경우에 */}
               </motion.div>
-
-              {/* 여기는 청소일경우 추가 */}
             </>
           ))}
           {itemsToShow < reservationList.length && (

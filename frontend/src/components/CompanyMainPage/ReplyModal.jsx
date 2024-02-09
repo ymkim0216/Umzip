@@ -1,39 +1,29 @@
 import PropTypes from 'prop-types';
 import useReplyStore from '../../store/replyStore'
+import { useState } from 'react';
 
-function ReplyModal({ onClose, mappingId }) {
+function ReplyModal({ role, onClose, mappingId, price }) {
     const submitReplyStore = useReplyStore((state) => state.useReplyStore);
+    const [operPrice, setPrice] = useState(price)
 
     const handleSubmit = async (event) => {
       event.preventDefault();
-      const price = event.target.estimate.value;
+      const price = parseFloat(event.target.estimate.value); // input으로부터의 값은 문자열이므로, 숫자로 변환
       const detail = event.target.message.value;
   
-      await submitReplyStore(mappingId, price, detail); // Zustand store의 함수 호출
+      await submitReplyStore(role, mappingId, price, detail); // Zustand store의 함수 호출
       onClose(); // 모달 닫기
     };
 
   return (
-    <div style={{
-        position: 'fixed', // 고정 위치
-        top: '50%', // 상단에서부터 50% 위치
-        left: '50%', // 왼쪽에서부터 50% 위치
-        transform: 'translate(-50%, -50%)', // 정중앙에 배치
-        backgroundColor: 'white',
-        padding: '20px',
-        zIndex: 1000, // 다른 요소들 위에 나타나도록 z-index 설정
-        border: '1px solid #ccc', // 모달 테두리
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // 그림자 효과
-        width: '80%', // 모달 너비
-        maxWidth: '500px', // 최대 너비
-    }}>
+    <div className='modalContnet'>
     <div style={{ /* 모달 스타일 */ }}>
       <h2>견적 제안</h2>
       <form onSubmit={handleSubmit}>
         {/* 견적 가격과 메시지 입력 필드 */}
         <div>
           <label>견적 가격:</label>
-          <input name="estimate" type="number" required />
+          <input name="estimate" type="number" value={operPrice} onChange={(e) => setPrice(e.target.value)} required />      
         </div>
         <div>
           <label>메시지:</label>
@@ -49,7 +39,10 @@ function ReplyModal({ onClose, mappingId }) {
   
   // PropTypes를 사용하여 props 유형 검증
   ReplyModal.propTypes = {
-    status: PropTypes.string, // 'codeSmall' prop이 문자열이어야 함을 선언
-  };
+    role: PropTypes.string.isRequired,
+    onClose: PropTypes.func.isRequired,
+    mappingId: PropTypes.string.isRequired,
+    price: PropTypes.number // price의 유형을 string으로 가정, 필요에 따라 수정 가능
+};
   
   export default ReplyModal;

@@ -1,0 +1,22 @@
+.modalContnet {
+  /* 고정 위치 */
+  position: fixed;
+  /* 상단에서부터 50% 위치 */
+  top: 50%;
+  /* 왼쪽에서부터 50% 위치 */
+  left: 50%;
+  /* 정중앙에 배치 */
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  /* 다른 요소들 위에 나타나도록 z-index 설정 */
+  z-index: 1000;
+  /* 모달 테두리 */
+  border: 1px solid #ccc;
+  /* 그림자 효과 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* 모달 너비 */
+  width: 80%;
+  /* 최대 너비 */
+  max-width: 500px;
+}
