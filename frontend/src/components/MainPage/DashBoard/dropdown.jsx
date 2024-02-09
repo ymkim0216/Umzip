@@ -3,7 +3,7 @@ import StatusButton from "./Statusbutton"
 import { AnimatePresence, motion } from "framer-motion";
 
 
-export default function DropDown({setRequestId, Id,setOpenRecommendModal, setChoiceCompanyId,isAll,setRequestList,mappingId,setChatRoom,companyId, toggleModal, requestList, companyName, text, status, img, price }) {
+export default function DropDown({memberId,setRequestId, Id,setOpenRecommendModal, setChoiceCompanyId,isAll,setRequestList,mappingId,setChatRoom,companyId, toggleModal, requestList, companyName, text, status, img, price }) {
     const newprice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 
     const handleClick = ()=>{
@@ -32,7 +32,7 @@ export default function DropDown({setRequestId, Id,setOpenRecommendModal, setCho
             <p className="m-0 col-2">{text}</p>
             <p className="m-0 col-2">{realstatus}</p>
             <div className="d-flex gap-1 flex-column align-items-center col-md-2">
-                <StatusButton price={price} setRequestId={setRequestId} Id={Id}  isAll={isAll} setRequestList={setRequestList}  mappingId={mappingId} setChatRoom={setChatRoom} companyId={companyId} toggleModal={toggleModal} requestList={requestList} status={status} />
+                <StatusButton memberId={memberId} price={price} setRequestId={setRequestId} Id={Id}  isAll={isAll} setRequestList={setRequestList}  mappingId={mappingId} setChatRoom={setChatRoom} companyId={companyId} toggleModal={toggleModal} requestList={requestList} status={status} />
             </div>
 
         </div>

@@ -3,7 +3,7 @@ import { useScroll } from "framer-motion";
 import { useState } from "react";
 import { api } from "../../../services/api";
 
-export default function StatusButton({price, setRequestId,Id, isAll, setRequestList, mappingId, setChatRoom, companyId, toggleModal, status, requestList }) {
+export default function StatusButton({ memberId ,price, setRequestId,Id, isAll, setRequestList, mappingId, setChatRoom, companyId, toggleModal, status, requestList }) {
     let returnButton = null
     const [statuschange, setStatusChange] = useState(false)
     const handleClick = async () => {
@@ -79,7 +79,7 @@ export default function StatusButton({price, setRequestId,Id, isAll, setRequestL
 
         try {
             const response = await api.post(
-                `/chat/${service}/${companyId}`,
+                `/chat/${service}/${memberId}`,
                 // 요청 바디를 올바른 위치에 추가
                 {},  // 만약 바디가 있다면 여기에 추가하세요.
                 {

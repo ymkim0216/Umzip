@@ -156,7 +156,13 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
         }
     };
 
-
+    const stopSocketCommunication = () => {
+        if (stompClientRef.current) {
+          
+          stompClientRef.current.deactivate();
+          console.log("연결X")
+        }
+      };
 
 
 
@@ -194,7 +200,7 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
             <RecommendModal companyId={companyId} isOpen={isModalOpen} closeModal={handleModal} />
             <AnimatePresence>
                 {openModal && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]),setUserInput("") }}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]),setUserInput("") ,stopSocketCommunication()}}
                         style={{
                             zIndex: "99",
                             position: 'fixed',

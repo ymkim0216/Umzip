@@ -128,7 +128,9 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   };
   const stopSocketCommunication = () => {
     if (stompClientRef.current) {
+      
       stompClientRef.current.deactivate();
+      console.log("연결X")
     }
   };
   const sendMessage = () => {
