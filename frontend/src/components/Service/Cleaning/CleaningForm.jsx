@@ -32,7 +32,7 @@ export default function CleaningFrom() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const navigate = useNavigate()
   const [activeStep, setActiveStep] = useState(1);
-  const totalSteps = 3; // 전체 단계 수에 맞게 수정
+  const totalSteps = 4; // 전체 단계 수에 맞게 수정
   const [whatModal, setWhatModal] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [option, setOption] = useState({ isGom: false, isOutsideWindow: false, isNewHous: false, isSticker: false })
@@ -106,15 +106,23 @@ export default function CleaningFrom() {
     }
     else if (isActive === "second") {
       if (whereStart && detailAddress && roomCounts && windowCounts && isBalkoni && isBok && whatHouse) {
-        const data = await axios_cal()
+        // const data = await axios_cal()
         // console.log(data)
         setIsActive("third")
         if (activeStep < totalSteps) {
           setActiveStep(activeStep + 1);
         }
       } newanimate("#secondcomponent", { x: [-10, 0, 20, 0] }, { type: "spring", duration: 1, delay: stagger(0.05) })
-
-
+    }
+    else if (isActive === "third") {
+      if (whereStart && detailAddress && roomCounts && windowCounts && isBalkoni && isBok && whatHouse) {
+        const data = await axios_cal()
+        // console.log(data)
+        setIsActive("fourth")
+        if (activeStep < totalSteps) {
+          setActiveStep(activeStep + 1);
+        }
+      }
     }
   }
   const axios_CallCle = async () => {
@@ -340,6 +348,7 @@ export default function CleaningFrom() {
             position: 'absolute',
             top: '10%',
             left: '10%',
+            textDecoration: "none",
             // 이미지의 높이를 설정해주세요
             cursor: 'pointer',
           }}><img style={{
@@ -364,7 +373,7 @@ export default function CleaningFrom() {
           <motion.p className="m-0" style={{ color: "#006EEE" }}>다음으로&rarr;</motion.p>
 
         </motion.h5>
-        <motion.div ref={scope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }} >
+        <motion.div ref={scope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -200 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -200 }} transition={{ duration: 0.3 }} >
           <motion.div style={{ position: 'relative' }} whileHover={{ fontWeight: "bold" }} >
             {/* 나가기 버튼 이미지 */}
 
@@ -420,7 +429,7 @@ export default function CleaningFrom() {
                     <AnimatePresence>
                       {isDropdownClockOpen && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                          className="mt-2" style={{ position: "absolute", top: "100%", left: 0, zIndex: 1 }}>
+                          className="mt-2" style={{ position: "absolute", top: "-200%", left: "120%", zIndex: 1 }}>
                           <Clock setisWhatTime={setisWhatTime} toggleClockDropdown={toggleClockDropdown} />
                         </motion.div>
                       )}
@@ -461,13 +470,13 @@ export default function CleaningFrom() {
           />
           <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
         </motion.h5>
-        <div style={{width:"100%" ,height:"100%"}}>
-        <motion.div ref={newscope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }} >
-            <div className="col-8 d-flex gap-3 ">
+        <div style={{ width: "100%", height: "100%" }}>
+          <motion.div ref={newscope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: 200 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 200 }} transition={{ duration: 0.3 }} >
+            <div className="col-8 d-flex gap-3 justify-content-center align-items-center">
               <div className="col-6 d-flex flex-column gap-5 p-3 justify-content-center align-items-center">
                 <div id={whereStart.address ? "" : "secondcomponent"} className="d-flex  gap-1 align-items-center " style={{ width: "100%", height: "2rem" }}>
                   <div className="col-2 fw-bold">집주소 : </div>
-                  <div className="col-8 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} >{whereStart.address ? (
+                  <div onClick={() => hadleModal("start")} className="col-8 shadow rounded-4 fw-bold d-flex justify-content-center align-items-center" style={{ height: "100%" }} >{whereStart.address ? (
                     <p className="m-0">{whereStart.address}</p>
                   ) : (
                     <p className="m-0 text-muted">주소를 입력해주세요!</p>
@@ -525,57 +534,88 @@ export default function CleaningFrom() {
 
               </div>
 
-              <div className="col-6 p-3 gap-4 d-flex flex-column" >
 
-
-
-
-                <div className="d-flex flex-column  gap-2">
-                  <p style={{ width: "100%" }} className="m-0 col-3 fw-bold ">필요 추가 서비스를 선택해 주세요</p>
-                  <div className="d-flex gap-3 align-items-center">
-                    <div className="col" >
-                      <AddButton value="isGom" handleAddButtonClick={handleAddButtonClick} isActive={option.isGom} name="곰팡이 청소" />
-                    </div>
-                    <div className="col">
-                      <AddButton value="isOutsideWindow" handleAddButtonClick={handleAddButtonClick} isActive={option.isOutsideWindow} name="외부 유리창 청소" />
-                    </div>
-                    <div className="col" >
-                      <AddButton value="isNewHous" handleAddButtonClick={handleAddButtonClick} isActive={option.isNewHous} name="세집 증후군 제거" />
-                    </div>
-                    <div className="col">
-                      <AddButton value="isSticker" handleAddButtonClick={handleAddButtonClick} isActive={option.isSticker} name="스티커&스트지 제거" />
-                    </div>
-                  </div>
-
-                </div>
-
-                <div className="d-flex justify-content-center gap-2  text-center">
-                  <p className="m-0 col-3 fw-bold">참고 사진</p>
-                  <div className="col-9 d-flex">
-                    <PhotoView selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
-                  </div>
-                </div>
-                <div className="d-flex justify-content-center gap-2  text-center">
-                  <p className="m-0 col-3 fw-bold">추가사항</p>
-                  <div className="col-9 d-flex">
-                    <textarea
-                      className="shadow border rounded-3 p-3"
-                      value={userinput}
-                      onChange={handleUserInput}
-                      placeholder="여기에 추가사항을 입력하세요..."
-                      rows={4}  // 원하는 행 수로 조절
-                      style={{ width: "100%", resize: "none" }}
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
 
           </motion.div>
         </div>
       </motion.div>}
-      {isActive === "third" && <div>
-        {/* <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={goToNextForm} className="d-flex align-items-center gap-2" style={{
+      {isActive === "third" &&
+        <div className="d-flex justify-content-center align-items-center " style={{ width: "100vw", height: "100vh" }}>
+          <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={goToNextForm} className="d-flex align-items-center gap-2" style={{
+            position: 'absolute',
+            top: '85%',
+            left: '85%',
+            // 이미지의 높이를 설정해주세요
+            cursor: 'pointer',
+          }}>
+            <motion.p className="m-0" style={{ color: "#006EEE" }}>다음으로&rarr;</motion.p>
+
+          </motion.h5>
+
+          <motion.h5 initial={{ opacity: 0.1 }} animate={{ opacity: 1 }} exit={{ opacity: 0.1 }} transition={{ duration: 0.3 }} onClick={goTobeforeForm} to="/dashboard" className="d-flex align-items-center gap-2" style={{
+            position: 'absolute',
+            top: '10%',
+            left: '10%',
+            // 이미지의 높이를 설정해주세요
+            cursor: 'pointer',
+          }}><img style={{
+            width: '2rem', // 이미지의 너비를 설정해주세요
+            height: '2rem',
+          }}
+            src="/box-arrow-left.png"  // 나가기 버튼 이미지의 경로를 설정해주세요
+            alt="Exit Button"
+
+            />
+            <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
+          </motion.h5>
+          <motion.div className="col-4 p-3 gap-4 d-flex flex-column"  initial={{ opacity: 0, x: -200 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -200 }} transition={{ duration: 0.3 }}>
+
+
+
+
+            <div className="d-flex flex-column  gap-2">
+              <p style={{ width: "100%" }} className="m-0 col-3 fw-bold ">필요 추가 서비스를 선택해 주세요</p>
+              <div className="d-flex gap-3 align-items-center">
+                <div className="col" >
+                  <AddButton value="isGom" handleAddButtonClick={handleAddButtonClick} isActive={option.isGom} name="곰팡이 청소" />
+                </div>
+                <div className="col">
+                  <AddButton value="isOutsideWindow" handleAddButtonClick={handleAddButtonClick} isActive={option.isOutsideWindow} name="외부 유리창 청소" />
+                </div>
+                <div className="col" >
+                  <AddButton value="isNewHous" handleAddButtonClick={handleAddButtonClick} isActive={option.isNewHous} name="세집 증후군 제거" />
+                </div>
+                <div className="col">
+                  <AddButton value="isSticker" handleAddButtonClick={handleAddButtonClick} isActive={option.isSticker} name="스티커&스트지 제거" />
+                </div>
+              </div>
+
+            </div>
+
+            <div className="d-flex justify-content-center gap-2  text-center">
+              <p className="m-0 col-3 fw-bold">참고 사진</p>
+              <div className="col-9 d-flex">
+                <PhotoView selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} />
+              </div>
+            </div>
+            <div className="d-flex justify-content-center gap-2  text-center">
+              <p className="m-0 col-3 fw-bold">추가사항</p>
+              <div className="col-9 d-flex">
+                <textarea
+                  className="shadow border rounded-3 p-3"
+                  value={userinput}
+                  onChange={handleUserInput}
+                  placeholder="여기에 추가사항을 입력하세요..."
+                  rows={4}  // 원하는 행 수로 조절
+                  style={{ width: "100%", resize: "none" }}
+                />
+              </div>
+            </div>
+          </motion.div>
+        </div>}
+    {isActive === "fourth" && <div>
+      {/* <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={goToNextForm} className="d-flex align-items-center gap-2" style={{
           position: 'absolute',
           top: '85%',
           left: '85%',
@@ -586,136 +626,136 @@ export default function CleaningFrom() {
 
         </motion.h5> */}
 
-        <motion.h5 initial={{ opacity: 0.1 }} animate={{ opacity: 1 }} exit={{ opacity: 0.1 }} transition={{ duration: 0.3 }} onClick={goTobeforeForm} to="/dashboard" className="d-flex align-items-center gap-2" style={{
-          position: 'absolute',
-          top: '10%',
-          left: '10%',
-          // 이미지의 높이를 설정해주세요
-          cursor: 'pointer',
-        }}><img style={{
-          width: '2rem', // 이미지의 너비를 설정해주세요
-          height: '2rem',
-        }}
-          src="/box-arrow-left.png"  // 나가기 버튼 이미지의 경로를 설정해주세요
-          alt="Exit Button"
+      <motion.h5 initial={{ opacity: 0.1 }} animate={{ opacity: 1 }} exit={{ opacity: 0.1 }} transition={{ duration: 0.3 }} onClick={goTobeforeForm} to="/dashboard" className="d-flex align-items-center gap-2" style={{
+        position: 'absolute',
+        top: '10%',
+        left: '10%',
+        // 이미지의 높이를 설정해주세요
+        cursor: 'pointer',
+      }}><img style={{
+        width: '2rem', // 이미지의 너비를 설정해주세요
+        height: '2rem',
+      }}
+        src="/box-arrow-left.png"  // 나가기 버튼 이미지의 경로를 설정해주세요
+        alt="Exit Button"
 
-          />
-          <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
-        </motion.h5>
-        
-        {calResult && <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 100 }} transition={{ duration: 0.3 }}
-          className="col-12 d-flex justify-content-center align-items-center" style={{  width: "100vw", height: "100vh" }}>
-          <div className="col-5 p-3 d-flex flex-column ">
-            <div style={{ borderBottom: "solid 1px #006EEE" }} className="d-flex flex-column gap-4 p-3">
-              <div className="d-flex text-center">
-                <p className="m-0 col-4">일시</p>
-                <div className="col-8 d-flex  gap-3  justify-content-center">
-                  <p className="m-0">{isTime}</p>
-                  <p className="m-0">{isWhatTime}</p>
-                  <p className="m-0">{selectedOption}</p>
-                </div>
-              </div>
+        />
+        <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
+      </motion.h5>
 
-              <div className="d-flex text-center">
-                <p className="m-0 col-4">위치</p>
-                <div className="col-8 d-flex  gap-3  justify-content-center">
-                  <p className="m-0">{whereStart.address}</p>
-                  <p className="m-0">{detailAddress}</p>
-                </div>
-              </div>
-
-              <div className="d-flex text-center">
-                <p className="m-0 col-4">집크기</p>
-                <div className="col-8 d-flex   justify-content-center">
-                  <p className="m-0">{whatHouse}</p>
-                  <p className="m-0">{ispyung}</p>
-                </div>
-              </div>
-
-              <div className="d-flex text-center">
-                <p className="m-0 col-4">방/창문 개수</p>
-                <div className="col-8 d-flex  gap-5  justify-content-center">
-                  <div className="d-flex gap-3">
-                    <p className="m-0">방 : </p>
-                    <p className="m-0">{roomCounts}</p>
-                  </div>
-
-                  <div className="d-flex gap-3">
-                    <p className="m-0">창문 : </p>
-                    <p className="m-0">{windowCounts}</p>
-                  </div>
-                </div>
+      {calResult && <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 100 }} transition={{ duration: 0.3 }}
+        className="col-12 d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }}>
+        <div className="col-5 p-3 d-flex flex-column ">
+          <div style={{ borderBottom: "solid 1px #006EEE" }} className="d-flex flex-column gap-4 p-3">
+            <div className="d-flex text-center">
+              <p className="m-0 col-4">일시</p>
+              <div className="col-8 d-flex  gap-3  justify-content-center">
+                <p className="m-0">{isTime}</p>
+                <p className="m-0">{isWhatTime}</p>
+                <p className="m-0">{selectedOption}</p>
               </div>
             </div>
 
-            <div style={{ borderBottom: "solid 1px #006EEE" }} className="d-flex flex-column gap-4 p-3">
-              <div className="d-flex text-center">
-                <p className="m-0 col-4">발코니/베란다</p>
-                <div className="col-8 d-flex  gap-3  justify-content-center">
-                  <p className="m-0">{isBalkoni}</p>
+            <div className="d-flex text-center">
+              <p className="m-0 col-4">위치</p>
+              <div className="col-8 d-flex  gap-3  justify-content-center">
+                <p className="m-0">{whereStart.address}</p>
+                <p className="m-0">{detailAddress}</p>
+              </div>
+            </div>
+
+            <div className="d-flex text-center">
+              <p className="m-0 col-4">집크기</p>
+              <div className="col-8 d-flex   justify-content-center">
+                <p className="m-0">{whatHouse}</p>
+                <p className="m-0">{ispyung}</p>
+              </div>
+            </div>
+
+            <div className="d-flex text-center">
+              <p className="m-0 col-4">방/창문 개수</p>
+              <div className="col-8 d-flex  gap-5  justify-content-center">
+                <div className="d-flex gap-3">
+                  <p className="m-0">방 : </p>
+                  <p className="m-0">{roomCounts}</p>
                 </div>
-              </div>
 
-              <div className="d-flex text-center">
-                <p className="m-0 col-4">복층 여부 </p>
-                <div className="col-8 d-flex  gap-3  justify-content-center">
-                  <p className="m-0">{isBok}</p>
-                </div>
-              </div>
-
-              <div className="d-flex text-center">
-                <p className="m-0 col-4">추가 서비스 </p>
-                <div className="col-8 d-flex  gap-3  justify-content-center">
-                  <p className="m-0">{Object.entries(option)
-                    .filter(([key, value]) => value === true)
-                    .map(([key]) => {
-                      // 여기에서 각 key에 맞는 서비스 이름을 가져오는 함수 또는 매핑을 사용하세요.
-                      const serviceName = getServiceNameByKey(key);
-                      return serviceName;
-                    })
-                    .join(', ')}</p>
-                </div>
-              </div>
-
-
-              <div className="d-flex text-center">
-                <p className="m-0 col-4">가구사진</p>
-                {selectedFiles.length !== 0  && <div className="col-8 d-flex  gap-3  justify-content-center shadow " style={{ overflowX: "auto" }}>
-                  {selectedFiles.map((file, index) => (
-                    <div key={index} className="d-flex flex-column justify-content-center align-items-center">
-                      <img
-                        src={file.previewURL}
-                        alt={`선택된 파일 ${index + 1} 미리보기`}
-                        style={{ width: "7rem", height: "7rem" }}
-                      />
-                    </div>
-                  ))}
-                </div>}
-              </div>
-
-              <div className="d-flex text-center ">
-                <p className="m-0 col-4">추가사항</p>
-                <div className="col-8 d-flex  gap-3  justify-content-center">
-                  {userinput}
+                <div className="d-flex gap-3">
+                  <p className="m-0">창문 : </p>
+                  <p className="m-0">{windowCounts}</p>
                 </div>
               </div>
             </div>
-            <div className="d-flex align-items-center">
-              <p className="m-0 col-4 text-center">예상 가격</p>
-              <p className="fw-bold m-0 col-8 text-center " style={{ textDecoration: "underline" }} >{calResult.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
-            </div>
-            <button onClick={hadlesubmit} className="mt-3 btn btn-primary">제출</button>
           </div>
 
+          <div style={{ borderBottom: "solid 1px #006EEE" }} className="d-flex flex-column gap-4 p-3">
+            <div className="d-flex text-center">
+              <p className="m-0 col-4">발코니/베란다</p>
+              <div className="col-8 d-flex  gap-3  justify-content-center">
+                <p className="m-0">{isBalkoni}</p>
+              </div>
+            </div>
+
+            <div className="d-flex text-center">
+              <p className="m-0 col-4">복층 여부 </p>
+              <div className="col-8 d-flex  gap-3  justify-content-center">
+                <p className="m-0">{isBok}</p>
+              </div>
+            </div>
+
+            <div className="d-flex text-center">
+              <p className="m-0 col-4">추가 서비스 </p>
+              <div className="col-8 d-flex  gap-3  justify-content-center">
+                <p className="m-0">{Object.entries(option)
+                  .filter(([key, value]) => value === true)
+                  .map(([key]) => {
+                    // 여기에서 각 key에 맞는 서비스 이름을 가져오는 함수 또는 매핑을 사용하세요.
+                    const serviceName = getServiceNameByKey(key);
+                    return serviceName;
+                  })
+                  .join(', ')}</p>
+              </div>
+            </div>
+
+
+            <div className="d-flex text-center">
+              <p className="m-0 col-4">가구사진</p>
+              {selectedFiles.length !== 0 && <div className="col-8 d-flex  gap-3  justify-content-center shadow " style={{ overflowX: "auto" }}>
+                {selectedFiles.map((file, index) => (
+                  <div key={index} className="d-flex flex-column justify-content-center align-items-center">
+                    <img
+                      src={file.previewURL}
+                      alt={`선택된 파일 ${index + 1} 미리보기`}
+                      style={{ width: "7rem", height: "7rem" }}
+                    />
+                  </div>
+                ))}
+              </div>}
+            </div>
+
+            <div className="d-flex text-center ">
+              <p className="m-0 col-4">추가사항</p>
+              <div className="col-8 d-flex  gap-3  justify-content-center">
+                {userinput}
+              </div>
+            </div>
+          </div>
+          <div className="d-flex align-items-center">
+            <p className="m-0 col-4 text-center">예상 가격</p>
+            <p className="fw-bold m-0 col-8 text-center " style={{ textDecoration: "underline" }} >{calResult.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
+          </div>
+          <button onClick={hadlesubmit} className="mt-3 btn btn-primary">제출</button>
+        </div>
 
 
 
 
-        </motion.div>}
-      </div>
-      }
 
-    </AnimatePresence>
+      </motion.div>}
+    </div>
+    }
+
+  </AnimatePresence >
 
 
   </>

@@ -43,9 +43,9 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <ProtectedRoute>
+      // <ProtectedRoute>
         <DashBoard />
-      </ProtectedRoute>
+      // </ProtectedRoute>
     ),
   },
   // 회원가입
@@ -60,9 +60,9 @@ const router = createBrowserRouter([
   {
     path: 'dashboard',
     element: (
-      <ProtectedRoute>
+      // <ProtectedRoute>
         <DashBoard />
-      </ProtectedRoute>
+      // </ProtectedRoute>
     ),
   },
   // 대시보드 업체
