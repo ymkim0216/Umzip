@@ -59,6 +59,7 @@ export default function BuyView({ id,setBuyList, buyTotalPages, buyList }) {
                         {buyList.map((item, index) => (
                             <BuyProfile id={item.boardId} key={index} title={item.title} price={item.price} status={item.codeSmallName} img={item.thumbnailPath} />
                         ))}
+                        {buyList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center"><p>아직 작성 글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="./free-animated-icon-note-6172546.gif"/></div>}
                     </motion.div>
                 </AnimatePresence>
             </div>

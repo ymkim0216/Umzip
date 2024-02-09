@@ -48,6 +48,7 @@ export default function ({id, setHelpMeList, helpMeList, helpMeTotalPages }) {
                         {helpMeList.map((item, index) => (
                             <HelpPeopleToMeProfile key={index} createDt={item.createDt} id={item.boardId} writerName={item.writerName} codeSmallName={item.codeSmallName} title={item.title} point={item.point} />
                         ))}
+                        {helpMeList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center"><p>아직 작성 글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="./free-animated-icon-note-6172546.gif"/></div>}
                     </motion.div>
                 </AnimatePresence>
             </div>
