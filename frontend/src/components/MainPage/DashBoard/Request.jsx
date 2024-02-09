@@ -238,7 +238,7 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
                                         transition={{ duration: 0.3 }}
                                     >
                                         <DropDown
-                                            memberId={memberId}
+                                            memberId={data.memberId}
                                             setRequestId={setRequestId}
                                             Id={Id}
                                             setOpenRecommendModal={setOpenRecommendModal}
