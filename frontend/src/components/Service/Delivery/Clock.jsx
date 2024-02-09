@@ -16,7 +16,7 @@ export default function Clock({setisWhatTime ,toggleClockDropdown}) {
       const minutes = i % 60;
       const formattedTime = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
       options.push(
-        <div key={formattedTime} className="time-option" onClick={() => handleTimeChange(formattedTime)}>
+        <div key={formattedTime} className="time-option p-3" onClick={() => handleTimeChange(formattedTime)}>
           {formattedTime}
         </div>
       );
@@ -25,8 +25,8 @@ export default function Clock({setisWhatTime ,toggleClockDropdown}) {
   };
 
   return (
-    <div className="clock-container shadow">
-      <div className="time-options">{generateTimeOptions()}</div>
+    <div className="clock-container shadow" style={{height:"20rem", width:"20rem"}}>
+      <div className="time-options p-3">{generateTimeOptions()}</div>
     </div>
   );
 }

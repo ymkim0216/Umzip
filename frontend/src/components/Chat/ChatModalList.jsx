@@ -217,7 +217,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
         <div className='d-flex flex-row p-2 justify-content-between m-1'>
           <div className='d-flex gap-2'>
             <img
-              style={{ width: "3rem", height: "3rem" }}
+              style={{ width: "3rem", height: "3rem" }} 
               src={img}
               alt='랜덤 이미지'
             ></img>

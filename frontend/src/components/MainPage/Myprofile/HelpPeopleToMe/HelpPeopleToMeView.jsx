@@ -46,7 +46,7 @@ export default function ({id, setHelpMeList, helpMeList, helpMeTotalPages }) {
                 <AnimatePresence mode="wait">
                     <motion.div className="d-flex flex-column gap-4" >
                         {helpMeList.map((item, index) => (
-                            <HelpPeopleToMeProfile key={index} id={item.boardId} writerName={item.writerName} codeSmallName={item.codeSmallName} title={item.title} point={item.point} />
+                            <HelpPeopleToMeProfile key={index} createDt={item.createDt} id={item.boardId} writerName={item.writerName} codeSmallName={item.codeSmallName} title={item.title} point={item.point} />
                         ))}
                     </motion.div>
                 </AnimatePresence>

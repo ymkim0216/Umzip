@@ -26,7 +26,7 @@ export default function DeliveryForm() {
   const [isDropdownClockOpen, setDropdownClockOpen] = useState(false);
   const [isDropdownCarOpen, setDropdownCarOpen] = useState(false)
   const [isWhatTime, setisWhatTime] = useState(null)
-  const [isWhatCar, setisWhatCar] = useState("") //고쳐야함
+  const [isWhatCar, setisWhatCar] = useState("다마스") //고쳐야함
   const [whatPacking, setwhatPacking] = useState(null)
   const [whatRiding, setwhatRiding] = useState(null)
   const [isElavator, setisElavator] = useState(null)
@@ -410,7 +410,7 @@ export default function DeliveryForm() {
           <motion.p className="m-0" style={{ color: "#006EEE" }}>다음으로&rarr;</motion.p>
 
         </motion.h5>
-        <motion.div ref={scope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -100 }} transition={{ duration: 0.3 }} >
+        <motion.div ref={scope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -200 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -200 }} transition={{ duration: 0.3 }} >
 
           <div className="col-12 d-flex flex-column justify-content-center align-items-center">
             <div className="col-6 gap-5 d-flex flex-column" >
@@ -461,7 +461,7 @@ export default function DeliveryForm() {
                     <AnimatePresence>
                       {isDropdownClockOpen && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                          className="mt-2" style={{ position: "absolute", top: "100%", left: 0, zIndex: 1 }}>
+                          className="mt-2" style={{ position: "absolute", top: "-200%", left: "150%", zIndex: 1 }}>
                           <Clock setisWhatTime={setisWhatTime} toggleClockDropdown={toggleClockDropdown} />
                         </motion.div>
                       )}
@@ -533,7 +533,7 @@ export default function DeliveryForm() {
           />
           <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
         </motion.h5>
-        <motion.div style={{ height: "100vh" }} ref={newscope} className="col-12 d-flex justify-content-center align-items-center " initial={{ opacity: 0, x: 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} transition={{ duration: 0.3 }}  >
+        <motion.div style={{ height: "100vh" }} ref={newscope} className="col-12 d-flex justify-content-center align-items-center " initial={{ opacity: 0, x: 200 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 200 }} transition={{ duration: 0.3 }}  >
           <div className="col-8 d-flex gap-3 " style={{ minHeight: "40%" }} >
 
             <motion.div className="col-6 d-flex flex-column gap-5 p-3 justify-content-center" style={{ minHeight: "40%" }}>
@@ -549,7 +549,7 @@ export default function DeliveryForm() {
               <div id={startDetailAddress === "" ? "secondcomponent" : ""}>
                 <div className="col-9 d-flex align-items-center " style={{ width: "100%" }} >
                   <div className="col-3 fw-bold">출발상세주소</div>
-                  <input style={{ border: "none", height: "2rem" }} className="col-9 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setStartDetailAddress(event.target.value)} ></input>
+                  <input style={{ border: "none", height: "2rem" }} value={startDetailAddress} className="col-9 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setStartDetailAddress(event.target.value)} ></input>
                 </div>
               </div>
               <div id={whereEnd.address ? "" : "secondcomponent"} className="d-flex justify-content-center gap-1 align-items-center text-center" style={{ width: "100%", height: "2rem" }}>
@@ -565,7 +565,7 @@ export default function DeliveryForm() {
               </div>
               <div id={endDetailAddress === "" ? "secondcomponent" : ""} className="col-9 d-flex align-items-center " style={{ width: "100%" }} >
                 <div className="col-2 fw-bold">도착상세주소</div>
-                <input style={{ border: "none", height: "2rem" }} className="col-10 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setEndDetailAddress(event.target.value)} ></input>
+                <input style={{ border: "none", height: "2rem" }} value={endDetailAddress} className="col-10 shadow fw-bold text-center rounded-4 " placeholder="상세주소를 입력해주세요!" type="text" onChange={(event) => setEndDetailAddress(event.target.value)} ></input>
               </div>
 
 
@@ -615,7 +615,7 @@ export default function DeliveryForm() {
             />
             <motion.p className="m-0" style={{ color: "#006EEE" }}>이전으로</motion.p>
           </motion.h5>
-          <motion.div ref={thirdscope} initial={{ opacity: 0, x: -100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -100 }} transition={{ duration: 0.3 }} style={{ width: "100vw", height: "100vh " }} className="d-flex flex-column justify-content-center align-items-center">
+          <motion.div ref={thirdscope} initial={{ opacity: 0, x: -200 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -200 }} transition={{ duration: 0.3 }} style={{ width: "100vw", height: "100vh " }} className="d-flex flex-column justify-content-center align-items-center">
             <div className="col-5 p-3 gap-4 d-flex flex-column justify-content-center" >
               <div id={whatPacking ? "" : "thirdcomponent"} className="d-flex justify-content-center gap-2 align-items-center text-center">
                 <p className="m-0 col-3 fw-bold">포장여부</p>

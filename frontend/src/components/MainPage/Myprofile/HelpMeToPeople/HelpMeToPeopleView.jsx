@@ -46,7 +46,7 @@ export default function HelpMeToPeopleView({id, setHelpYouList, helpYouList, hel
                 <AnimatePresence mode="wait">
                     <motion.div className="d-flex flex-column gap-4" >
                         {helpYouList.map((item, index) => (
-                            <HelpMeToPeopleProfile writerName={item.writerName} codeSmallName={item.codeSmallName} id={item.boardId} key={index} title={item.title} point={item.point} />
+                            <HelpMeToPeopleProfile createDt={item.createDt} writerName={item.writerName} codeSmallName={item.codeSmallName} id={item.boardId} key={index} title={item.title} point={item.point} />
                         ))}
                     </motion.div>
                 </AnimatePresence>

@@ -1,7 +1,7 @@
 /* CleaningForm.css */
 .clock-container {
-    width: 10rem;
-    height: 10rem;
+    width: 20rem;
+    height: 20rem;
     overflow-y: auto;
     border-radius: 1rem;
     background-color: white;
@@ -17,7 +17,7 @@
   .time-option {
     border-radius: 4rem;
     cursor: pointer;
-    padding: 8px;
+    padding: 2rem;
     border-radius: 4px;
     transition: background-color 0.3s;
   }
@@ -26,6 +26,6 @@
     background-color: #f0f0f0;
     text-decoration: underline;
     font-weight: bold;
-    
+
   }
   
