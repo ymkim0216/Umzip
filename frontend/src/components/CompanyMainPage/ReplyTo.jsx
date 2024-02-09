@@ -3,7 +3,7 @@ import ReplyModal from './ReplyModal';
 import { useState } from 'react';
 
 
-function ReplyTo({ status, id }) {
+function ReplyTo({ role, status, id, price }) {
   // PropTypes를 사용하여 props 유형 검증
   ReplyTo.propTypes = {
     status: PropTypes.string, // 'codeSmall' prop이 문자열이어야 함을 선언
@@ -26,6 +26,8 @@ function ReplyTo({ status, id }) {
           <ReplyModal
             onClose={handleCloseModal}
             mappingId={id}
+            price={price}
+            role={role}
           />
         )}
       </>

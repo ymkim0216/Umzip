@@ -65,7 +65,7 @@ function DeliverReservation() {
                   <StatusChange status={item.codeSmallId} />
                 </div>
                 <h5 className="m-0 col-md-2">
-                  {item.codeSmallId} <ReplyTo status={item.codeSmallId} id={item.mappingId} />
+                  {item.codeSmallId} <ReplyTo role='delivery' status={item.codeSmallId} id={item.mappingId} price={item.price} />
                 </h5>
               </motion.div>
           ))}
