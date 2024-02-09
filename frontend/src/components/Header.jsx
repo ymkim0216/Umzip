@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import useAuthStore from '../store/store';
 
 const Header = () => {
   const [scrollY, setScrollY] = useState(0);
 
   const [profileImage, setProfileImage] = useState('');
   const [checkWho, setWho] = useState(null)
-
+  const { user } = useAuthStore.getState();
+  const memberId = user.Id
   const handleScroll = () => {
     setScrollY(window.scrollY);
   };
@@ -137,7 +139,7 @@ const Header = () => {
                 }}
                 className="nav-item"
               >
-                <Link className="nav-link mx-3 px-3" to="/myprofile">
+                <Link className="nav-link mx-3 px-3" to={`/myprofile/${memberId}`}>
                 <img src={profileImage} alt="Profile" style={{ maxWidth: '30px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }}/>
                   프로필
                 </Link>
