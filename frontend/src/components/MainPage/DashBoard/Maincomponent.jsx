@@ -30,7 +30,7 @@ const MainComponent = () => {
         if (storedUserInfo) {
             const parsedInfo = JSON.parse(storedUserInfo);
             console.log(parsedInfo);
-            setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage });
+            setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage ,id:parsedInfo.id});
         }
     }, []);
 
@@ -124,7 +124,7 @@ const MainComponent = () => {
                 {choicecompanyId && <RecommendModal companyId={choicecompanyId} isOpen={openRecommendModal} closeModal={handleModal} />}
             </AnimatePresence>
             <AnimatePresence>
-                {requestId && requestId.price && <NewModal setRequestId={setRequestId} requestId={requestId} setRequestMappingId={setRequestMappingId} requestMappingId={requestMappingId} isModalOpen={requestCheck} setIsModalOpen={setRequestCheck} />}
+                {requestId && requestId.price && <NewModal id={userInfo.id} setRequestId={setRequestId} requestId={requestId} setRequestMappingId={setRequestMappingId} requestMappingId={requestMappingId} isModalOpen={requestCheck} setIsModalOpen={setRequestCheck} />}
             </AnimatePresence>
             <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh', width: '100%', marginTop: "5rem" }}>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="col-10">
