@@ -6,6 +6,7 @@ import { api } from '../services/api';
 // 디테일 페이지 가져온 정보
 const useStore = create((set, get) => ({
   data: [],
+  comments: [],
   loading: false,
   error: null,
   // 192.168.30.206:8080 동현이 API
@@ -27,6 +28,22 @@ const useStore = create((set, get) => ({
         // Authorization:`Bearer ${token}`
       }});
       set({ data: response.data, loading: false },
+        console.log(response.data));
+    } catch (error) {
+      set({ error, loading: false });
+    }
+  },
+
+  loadComment: async () => {
+    const { boardId } = get();
+    set({ loading: true });
+    try {
+        // 도메인주소로 할시에는 https로 바꿔줘야함
+      const response = await api.get(`/helps/detail/comments/${boardId}`,
+      {headers: {
+        // Authorization:`Bearer ${token}`
+      }});
+      set({ comments: response.data, loading: false },
         console.log(response.data));
     } catch (error) {
       set({ error, loading: false });
