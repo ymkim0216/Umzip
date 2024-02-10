@@ -4,12 +4,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import style from './HelpList.module.css';
 
 function HelpComments() {
-  const { fetchData, data, loading, error, sendPostRequest, commentChoic } = useStore();
+  const { loadComment, comments, loading, error, sendPostRequest, commentChoic } = useStore();
   const [commentText, setCommentText] = useState(''); // 댓글 텍스트 상태
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    loadComment();
+  }, [loadComment]);
 
     const handleCommentChange = (e) => {
     setCommentText(e.target.value); // 입력 값으로 댓글 텍스트 상태 업데이트
@@ -55,7 +55,7 @@ function HelpComments() {
       return <div>Error: {error.message}</div>;
     }
     
-    const content = data?.result;
+    const content = comments?.result;
     // 데이터가 로드되면, 해당 데이터를 사용하여 무언가를 렌더링합니다.
     if (!content) {
       // 데이터가 비어있으면 메시지를 표시합니다.
@@ -80,9 +80,10 @@ function HelpComments() {
 
       {/* 댓글 리스트 */}
       <ListGroup>
-        {content.commentList.map((item) => (
+        {content.map((item) => (
           <ListGroup.Item className={style.listGrop} key={item.id}>
               <div className={style.content}>
+              <img src={item.writerImageUrl} alt="Writer" className={style.writerImage} />
                 <span className={style.headPoint}>{item.writerName}P</span>
                 <span className={style.headDate}>{item.createDt}</span>
                 <span className={style.headUserName}>{item.comment}</span>
