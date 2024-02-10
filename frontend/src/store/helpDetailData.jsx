@@ -44,7 +44,7 @@ const useStore = create((set, get) => ({
         // Authorization:`Bearer ${token}`
       }});
       set({ comments: response.data, loading: false },
-        console.log(response.data));
+        console.log(response.comments));
     } catch (error) {
       set({ error, loading: false });
     }
