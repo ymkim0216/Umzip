@@ -5,24 +5,26 @@ import useAuthStore from '../store/store';
 
 const Header = () => {
   const [scrollY, setScrollY] = useState(0);
-
+  const [id,setId] =useState(null)
   const [profileImage, setProfileImage] = useState('');
   const [checkWho, setWho] = useState(null)
-  const { user } = useAuthStore.getState();
-  const memberId = user.id
+
+
   const handleScroll = () => {
     setScrollY(window.scrollY);
   };
 
   useEffect(() => {
+    
     window.addEventListener('scroll', handleScroll);
 
     const storedUserInfo = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
     console.log(storedUserInfo)
     if (storedUserInfo) {
-      const { profileImage, who } = JSON.parse(storedUserInfo);
+      const { profileImage, who ,id} = JSON.parse(storedUserInfo);
       setProfileImage(profileImage || ''); // Fallback to an empty string if profilePic is not found
       setWho(who || '')
+      setId(id || "")
     }
 
     // Clean up the event listener when the component unmounts
@@ -139,7 +141,7 @@ const Header = () => {
                 }}
                 className="nav-item"
               >
-                <Link className="nav-link mx-3 px-3" to={`/myprofile/${memberId}`}>
+                <Link className="nav-link mx-3 px-3" to={`/myprofile/${id}`}>
                 <img src={profileImage} alt="Profile" style={{ maxWidth: '30px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }}/>
                   프로필
                 </Link>

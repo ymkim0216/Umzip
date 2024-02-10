@@ -1,14 +1,24 @@
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { api } from "../../../services/api";
-export default function NewModal({ setRequestId, requestId }) {
+export default function NewModal({ id, setRequestId, requestId }) {
     const [result, setResult] = useState(null)
     const [point, setPoint] = useState(null)
+    const [myProfile, setMyprofile] = useState(null)
+    const [Id, setId] = useState(null)
     let startTime = ""
     let endTime = ""
     let resTime = ""
     useEffect(() => {
-        const res=  reservationDetail()
+        const storedUserInfo = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
+        console.log(storedUserInfo)
+        if (storedUserInfo) {
+            const { id } = JSON.parse(storedUserInfo);
+
+            setId(id || "")
+        }
+        const res = reservationDetail()
+        axios_myprofile()
         // setRequestId({ "requestList": "청소", mappingId: "1", Id: "1", price: 1000000 })
         // setResult({
         //     "id": 2,
@@ -57,6 +67,23 @@ export default function NewModal({ setRequestId, requestId }) {
         //     ],
         // })
     }, [])
+
+    const axios_myprofile = async () => {
+
+        try {
+            const response = await api.get(
+                `/users/${Id}`,
+            );
+            console.log(response.data.result)
+            setMyprofile(response.data.result)
+
+            return response
+        }
+        catch (e) {
+
+        }
+    }
+
     const reservationDetail = async () => {
         let service = ""
         console.log(requestId)
@@ -69,12 +96,12 @@ export default function NewModal({ setRequestId, requestId }) {
 
             );
             setResult(response.data.result)
-            if (service==="용달"){
+            if (service === "delivery") {
                 startTime = new Date(result.startTime).toISOString().split('T')[0];
                 endTime = new Date(result.endTime).toISOString().split('T')[0];
             }
-            else{
-                resTime=  new Date(result.reservationTime).toISOString().split('T')[0];
+            else {
+                resTime = new Date(result.reservationTime).toISOString().split('T')[0];
             }
             console.log(response)
             return response.data.result
@@ -82,24 +109,24 @@ export default function NewModal({ setRequestId, requestId }) {
             console.error(error);
         }
     }
-    // const MakeConfirm = async () => {
-    //     let service = ""
-    //     if (requestId.requestList === "용달") { service = "delivery" }
-    //     else { service = "clean" }
-    //     try {
-    //         const response = await api.post(
-    //             `/${service}/user/reservation-complete`,
-    //             {
-    //                 "mappingId": requestId.mappingId,
-    //                 "point": point,
-    //             }
-    //         );
-    //         console.log(response)
-    //         return
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
+    const MakeConfirm = async () => {
+        let service = ""
+        if (requestId.requestList === "용달") { service = "delivery" }
+        else { service = "clean" }
+        try {
+            const response = await api.post(
+                `/${service}/user/reservation-complete`,
+                {
+                    "mappingId": requestId.mappingId,
+                    "point": point,
+                }
+            );
+            console.log(response)
+            return
+        } catch (error) {
+            console.error(error);
+        }
+    }
     const handleClose = (e) => {
         // 모달 외부의 영역을 클릭한 경우에만 닫기
         if (e.target === e.currentTarget) {
@@ -108,7 +135,7 @@ export default function NewModal({ setRequestId, requestId }) {
     }
     const handleInput = (e) => {
         const inputValue = e.target.value;
-        const maxValue = requestId.price / 10;
+        const maxValue = Math.min(myProfile.point, requestId.price / 10);
 
         if (inputValue > maxValue) {
             // 최대값을 초과하는 경우 혹은 다른 유효성 검사를 수행할 수 있습니다.
@@ -165,9 +192,10 @@ export default function NewModal({ setRequestId, requestId }) {
                             </div>
                         </div>
                         <div className="p-3 rounded-4" style={{ border: "blue 1px solid" }}>
-                            <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{requestId.price}</p></div>
+                            <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{requestId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
+                            <div className="d-flex justify-content-between"><p className="m-0">보유포인트</p><p className="m-0">{myProfile.point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
                             <div style={{ borderBottom: '1px solid blue' }} className="d-flex justify-content-between"><p style={{ fontSize: "0.75rem", }}>사용포인트</p><div><input value={point} onChange={handleInput} className="text-end  m-0" type="number"></input>P</div></div>
-                            <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{requestId.price - point}</p></div>
+                            <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{(requestId.price - point).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
                             <div className="d-flex"><button className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
                         </div>
                     </div> : <div className="d-flex flex-column p-3">
@@ -193,6 +221,7 @@ export default function NewModal({ setRequestId, requestId }) {
                         </div>
                         <div className="p-3 rounded-4" style={{ border: "blue 1px solid" }}>
                             <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{requestId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
+                            <div className="d-flex justify-content-between"><p className="m-0">보유포인트</p><p className="m-0">{myProfile.point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
                             <div style={{ borderBottom: '1px solid blue' }} className="d-flex justify-content-between"><p style={{ fontSize: "0.75rem", }}>사용포인트</p><div><input value={point} onChange={handleInput} className="text-end  m-0" type="number"></input>P</div></div>
                             <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{(requestId.price - point).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
                             <div className="d-flex"><button className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
