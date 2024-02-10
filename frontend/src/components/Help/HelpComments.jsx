@@ -23,7 +23,7 @@ function HelpComments() {
       // 성공적으로 댓글이 등록되면 입력 필드를 초기화합니다.
       setCommentText('');
       // 댓글 리스트를 새로고침합니다.
-      await fetchData();
+      await loadComment();
     } catch (error) {
       // 에러 처리를 합니다.
       console.error('댓글 등록 실패:', error);
@@ -36,7 +36,7 @@ function HelpComments() {
       // 채택 요청을 보냅니다.
       await commentChoic(writerId);
       // 성공적으로 처리되면 댓글 리스트를 새로고침합니다.
-      await fetchData();
+      await loadComment();
     } catch (error) {
       // 에러 처리를 합니다.
       console.error('채택 처리 실패:', error);
