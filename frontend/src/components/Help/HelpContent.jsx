@@ -5,16 +5,21 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { AnimatePresence, motion } from "framer-motion";
 import useStore from '../../store/helpDetailData';
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+
+
 
 function HelpDetail() {
   const { boardId } = useParams();
   const navigate = useNavigate()
-  const { setBoardId, fetchData, data, loading, error } = useStore();
+  const { setBoardId, fetchData, data, loading, error, pointGive } = useStore();
   console.log(boardId)
   useEffect(() => {
     setBoardId(boardId);
     fetchData();
-  }, [boardId, setBoardId, fetchData]);
+  }, [boardId, setBoardId, fetchData, pointGive]);
 
   // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
   if (loading) {
@@ -33,7 +38,6 @@ function HelpDetail() {
     return <div>No data found.</div>;
   }
   console.log(content)
-  console.log(content.content)
 
   
 
@@ -55,7 +59,7 @@ function HelpDetail() {
                 {content.codeSmallId === 403 && <span style={{ fontSize: "2rem", color: "#0077CC", fontWeight: "bold" }} >도와줬어요</span>}
                 <h4 className="m-0">제목: {content.boardTitle}</h4>
               </div>
-              <span>포인트: {content.rewardPoint}P</span>
+              <span> <button onClick={() => pointGive(content.boardId)}>도움 받았어요!</button> 포인트: {content.rewardPoint}P</span>
             </div>
             <div>
               <div className="d-flex align-items-center justify-content-between">
@@ -80,11 +84,11 @@ function HelpDetail() {
                 navigation
                 pagination={{ clickable: true }} // clickable을 true로 설정하여 페이지네이션 사용
                 loop={false}
-                effect="coverflow" // coverflow 효과 설정
+                effect={"coverflow"} // coverflow 효과 설정
                 coverflowEffect={{ rotate: 0, stretch: 100, depth: 100, modifier: 1, slideShadows: true }} // coverflow 효과의 설정
                 style={{
-                  width: '100%', /* 부모 요소의 전체 너비를 차지하도록 설정 */
-                  maxWidth: '1100px', /* 최대 너비 제한 */
+                  width: '60%', /* 부모 요소의 전체 너비를 차지하도록 설정 */
+                  maxWidth: '500px', /* 최대 너비 제한 */
                   height: '500px', /* 고정 높이 설정 */
                   margin: 'auto', /* 가운데 정렬 */
                 }}

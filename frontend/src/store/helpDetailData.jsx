@@ -119,6 +119,19 @@ const useStore = create((set, get) => ({
       }
     },
 
+    pointGive: async(boardId) => {
+      set({ loading: true });
+      try {
+          // 도메인주소로 할시에는 https로 바꿔줘야함
+        const response = await api.post(`helps/detail/point/${boardId}`,
+        );
+        set({ loading: false },
+          );
+      } catch (error) {
+        set({ error, loading: false });
+      }
+    },
+
 }));
 
 export default useStore;

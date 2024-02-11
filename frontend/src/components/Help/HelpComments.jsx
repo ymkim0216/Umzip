@@ -1,7 +1,7 @@
 import { useEffect,useState } from 'react';
 import useStore from '../../store/helpDetailData';
 import ListGroup from 'react-bootstrap/ListGroup';
-import style from './HelpList.module.css';
+import style from './HelpComments.module.css';
 
 function HelpComments() {
   const { loadComment, comments, loading, error, sendPostRequest, commentChoic } = useStore();
