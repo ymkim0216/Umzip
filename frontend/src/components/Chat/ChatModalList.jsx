@@ -190,19 +190,24 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
                 }}
               >
                 {userId && talkHistory && talkHistory.map((items, index) => (
+                  <div className='d-flex  flex-column'>
+                    <div className='d-flex align-items-center gap-1 justify-content-center' style={{alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",}}><img src={items.senderProfileImage} style={{width:"2rem" ,height:"2rem"}} className='rounded-pill'/><p className='m-0'>{items.senderName}</p></div>
                   <div
                     key={index}
                     style={{
-                      alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
+                      
                       maxWidth: "70%",
                       margin: "5px",
                       padding: "10px",
-                      background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
                       borderRadius: "10px",
+                      alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
+                      background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
+      
                       color: userId !== items.senderId ? "#000" : "#fff",
                     }}
                   >
                     {items.content}
+                  </div>
                   </div>
                 ))}
                 <div style={{ marginTop: "auto" }}>

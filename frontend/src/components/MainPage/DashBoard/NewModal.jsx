@@ -3,24 +3,24 @@ import { useEffect, useState } from "react"
 import { api } from "../../../services/api";
 export default function NewModal({ id, setRequestId, requestId }) {
     const [result, setResult] = useState(null)
-    const [point, setPoint] = useState(null)
+    const [point, setPoint] = useState(0)
     const [myProfile, setMyprofile] = useState(null)
+    const [startTime,setStartTIme] = useState(null)
+    const [endTime,setEndTIme] = useState(null)
+    const [resTime,setResTIme] = useState(null)
     const [userInfo, setUserInfo] = useState({ name: '', profileImage: '' });
     // const [Id, setId] = useState(null)
-    let startTime = ""
-    let endTime = ""
-    let resTime = ""
     useEffect(() => {
         const fetchData = async () => {
             const storedUserInfo = localStorage.getItem('userInfo');
             if (storedUserInfo) {
                 try {
                     const parsedInfo = JSON.parse(storedUserInfo);
-                    console.log(parsedInfo);
+                    console.log(parsedInfo.id);
     
                     if (parsedInfo && parsedInfo.id) {
                         setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage, id: parsedInfo.id });
-                        await axios_myprofile(); // id가 사용 가능할 때만 호출
+                        await axios_myprofile(parsedInfo.id ); // id가 사용 가능할 때만 호출
                     }
                 } catch (error) {
                     console.error('Error parsing user info:', error);
@@ -34,11 +34,11 @@ export default function NewModal({ id, setRequestId, requestId }) {
     }, []);
     
 
-    const axios_myprofile = async () => {
-        console.log(userInfo.id)
+    const axios_myprofile = async (id) => {
+        console.log(id)
         try {
             const response = await api.get(
-                `/users/${userInfo.id}`,
+                `/users/${id}`,
             );
             console.log(response.data.result)
             setMyprofile(response.data.result)
@@ -64,11 +64,11 @@ export default function NewModal({ id, setRequestId, requestId }) {
             console.log(response.data.result)
             setResult(response.data.result)
             if (service === "delivery") {
-                startTime = new Date(result.startTime).toISOString().split('T')[0];
-                endTime = new Date(result.endTime).toISOString().split('T')[0];
+                setStartTIme(new Date(response.data.result.startTime).toISOString().split('T')[0])
+                setEndTIme(new Date(response.data.result.endTime).toISOString().split('T')[0]);
             }
             else {
-                resTime = new Date(result.reservationTime).toISOString().split('T')[0];
+                setResTIme(new Date(response.data.result.reservationTime).toISOString().split('T')[0])
             }
             console.log(response)
             return response.data.result
@@ -76,7 +76,7 @@ export default function NewModal({ id, setRequestId, requestId }) {
             console.error(error);
         }
     }
-    const MakeConfirm = async () => {
+    const MakeConfirm = async () => {   
         let service = ""
         if (requestId.requestList === "용달") { service = "delivery" }
         else { service = "clean" }
@@ -112,6 +112,8 @@ export default function NewModal({ id, setRequestId, requestId }) {
             // 유효한 경우에는 입력값을 설정합니다.
             setPoint(inputValue);
         }
+        if(inputValue < 0)
+        {setPoint(0)}
     };
     return <>
         { myProfile && result && requestId && requestId.Id && requestId.mappingId && requestId.requestList && (

@@ -158,11 +158,11 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
 
     const stopSocketCommunication = () => {
         if (stompClientRef.current) {
-          
-          stompClientRef.current.deactivate();
-          console.log("연결X")
+
+            stompClientRef.current.deactivate();
+            console.log("연결X")
         }
-      };
+    };
 
 
 
@@ -200,7 +200,7 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
             <RecommendModal companyId={companyId} isOpen={isModalOpen} closeModal={handleModal} />
             <AnimatePresence>
                 {openModal && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]),setUserInput("") ,stopSocketCommunication()}}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]), setUserInput(""), stopSocketCommunication() }}
                         style={{
                             zIndex: "99",
                             position: 'fixed',
@@ -233,19 +233,24 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
                                 }}
                             >
                                 {userId && talkHistory && talkHistory.map((items, index) => (
-                                    <div
-                                        key={index}
-                                        style={{
-                                            alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
-                                            maxWidth: "70%",
-                                            margin: "5px",
-                                            padding: "10px",
-                                            background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
-                                            borderRadius: "10px",
-                                            color: userId !== items.senderId ? "#000" : "#fff",
-                                        }}
-                                    >
-                                        {items.content}
+                                    <div className='d-flex  flex-column'>
+                                        <div className='d-flex align-items-center gap-1 justify-content-center' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' /><p className='m-0'>{items.senderName}</p></div>
+                                        <div
+                                            key={index}
+                                            style={{
+
+                                                maxWidth: "70%",
+                                                margin: "5px",
+                                                padding: "10px",
+                                                borderRadius: "10px",
+                                                alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
+                                                background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
+
+                                                color: userId !== items.senderId ? "#000" : "#fff",
+                                            }}
+                                        >
+                                            {items.content}
+                                        </div>
                                     </div>
                                 ))}
                                 <div style={{ marginTop: "auto" }}>
