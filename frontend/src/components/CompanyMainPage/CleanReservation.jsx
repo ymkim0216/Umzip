@@ -9,17 +9,18 @@ function DeliverReservation() {
   const { fetchData, data } = companyCleanReservation();
   const [itemsToShow, setItemsToShow] = useState(2); // 한 번에 보여줄 아이템의 수
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
+  console.log(data)
 
   useEffect(() => {
     fetchData();
-  }, [fetchData, data]);
-
-  console.log(data.result);
+  }, [ fetchData ]);
+  
+  // console.log(data.result);
   const reservationList = data?.result || [];
 
   useEffect(() => {
-    setVisibleItems(reservationList ? reservationList.slice(0, itemsToShow) : null);
-  }, [itemsToShow, reservationList]);
+    setVisibleItems(data?.result ? data.result.slice(0, itemsToShow) : []);
+  }, [data, itemsToShow]);
 
   const handleShowMore = () => {
     setItemsToShow(itemsToShow + 2); // 더 보기 버튼 클릭 시 3개 아이템 추가
@@ -65,7 +66,7 @@ function DeliverReservation() {
                   <StatusChange status={item.codeSmallId} />
                 </div>
                 <h5 className="m-0 col-md-2">
-                  {item.codeSmallId} <ReplyTo role='delivery' status={item.codeSmallId} id={item.mappingId} price={item.price} />
+                  <ReplyTo role='clean' status={item.codeSmallId} id={item.mappingId} price={item.price} />
                 </h5>
               </motion.div>
           ))}

@@ -14,7 +14,7 @@ const useStoreClean = create((set) => ({
       const response = await api.get(`/clean/company/reservation`,
       );
       set({ data: response.data, loading: false },
-        console.log(response.data)
+        // console.log(response.data)
         );
     } catch (error) {
       set({ error, loading: false }

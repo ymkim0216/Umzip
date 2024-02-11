@@ -2,10 +2,12 @@ import PropTypes from 'prop-types';
 
 
 export default function StatusChange({ status }) {
-  // PropTypes를 사용하여 props 유형 검증
-  StatusChange.propTypes = {
-    status: PropTypes.string, // 'codeSmall' prop이 문자열이어야 함을 선언
-  };
+
+    // PropTypes를 사용하여 props 유형 검증
+    StatusChange.propTypes = {
+      status: PropTypes.number, // 'codeSmall' prop이 문자열이어야 함을 선언
+    };
+
   const newstatus = status % 100;
   // console.log(newstatus)
   let color = null;
