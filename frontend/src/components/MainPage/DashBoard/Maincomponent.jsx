@@ -32,6 +32,9 @@ const MainComponent = () => {
             console.log(parsedInfo);
             setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage ,id:parsedInfo.id});
         }
+        else{
+            navigate("/login")
+        }
     }, []);
 
     const handleLogout = async (event) => {

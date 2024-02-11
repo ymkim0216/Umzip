@@ -11,11 +11,11 @@ export default function RecommendModalComponent({ companyId }) {
     // const [serviceInfo, setServiceInfo] = useState({ imageUrl: "./randomimg.png", name: "qwer", averageScore: 3.5, mostTag: [], introduction: "Asdf", reviewList: [], experience: "2018-02-08T12:34:56" })
     const [serviceInfo, setServiceInfo] =useState(null)
     const [imgsrc,setImgsrc] = useState(null)
+
     useEffect(() => {
         const fetchData = async()=>{
             const res = await axios_detail()
             const experienceDate = new Date(res.experience);
-
             // 현재 날짜를 가져오기
             const currentDate = new Date();
         
@@ -60,9 +60,9 @@ export default function RecommendModalComponent({ companyId }) {
                         <StarRating rating={serviceInfo.averageScore} />
                         {serviceInfo.averageScore}
                     </div>
-                    <div className="d-flex gap-3">
-                        {serviceInfo.mostTag.map(tag => <div className="border border-primary rounded-5 bg-white text-center shadow" style={{ width: "9rem" }}>
-                            {tag}
+                    <div className="d-flex gap-3" style={{width:'30rem'}}>
+                        {serviceInfo.mostTag.map(tag => <div className="border border-primary rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
+                            <p className="m-0" style={{fontSize:"0.75rem"}}>{tag}</p>
                         </div>)}
 
                     </div>
