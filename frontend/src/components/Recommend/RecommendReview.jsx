@@ -32,8 +32,9 @@ export default function RecommendReview({ tag, img, name, date, rating, text }) 
                     </div>
                 </div>
                 <div className="gap-3 d-flex justify-content-start">
-                    {tag.map(item => <div className="d-flex border border-primary rounded-5 bg-white col-md-2 align-items-center justify-content-center " style={{ fontSize: "13px" }}>
-                        {item}
+                    {tag.map(item => <div className="d-flex border border-primary rounded-5 bg-white col-3 align-items-center justify-content-center p-2 " style={{ fontSize: "13px" }}>
+                        
+                        <p className="m-0" style={{fontSize:"0.75rem"}}>{item}</p>
                     </div>)}
 
                 </div>

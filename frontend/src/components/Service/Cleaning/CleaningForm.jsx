@@ -133,6 +133,7 @@ export default function CleaningFrom() {
         {
           reservationTime: `${getToday(startDate)} ${isWhatTime}`, // 실제 시작 시간을 올바른 날짜 및 시간 형식으로 교체
           sigungu: sigungu, // 실제 sigungu 값으로 교체 (정수)
+          limit:20,
         },
 
       );

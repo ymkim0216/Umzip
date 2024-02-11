@@ -62,7 +62,7 @@ export default function UsedView({id, setSellList, sellList, sellTotalPages }) {
                             {sellList.map((item, index) => (
                                 <UsedProfile key={index} id={item.boardId} img={item.thumbnailPath}  title={item.title} price={item.price} status={item.codeSmallName} />
                             ))}
-                            {sellList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center"><p>아직 작성 글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="./free-animated-icon-note-6172546.gif"/></div>}
+                            {sellList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 판매글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
                         </motion.div>
                     </AnimatePresence>
                 </div>
