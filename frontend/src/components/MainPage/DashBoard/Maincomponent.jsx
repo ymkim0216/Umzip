@@ -26,7 +26,7 @@ const MainComponent = () => {
     const [requestMappingId, setRequestMappingId] = useState(null)
     const [requestId, setRequestId] = useState(null)
     useEffect(() => {
-        const storedUserInfo = localStorage.getItem('userInfo');
+        const storedUserInfo = localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo");
         if (storedUserInfo) {
             const parsedInfo = JSON.parse(storedUserInfo);
             console.log(parsedInfo);
