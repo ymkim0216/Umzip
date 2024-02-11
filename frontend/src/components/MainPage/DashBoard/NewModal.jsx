@@ -11,63 +11,28 @@ export default function NewModal({ id, setRequestId, requestId }) {
     let endTime = ""
     let resTime = ""
     useEffect(() => {
-        const storedUserInfo = localStorage.getItem('userInfo');
-        if (storedUserInfo) {
-            const parsedInfo = JSON.parse(storedUserInfo);
-            console.log(parsedInfo);
-            setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage ,id:parsedInfo.id});
-        }
-        const res = reservationDetail()
-        axios_myprofile()
-
-        // setRequestId({ "requestList": "청소", mappingId: "1", Id: "1", price: 1000000 })
-        // setResult({
-        //     "id": 2,
-        //     "carName": "1톤트럭",
-        //     "startTime": "2024-02-07",
-        //     "endTime": "2024-03-05",
-        //     "departure": "남양산역",
-        //     "departureDetail": "반도유보라5차512동1602호",
-        //     "destination": "서울",
-        //     "destinationDetail": "서울시 서울역",
-        //     "packaging": true,
-        //     "move": false,
-        //     "elevator": true,
-        //     "parking": true,
-        //     "movelist": "이게뭔지몰라사실저게뭔지도몰라그냥내짐싸게싸게보내줘",
-        //     "deliveryImages": [
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-
-        //     ],
-        // })
-        // setResult({
-        //     "reservationTime": "2024-02-07",
-        //     "roomSize": 30,
-        //     "roomCount": 5,
-        //     "balconyExistence": true,
-        //     "windowCount": 10,
-        //     "duplexRoom": true,
-        //     "mold": false,
-        //     "externalWindow": true,
-        //     "houseSyndrome": true,
-        //     "removeSticker": false,
-        //     "address": "경상남도 남양산역",
-        //     "addressDetail": "반도유보라 5차 512동1602호",
-        //     "cleanImages": [
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //         "./randomimg.png",
-        //     ],
-        // })
-    }, [])
+        const fetchData = async () => {
+            const storedUserInfo = localStorage.getItem('userInfo');
+            if (storedUserInfo) {
+                try {
+                    const parsedInfo = JSON.parse(storedUserInfo);
+                    console.log(parsedInfo);
+    
+                    if (parsedInfo && parsedInfo.id) {
+                        setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage, id: parsedInfo.id });
+                        await axios_myprofile(); // id가 사용 가능할 때만 호출
+                    }
+                } catch (error) {
+                    console.error('Error parsing user info:', error);
+                }
+            }
+    
+            const res = await reservationDetail();
+        };
+    
+        fetchData();
+    }, []);
+    
 
     const axios_myprofile = async () => {
         console.log(userInfo.id)
