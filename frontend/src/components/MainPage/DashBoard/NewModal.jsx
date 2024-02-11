@@ -5,20 +5,21 @@ export default function NewModal({ id, setRequestId, requestId }) {
     const [result, setResult] = useState(null)
     const [point, setPoint] = useState(null)
     const [myProfile, setMyprofile] = useState(null)
-    const [Id, setId] = useState(null)
+    const [userInfo, setUserInfo] = useState({ name: '', profileImage: '' });
+    // const [Id, setId] = useState(null)
     let startTime = ""
     let endTime = ""
     let resTime = ""
     useEffect(() => {
-        const storedUserInfo = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
-        console.log(storedUserInfo)
+        const storedUserInfo = localStorage.getItem('userInfo');
         if (storedUserInfo) {
-            const { id } = JSON.parse(storedUserInfo);
-
-            setId(id || "")
+            const parsedInfo = JSON.parse(storedUserInfo);
+            console.log(parsedInfo);
+            setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage ,id:parsedInfo.id});
         }
         const res = reservationDetail()
         axios_myprofile()
+
         // setRequestId({ "requestList": "청소", mappingId: "1", Id: "1", price: 1000000 })
         // setResult({
         //     "id": 2,
@@ -69,10 +70,10 @@ export default function NewModal({ id, setRequestId, requestId }) {
     }, [])
 
     const axios_myprofile = async () => {
-
+        console.log(userInfo.id)
         try {
             const response = await api.get(
-                `/users/${Id}`,
+                `/users/${userInfo.id}`,
             );
             console.log(response.data.result)
             setMyprofile(response.data.result)
@@ -95,6 +96,7 @@ export default function NewModal({ id, setRequestId, requestId }) {
                 `/${service}/user/reservation/${requestId.Id}`,
 
             );
+            console.log(response.data.result)
             setResult(response.data.result)
             if (service === "delivery") {
                 startTime = new Date(result.startTime).toISOString().split('T')[0];
@@ -147,7 +149,7 @@ export default function NewModal({ id, setRequestId, requestId }) {
         }
     };
     return <>
-        {result && requestId && requestId.Id && requestId.mappingId && requestId.requestList && (
+        { myProfile && result && requestId && requestId.Id && requestId.mappingId && requestId.requestList && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleClose}
                 style={{
                     zIndex: "99",
@@ -196,7 +198,7 @@ export default function NewModal({ id, setRequestId, requestId }) {
                             <div className="d-flex justify-content-between"><p className="m-0">보유포인트</p><p className="m-0">{myProfile.point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
                             <div style={{ borderBottom: '1px solid blue' }} className="d-flex justify-content-between"><p style={{ fontSize: "0.75rem", }}>사용포인트</p><div><input value={point} onChange={handleInput} className="text-end  m-0" type="number"></input>P</div></div>
                             <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{(requestId.price - point).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div className="d-flex"><button className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
+                            <div className="d-flex"><button onClick={MakeConfirm} className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
                         </div>
                     </div> : <div className="d-flex flex-column p-3">
                         <div className="d-flex justify-content-between"><p>예약시간 </p><p>{resTime}</p></div>
@@ -224,7 +226,7 @@ export default function NewModal({ id, setRequestId, requestId }) {
                             <div className="d-flex justify-content-between"><p className="m-0">보유포인트</p><p className="m-0">{myProfile.point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
                             <div style={{ borderBottom: '1px solid blue' }} className="d-flex justify-content-between"><p style={{ fontSize: "0.75rem", }}>사용포인트</p><div><input value={point} onChange={handleInput} className="text-end  m-0" type="number"></input>P</div></div>
                             <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{(requestId.price - point).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div className="d-flex"><button className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
+                            <div className="d-flex"><button onClick={MakeConfirm} className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
                         </div>
 
                     </div>}
