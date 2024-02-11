@@ -1,7 +1,7 @@
 import { useEffect,useState } from 'react';
 import useStore from '../../store/helpDetailData';
 import ListGroup from 'react-bootstrap/ListGroup';
-import style from './HelpList.module.css';
+import style from './HelpComments.module.css';
 
 function HelpComments() {
   const { loadComment, comments, loading, error, sendPostRequest, commentChoic } = useStore();
@@ -55,7 +55,7 @@ function HelpComments() {
       return <div>Error: {error.message}</div>;
     }
     
-    const content = comments?.result;
+    const content = comments?.result
     // 데이터가 로드되면, 해당 데이터를 사용하여 무언가를 렌더링합니다.
     if (!content) {
       // 데이터가 비어있으면 메시지를 표시합니다.
@@ -80,7 +80,7 @@ function HelpComments() {
 
       {/* 댓글 리스트 */}
       <ListGroup>
-        {content.map((item) => (
+        {content.commentList.map((item) => (
           <ListGroup.Item className={style.listGrop} key={item.id}>
               <div className={style.content}>
               <img src={item.writerImageUrl} alt="Writer" className={style.writerImage} />

@@ -33,7 +33,7 @@
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.21.3",
     "sockjs-client": "^1.6.1",
-    "swiper": "^11.0.5",
+    "swiper": "^11.0.6",
     "zustand": "^4.5.0"
   },
   "devDependencies": {

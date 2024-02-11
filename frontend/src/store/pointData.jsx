@@ -28,7 +28,8 @@ const useStorePoint = create((set, get) => ({
     } catch (error) {
       set({ error, loading: false });
     }
-  }
+  },
+
 }));
 
 export default useStorePoint;
