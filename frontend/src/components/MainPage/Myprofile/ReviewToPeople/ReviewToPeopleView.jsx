@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion"
-import ReviewToMeProfile from "./ReviewToMeProfile";
-import ReviewToPeopleProfile from "./ReviewToMeProfile";
+// import ReviewToMeProfile from "./ReviewToPeopleProfile";
+import ReviewToPeopleProfile from "./ReviewToPeopleProfile";
 const DUMMY_DATA = [
     { name: "p1", rating: 3.5,review:"이" },
     { name: "p2", rating: 4.8,review:"놈" },
@@ -15,27 +15,28 @@ const DUMMY_DATA = [
 ]
 const ITEMS_PER_PAGE = 5;
 
-export default function ReviewToPeopleView() {
+export default function ReviewToPeopleView({reviewToPeopleList,setReviewToPeopleList,id}) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
-    const currentItems = DUMMY_DATA.slice(indexOfFirstItem, indexOfLastItem);
+    // const currentItems = reviewToMeList.slice(indexOfFirstItem, indexOfLastItem);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     return <>
         <div className="d-flex col-12 flex-column p-3 justify-content-between gap-3" style={{ height: "100%" }}>
             <div className="d-flex flex-column   " >
-                <div className="mb-3" style={{ borderBottom: "1px solid " }}><h3>보낸 후기</h3></div>
+                <div className="mb-3" style={{ borderBottom: "1px solid " }}><h3>받은 후기</h3></div>
                 <AnimatePresence mode="wait">
                     <motion.div  className="d-flex flex-column gap-4" >
-                        {currentItems.map((item) => (
-                            <ReviewToPeopleProfile key={item.name} name={item.name} rating={item.rating} review={item.review} />
+                        {reviewToPeopleList.map((item) => (
+                            <ReviewToPeopleProfile createDt={item.createDt} img={item.memberImageUrl} id={item.id} tag={item.tag}  key={item.id} name={item.memberName} rating={item.score} review={item.content} />
                         ))}
+                        {reviewToPeopleList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 리뷰글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
                     </motion.div>
                 </AnimatePresence>
             </div>
             <div className="pagination d-flex justify-content-center gap-3">
-                {[...Array(Math.ceil(DUMMY_DATA.length / ITEMS_PER_PAGE))].map((_, index) => (
+                {[...Array(Math.ceil(reviewToPeopleList.length / ITEMS_PER_PAGE))].map((_, index) => (
                     <motion.button whileHover={{ y: -5 }} className="btn btn-light" key={index} onClick={() => paginate(index + 1)}>
                         {index + 1}
                     </motion.button>

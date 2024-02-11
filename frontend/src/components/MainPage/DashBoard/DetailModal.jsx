@@ -1,65 +1,21 @@
-import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
-import { api } from "../../../services/api";
-// import { renewer } from "./Statusbutton";
-export default function NewModal({renewer, id, setRequestId, requestId }) {
-    const [result, setResult] = useState(null)
-    const [point, setPoint] = useState(0)
-    const [myProfile, setMyprofile] = useState(null)
-    const [startTime, setStartTIme] = useState(null)
-    const [endTime, setEndTIme] = useState(null)
-    const [resTime, setResTIme] = useState(null)
-    const [userInfo, setUserInfo] = useState({ name: '', profileImage: '' });
-    // const [Id, setId] = useState(null)
-    useEffect(() => {
-        const fetchData = async () => {
-            const storedUserInfo = localStorage.getItem('userInfo');
-            if (storedUserInfo) {
-                try {
-                    const parsedInfo = JSON.parse(storedUserInfo);
-                    console.log(parsedInfo.id);
-
-                    if (parsedInfo && parsedInfo.id) {
-                        setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage, id: parsedInfo.id });
-                        await axios_myprofile(parsedInfo.id); // id가 사용 가능할 때만 호출
-                    }
-                } catch (error) {
-                    console.error('Error parsing user info:', error);
-                }
-            }
-
-            const res = await reservationDetail();
-        };
-
-        fetchData();
-    }, []);
-
-
-    const axios_myprofile = async (id) => {
-        console.log(id)
-        try {
-            const response = await api.get(
-                `/users/${id}`,
-            );
-            console.log(response.data.result)
-            setMyprofile(response.data.result)
-
-            return response
-        }
-        catch (e) {
-
-        }
-    }
-
+import { api } from "../../../services/api"
+import {motion} from "framer-motion"
+export default function DetailModal({setServiceId,serviceId}) {
+    const [result,setResult]= useState(null)
+    const [startTime,setStartTIme] = useState(null)
+    const [endTime,setEndTIme] = useState(null)
+    const [resTime,setResTIme] = useState(null)
+    useEffect(()=>{reservationDetail()},[])
     const reservationDetail = async () => {
         let service = ""
-        console.log(requestId)
-        if (requestId.requestList === "용달") { service = "delivery" }
+        console.log(serviceId)
+        if (serviceId.requestList === "용달") { service = "delivery" }
         else { service = "clean" }
         console.log(service)
         try {
             const response = await api.get(
-                `/${service}/user/reservation/${requestId.Id}`,
+                `/${service}/user/reservation/${serviceId.Id}`,
 
             );
             console.log(response.data.result)
@@ -77,64 +33,12 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
             console.error(error);
         }
     }
-    const MakeConfirm = async () => {
-        let service = "";
-        if (requestId.requestList === "용달") {
-            service = "delivery";
-        } else {
-            service = "clean";
-        }
-
-        // Display a confirmation dialog
-        const userConfirmed = window.confirm("확정하시겠습니까?");
-
-        // Check user's response
-        if (userConfirmed) {
-            try {
-                const response = await api.post(
-                    `/${service}/user/reservation-complete`,
-                    {
-                        "mappingId": requestId.mappingId,
-                        "point": point,
-                    }
-                );
-                console.log(response);
-                setMyprofile(null)
-                setRequestId(null)
-                renewer()
-                // You can add further actions after a successful API call if needed
-            } catch (error) {
-                console.error(error);
-                // Handle error if the API call fails
-            }
-        } else {
-            // Handle the case where the user did not confirm
-            console.log("User did not confirm. Operation aborted.");
-        }
+    const handleClose=()=>{
+        setResult(null)
+        setServiceId(null)
     }
-    const handleClose = (e) => {
-        // 모달 외부의 영역을 클릭한 경우에만 닫기
-        if (e.target === e.currentTarget) {
-            setRequestId(null);
-            setMyprofile(null)
-        }
-    }
-    const handleInput = (e) => {
-        const inputValue = e.target.value;
-        const maxValue = Math.min(myProfile.point, requestId.price / 10);
-
-        if (inputValue > maxValue) {
-            // 최대값을 초과하는 경우 혹은 다른 유효성 검사를 수행할 수 있습니다.
-            // 여기서는 입력값을 최대값으로 설정합니다.
-            setPoint(maxValue);
-        } else {
-            // 유효한 경우에는 입력값을 설정합니다.
-            setPoint(inputValue);
-        }
-        if (inputValue < 0) { setPoint(0) }
-    };
     return <>
-        {myProfile && result && requestId && requestId.Id && requestId.mappingId && requestId.requestList && (
+        {result && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleClose}
                 style={{
                     zIndex: "99",
@@ -147,17 +51,17 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                }}>
+                }}>x
                 <div style={{
                     position: 'relative',
                     width: '40%',
-                    height: "50%",
+                    height: "70%",
                     overflow: "auto",
                     backgroundColor: 'white', // 내용의 배경색
                     padding: '3rem',
                     borderRadius: '8px', // 내용의 모서리 둥글게
                 }}>
-                    {requestId.requestList === "용달" ? <div>
+                    {serviceId.requestList === "용달" ? <div>
                         <div className="d-flex justify-content-between"><p>차량 </p><p>{result.carName}</p></div>
                         <div className="d-flex justify-content-between"><p>시작 시간</p><p>{startTime}</p></div>
                         <div className="d-flex justify-content-between"><p>끝나는 시간 </p><p>{endTime}</p></div>
@@ -179,11 +83,7 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
                             </div>
                         </div>
                         <div className="p-3 rounded-4" style={{ border: "blue 1px solid" }}>
-                            <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{requestId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div className="d-flex justify-content-between"><p className="m-0">보유포인트</p><p className="m-0">{myProfile.point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div style={{ borderBottom: '1px solid blue' }} className="d-flex justify-content-between"><p style={{ fontSize: "0.75rem", }}>사용포인트</p><div><input value={point} onChange={handleInput} className="text-end  m-0" type="number"></input>P</div></div>
-                            <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{(requestId.price - point).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div className="d-flex"><button onClick={MakeConfirm} className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
+                            <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{serviceId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p></div>
                         </div>
                     </div> : <div className="d-flex flex-column p-3">
                         <div className="d-flex justify-content-between"><p>예약시간 </p><p>{resTime}</p></div>
@@ -207,11 +107,7 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
                             </div>
                         </div>
                         <div className="p-3 rounded-4" style={{ border: "blue 1px solid" }}>
-                            <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{requestId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div className="d-flex justify-content-between"><p className="m-0">보유포인트</p><p className="m-0">{myProfile.point.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div style={{ borderBottom: '1px solid blue' }} className="d-flex justify-content-between"><p style={{ fontSize: "0.75rem", }}>사용포인트</p><div><input value={point} onChange={handleInput} className="text-end  m-0" type="number"></input>P</div></div>
-                            <div className="d-flex justify-content-between"><p className="m-0">최종가격</p><p className="m-0">{(requestId.price - point).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p></div>
-                            <div className="d-flex"><button onClick={MakeConfirm} className="btn btn-primary p-1" style={{ marginLeft: "auto", height: "2rem" }} ><p className="m-0" style={{ fontSize: "0.75rem" }}>예약확정</p></button></div>
+                            <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{serviceId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p></div>
                         </div>
 
                     </div>}
@@ -223,5 +119,4 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
             </motion.div>
         )}
     </>
-
 }

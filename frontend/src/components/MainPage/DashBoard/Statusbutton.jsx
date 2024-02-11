@@ -3,10 +3,11 @@ import { useScroll } from "framer-motion";
 import { useState } from "react";
 import { api } from "../../../services/api";
 
-export default function StatusButton({ memberId ,price, setRequestId,Id, isAll, setRequestList, mappingId, setChatRoom, companyId, toggleModal, status, requestList }) {
+export default function StatusButton({setReviewId,setServiceId, memberId ,price, setRequestId,Id, isAll, setRequestList, mappingId, setChatRoom, companyId, toggleModal, status, requestList }) {
     let returnButton = null
     const [statuschange, setStatusChange] = useState(false)
-    const handleClick = async () => {
+    const handleClick = async (event) => {
+        event.stopPropagation();
         const res = await MakeRoom()
         toggleModal(res)
 
@@ -42,8 +43,9 @@ export default function StatusButton({ memberId ,price, setRequestId,Id, isAll, 
     }
 
 
-    const handleCancel = async () => {
+    const handleCancel = async (event) => {
         // 사용자에게 확인 메시지를 보여줌
+        event.stopPropagation();
         const confirmCancel = confirm("정말로 취소하시겠습니까?");
     
         // 사용자가 확인을 클릭한 경우에만 실행
@@ -95,8 +97,18 @@ export default function StatusButton({ memberId ,price, setRequestId,Id, isAll, 
             console.error(error);
         }
     };
-    const handleConfirm = ()=>{
+    const handleConfirm = (event)=>{
+        event.stopPropagation();
         setRequestId({"Id":Id , "mappingId":mappingId,"requestList":requestList,"price":price})
+    }
+    const handlebill=(event)=>{
+        event.stopPropagation();
+        // console.log(1111)
+        setServiceId({"requestList":requestList,"Id":Id,"price":price})
+    }
+    const handleReview=(event)=>{
+        event.stopPropagation();
+        setReviewId({"requestList":requestList,"Id":Id,"price":price,"memberId":memberId})
     }
     const newStatus = status % 100
     if (newStatus === 1) {
@@ -113,12 +125,12 @@ export default function StatusButton({ memberId ,price, setRequestId,Id, isAll, 
     }
     else if (newStatus === 3) {
         returnButton = <>
-            <button style={{ width: "80%" }} type="button" className="btn btn-success btn-sm d-flex px-3 gap-2 justify-content-center align-items-center"><p className="m-0">영수중보기  </p> <img style={{ width: 20, height: 20 }} src="/File_Document.png" ></img></button>
+            <button onClick={handlebill}  style={{ width: "80%" }} type="button" className="btn btn-success btn-sm d-flex px-3 gap-2 justify-content-center align-items-center"><p className="m-0">영수중  </p> <img style={{ width: 20, height: 20 }} src="/File_Document.png" ></img></button>
             <button style={{ width: "80%" }} type="button" className="btn btn-primary btn-sm d-flex px-3 gap-2 justify-content-center align-items-center" onClick={handleClick}  ><p className="m-0">1대1채팅 </p> <img style={{ width: 20, height: 20 }} src="/chat-dots.png" ></img></button> </>
     }
     else if (newStatus === 4) {
         returnButton =
-            <button style={{ visibility: 'hidden', width: "85%" }} type="button" className="btn btn-success btn-sm d-flex px-3 gap-2  d-flex justify-content-center align-items-center"><p className="m-0">영수중보기</p> <img style={{ width: 20, height: 20 }} src="/File_Document.png" ></img></button>
+            <button onClick={handlebill} style={{ visibility: 'hidden', width: "85%" }} type="button" className="btn btn-success btn-sm d-flex px-3 gap-2  d-flex justify-content-center align-items-center"><p className="m-0">영수중</p> <img style={{ width: 20, height: 20 }} src="/File_Document.png" ></img></button>
     }
     else if (newStatus === 5) {
         returnButton = <>
@@ -127,7 +139,7 @@ export default function StatusButton({ memberId ,price, setRequestId,Id, isAll, 
     }
     else if (newStatus === 6) {
         returnButton = <>
-            <button type="button" style={{ width: "80%" }} className="btn btn-light btn-sm d-flex px-3 justify-content-center gap-2 align-items-center"><p className="m-0">후기작성  </p> <img style={{ width: 20, height: 20 }} src="/File_Edit_black.png" ></img></button></>
+            <button onClick={handleReview} type="button" style={{ width: "80%" }} className="btn btn-light btn-sm d-flex px-3 justify-content-center gap-2 align-items-center"><p className="m-0">후기작성  </p> <img style={{ width: 20, height: 20 }} src="/File_Edit_black.png" ></img></button></>
 
     }
 

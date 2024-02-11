@@ -10,8 +10,10 @@ import HelpMeToPeopleView from "./HelpMeToPeople/HelpMeToPeopleView";
 import HelpPeopleToMeView from "./HelpPeopleToMe/HelpPeopleToMeView";
 import BuyView from "./BuyProduct/BuyView";
 import ReviewToMeView from "./ReviewToMe/ReviewToMeView";
-import ReviewToPeopleView from "./ReviewToPeople/ReviewToMeView";
+import ReviewToPeopleView from "./ReviewToPeople/ReviewToPeopleView";
 import { api } from "../../../services/api";
+import RecommendModal from "../../Recommend/RecommendModal";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function UserProfile() {
@@ -19,7 +21,7 @@ export default function UserProfile() {
     const [offset, setOffSet] = useState(0)
     const [myprofile, setMyprofile] = useState("")
     const { id } = useParams();
-
+    const [ openRecommendModal,setopenRecommendModal] = useState(false)
     //판매
     const [sellList, setSellList] = useState(null)
     const [sellTotalPages, setSellTotalPages] = useState(null)
@@ -35,6 +37,9 @@ export default function UserProfile() {
     const [helpYouTotalPages, setHelpYouTotalPages] = useState(null)
     // 받은 리뷰
     const [reviewToMeList, setReviewToMeList] = useState(null)
+    // 보낸 리뷰
+    const [reviewToPeopleList, setReviewToPeopleList] = useState(null)
+    // const [companyId,setCompanyId] = useState(null)
     // const [helpYouTotalPages, setHelpYouTotalPages] = useState(null)
     //    const myReceiveReview = async () => {
 
@@ -117,15 +122,15 @@ export default function UserProfile() {
             const response = await api.post(
                 `/reviews/myWrite`,
                 {
-                    memberId : id,
-                    role : "USER",
+                    memberId: id,
+                    role: "USER",
                     offset: 0,
                     limit: 5,
                 }
             );
             console.log(response)
-   
-            setReviewToMeList(response.data)
+            setReviewToPeopleList(response.data.reviews)
+            // setReviewToMeList()
             return response
         }
         catch (e) {
@@ -138,16 +143,17 @@ export default function UserProfile() {
             const response = await api.post(
                 `/reviews/myReceive`,
                 {
-                    memberId : id,
-                    role : "USER",
+                    memberId: id,
+                    role: "USER",
                     offset: 0,
                     limit: 5,
+                    point: myprofile.point,
                 }
             );
             console.log(response)
             // setHelpMeList(response.data.result.content)
             // setHelpMeTotalPages(response.data.result.totalElements)
-            setReviewToMeList(response.data)
+            setReviewToMeList(response.data.reviews)
             return response
         }
         catch (e) {
@@ -199,6 +205,7 @@ export default function UserProfile() {
         axios_HelpMe()
         axios_HelpYou()
         axios_ReviewToMe()
+        axios_ReviewToPeople()
     }, [id])
     const handleChangeButton = (event) => {
         setChangeButton(event.target.innerText)
@@ -244,10 +251,14 @@ export default function UserProfile() {
         setShowshowHelpDropDown(false);
         setshowHistoryDropDown(false);
         setshowreviewDropDown(!showreviewDropDown);
+        
     };
+    const closeModal = ()=>[
+        setopenRecommendModal(false)
+    ]
     return <>
         <div className="d-flex col-8 gap-5 align-items-start p-3">
-            {myprofile && sellList &&  buyList && helpMeList && helpYouList && reviewToMeList &&<div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
+            {myprofile && sellList && buyList && helpMeList && helpYouList && reviewToMeList && <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
                 <div className="d-flex justify-content-center align-items-center gap-2">
                     <img className="rounded-pill shadow" style={{ width: "5rem", height: "5rem" }} src={myprofile.imageUrl} />
                     <div className="text-center">
@@ -279,7 +290,7 @@ export default function UserProfile() {
                 <div className="d-flex justify-content-center gap-3" style={{ width: "100%" }}>
                     {myprofile.tagList.map((items) => (
                         <div key={items} className="d-flex align-items-center justify-content-center border border-primary rounded-5 bg-white col-3 text-center shadow" style={{ height: "2rem" }}>
-                            <p className="m-0" style={{fontSize:"0.65rem"}}>{items}</p>
+                            <p className="m-0" style={{ fontSize: "0.65rem" }}>{items}</p>
                         </div>
                     ))}
                 </div>
@@ -378,7 +389,7 @@ export default function UserProfile() {
                 {changeButton === "포인트 사용이력" && <UsedView/> }       */}
 
                 {changeButton === "받은 후기" && <ReviewToMeView id={id} setReviewToMeList={setReviewToMeList} reviewToMeList={reviewToMeList} />}
-                {changeButton === "보낸 후기" && <ReviewToPeopleView />}
+                {changeButton === "보낸 후기" && <ReviewToPeopleView id={id}  setReviewToPeopleList={setReviewToPeopleList} reviewToPeopleList={reviewToPeopleList} />}
             </div>
         </div>
     </>

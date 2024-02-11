@@ -8,6 +8,8 @@ import useAuthStore from '../../../store/store';
 import RecommendModalComponent from '../../Recommend/RecommendModalComponent';
 import RecommendModal from '../../Recommend/RecommendModal';
 import NewModal from './NewModal';
+import DetailModal from './DetailModal';
+import MakeReview from './MakeReview';
 
 const MainComponent = () => {
     const [requestAllList, setRequestAllList] = useState([]);
@@ -25,14 +27,16 @@ const MainComponent = () => {
     const [requestCheck, setRequestCheck] = useState(true)
     const [requestMappingId, setRequestMappingId] = useState(null)
     const [requestId, setRequestId] = useState(null)
+    const [serviceId, setServiceId] = useState(null)
+    const [reviewId,setReviewId] = useState(null)
     useEffect(() => {
         const storedUserInfo = localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo");
         if (storedUserInfo) {
             const parsedInfo = JSON.parse(storedUserInfo);
             console.log(parsedInfo);
-            setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage ,id:parsedInfo.id});
+            setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage, id: parsedInfo.id });
         }
-        else{
+        else {
             navigate("/login")
         }
     }, []);
@@ -121,13 +125,24 @@ const MainComponent = () => {
     const handleModal = () => {
         setOpenRecommendModal((prev) => !prev)
     }
+    const renewer = async () => {
+        DEL_Call();
+        CLE_Call();
+        ALL_Call();
+    }
     return (
         <>
+            <AnimatePresence>
+                {reviewId && <MakeReview reviewId={reviewId} setReviewId={setReviewId} />}
+            </AnimatePresence>
+            <AnimatePresence>
+                {serviceId && <DetailModal serviceId={serviceId} setServiceId={setServiceId} />}
+            </AnimatePresence>
             <AnimatePresence>
                 {choicecompanyId && <RecommendModal companyId={choicecompanyId} isOpen={openRecommendModal} closeModal={handleModal} />}
             </AnimatePresence>
             <AnimatePresence>
-                {requestId && requestId.price && <NewModal id={userInfo.id} setRequestId={setRequestId} requestId={requestId} setRequestMappingId={setRequestMappingId} requestMappingId={requestMappingId} isModalOpen={requestCheck} setIsModalOpen={setRequestCheck} />}
+                {requestId && requestId.price && <NewModal renewer={renewer} id={userInfo.id} setRequestId={setRequestId} requestId={requestId} setRequestMappingId={setRequestMappingId} requestMappingId={requestMappingId} isModalOpen={requestCheck} setIsModalOpen={setRequestCheck} />}
             </AnimatePresence>
             <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh', width: '100%', marginTop: "5rem" }}>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="col-10">
@@ -221,7 +236,7 @@ const MainComponent = () => {
 
 
                                                         let orderN = (item.deliveryReservationDto.id * item.deliveryReservationDto.id).toString().padStart(3, '0').slice(0, 3)
-                                                        return <Requests   setRequestId={setRequestId} Id={item.deliveryReservationDto.id} setOpenRecommendModal={setOpenRecommendModal} setChoiceCompanyId={setChoiceCompanyId} isAll={true} setRequestList={setRequestAllList} requestList="용달" list={item.deliveryReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.deliveryReservationDto.status} />;
+                                                        return <Requests setReviewId={setReviewId} setServiceId={setServiceId} setRequestId={setRequestId} Id={item.deliveryReservationDto.id} setOpenRecommendModal={setOpenRecommendModal} setChoiceCompanyId={setChoiceCompanyId} isAll={true} setRequestList={setRequestAllList} requestList="용달" list={item.deliveryReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.deliveryReservationDto.status} />;
                                                     }
                                                     else {
 
@@ -233,7 +248,7 @@ const MainComponent = () => {
                                                         let orderName = "CLE";
                                                         let orderN = (item.cleanReservationDto.cleanId * item.cleanReservationDto.cleanId).toString().padStart(3, '0').slice(0, 3);
 
-                                                        return <Requests setRequestId={setRequestId} Id={item.cleanReservationDto.cleanId} setOpenRecommendModal={setOpenRecommendModal} setChoiceCompanyId={setChoiceCompanyId} isAll={true} setRequestList={setRequestAllList} requestList="청소" list={item.cleanReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.cleanReservationDto.status} />;
+                                                        return <Requests setReviewId={setReviewId} setServiceId={setServiceId} setRequestId={setRequestId} Id={item.cleanReservationDto.cleanId} setOpenRecommendModal={setOpenRecommendModal} setChoiceCompanyId={setChoiceCompanyId} isAll={true} setRequestList={setRequestAllList} requestList="청소" list={item.cleanReservationDto.list} key={index} date={formatDate} orderName={formatoder} orderNumber={`${orderName}${orderN}`} status={item.cleanReservationDto.status} />;
                                                     }
                                                 }
                                                 else {
@@ -256,6 +271,8 @@ const MainComponent = () => {
 
                                                     return (
                                                         <Requests
+                                                        setReviewId={setReviewId}
+                                                            setServiceId={setServiceId}
                                                             setRequestId={setRequestId}
                                                             Id={requestList === "용달" ? item.id : item.cleanId}
                                                             setOpenRecommendModal={setOpenRecommendModal}

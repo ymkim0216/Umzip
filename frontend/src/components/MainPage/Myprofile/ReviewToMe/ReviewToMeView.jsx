@@ -21,7 +21,7 @@ export default function ReviewToMeView({id,setReviewToMeList,reviewToMeList}) {
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
     // const currentItems = reviewToMeList.slice(indexOfFirstItem, indexOfLastItem);
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    return <>
+    return <>{ 
         <div className="d-flex col-12 flex-column p-3 justify-content-between gap-3" style={{ height: "100%" }}>
             <div className="d-flex flex-column   " >
                 <div className="mb-3" style={{ borderBottom: "1px solid " }}><h3>받은 후기</h3></div>
@@ -42,5 +42,5 @@ export default function ReviewToMeView({id,setReviewToMeList,reviewToMeList}) {
                 ))}
             </div>
         </div>
-    </>
+    }</>
 }

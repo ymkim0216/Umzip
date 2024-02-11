@@ -128,7 +128,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   };
   const stopSocketCommunication = () => {
     if (stompClientRef.current) {
-      
+
       stompClientRef.current.deactivate();
       console.log("연결X")
     }
@@ -157,7 +157,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
     <>
       <AnimatePresence>
         {openModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => {stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("") }}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("") }}
             style={{
               zIndex: "99",
               position: 'fixed',
@@ -191,23 +191,27 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
               >
                 {userId && talkHistory && talkHistory.map((items, index) => (
                   <div className='d-flex  flex-column'>
-                    <div className='d-flex align-items-center gap-1 justify-content-center' style={{alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",}}><img src={items.senderProfileImage} style={{width:"2rem" ,height:"2rem"}} className='rounded-pill'/><p className='m-0'>{items.senderName}</p></div>
-                  <div
-                    key={index}
-                    style={{
-                      
-                      maxWidth: "70%",
-                      margin: "5px",
-                      padding: "10px",
-                      borderRadius: "10px",
-                      alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
-                      background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
-      
-                      color: userId !== items.senderId ? "#000" : "#fff",
-                    }}
-                  >
-                    {items.content}
-                  </div>
+                    <div className='' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}>
+                      {userId !== items.senderId ? <div className='d-flex align-items-center gap-1 justify-content-center'><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                        <p className='m-0'>{items.senderName}</p></div> : <div className='d-flex align-items-center gap-1 justify-content-center'><p className='m-0'>{items.senderName}</p><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                      </div>}
+                    </div>
+                    <div
+                      key={index}
+                      style={{
+
+                        maxWidth: "70%",
+                        margin: "5px",
+                        padding: "10px",
+                        borderRadius: "10px",
+                        alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
+                        background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
+
+                        color: userId !== items.senderId ? "#000" : "#fff",
+                      }}
+                    >
+                      {items.content}
+                    </div>
                   </div>
                 ))}
                 <div style={{ marginTop: "auto" }}>
