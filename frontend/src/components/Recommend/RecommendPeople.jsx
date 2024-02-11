@@ -234,7 +234,11 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
                             >
                                 {userId && talkHistory && talkHistory.map((items, index) => (
                                     <div className='d-flex  flex-column'>
-                                        <div className='d-flex align-items-center gap-1 justify-content-center' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' /><p className='m-0'>{items.senderName}</p></div>
+                                        <div className='' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}>
+                                            {userId !== items.senderId ? <div className='d-flex align-items-center gap-1 justify-content-center'><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                                                <p className='m-0'>{items.senderName}</p></div> : <div className='d-flex align-items-center gap-1 justify-content-center'><p className='m-0'>{items.senderName}</p><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                                            </div>}
+                                        </div>
                                         <div
                                             key={index}
                                             style={{

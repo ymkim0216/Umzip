@@ -5,7 +5,7 @@ import StatusChange from './Status_Change';
 import { Client } from "@stomp/stompjs";
 import useAuthStore from '../../../store/store';
 
-export default function Requests({ setRequestId, Id, setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
+export default function Requests({setReviewId,setServiceId , setRequestId, Id, setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
     const [chatRoom, setChatRoom] = useState("")
     const scrollToBottom = () => {
         // 스크롤 위치를 항상 맨 아래로 조절
@@ -171,7 +171,11 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
                             >
                                 {userId && talkHistory && talkHistory.map((items, index) => (
                                     <div className='d-flex  flex-column'>
-                                        <div className='d-flex align-items-center gap-1 justify-content-center' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' /><p className='m-0'>{items.senderName}</p></div>
+                                        <div className='' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}>
+                                            {userId !== items.senderId ? <div className='d-flex align-items-center gap-1 justify-content-center'><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                                                <p className='m-0'>{items.senderName}</p></div> : <div className='d-flex align-items-center gap-1 justify-content-center'><p className='m-0'>{items.senderName}</p><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                                            </div>}
+                                        </div>
                                         <div
                                             key={index}
                                             style={{
@@ -243,6 +247,8 @@ export default function Requests({ setRequestId, Id, setOpenRecommendModal, setC
                                         transition={{ duration: 0.3 }}
                                     >
                                         <DropDown
+                                        setReviewId={setReviewId}
+                                        setServiceId={setServiceId}
                                             memberId={data.memberId}
                                             setRequestId={setRequestId}
                                             Id={Id}

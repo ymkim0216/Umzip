@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AlarmMessage from "./AlarmMessage";
 import { motion } from "framer-motion"
+import { api } from "../../../services/api";
 const DUMMY_DATA = [
   { date: "24-01-19", status: true, message: "김씨 용달 님께서 용달 제안서를 수락하셨습니다" },
   { date: "24-01-12", status: true, message: "미친개 님께서 용달 제안서를 수락하셨습니다" },
@@ -20,6 +21,17 @@ const DUMMY_DATA = [
 
 export default function AlarmComponent() {
   const [visibleAlarms, setVisibleAlarms] = useState(5);
+  useEffect(()=>{
+    Alarm_Call()
+  },[])
+  const Alarm_Call = async () => {
+    try {
+        const response = await api.get('/alarm/all');
+        console.log(response)
+    } catch (error) {
+        console.error(error);
+    }
+};
 
   const loadMoreAlarms = () => {
     setVisibleAlarms((prevVisibleAlarms) => prevVisibleAlarms + 5);
