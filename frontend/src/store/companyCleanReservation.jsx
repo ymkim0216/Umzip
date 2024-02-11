@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { api } from '../services/api';
 
-const useStorePoint = create((set) => ({
+const useStoreClean = create((set) => ({
   data: [],
   loading: false,
   error: null,
@@ -14,11 +14,13 @@ const useStorePoint = create((set) => ({
       const response = await api.get(`/clean/company/reservation`,
       );
       set({ data: response.data, loading: false },
-        console.log(response.data));
+        console.log(response.data)
+        );
     } catch (error) {
-      set({ error, loading: false });
+      set({ error, loading: false }
+        );
     }
   }
 }));
 
-export default useStorePoint;
+export default useStoreClean;

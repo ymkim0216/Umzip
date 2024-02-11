@@ -12,9 +12,9 @@ function DeliverReservation() {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [fetchData, data]);
 
-  console.log(data.result);
+  // console.log(data.result);
   const reservationList = data?.result || [];
 
   useEffect(() => {
@@ -57,7 +57,7 @@ function DeliverReservation() {
                 }}
               >
                 <h5 className="m-0 col-md-2">{item.startTime}</h5>
-                <h5 className="m-0 col-md-2">{item.price}</h5>
+                <h5 className="m-0 col-md-2">{item.reissuing ? item.reissuing : item.price}</h5>
                 <h5 className="m-0 col-md-2">
                   {item.deliveryId}/{item.memberName}
                 </h5>

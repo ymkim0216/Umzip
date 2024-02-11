@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { api } from '../services/api';
 
-const useStore = create((set, get) => ({
+const replyStore = create((set, get) => ({
   data: [],
   loading: false,
   error: null,
@@ -25,4 +25,4 @@ const useStore = create((set, get) => ({
   }
 }));
 
-export default useStore;
+export default replyStore;

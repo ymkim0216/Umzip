@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import useReplyStore from '../../store/replyStore'
 import { useState } from 'react';
+import style from './ReplyModal.module.css'
 
 function ReplyModal({ role, onClose, mappingId, price }) {
-    const submitReplyStore = useReplyStore((state) => state.useReplyStore);
+    const submitReplyStore = useReplyStore((state) => state.submitReplyStore);
     const [operPrice, setPrice] = useState(price)
 
     const handleSubmit = async (event) => {
@@ -16,7 +17,7 @@ function ReplyModal({ role, onClose, mappingId, price }) {
     };
 
   return (
-    <div className='modalContent'>
+    <div className={style.modalContent}>
     <div style={{ /* 모달 스타일 */ }}>
       <h2>견적 제안</h2>
       <form onSubmit={handleSubmit}>
