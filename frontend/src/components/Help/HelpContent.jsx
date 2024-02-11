@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from 'react';
+import { useEffect, useState  } from 'react';
 import style from './HelpContent.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -15,6 +15,14 @@ function HelpDetail() {
   const { boardId } = useParams();
   const navigate = useNavigate()
   const { setBoardId, fetchData, data, loading, error, pointGive } = useStore();
+  // 도움 받았어요 버튼 클릭시 다시한번 확인하는 alert 코드
+  const handlePointGive = () => {
+    const confirmGivePoint = window.confirm(`${content.rewardPoint}P를 보내시겠습니까?`);
+    if (confirmGivePoint) {
+      pointGive(content.boardId);
+    }
+  };
+
   console.log(boardId)
   useEffect(() => {
     setBoardId(boardId);
@@ -39,13 +47,10 @@ function HelpDetail() {
   }
   console.log(content)
 
-  
-
   const newDate = new Date(content.boardCreateDt).toISOString().split('T')[0];
   // console.log(newDate)
   const handleClick = ()=>{
     navigate(`/myprofile/${content.writerId}`)
-
   }
   return (
     <>
@@ -59,7 +64,7 @@ function HelpDetail() {
                 {content.codeSmallId === 403 && <span style={{ fontSize: "2rem", color: "#0077CC", fontWeight: "bold" }} >도와줬어요</span>}
                 <h4 className="m-0">제목: {content.boardTitle}</h4>
               </div>
-              <span> <button onClick={() => pointGive(content.boardId)}>도움 받았어요!</button> 포인트: {content.rewardPoint}P</span>
+              <span> <button onClick={handlePointGive}>도움 받았어요!</button> 포인트: {content.rewardPoint}P</span>
             </div>
             <div>
               <div className="d-flex align-items-center justify-content-between">
@@ -126,6 +131,7 @@ function HelpDetail() {
 
         </motion.div>
       </AnimatePresence>
+      
     </>
   );
 }
