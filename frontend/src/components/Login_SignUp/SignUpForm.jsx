@@ -134,26 +134,73 @@ const SignUpForm = () => {
       setLoading(false);
       return;
     }
-    // Determine the endpoint based on the selectedButton
-    const endpoint =
-      selectedButton === 'normal'
-        ? 'https://i10e108.p.ssafy.io/api/users'
-        : 'https://i10e108.p.ssafy.io/api/company';
 
-    // Include companyFormData if the company option is selected
-    const payload = {
-      ...data,
-      address, // useForm에서 setValue를 통해 설정된 주소 값
-      sigungu,
-      addressDetail,
-      // selectedButton이 'company'일 경우 companyFormData 추가
-      ...(selectedButton === 'company' && companyFormData),
-    };
+    let payload;
+    let headers = {};
+    let url;
+
+    if (selectedButton === 'normal') {
+      payload = {
+        ...data,
+        address,
+        sigungu,
+        addressDetail,
+      };
+      headers['Content-Type'] = 'application/json';
+      url = 'https://i10e108.p.ssafy.io/api/users'; // Replace with your endpoint
+    } else if (selectedButton === 'company') {
+      payload = new FormData();
+      payload.append(
+        'memberCreateRequestDto',
+        new Blob(
+          [JSON.stringify({ ...data, address, sigungu, addressDetail })],
+          {
+            type: 'application/json',
+          }
+        )
+      );
+      const formattedStartDate = companyFormData.startDate.replace(
+        /^(\d{4})(\d{2})(\d{2})$/,
+        '$1-$2-$3'
+      );
+
+      const companyCreateRequestDtoList = {
+        companyName: companyFormData.companyName,
+        companyType: companyFormData.companyType,
+        businessNumber: companyFormData.businessNumber,
+        startDate: formattedStartDate,
+        introduction: companyFormData.introduction,
+        ceo: companyFormData.ceo,
+        address: companyFormData.address,
+        addressDetail: companyFormData.addressDetail,
+        sigungu: companyFormData.sigungu,
+      };
+      payload.append(
+        'companyCreateRequestDtoList',
+        new Blob([JSON.stringify([companyCreateRequestDtoList])], {
+          type: 'application/json',
+        })
+      );
+
+      if (companyFormData.companyType === 1) {
+        payload.append(
+          'deliveryCertificate',
+          companyFormData.deliveryCertificate.file
+        );
+        payload.append('deliveryImgUrl', companyFormData.deliveryImgUrl);
+      } else {
+        payload.append('cleanImgUrl', companyFormData.cleanImgUrl);
+      }
+
+      headers['Content-Type'] = 'multipart/form-data';
+      url = 'https://i10e108.p.ssafy.io/api/company';
+    }
+
+    console.log(companyFormData.deliveryCertificate);
     console.log(payload);
-    console.log(companyFormData);
-    console.log(selectedButton);
+
     try {
-      const response = await axios.post(endpoint, payload);
+      const response = await axios.post(url, payload, { headers });
       if (response.data.isSuccess) {
         alert('Join Success!');
         navigate('/login');
@@ -500,7 +547,7 @@ const SignUpForm = () => {
                   {isFormVisible && (
                     <div className="mt-3">
                       <CompanySignUpForm
-                        companyType={selectedService}
+                        companyType={selectedService === 'delivery' ? 1 : -1}
                         onCompanyDataSubmit={handleCompanyDataSubmit}
                       />
                     </div>

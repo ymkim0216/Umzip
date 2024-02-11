@@ -1,46 +1,31 @@
-import { useState, useRef, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import DaumPostcode from 'react-daum-postcode';
+import axios from 'axios';
+
+import { PRIMARY_COLOR } from '../../App';
 
 const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
+  const [companyName, setCompanyName] = useState('');
+  const [businessNumber, setBusinessNumber] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [introduction, setIntroduction] = useState('');
+  const [ceo, setCeo] = useState('');
+  const [address, setAddress] = useState('');
+  const [addressDetail, setAddressDetail] = useState('');
+  const addressDetailRef = useRef(null);
+  const [sigungu, setSigungu] = useState('');
+  const [isBusinessNumberVerified, setIsBusinessNumberVerified] =
+    useState(false);
+  const [uploadedImage, setUploadedImage] = useState('/blank-profile.png');
+  const [deliveryCertificate, setDeliveryCertificate] = useState('');
+  const fileInput = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // const [companyName, setCompanyName] = useState('');
-  // const [address, setAddress] = useState('');
-  // const [addressDetail, setAddressDetail] = useState('');
-  // const [sigungu, setSigungu] = useState('');
-  // const addressDetailRef = useRef(null);
-  // const [introduction, setIntroduction] = useState('');
-  // const [startDate, setStartDate] = useState('');
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    reset,
-  } = useForm();
-
-  useEffect(() => {
-    reset();
-  }, [companyType, reset]);
-
-  const handleFormSubmit = (data) => {
-    onCompanyDataSubmit(data);
-  };
-
-  // const handleIntroductionChange = (event) => {
-  //   setIntroduction(event.target.value);
-  // };
-
-  // const handleStartDateChange = (event) => {
-  //   setStartDate(event.target.value);
-  // };
 
   const onCompletePost = (data) => {
     let fullAddress = data.roadAddress || data.jibunAddress;
     let extraAddress = '';
+    setSigungu(data.sigunguCode);
 
     if (
       data.userSelectedType === 'R' &&
@@ -57,13 +42,88 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
     fullAddress += extraAddress ? ` (${extraAddress})` : '';
 
     setIsModalOpen(false);
-    setValue('address', fullAddress);
-    setValue('sigungu', data.sigunguCode);
+    setAddress(fullAddress + extraAddress);
+
+    if (addressDetailRef.current) {
+      addressDetailRef.current.focus();
+    }
   };
 
-  // const handleAddressChange = (event) => {
-  //   setAddressDetail(event.target.value);
-  // };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!isBusinessNumberVerified) {
+      alert('사업자 인증을 완료해주시기 바랍니다.');
+      return;
+    }
+
+    const formData = {
+      companyName,
+      companyType,
+      businessNumber,
+      startDate,
+      introduction,
+      ceo,
+      address,
+      addressDetail,
+      sigungu,
+      ...(companyType === 1
+        ? { deliveryImgUrl: uploadedImage, deliveryCertificate }
+        : { cleanImgUrl: uploadedImage }),
+      ...(companyType === 1 && { deliveryCertificate }),
+    };
+    onCompanyDataSubmit(formData);
+  };
+
+  const handleAddressChange = (event) => {
+    setAddressDetail(event.target.value);
+  };
+
+  const onChangeImage = (event) => {
+    if (event.target.files[0]) {
+      setUploadedImage(event.target.files[0]);
+    } else {
+      setUploadedImage(null);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState == 2) {
+        setUploadedImage(reader.result);
+      }
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  };
+
+  const handleBusinessNumberVerification = async () => {
+    try {
+      const response = await axios.post(
+        'https://i10e108.p.ssafy.io/api/auth/business-code',
+        { businessNumber, startDate, personName: ceo }
+      );
+      console.log(response.data);
+
+      if (response.data.isSuccess) {
+        alert('인증되었습니다.');
+        setIsBusinessNumberVerified(true);
+      } else {
+        alert(response.data.message);
+        setIsBusinessNumberVerified(false);
+      }
+    } catch (error) {
+      console.error('인증 코드 전송 에러:', error);
+      alert('인증 코드 전송 중 오류가 발생했습니다.');
+      setIsBusinessNumberVerified(false);
+    }
+  };
+
+  const handleDeliveryCertificateChange = (event) => {
+    if (event.target.files[0]) {
+      setDeliveryCertificate(event.target.files[0]);
+    } else {
+      setDeliveryCertificate('');
+    }
+  };
 
   return (
     <>
@@ -99,109 +159,165 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
           </div>
         </motion.div>
       )}
-      <form
-        onSubmit={handleSubmit(handleFormSubmit)} // Use handleSubmit from react-hook-form
-        className="rounded p-4 border shadow-sm mx-auto"
-        style={{ width: '100%', maxWidth: '70%' }}
+      <div
+        className="container"
+        style={{ marginTop: '100px', marginBottom: '100px' }}
       >
-        <div className="form-group mb-4">
-          <label htmlFor="companyName">업체 이름</label>
-          <input
-            id="companyName"
-            className="form-control rounded-pill py-4"
-            type="text"
-            placeholder="업체 이름"
-            {...register('companyName', {
-              required: '업체 이름을 입력해주세요',
-            })}
-          />
-          {errors.companyName && (
-            <small role="alert" aria-live="assertive">
-              {errors.companyName.message}
-            </small>
-          )}
-        </div>
-        <div className="form-group mb-4">
-          <label htmlFor="introduction">소개글</label>
-          <div className="input-group" style={{ zIndex: '0' }}>
-            <input
-              id="introduction"
-              className="form-control rounded-pill py-4"
-              type="text"
-              placeholder="소개글을 작성해주세요."
-              {...register('introduction', {
-                required: '소개글을 입력해주세요',
-              })}
-            />
-            {errors.introduction && (
-              <small role="alert">{errors.introduction.message}</small>
+        <div className="row justify-content-center">
+          <div className="col-md-12">
+            <h2 className="mb-4">Sign Up</h2>
+            <div className="form-group mb-4">
+              <label htmlFor="companyName">업체 이름</label>
+              <input
+                id="companyName"
+                className="form-control rounded-pill py-4"
+                type="text"
+                value={companyName}
+                onChange={(event) => setCompanyName(event.target.value)}
+                placeholder="업체 이름"
+                required
+              />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '150px',
+                margin: '20px',
+              }}
+            >
+              <img
+                src={uploadedImage}
+                alt="Uploaded"
+                style={{
+                  width: '120px',
+                  height: '120px',
+                  objectFit: 'cover',
+                }}
+                onClick={() => {
+                  fileInput.current && fileInput.current.click();
+                }}
+              />
+              <input
+                type="file"
+                style={{ display: 'none' }}
+                accept="image/jpg,impge/png,image/jpeg"
+                name="profile_img"
+                onChange={onChangeImage}
+                ref={fileInput}
+              />
+            </div>
+            <div className="form-group mb-4">
+              <label htmlFor="introduction">소개글</label>
+              <input
+                id="introduction"
+                className="form-control rounded-pill py-4"
+                type="text"
+                value={introduction}
+                onChange={(event) => setIntroduction(event.target.value)}
+                placeholder="소개글을 작성해주세요."
+                required
+              />
+            </div>
+
+            <div className="form-group mb-4">
+              <label htmlFor="startDate">서비스 시작년도</label>
+              <input
+                id="startDate"
+                className="form-control rounded-pill py-4"
+                type="text"
+                value={startDate}
+                onChange={(event) => setStartDate(event.target.value)}
+                placeholder="20000101"
+                required
+              />
+            </div>
+            <div className="form-group mb-4">
+              <label htmlFor="ceo">사업자명</label>
+              <input
+                id="ceo"
+                className="form-control rounded-pill py-4"
+                type="text"
+                value={ceo}
+                onChange={(event) => setCeo(event.target.value)}
+                placeholder="사업자명"
+                required
+              />
+            </div>
+            <div className="form-group mb-4">
+              <label htmlFor="address">업체주소</label>
+              <input
+                id="address"
+                className="form-control rounded-pill py-4"
+                type="text"
+                onClick={() => setIsModalOpen(true)}
+                readOnly
+                placeholder={address ? address : '기본주소'}
+                required
+              />
+            </div>
+            <div className="form-group mb-4">
+              <label htmlFor="addressDetail">상세주소</label>
+              <input
+                id="addressDetail"
+                ref={addressDetailRef}
+                className="form-control rounded-pill py-4"
+                type="text"
+                placeholder={addressDetail ? addressDetail : '상세주소'}
+                onChange={handleAddressChange}
+                value={addressDetail}
+                required
+              />
+            </div>
+            <div className="form-group mb-4">
+              <label htmlFor="businessNumber">사업자 등록 번호</label>
+              <div className="input-group" style={{ zIndex: '0' }}>
+                <input
+                  id="businessNumber"
+                  className="form-control rounded-pill py-4"
+                  type="text"
+                  placeholder="사업자 등록 번호"
+                  value={businessNumber}
+                  onChange={(event) => setBusinessNumber(event.target.value)}
+                  required
+                />
+                <button
+                  type="button"
+                  className="btn btn-secondary rounded-pill py-3"
+                  onClick={handleBusinessNumberVerification}
+                  style={{
+                    marginLeft: '-1px',
+                    backgroundColor: PRIMARY_COLOR,
+                  }}
+                >
+                  인증
+                </button>{' '}
+              </div>
+            </div>
+            {companyType === 1 && (
+              <div className="form-group mb-4">
+                <label htmlFor="deliveryCertificate">화물운송종사자 자격증</label>
+                <input
+                  id="deliveryCertificate"
+                  className="form-control rounded-pill py-4"
+                  type="file"
+                  onChange={handleDeliveryCertificateChange}
+                  required
+                />
+              </div>
             )}
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={handleSubmit}
+              disabled={!isBusinessNumberVerified}
+            >
+              작성 완료
+            </button>
           </div>
         </div>
-        <div className="form-group mb-4">
-          <label htmlFor="startDate">서비스 시작년도</label>
-          <div className="input-group" style={{ zIndex: '0' }}>
-            <input
-              id="startDate"
-              className="form-control rounded-pill py-4"
-              type="date"
-              placeholder="2000-01-01"
-              {...register('startDate', {
-                required: '서비스 시작년도를 입력해주세요',
-              })}
-            />
-            {errors.startDate && (
-              <small role="alert">{errors.startDate.message}</small>
-            )}
-          </div>
-        </div>
-        <div className="form-group mb-4">
-          <label htmlFor="ceo">사업자명</label>
-          <input
-            id="ceo"
-            className="form-control rounded-pill py-4"
-            type="text"
-            placeholder="사업자명"
-            {...register('ceo', {
-              required: '사업자명을 입력해주세요',
-              pattern: {
-                value: /^[가-힣]{2,6}$/,
-                message: '이름 형식에 맞지 않습니다.',
-              },
-            })}
-          />
-          {errors.ceo && (
-            <small role="alert" aria-live="assertive">
-              {errors.ceo.message}
-            </small>
-          )}
-        </div>
-        <div className="form-group mb-4">
-          <label htmlFor="address">업체주소</label>
-          <input
-            id="address"
-            className="form-control rounded-pill py-4"
-            type="text"
-            onClick={() => setIsModalOpen(true)}
-            readOnly
-            {...register('address', {
-              required: '업체주소를 입력해주세요',
-            })}
-            placeholder="기본주소"
-          />
-        </div>
-        <div className="form-group mb-4">
-          <label htmlFor="addressDetail">상세주소</label>
-          <input
-            id="addressDetail"
-            className="form-control rounded-pill py-4"
-            type="text"
-            {...register('addressDetail')}
-            placeholder="상세주소"
-          />
-        </div>
-        <button type="submit">작성 완료</button>
-      </form>
+      </div>
     </>
   );
 };
