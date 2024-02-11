@@ -23,17 +23,27 @@ const CompanyMain = () => {
     console.log(userData)
 
     // 현재 role상태에 따라 버튼 활성화를 위한 변수
+    const userRole = userData.roleList
+    console.log(userRole)
     const hasDeliveryRole = userData.roleList.includes("DELIVER");
     const hasCleanupRole = userData.roleList.includes("CLEAN");
-    const [ roleBtn, setRoleBtn ] = useState(hasDeliveryRole ? "DELIVER":"CLEANUP")
+    const [ roleBtn, setRoleBtn ] = useState(userRole[0])
     const logout = useAuthStore((state) => state.logout);
     const navigate = useNavigate();
+    console.log(roleBtn)
+
+    const handleDeliveryClick = (role) => {
+      if (!userRole.includes(role)) {
+          alert('사업자 등록을 해주세요!');
+          return; // Early return to prevent further execution
+      }
+      setRoleBtn(role);
+  };
 
 
     const handleLogout = async (event) => {
       event.preventDefault();
       await logout(navigate)
-
   };
     
 
@@ -82,14 +92,16 @@ const CompanyMain = () => {
                   className="d-flex flex-column justify-content-center gap-5"
                   style={{ width: "11rem" }}
                 >
-                  {hasDeliveryRole && (
+                  
                     <motion.button
                       type="button"
-                      className="btn btn-primary btn-lg d-flex justify-content-center gap-4 align-items-center"
+                      className={`btn btn-lg d-flex justify-content-center gap-4 align-items-center ${
+                        roleBtn === "DELIVER" ? "btn-primary" : "btn-secondary"
+                      }`}
                       variants={buttonVariants}
                       whileHover="hover"
                       style={{ width: "10rem" }}
-                      onClick={() => setRoleBtn("CLEAN")}
+                      onClick={() => handleDeliveryClick("DELIVER")}
                     >
                       <img
                         style={{ width: "2rem", height: "2rem" }}
@@ -98,16 +110,16 @@ const CompanyMain = () => {
                       />
                       <h5 className="m-0">용달</h5>
                     </motion.button>
-                  )}
 
-                  {hasCleanupRole && (
                     <motion.button
                       type="button"
-                      className="btn btn-primary btn-lg d-flex justify-content-center gap-4 align-items-center"
+                      className={`btn btn-lg d-flex justify-content-center gap-4 align-items-center ${
+                        roleBtn === "CLEAN" ? "btn-primary" : "btn-secondary"
+                      }`}
                       variants={buttonVariants}
                       style={{ width: "10rem" }}
                       whileHover="hover"
-                      onClick={() => setRoleBtn("DELIVER")}
+                      onClick={() => handleDeliveryClick("CLEAN")}
                     >
                       <img
                         style={{ width: "2rem", height: "2rem" }}
@@ -116,7 +128,7 @@ const CompanyMain = () => {
                       />
                       청소
                     </motion.button>
-                  )}
+                  
                   <motion.button
                     type="button"
                     className="btn btn-light btn-lg"

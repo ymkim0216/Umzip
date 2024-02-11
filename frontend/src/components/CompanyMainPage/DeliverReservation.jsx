@@ -6,20 +6,21 @@ import StatusChange from './StatusChange';
 import ReplyTo from './ReplyTo';
 
 function DeliverReservation() {
-  const { fetchData, data } = companyDeliveryReservation();
+  const { fetchData, data, updateData } = companyDeliveryReservation();
   const [itemsToShow, setItemsToShow] = useState(2); // 한 번에 보여줄 아이템의 수
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
+  console.log(data)
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, [ fetchData ]);
 
-  console.log(data.result);
+  // console.log(data.result);
   const reservationList = data?.result || [];
 
   useEffect(() => {
-    setVisibleItems(reservationList ? reservationList.slice(0, itemsToShow) : null);
-  }, [itemsToShow, reservationList]);
+    setVisibleItems(data?.result ? data.result.slice(0, itemsToShow) : []);
+  }, [data, itemsToShow]);
 
   const handleShowMore = () => {
     setItemsToShow(itemsToShow + 2); // 더 보기 버튼 클릭 시 3개 아이템 추가
@@ -57,7 +58,7 @@ function DeliverReservation() {
                 }}
               >
                 <h5 className="m-0 col-md-2">{item.startTime}</h5>
-                <h5 className="m-0 col-md-2">{item.price}</h5>
+                <h5 className="m-0 col-md-2">{item.reissuing ? item.reissuing : item.price}</h5>
                 <h5 className="m-0 col-md-2">
                   {item.deliveryId}/{item.memberName}
                 </h5>
@@ -65,7 +66,7 @@ function DeliverReservation() {
                   <StatusChange status={item.codeSmallId} />
                 </div>
                 <h5 className="m-0 col-md-2">
-                  {item.codeSmallId} <ReplyTo role='delivery' status={item.codeSmallId} id={item.mappingId} price={item.price} />
+                  <ReplyTo role='delivery' status={item.codeSmallId} id={item.mappingId} price={item.price} />
                 </h5>
               </motion.div>
           ))}

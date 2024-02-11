@@ -3,24 +3,24 @@ import companyCleanReservation from '../../store/companyCleanReservation'
 import { motion } from "framer-motion"
 import Status from './Status';
 import StatusChange from './StatusChange';
-import ReplyTo from './ReplyTo'
-
+import ReplyTo from './ReplyTo';
 
 function DeliverReservation() {
   const { fetchData, data } = companyCleanReservation();
   const [itemsToShow, setItemsToShow] = useState(2); // 한 번에 보여줄 아이템의 수
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
+  console.log(data)
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
-
-  console.log(data.result);
+  }, [ fetchData ]);
+  
+  // console.log(data.result);
   const reservationList = data?.result || [];
 
   useEffect(() => {
-    setVisibleItems(reservationList.slice(0, itemsToShow));
-  }, [itemsToShow, reservationList]);
+    setVisibleItems(data?.result ? data.result.slice(0, itemsToShow) : []);
+  }, [data, itemsToShow]);
 
   const handleShowMore = () => {
     setItemsToShow(itemsToShow + 2); // 더 보기 버튼 클릭 시 3개 아이템 추가
@@ -46,7 +46,6 @@ function DeliverReservation() {
         </div>
         <motion.div style={{ width: "100%", minHeight: "10rem" }}>
           {visibleItems.map((item, index) => (
-            <>
               <motion.div
                 key={index}
                 initial={{ opacity: 0 }}
@@ -58,20 +57,18 @@ function DeliverReservation() {
                   minHeight: "6rem",
                 }}
               >
-                <h5 className="m-0 col-md-2">{item.startTime}</h5>
-                <h5 className="m-0 col-md-2">{item.price}</h5>
+                <h5 className="m-0 col-md-2">{item.reservationTime}</h5>
+                <h5 className="m-0 col-md-2">{item.reissuing ? item.reissuing : item.price}</h5>
                 <h5 className="m-0 col-md-2">
-                  {item.deliveryId}/{item.memberName}
+                  {item.cleanId}/{item.memberName}
                 </h5>
                 <div className="m-0 col-md-2">
                   <StatusChange status={item.codeSmallId} />
                 </div>
                 <h5 className="m-0 col-md-2">
-                  {item.deliveryId}
-                  <ReplyTo status={item.codeSmallId} />
+                  <ReplyTo role='clean' status={item.codeSmallId} id={item.mappingId} price={item.price} />
                 </h5>
               </motion.div>
-            </>
           ))}
           {itemsToShow < reservationList.length && (
             <button onClick={handleShowMore}>더 보기</button>
