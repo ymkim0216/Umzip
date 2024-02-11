@@ -7,7 +7,7 @@ import { api } from "../../../../services/api";
 
 const ITEMS_PER_PAGE = 5;
 const MAX_DISPLAY_PAGES=5
-export default function HelpMeToPeopleView({ setHelpYouList, helpYouList, helpYouTotalPages }) {
+export default function HelpMeToPeopleView({id, setHelpYouList, helpYouList, helpYouTotalPages }) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
@@ -26,7 +26,7 @@ export default function HelpMeToPeopleView({ setHelpYouList, helpYouList, helpYo
 
         try {
             const response = await api.get(
-                `/helps/profiles/help-you?memberId=4&page=${pageNumber}&size=5`,
+                `/helps/profiles/help-you?memberId=${id}&page=${pageNumber}&size=5`,
 
             );
             // console.log(response.data.result)
@@ -46,8 +46,10 @@ export default function HelpMeToPeopleView({ setHelpYouList, helpYouList, helpYo
                 <AnimatePresence mode="wait">
                     <motion.div className="d-flex flex-column gap-4" >
                         {helpYouList.map((item, index) => (
-                            <HelpMeToPeopleProfile writerName={item.writerName} codeSmallName={item.codeSmallName} id={item.boardId} key={index} title={item.title} point={item.point} />
+                            <HelpMeToPeopleProfile createDt={item.createDt} writerName={item.writerName} codeSmallName={item.codeSmallName} id={item.boardId} key={index} title={item.title} point={item.point} />
                         ))}
+                        {helpYouList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 도움글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
+                        
                     </motion.div>
                 </AnimatePresence>
             </div>

@@ -14,14 +14,14 @@ import { api } from "../../../../services/api";
 // ]
 const ITEMS_PER_PAGE = 5;
 const MAX_DISPLAY_PAGES=5
-export default function UsedView({ setSellList, sellList, sellTotalPages }) {
+export default function UsedView({id, setSellList, sellList, sellTotalPages }) {
     const axios_SellList = async ( pageNumber ) => {
         console.log(pageNumber)
         try {
             const response = await api.get(
-                `/trade-items/profiles/sell?memberId=16&page=${pageNumber}&size=5`,
+                `/trade-items/profiles/sell?memberId=${id}&page=${pageNumber}&size=5`,
                 {
-                    "memberId": 16,
+                    "memberId": id,
                     "page": pageNumber,
                     "size": 5
                 }
@@ -62,6 +62,7 @@ export default function UsedView({ setSellList, sellList, sellTotalPages }) {
                             {sellList.map((item, index) => (
                                 <UsedProfile key={index} id={item.boardId} img={item.thumbnailPath}  title={item.title} price={item.price} status={item.codeSmallName} />
                             ))}
+                            {sellList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 판매글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
                         </motion.div>
                     </AnimatePresence>
                 </div>

@@ -27,25 +27,28 @@ export default function RecommendMain() {
         setVisibleItems((prev) => prev + itemsPerPage);
     };
     const handlesubmit = () => {
-        console.log(status);
+        // console.log(status);
 
-        // 용달 또는 청소에 대한 예약 처리
-        if (status === "용달") {
-            axios_DEL_reservation(userChoice);
-        } else {
-            axios_CLE_reservation(userChoice);
+        if (userChoice.length === 0) { alert("최소 한 기사님은 선택해주세요") }
+        else {
+            if (status === "용달") {
+                axios_DEL_reservation(userChoice);
+            } else {
+                axios_CLE_reservation(userChoice);
+            }
+            const { token } = useAuthStore.getState();
+            console.log(token)
+            // 로딩 상태 변경
+            setIsLoading(true);
+
+            // 3초 후에 isLoading을 다시 false로 변경
+            setTimeout(() => {
+                setIsLoading(false);
+                navigate("/dashboard");
+            }, 3000);
+            // 필요에 따라 이동 처리
         }
-        const { token } = useAuthStore.getState();
-        console.log(token)
-        // 로딩 상태 변경
-        setIsLoading(true);
 
-        // 3초 후에 isLoading을 다시 false로 변경
-        setTimeout(() => {
-            setIsLoading(false);
-            navigate("/dashboard");
-        }, 3000);
-        // 필요에 따라 이동 처리
     };
 
     const axios_DEL_reservation = async (memberId) => {
@@ -214,8 +217,8 @@ export default function RecommendMain() {
                 >
                     {data && data.slice(0, visibleItems).map((item, index) => (
                         <motion.div key={index} variants={{ visible: { opacity: 1, y: 0 } }} initial={{ opacity: 0, y: 20 }}>
-                            {status === "용달 " ? <RecommendPeople memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.companyName} rating={3.8} img={item.imageUrl} /> :
-                                <RecommendPeople memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.tags} name={item.companyName} rating={3.8} img={item.imageUrl} />}
+                            {status === "용달 " ? <RecommendPeople experience={item.experience} memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.companyName} rating={3.8} img={item.imageUrl} /> :
+                                <RecommendPeople experience={item.experience} memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.tags} name={item.companyName} rating={3.8} img={item.imageUrl} />}
                         </motion.div>
                     ))}
                 </motion.div>

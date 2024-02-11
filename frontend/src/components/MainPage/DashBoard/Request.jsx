@@ -5,7 +5,7 @@ import StatusChange from './Status_Change';
 import { Client } from "@stomp/stompjs";
 import useAuthStore from '../../../store/store';
 
-export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
+export default function Requests({ setRequestId, Id, setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
     const [chatRoom, setChatRoom] = useState("")
     const scrollToBottom = () => {
         // 스크롤 위치를 항상 맨 아래로 조절
@@ -55,8 +55,8 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
         const { token } = useAuthStore.getState();
         console.log(res)
         const client = new Client({
-            brokerURL: `ws://i10e108.p.ssafy.io/ws?accessToken=${token}`,
-
+            brokerURL: `wss://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+            // brokerURL: `ws://192.168.30.125:8080/ws?accessToken=${token}`,
             // 여기에 다른 설정도 추가할 수 있습니다.
             onConnect: (frame) => {
                 console.log('Connected: ' + frame);
@@ -124,11 +124,20 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
             console.error('Message is empty or stomp client is not connected.');
         }
     };
+    const stopSocketCommunication = () => {
+        if (stompClientRef.current) {
+
+            stompClientRef.current.deactivate();
+            console.log("연결X")
+        }
+    };
+
+
     return (
         <>
             <AnimatePresence>
                 {openModal && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpenModal(false)}
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setOpenModal(false); setTalkHistory([]); setuserinput(''); stopSocketCommunication() }}
                         style={{
                             zIndex: "99",
                             position: 'fixed',
@@ -142,8 +151,10 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
                             alignItems: 'center',
                         }}>
                         <div style={{
+                            display: "flex",
                             position: 'relative',
                             width: '40%',
+                            height: "70%",
                             backgroundColor: 'white',
                             padding: '20px',
                             borderRadius: '8px',
@@ -151,33 +162,41 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
                             <div
                                 onClick={(e) => e.stopPropagation()}
                                 ref={chatContainerRef}
-                                style={{ width: "100%", display: "flex", flexDirection: "column", maxHeight: "40rem", overflowY: "auto" }}
+                                style={{
+                                    width: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    overflowY: "auto"
+                                }}
                             >
                                 {userId && talkHistory && talkHistory.map((items, index) => (
-                                    <div
-                                        key={index}
-                                        style={{
-                                            alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
-                                            maxWidth: "70%",
-                                            margin: "5px",
-                                            padding: "10px",
-                                            background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
-                                            borderRadius: "10px",
-                                            color: userId !== items.senderId ? "#000" : "#fff",
-                                        }}
-                                    >
-                                        {items.content}
+                                    <div className='d-flex  flex-column'>
+                                        <div className='d-flex align-items-center gap-1 justify-content-center' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' /><p className='m-0'>{items.senderName}</p></div>
+                                        <div
+                                            key={index}
+                                            style={{
+
+                                                maxWidth: "70%",
+                                                margin: "5px",
+                                                padding: "10px",
+                                                borderRadius: "10px",
+                                                alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
+                                                background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
+
+                                                color: userId !== items.senderId ? "#000" : "#fff",
+                                            }}
+                                        >
+                                            {items.content}
+                                        </div>
                                     </div>
                                 ))}
-
-                                <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
-                                    <input value={userinput} className='col-10 border bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                                    <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
-                                </form>
-
-                                <div>
-
+                                <div style={{ marginTop: "auto" }}>
+                                    <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
+                                        <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                                        <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
+                                    </form>
                                 </div>
+
                             </div>
                         </div>
 
@@ -224,6 +243,9 @@ export default function Requests({ setOpenRecommendModal, setChoiceCompanyId, is
                                         transition={{ duration: 0.3 }}
                                     >
                                         <DropDown
+                                            memberId={data.memberId}
+                                            setRequestId={setRequestId}
+                                            Id={Id}
                                             setOpenRecommendModal={setOpenRecommendModal}
                                             setChoiceCompanyId={setChoiceCompanyId}
                                             isAll={isAll}

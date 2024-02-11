@@ -6,7 +6,7 @@ import { api } from "../../../../services/api";
 
 const ITEMS_PER_PAGE = 5;
 const MAX_DISPLAY_PAGES=5
-export default function ({ setHelpMeList, helpMeList, helpMeTotalPages }) {
+export default function ({id, setHelpMeList, helpMeList, helpMeTotalPages }) {
     const [currentPage, setCurrentPage] = useState(1);
 
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
@@ -16,7 +16,7 @@ export default function ({ setHelpMeList, helpMeList, helpMeTotalPages }) {
 
         try {
             const response = await api.get(
-                `/helps/profiles/help-me?memberId=4&page=${pageNumber}&size=5`,
+                `/helps/profiles/help-me?memberId=${id}&page=${pageNumber}&size=5`,
 
             );
             console.log(response.data.result)
@@ -46,8 +46,9 @@ export default function ({ setHelpMeList, helpMeList, helpMeTotalPages }) {
                 <AnimatePresence mode="wait">
                     <motion.div className="d-flex flex-column gap-4" >
                         {helpMeList.map((item, index) => (
-                            <HelpPeopleToMeProfile key={index} id={item.boardId} writerName={item.writerName} codeSmallName={item.codeSmallName} title={item.title} point={item.point} />
+                            <HelpPeopleToMeProfile key={index} createDt={item.createDt} id={item.boardId} writerName={item.writerName} codeSmallName={item.codeSmallName} title={item.title} point={item.point} />
                         ))}
+                        {helpMeList.length===0 && <div className="mt-5 d-flex gap-3 justify-content-center align-items-center"><p className="m-0">아직 도움글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
                     </motion.div>
                 </AnimatePresence>
             </div>

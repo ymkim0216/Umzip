@@ -14,14 +14,14 @@ import { api } from "../../../../services/api";
 // ]
 const ITEMS_PER_PAGE = 5;
 const MAX_DISPLAY_PAGES=5
-export default function BuyView({ setBuyList, buyTotalPages, buyList }) {
+export default function BuyView({ id,setBuyList, buyTotalPages, buyList }) {
     // console.log(buyTotalPages)
     const axios_BuyList = async (pageNumber) => {
         const number = pageNumber
 
         try {
             const response = await api.get(
-                `/trade-items/profiles/buy?memberId=13&page=${number}&size=5`,
+                `/trade-items/profiles/buy?memberId=${id}&page=${number}&size=5`,
 
             );
             console.log(response)
@@ -59,6 +59,7 @@ export default function BuyView({ setBuyList, buyTotalPages, buyList }) {
                         {buyList.map((item, index) => (
                             <BuyProfile id={item.boardId} key={index} title={item.title} price={item.price} status={item.codeSmallName} img={item.thumbnailPath} />
                         ))}
+                        {buyList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 구매글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
                     </motion.div>
                 </AnimatePresence>
             </div>

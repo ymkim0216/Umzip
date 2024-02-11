@@ -35,6 +35,7 @@ const Calendar = ({ setStartDate, startDate}) => {
         selected={startDate}
         onChange={handleDateChange}
         customInput={<ExampleCustomInput />}
+        style={{ width: '100rem' }} 
       />
     </>
   );
