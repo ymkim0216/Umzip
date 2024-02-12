@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import DaumPostcode from 'react-daum-postcode';
 import axios from 'axios';
 
+import classes from './CompanySignUpForm.module.css';
 import { PRIMARY_COLOR } from '../../App';
 
 const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
@@ -160,13 +161,13 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
         </motion.div>
       )}
       <div
-        className="container"
-        style={{ marginTop: '100px', marginBottom: '100px' }}
+        className="container rounded p-4 border shadow-sm mx-auto"
+        style={{ marginTop: '50px', marginBottom: '50px' }}
       >
         <div className="row justify-content-center">
           <div className="col-md-12">
-            <h2 className="mb-4">Sign Up</h2>
-            <div className="form-group mb-4">
+            <h2 className="mb-4" style={{ textAlign: 'center', fontWeight: '800' }}>업체 등록</h2>
+            <div className={`form-group mb-4 ${classes.inputStyling}`}>
               <label htmlFor="companyName">업체 이름</label>
               <input
                 id="companyName"
@@ -178,13 +179,14 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                 required
               />
             </div>
+            <div htmlFor="uploadedImage" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.2em' }}>업체 대표 사진</div>
             <div
               style={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '150px',
-                margin: '20px',
+                margin: '15px',
               }}
             >
               <img
@@ -208,7 +210,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                 ref={fileInput}
               />
             </div>
-            <div className="form-group mb-4">
+            <div className={`form-group mb-4 ${classes.inputStyling}`}>
               <label htmlFor="introduction">소개글</label>
               <input
                 id="introduction"
@@ -221,7 +223,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
               />
             </div>
 
-            <div className="form-group mb-4">
+            <div className={`form-group mb-4 ${classes.inputStyling}`}>
               <label htmlFor="startDate">서비스 시작년도</label>
               <input
                 id="startDate"
@@ -229,11 +231,11 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                 type="text"
                 value={startDate}
                 onChange={(event) => setStartDate(event.target.value)}
-                placeholder="20000101"
+                placeholder="20010101"
                 required
               />
             </div>
-            <div className="form-group mb-4">
+            <div className={`form-group mb-4 ${classes.inputStyling}`}>
               <label htmlFor="ceo">사업자명</label>
               <input
                 id="ceo"
@@ -245,7 +247,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                 required
               />
             </div>
-            <div className="form-group mb-4">
+            <div className={`form-group mb-4 ${classes.inputStyling}`}>
               <label htmlFor="address">업체주소</label>
               <input
                 id="address"
@@ -257,7 +259,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                 required
               />
             </div>
-            <div className="form-group mb-4">
+            <div className={`form-group mb-4 ${classes.inputStyling}`}>
               <label htmlFor="addressDetail">상세주소</label>
               <input
                 id="addressDetail"
@@ -270,7 +272,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                 required
               />
             </div>
-            <div className="form-group mb-4">
+            <div className={`form-group mb-4 ${classes.inputStyling}`}>
               <label htmlFor="businessNumber">사업자 등록 번호</label>
               <div className="input-group" style={{ zIndex: '0' }}>
                 <input
@@ -296,7 +298,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
               </div>
             </div>
             {companyType === 1 && (
-              <div className="form-group mb-4">
+              <div className={`form-group mb-4 ${classes.inputStyling}`}>
                 <label htmlFor="deliveryCertificate">화물운송종사자 자격증</label>
                 <input
                   id="deliveryCertificate"
@@ -312,6 +314,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
               className="btn btn-primary"
               onClick={handleSubmit}
               disabled={!isBusinessNumberVerified}
+              style={{ float: 'right', fontSize: '1.1em', padding: '8px 16px' }}
             >
               작성 완료
             </button>

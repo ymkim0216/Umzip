@@ -7,6 +7,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import DaumPostcode from 'react-daum-postcode';
 import { PRIMARY_COLOR } from '../../App';
 import CompanySignUpForm from './CompanySignUpForm';
+import classes from './SignUpForm.module.css';
 
 const SignUpForm = () => {
   const [selectedButton, setSelectedButton] = useState('');
@@ -303,291 +304,316 @@ const SignUpForm = () => {
         style={{ marginTop: '100px', marginBottom: '100px' }}
       >
         <div className="row justify-content-center">
-          <div className="col-md-12">
+          <div className="col-md-10">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="rounded p-4 border shadow-sm mx-auto"
               style={{ width: '100%', maxWidth: '70%' }}
             >
-              <h2 className="mb-4">Sign Up</h2>
-              <button
-                type="button"
-                className={`btn ${
-                  selectedButton === 'normal'
-                    ? 'btn-primary text-white'
-                    : 'btn-outline-primary text-dark'
-                } rounded-pill py-3 mx-2`}
-                onClick={() => handleButtonClick('normal')}
-              >
-                일반 가입
-              </button>
-              <button
-                type="button"
-                className={`btn ${
-                  selectedButton === 'company'
-                    ? 'btn-primary text-white'
-                    : 'btn-outline-primary text-dark'
-                } rounded-pill py-3 mx-2`}
-                onClick={() => handleButtonClick('company')}
-              >
-                업체 가입
-              </button>
-              <div className="form-group mb-4">
-                <label htmlFor="name">이름</label>
-                <input
-                  id="name"
-                  className="form-control rounded-pill py-4"
-                  type="text"
-                  placeholder="이름"
-                  {...register('name', {
-                    required: '이름을 입력해주세요',
-                    pattern: {
-                      value: /^[가-힣]{2,6}$/,
-                      message: '이름 형식에 맞지 않습니다.',
-                    },
-                  })}
-                />
-                {errors.name && (
-                  <small role="alert" aria-live="assertive">
-                    {errors.name.message}
-                  </small>
-                )}
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="email">이메일</label>
-                <div className="input-group" style={{ zIndex: '0' }}>
+              <div style={{ maxWidth: '90%', margin: 'auto' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <h2 className="mb-4" style={{ fontWeight: '800', padding: '15px' }}>회원가입</h2>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <button
+                      type="button"
+                      className={`btn ${
+                        selectedButton === 'normal'
+                          ? 'btn-primary text-white'
+                          : 'btn-outline-primary text-dark'
+                      } rounded-pill py-3 mx-2`}
+                      onClick={() => handleButtonClick('normal')}
+                    >
+                      일반 가입
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn ${
+                        selectedButton === 'company'
+                          ? 'btn-primary text-white'
+                          : 'btn-outline-primary text-dark'
+                      } rounded-pill py-3 mx-2`}
+                      onClick={() => handleButtonClick('company')}
+                    >
+                      업체 가입
+                    </button>
+                  </div>
+                </div>
+                <div className={`form-group mb-4 ${classes.inputStyling}`}>
+                  <label htmlFor="name">이름</label>
                   <input
-                    id="email"
+                    id="name"
                     className="form-control rounded-pill py-4"
                     type="text"
-                    placeholder="test@email.com"
-                    {...register('email', {
-                      required: '이메일은 필수 입력입니다.',
+                    placeholder="이름"
+                    {...register('name', {
+                      required: '이름을 입력해주세요',
                       pattern: {
-                        value:
-                          /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/,
-                        message: '이메일 형식에 맞지 않습니다.',
+                        value: /^[가-힣]{2,6}$/,
+                        message: '이름 형식에 맞지 않습니다.',
                       },
                     })}
-                    value={email}
-                    onChange={handleEmailChange}
                   />
-                  <button
-                    type="button"
-                    className="btn btn-secondary rounded-pill py-3"
-                    onClick={() => checkEmail(email)}
-                    style={{
-                      marginLeft: '-1px',
-                      backgroundColor: PRIMARY_COLOR,
-                    }}
-                  >
-                    중복 확인
-                  </button>{' '}
-                  <br />
-                </div>
-                {errors.email && (
-                  <small role="alert" aria-live="assertive">
-                    {errors.email.message}
-                  </small>
-                )}
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="phone">핸드폰번호</label>
-                <div className="input-group" style={{ zIndex: '0' }}>
-                  <input
-                    id="phone"
-                    className="form-control rounded-pill py-4"
-                    type="text"
-                    placeholder="010-1234-5678"
-                    {...register('phone', {
-                      required: '핸드폰번호는 필수 입력입니다.',
-                      pattern: {
-                        value: /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
-                        message: '올바른 형식이 아닙니다',
-                      },
-                    })}
-                    value={phone}
-                    onChange={handlePhoneChange}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-secondary rounded-pill py-3"
-                    onClick={() => sendPhoneCode(phone)}
-                    style={{
-                      marginLeft: '-1px',
-                      backgroundColor: PRIMARY_COLOR,
-                    }}
-                  >
-                    Send Code
-                  </button>{' '}
-                  <br />
-                </div>
-                {errors.phone && (
-                  <small role="alert" aria-live="assertive">
-                    {errors.phone.message}
-                  </small>
-                )}
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="enterCode">Enter Code</label>
-                <div className="input-group" style={{ zIndex: '0' }}>
-                  <input
-                    type="text"
-                    className="form-control rounded-pill py-4"
-                    id="enterCode"
-                    placeholder="Enter code"
-                    required
-                    value={code}
-                    onChange={handleCodeChange}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-secondary rounded-pill py-3"
-                    onClick={() => verifyPhoneCode(phone, code)}
-                    style={{
-                      marginLeft: '-1px',
-                      backgroundColor: PRIMARY_COLOR,
-                    }}
-                  >
-                    Verify Code
-                  </button>
-                </div>
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="password">비밀번호</label>
-                <input
-                  id="password"
-                  className="form-control rounded-pill py-4"
-                  type="password"
-                  placeholder="*******"
-                  {...register('password', {
-                    required: '비밀번호는 필수 입력입니다.',
-                    pattern: {
-                      value:
-                        /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/,
-                      message:
-                        '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요',
-                    },
-                  })}
-                />
-                {errors.password && (
-                  <small role="alert" aria-live="assertive">
-                    {errors.password.message}
-                  </small>
-                )}
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="passwordCheck">비밀번호 확인</label>
-                <input
-                  id="passwordCheck"
-                  className="form-control rounded-pill py-4"
-                  type="password"
-                  placeholder="*******"
-                  {...register('passwordCheck', {
-                    validate: (value) =>
-                      value === password.current ||
-                      '비밀번호가 일치하지 않습니다.',
-                  })}
-                />
-                {errors.passwordCheck && (
-                  <small role="alert" aria-live="assertive">
-                    {errors.passwordCheck.message}
-                  </small>
-                )}
-              </div>
-              <div className="form-group mb-4">
-                <label htmlFor="address">주소</label>
-                <input
-                  id="address"
-                  className="form-control rounded-pill py-4"
-                  type="text"
-                  onClick={() => setIsModalOpen(true)}
-                  readOnly="readonly"
-                  placeholder={address ? address : '기본주소'}
-                  required
-                />
-                <br />
-                <input
-                  id="addressDetail"
-                  ref={addressDetailRef}
-                  className="form-control rounded-pill py-4"
-                  type="text"
-                  placeholder={addressDetail ? addressDetail : '상세주소'}
-                  onChange={handleAddressChange}
-                  value={addressDetail}
-                  required
-                />
-              </div>
-              {selectedButton === 'company' && (
-                <div className="mt-3">
-                  <button
-                    type="button"
-                    className={`btn ${
-                      selectedService === 'clean'
-                        ? 'btn-primary text-white'
-                        : 'btn-outline-primary text-dark'
-                    } rounded-pill py-3 mx-2`}
-                    style={{ minWidth: '120px' }}
-                    onClick={() => handleServiceClick('clean')}
-                  >
-                    청소
-                  </button>
-                  <button
-                    type="button"
-                    className={`btn ${
-                      selectedService === 'delivery'
-                        ? 'btn-primary text-white'
-                        : 'btn-outline-primary text-dark'
-                    } rounded-pill py-3 mx-2`}
-                    style={{ minWidth: '120px' }}
-                    onClick={() => handleServiceClick('delivery')}
-                  >
-                    용달
-                  </button>
-                  {isFormVisible && (
-                    <div className="mt-3">
-                      <CompanySignUpForm
-                        companyType={selectedService === 'delivery' ? 1 : -1}
-                        onCompanyDataSubmit={handleCompanyDataSubmit}
-                      />
-                    </div>
+                  {errors.name && (
+                    <small role="alert" aria-live="assertive">
+                      {errors.name.message}
+                    </small>
                   )}
                 </div>
-              )}
-              <button
-                type="submit"
-                disabled={loading}
-                className="btn btn-primary rounded-pill py-3"
-                style={{
-                  width: '100%',
-                  marginTop: '5px',
-                  marginBottom: '5px',
-                  backgroundColor: '#4A3AFF',
-                }}
-              >
-                Sign Up
-              </button>
-              <div
-                style={{
-                  margin: '15px 0',
-                  textAlign: 'center',
-                  fontSize: '16px',
-                  color: '#666666',
-                }}
-              >
-                이미 회원이신가요?
-                <Link
-                  to="/login"
+                <div className={`form-group mb-4 ${classes.inputStyling}`}>
+                  <label htmlFor="email">이메일</label>
+                  <div
+                    style={{
+                      zIndex: '0',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <input
+                      id="email"
+                      className="form-control rounded-pill py-4"
+                      type="text"
+                      placeholder="test@email.com"
+                      {...register('email', {
+                        required: '이메일은 필수 입력입니다.',
+                        pattern: {
+                          value:
+                            /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,}$/,
+                          message: '이메일 형식에 맞지 않습니다.',
+                        },
+                      })}
+                      value={email}
+                      onChange={handleEmailChange}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-secondary rounded-pill py-3"
+                      onClick={() => checkEmail(email)}
+                      style={{
+                        marginLeft: '-1px',
+                        backgroundColor: PRIMARY_COLOR,
+                      }}
+                    >
+                      중복 확인
+                    </button>
+                  </div>
+                  {errors.email && (
+                    <small role="alert" aria-live="assertive">
+                      {errors.email.message}
+                    </small>
+                  )}
+                </div>
+                <div className={`form-group mb-4 ${classes.inputStyling}`}>
+                  <label htmlFor="phone">핸드폰번호</label>
+                  <div
+                    className="input-group"
+                    style={{
+                      zIndex: '0',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <input
+                      id="phone"
+                      className="form-control rounded-pill py-4"
+                      type="text"
+                      placeholder="010-1234-5678"
+                      {...register('phone', {
+                        required: '핸드폰번호는 필수 입력입니다.',
+                        pattern: {
+                          value:
+                            /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/,
+                          message: '올바른 형식이 아닙니다',
+                        },
+                      })}
+                      value={phone}
+                      onChange={handlePhoneChange}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-secondary rounded-pill py-3"
+                      onClick={() => sendPhoneCode(phone)}
+                      style={{
+                        marginLeft: '-1px',
+                        backgroundColor: PRIMARY_COLOR,
+                      }}
+                    >
+                      코드 전송
+                    </button>
+                  </div>
+                  {errors.phone && (
+                    <small role="alert" aria-live="assertive">
+                      {errors.phone.message}
+                    </small>
+                  )}
+                </div>
+                <div className={`form-group mb-4 ${classes.inputStyling}`}>
+                  <label htmlFor="enterCode">코드 입력</label>
+                  <div
+                    className="input-group"
+                    style={{
+                      zIndex: '0',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <input
+                      type="text"
+                      className="form-control rounded-pill py-4"
+                      id="enterCode"
+                      placeholder="인증 코드"
+                      required
+                      value={code}
+                      onChange={handleCodeChange}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-secondary rounded-pill py-3"
+                      onClick={() => verifyPhoneCode(phone, code)}
+                      style={{
+                        marginLeft: '-1px',
+                        backgroundColor: PRIMARY_COLOR,
+                      }}
+                    >
+                      코드 확인
+                    </button>
+                  </div>
+                </div>
+                <div className={`form-group mb-4 ${classes.inputStyling}`}>
+                  <label htmlFor="password">비밀번호</label>
+                  <input
+                    id="password"
+                    className="form-control rounded-pill py-4"
+                    type="password"
+                    placeholder="*******"
+                    {...register('password', {
+                      required: '비밀번호는 필수 입력입니다.',
+                      pattern: {
+                        value:
+                          /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/,
+                        message:
+                          '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요',
+                      },
+                    })}
+                  />
+                  {errors.password && (
+                    <small role="alert" aria-live="assertive">
+                      {errors.password.message}
+                    </small>
+                  )}
+                </div>
+                <div className={`form-group mb-4 ${classes.inputStyling}`}>
+                  <label htmlFor="passwordCheck">비밀번호 확인</label>
+                  <input
+                    id="passwordCheck"
+                    className="form-control rounded-pill py-4"
+                    type="password"
+                    placeholder="*******"
+                    {...register('passwordCheck', {
+                      validate: (value) =>
+                        value === password.current ||
+                        '비밀번호가 일치하지 않습니다.',
+                    })}
+                  />
+                  {errors.passwordCheck && (
+                    <small role="alert" aria-live="assertive">
+                      {errors.passwordCheck.message}
+                    </small>
+                  )}
+                </div>
+                <div className={`form-group mb-4 ${classes.inputStyling}`}>
+                  <label htmlFor="address">주소</label>
+                  <input
+                    id="address"
+                    className="form-control rounded-pill py-4"
+                    type="text"
+                    onClick={() => setIsModalOpen(true)}
+                    readOnly="readonly"
+                    placeholder={address ? address : '기본주소'}
+                    required
+                  />
+                  <br />
+                  <input
+                    id="addressDetail"
+                    ref={addressDetailRef}
+                    className="form-control rounded-pill py-4"
+                    type="text"
+                    placeholder={addressDetail ? addressDetail : '상세주소'}
+                    onChange={handleAddressChange}
+                    value={addressDetail}
+                    required
+                  />
+                </div>
+                {selectedButton === 'company' && (
+                  <div className="mt-3 mb-3">
+                    <button
+                      type="button"
+                      className={`btn ${
+                        selectedService === 'clean'
+                          ? 'btn-primary text-white'
+                          : 'btn-outline-primary text-dark'
+                      } rounded-pill py-3 mx-2`}
+                      style={{ minWidth: '120px' }}
+                      onClick={() => handleServiceClick('clean')}
+                    >
+                      청소
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn ${
+                        selectedService === 'delivery'
+                          ? 'btn-primary text-white'
+                          : 'btn-outline-primary text-dark'
+                      } rounded-pill py-3 mx-2`}
+                      style={{ minWidth: '120px' }}
+                      onClick={() => handleServiceClick('delivery')}
+                    >
+                      용달
+                    </button>
+                    {isFormVisible && (
+                      <div>
+                        <CompanySignUpForm
+                          companyType={selectedService === 'delivery' ? 1 : -1}
+                          onCompanyDataSubmit={handleCompanyDataSubmit}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn btn-primary rounded-pill py-3"
                   style={{
-                    color: '#2681d9',
-                    textDecoration: 'none',
-                    hover: {
-                      textDecoration: 'underline',
-                    },
+                    width: '100%',
+                    marginTop: '5px',
+                    marginBottom: '5px',
+                    backgroundColor: '#4A3AFF',
                   }}
                 >
-                  로그인
-                </Link>
+                  회원가입
+                </button>
+                <div
+                  style={{
+                    margin: '15px 0',
+                    textAlign: 'center',
+                    fontSize: '16px',
+                    color: '#666666',
+                  }}
+                >
+                  이미 회원이신가요?
+                  <Link
+                    to="/login"
+                    style={{
+                      color: '#2681d9',
+                      textDecoration: 'none',
+                      hover: {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    로그인
+                  </Link>
+                </div>
               </div>
             </form>
           </div>
