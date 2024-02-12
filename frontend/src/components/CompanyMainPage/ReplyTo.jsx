@@ -1,16 +1,29 @@
 import PropTypes from 'prop-types';
 import ReplyModal from './ReplyModal';
+import companyDeliveryReservation from '../../store/companyDeliveryReservation'
+import companyCleanReservation from '../../store/companyCleanReservation'
 import { useState } from 'react';
+import useReplyStore from '../../store/replyStore'
 
 
-function ReplyTo({ role, status, id, price }) {
+function ReplyTo({ role, status, mappingId, price }) {
 
   const [showModal, setShowModal] = useState(false);
-
+  const { fetchDataDelivery } = companyDeliveryReservation();
+  const { fetchDataClean } = companyCleanReservation();
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  const rejectionReservation = useReplyStore((state) => state.rejectionReservation);
 
   const code = status % 100;
+
+  const rejectionHandle = async () => {
+
+    await rejectionReservation(role, mappingId); // Zustand store의 함수 호출
+    // 화면 즉각 반영을 위한 코드
+    fetchDataDelivery()
+    fetchDataClean()
+  };
 
   return (
     <div>
@@ -18,12 +31,12 @@ function ReplyTo({ role, status, id, price }) {
       {code === 1 && (
         <>
         <button onClick={handleOpenModal}>견적제안</button>
-        <button>거절</button>
+        <button onClick={() => rejectionHandle(role, mappingId)}>거절</button>
         {showModal && (
           <ReplyModal
             role={role}
             onClose={handleCloseModal}
-            mappingId={id}
+            mappingId={mappingId}
             price={price}
           />
         )}
@@ -31,7 +44,7 @@ function ReplyTo({ role, status, id, price }) {
       )}
 
       {/* 취소 버튼 */}
-      {code === 2 && <button>취소</button>}
+      {code === 2 && <button onClick={() => rejectionHandle(role, mappingId)}>취소</button>}
 
       {/* 1대1 채팅 버튼 */}
       {code === 3 && <button>1대1 채팅</button>}

@@ -82,48 +82,6 @@ const Header = () => {
               <motion.li
                 whileHover={{
                   translateY: -3,
-                  fontWeight: 'bold',
-                  textDecoration: 'underline',
-                }}
-                className="nav-item"
-              >
-                <Link
-                  className="nav-link mx-3 px-3 d-flex align-items-center"
-                  to="/trade"
-                >
-                  <img
-                    style={{ width: 17, height: 17 }}
-                    className="mb-1"
-                    src="/iconoir.png" // 아이콘 수정하기
-                    alt=""
-                  />
-                  <p className="m-0">새로운 신청</p>
-                </Link>
-              </motion.li>
-              <motion.li
-                whileHover={{
-                  translateY: -3,
-                  fontWeight: 'bold',
-                  textDecoration: 'underline',
-                }}
-                className="nav-item"
-              >
-                <Link
-                  className="nav-link mx-3 px-3 d-flex align-items-center"
-                  to="/help"
-                >
-                  <img
-                    style={{ width: 17, height: 17 }}
-                    className="mb-1"
-                    src="/iconoir.png"
-                    alt=""
-                  />
-                  확정된 예약
-                </Link>
-              </motion.li>
-              <motion.li
-                whileHover={{
-                  translateY: -3,
                   fontWeight: 'bolder',
                   textDecoration: 'underline',
                 }}

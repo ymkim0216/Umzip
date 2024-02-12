@@ -80,7 +80,7 @@ function DeliverReservation() {
                   <ReplyTo
                     role="clean"
                     status={item.codeSmallId}
-                    id={item.mappingId}
+                    mappingId={item.mappingId}
                     price={item.price}
                   />
                 </h5>
