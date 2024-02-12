@@ -6,7 +6,7 @@ const useStoreDelivery = create((set) => ({
   loading: false,
   error: null,
 
-  fetchData: async () => {
+  fetchDataDelivery: async () => {
 
     set({ loading: true });
     try {

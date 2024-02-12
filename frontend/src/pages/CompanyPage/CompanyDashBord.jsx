@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import CompanyMain from '../../components/CompanyMainPage/CompanyMain';
-import Header from "../../components/Header";
+import Header from "../../components/CompanyMainPage/CompanyHeader";
 import Chat from "../../components/Chat/Chat";
 
 

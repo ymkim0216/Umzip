@@ -6,7 +6,7 @@ const useStoreClean = create((set) => ({
   loading: false,
   error: null,
 
-  fetchData: async () => {
+  fetchDataClean: async () => {
 
     set({ loading: true });
     try {

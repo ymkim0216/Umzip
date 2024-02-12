@@ -25,12 +25,9 @@ const CompanyMain = () => {
     // 현재 role상태에 따라 버튼 활성화를 위한 변수
     const userRole = userData.roleList
     console.log(userRole)
-    const hasDeliveryRole = userData.roleList.includes("DELIVER");
-    const hasCleanupRole = userData.roleList.includes("CLEAN");
     const [ roleBtn, setRoleBtn ] = useState(userRole[0])
     const logout = useAuthStore((state) => state.logout);
     const navigate = useNavigate();
-    console.log(roleBtn)
 
     const handleDeliveryClick = (role) => {
       if (!userRole.includes(role)) {
