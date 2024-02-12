@@ -1,6 +1,6 @@
 import { useSubmit, useNavigate } from 'react-router-dom';
 import Chat from '../Chat/Chat';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -10,7 +10,9 @@ import { Navigation, Pagination } from 'swiper/modules';
 
 import classes from './TradeItemDetail.module.css';
 import { AnimatePresence, motion } from 'framer-motion';
-
+import useAuthStore from '../../store/store';
+import { Client } from "@stomp/stompjs";
+import { api } from '../../services/api';
 function ReportModal({ onClose }) {
   return (
     <AnimatePresence>
@@ -59,14 +61,21 @@ function ReportModal({ onClose }) {
 }
 
 function TradeItemDetail({ trade }) {
-  console.log(trade);
+  // console.log(trade);
   const submit = useSubmit();
+
+  const [chatRoom,setChatRoom] =useState(null)
+  const [isModalOpen,setIsModalOpen] =useState(false)
+  const stompClientRef = useRef(null);
+  const chatContainerRef = useRef();
+  const [userId,setUserId] = useState(null)
+  const [talkHistory ,setTalkHistory] = useState([])
 
   const createTime = new Date(trade.createDt);
   const now = new Date();
   const diffTime = Math.abs(now - createTime);
   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-  const [userinput, setUserInput] = useState();
+  const [userinput, setUserInput] = useState("");
   // Formatting the date part as YY-MM-DD
   const yy = createTime.getFullYear().toString();
   const mm = ('0' + (createTime.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed
@@ -101,96 +110,299 @@ function TradeItemDetail({ trade }) {
   const handleClick = () => {
     navigate(`/myprofile/${trade.writerId}`);
   };
-  return (
-    <article className={classes.trade} style={{ marginTop: '8rem' }}>
-      <div className={classes.back}>
-        <button onClick={goBack}>뒤로</button>
-      </div>
-      <Swiper
-        modules={[Navigation, Pagination]}
-        spaceBetween={20}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: false }} // clickable을 true로 설정하여 페이지네이션 사용
-        style={{ width: '100%', height: '500px' }}
-      >
-        {trade.filePathList.map((img, index) => (
-          <SwiperSlide key={index}>
-            <img
-              src={img}
-              alt={`${trade.title} image ${index}`}
-              style={{ width: '80%', height: '100%', objectFit: 'cover' }}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <div style={{ width: '85%', marginLeft: 'auto', marginRight: 'auto' }}>
-        <div className="d-flex flex-row p-2 justify-content-between m-1">
-          <div className="d-flex gap-2">
-            <motion.img
-              onClick={handleClick}
-              whileHover={{ y: -5, cursor: 'pointer' }}
-              className="rounded-pill"
-              style={{ width: '3rem', height: '3rem' }}
-              src={trade.writerImageUrl}
-              alt="랜덤 이미지"
-            ></motion.img>
-            <div className="text-start">
-              <p className="m-0">{trade.writerName}</p>
-              <p>{trade.writerAddress}</p>
-            </div>
-          </div>
-          <div className="position-relative p-2">
-            <small className="form-text text-muted">{trade.writerRating}</small>
-          </div>
-        </div>
-      </div>
-      <div className={classes.article}>
-        <h2 className={classes.title}>제목: {trade.title}</h2>
-        <div className={classes.price}>
-          <p>{trade.price}원</p>
-          <p className={classes.date}>
-            {diffHours < 24 ? `${diffHours} 시간 전` : `${yy}-${mm}-${dd}`}
-          </p>
-        </div>
-        <p>{trade.direct ? '직거래' : '택배배송'}</p>
-        <p className={classes.content}>
-          {trade.content}
-          <p className={classes.view}>조회 {trade.readCnt}</p>
-        </p>
-        <div className={classes.report}>
-          {trade.writer ? (
-            <div className={classes.actions}>
-              <menu className={classes.edit}>
-                <button>수정</button>
-              </menu>
-              <menu className={classes.cancle}>
-                <button onClick={startDeleteHandler}>삭제</button>
-              </menu>
-            </div>
-          ) : (
-            <div>
-              <button onClick={showModal}>신고하기</button>
-              {modalShow && <ReportModal onClose={hideModal} />}
-            </div>
-          )}
-        </div>
 
-        <div>
-          {trade.writer ? (
-            <menu className={classes.sold}>
-              <button>판매완료</button>
-            </menu>
-          ) : (
-            <menu className={classes.chat}>
-              <button onClick={toggleChat}>채팅</button>
-              {isChatOpen && <Chat />}
-            </menu>
-          )}
+  //========================
+  const handleinput = (event) => {
+    setUserInput(event.target.value);
+};
+  const scrollToBottom = () => {
+    // 스크롤 위치를 항상 맨 아래로 조절
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [isModalOpen]);
+
+  const handleModal = () => {
+    setIsModalOpen((prev) => !prev)
+  }
+  const toggleModal = async ({tradeId,memberId}) => {
+    console.log(tradeId,memberId)
+    setIsModalOpen(true)
+    const res = await MakeRoom({tradeId,memberId})
+    const stompClient = socket(res);
+    stompClientRef.current = stompClient;
+    stompClient.onConnect(
+      stompClient.activate()
+    )
+  }
+  const socket = (res) => {
+    const { token } = useAuthStore.getState();
+    console.log(res)
+    const client = new Client({
+      brokerURL: `wss://i10e108.p.ssafy.io/ws?accessToken=${token}`,
+      // brokerURL: `ws://192.168.30.145:8080/ws?accessToken=${token}`,
+      // 여기에 다른 설정도 추가할 수 있습니다.
+      onConnect: (frame) => {
+        console.log('Connected: ' + frame);
+
+        client.subscribe(`/topic/user/${token}`, (message) => {
+
+          setUserId((prev) => {
+            const updatedHistory = message.body
+            // console.log(message.body);
+            return updatedHistory;
+          })
+        });
+
+        client.subscribe(`/topic/chatroom/${res}`, (message) => {
+          console.log(res)
+          console.log('Received message: ' + message.body);
+          // console.log(talkHistory)
+          showReceivedMessage(message.body);
+        });
+      },
+
+      onStompError: (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
+      }
+    });
+
+    return client;
+  };
+  const showReceivedMessage = (message) => {
+    try {
+      console.log(message)
+
+      const jsonData = JSON.parse(message);
+      console.log(jsonData);
+
+      setTalkHistory((prevTalkHistory) => {
+        const updatedHistory = [...prevTalkHistory, jsonData];
+        // console.log(updatedHistory);
+        return updatedHistory;
+
+      })
+
+    } catch (error) {
+      console.error('Error parsing received message:', error);
+    }
+  };
+
+  const sendMessage = (tradeId) => {
+    // userinput을 사용하도록 수정
+    const { token } = useAuthStore.getState();
+    if (userinput && stompClientRef.current.active) {
+      console.log(tradeId,chatRoom)
+      stompClientRef.current.publish({
+        destination: `/app/chat/${chatRoom}`,
+        body: JSON.stringify({
+          content: userinput,
+          type: 'TALK',
+          tradeId:tradeId,
+        }),
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+    } else {
+      console.error('Message is empty or stomp client is not connected.');
+    }
+  };
+  const MakeRoom = async ({tradeId,memberId}) => {
+
+
+    // console.log(companyId)
+    try {
+      const response = await api.post(
+        `/chat/trade/${tradeId}/${memberId}`,
+        // 요청 바디를 올바른 위치에 추가
+      );
+      setChatRoom(response.data.result)
+      // console.log(response.data.result);
+      return response.data.result
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const stopSocketCommunication = () => {
+    if (stompClientRef.current) {
+
+      stompClientRef.current.deactivate();
+      console.log("연결X")
+    }
+  };
+
+
+  //=====================
+
+  return (
+    <>
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { setIsModalOpen(false); setTalkHistory([]), setUserInput(""), stopSocketCommunication() }}
+            style={{
+              zIndex: "99",
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <div style={{
+              display: "flex",
+              position: 'relative',
+              width: '40%',
+              height: "70%",
+              backgroundColor: 'white',
+              padding: '20px',
+              borderRadius: '8px',
+            }}>
+              <div
+                onClick={(e) => e.stopPropagation()}
+                ref={chatContainerRef}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  overflowY: "auto"
+                }}
+              >
+                {userId && talkHistory && talkHistory.map((items, index) => (
+                  <div className='d-flex  flex-column'>
+                    <div className='' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}>
+                      {userId !== items.senderId ? <div className='d-flex align-items-center gap-1 justify-content-center'><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                        <p className='m-0'>{items.senderName}</p></div> : <div className='d-flex align-items-center gap-1 justify-content-center'><p className='m-0'>{items.senderName}</p><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                      </div>}
+                    </div>
+                    <div
+                      key={index}
+                      style={{
+
+                        maxWidth: "70%",
+                        margin: "5px",
+                        padding: "10px",
+                        borderRadius: "10px",
+                        alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
+                        background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
+
+                        color: userId !== items.senderId ? "#000" : "#fff",
+                      }}
+                    >
+                      {items.content}
+                    </div>
+                  </div>
+                ))}
+                <div style={{ marginTop: "auto" }}>
+                  <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(trade.boardId); setUserInput(''); }}>
+                    <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
+                    <button type="submit" className='btn btn-primary rounded-4'><img src='/Paper_Plane.png' /></button>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <article className={classes.trade} style={{ marginTop: '8rem' }}>
+        <div className={classes.back}>
+          <button onClick={goBack}>뒤로</button>
         </div>
-      </div>
-    </article>
-  );
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={20}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: false }} // clickable을 true로 설정하여 페이지네이션 사용
+          style={{ width: '100%', height: '500px' }}
+        >
+          {trade.filePathList.map((img, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={img}
+                alt={`${trade.title} image ${index}`}
+                style={{ width: '80%', height: '100%', objectFit: 'cover' }}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <div style={{ width: '85%', marginLeft: 'auto', marginRight: 'auto' }}>
+          <div className="d-flex flex-row p-2 justify-content-between m-1">
+            <div className="d-flex gap-2">
+              <motion.img
+                onClick={handleClick}
+                whileHover={{ y: -5, cursor: 'pointer' }}
+                className="rounded-pill"
+                style={{ width: '3rem', height: '3rem' }}
+                src={trade.writerImageUrl}
+                alt="랜덤 이미지"
+              ></motion.img>
+              <div className="text-start">
+                <p className="m-0">{trade.writerName}</p>
+                <p>{trade.writerAddress}</p>
+              </div>
+            </div>
+            <div className="position-relative p-2">
+              <small className="form-text text-muted">{trade.writerRating}</small>
+            </div>
+          </div>
+        </div>
+        <div className={classes.article}>
+          <h2 className={classes.title}>제목: {trade.title}</h2>
+          <div className={classes.price}>
+            <p>{trade.price}원</p>
+            <p className={classes.date}>
+              {diffHours < 24 ? `${diffHours} 시간 전` : `${yy}-${mm}-${dd}`}
+            </p>
+          </div>
+          <p>{trade.direct ? '직거래' : '택배배송'}</p>
+          <p className={classes.content}>
+            {trade.content}
+            <p className={classes.view}>조회 {trade.readCnt}</p>
+          </p>
+          <div className={classes.report}>
+            {trade.writer ? (
+              <div className={classes.actions}>
+                <menu className={classes.edit}>
+                  <button>수정</button>
+                </menu>
+                <menu className={classes.cancle}>
+                  <button onClick={startDeleteHandler}>삭제</button>
+                </menu>
+              </div>
+            ) : (
+              <div>
+                <button onClick={showModal}>신고하기</button>
+                {modalShow && <ReportModal onClose={hideModal} />}
+              </div>
+            )}
+          </div>
+
+          <div>
+            {trade.writer ? (
+              <menu className={classes.sold}>
+                <button>판매완료</button>
+              </menu>
+            ) : (
+              <menu className={classes.chat}>
+                <button onClick={()=>toggleModal({"tradeId": trade.boardId , "memberId" :trade.writerId })}>채팅</button>
+                {/* {isChatOpen && <Chat />} */}
+              </menu>
+            )}
+          </div>
+        </div>
+      </article>
+    </>);
 }
 
 export default TradeItemDetail;
