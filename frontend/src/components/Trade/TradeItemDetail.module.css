@@ -78,6 +78,13 @@
 .content {
   background-color: #ECF2FF;
   min-height: 300px;
+  position: relative;
+}
+
+.view {
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .chat {

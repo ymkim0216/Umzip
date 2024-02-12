@@ -55,7 +55,6 @@ function ReportModal({ onClose }) {
         </motion.div>
       </motion.div>
     </AnimatePresence>
-
   );
 }
 
@@ -67,7 +66,7 @@ function TradeItemDetail({ trade }) {
   const now = new Date();
   const diffTime = Math.abs(now - createTime);
   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-  const [userinput,setUserInput] = useState()
+  const [userinput, setUserInput] = useState();
   // Formatting the date part as YY-MM-DD
   const yy = createTime.getFullYear().toString();
   const mm = ('0' + (createTime.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed
@@ -99,9 +98,9 @@ function TradeItemDetail({ trade }) {
   const goBack = () => {
     navigate(-1);
   };
-  const handleClick = ()=>{
-    navigate(`/myprofile/${trade.writerId}`)
-  }
+  const handleClick = () => {
+    navigate(`/myprofile/${trade.writerId}`);
+  };
   return (
     <article className={classes.trade} style={{ marginTop: '8rem' }}>
       <div className={classes.back}>
@@ -129,9 +128,9 @@ function TradeItemDetail({ trade }) {
         <div className="d-flex flex-row p-2 justify-content-between m-1">
           <div className="d-flex gap-2">
             <motion.img
-            onClick={handleClick}
-            whileHover={{y:-5,cursor:"pointer"}}
-            className='rounded-pill'
+              onClick={handleClick}
+              whileHover={{ y: -5, cursor: 'pointer' }}
+              className="rounded-pill"
               style={{ width: '3rem', height: '3rem' }}
               src={trade.writerImageUrl}
               alt="랜덤 이미지"
@@ -155,10 +154,20 @@ function TradeItemDetail({ trade }) {
           </p>
         </div>
         <p>{trade.direct ? '직거래' : '택배배송'}</p>
-        <p className={classes.content}>{trade.content}</p>
+        <p className={classes.content}>
+          {trade.content}
+          <p className={classes.view}>조회 {trade.readCnt}</p>
+        </p>
         <div className={classes.report}>
           {trade.writer ? (
-            ''
+            <div className={classes.actions}>
+              <menu className={classes.edit}>
+                <button>수정</button>
+              </menu>
+              <menu className={classes.cancle}>
+                <button onClick={startDeleteHandler}>삭제</button>
+              </menu>
+            </div>
           ) : (
             <div>
               <button onClick={showModal}>신고하기</button>
@@ -166,14 +175,7 @@ function TradeItemDetail({ trade }) {
             </div>
           )}
         </div>
-        <div className={classes.actions}>
-          <menu className={classes.edit}>
-            <button>수정</button>
-          </menu>
-          <menu className={classes.cancle}>
-            <button onClick={startDeleteHandler}>삭제</button>
-          </menu>
-        </div>
+
         <div>
           {trade.writer ? (
             <menu className={classes.sold}>
