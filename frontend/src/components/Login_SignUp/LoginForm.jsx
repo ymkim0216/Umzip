@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../../store/store';
-
+import classes from './LoginForm.module.css';
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,45 +17,53 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className={`container mt-5 `} >
       <div className="row justify-content-center">
         <div className="col-md-10">
           <form
             onSubmit={handleSubmit}
-            className="rounded p-4 border shadow-sm mx-auto"
+            className={`rounded p-4 border shadow-sm mx-auto ${classes.backColor}`}
             style={{ width: '100%' }}
           >
-            <h2 className="mb-4">Login</h2>
+            <div className="col"  style={{ marginLeft: '60px', marginBottom: '40px',marginTop:'10px' }}>
+              <div >
+               <img src="login-house.gif" className={`${classes.imgStyle}`} alt="GIF" />
+              </div>
+              <div>
+              <h2 className="mb-4"> 움집에 오신걸 환영합니다!</h2>
+              </div>
+            </div>
+          
             <div className="form-group mb-4">
-              <label htmlFor="email">Email address</label>
+              <label htmlFor="email" className={`${classes.labelMargin}`}>이메일</label>
               <input
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="form-control rounded-pill py-4"
+                className={`form-control rounded-pill py-4 ${classes.inputWithPadding} ${classes.topMargin}`}
                 id="email"
-                placeholder="Enter email"
+                placeholder="이메일을 입력해주세요"
                 required
               />
-              <small className="form-text text-muted">
-                We'll never share your email with anyone else.
+              <small className={`form-text text-muted `} style={{marginLeft: "20px"}}>
+                이메일의 전체 형식을 입력해주세요 !
               </small>
             </div>
 
             <div className="form-group mb-4">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password" className={`${classes.labelMargin}`}>비밀번호</label>
               <input
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="form-control rounded-pill py-4"
+                className={`form-control rounded-pill py-4  ${classes.inputWithPadding}`}
                 id="password"
-                placeholder="Password"
+                placeholder="비밀번호를 입력해주세요 "
                 required
               />
             </div>
 
-            <div className="form-group form-check mb-4">
+            <div className={`form-group form-check mb-4 ${classes.rightAligned}`}>
               <input
                 type="checkbox"
                 className="form-check-input"
@@ -63,8 +71,11 @@ const LoginForm = () => {
                 checked={rememberMe}
                 onChange={(event) => setRememberMe(event.target.checked)}
               />
-              <label className="form-check-label" htmlFor="rememberMe">
-                Remember me
+              <label className={`form-check-label `} 
+              style={{marginRight: "20px"
+            }}
+              htmlFor="rememberMe">
+                로그인 정보 저장
               </label>
             </div>
 
@@ -76,10 +87,12 @@ const LoginForm = () => {
                 width: '100%',
                 marginTop: '5px',
                 marginBottom: '5px',
-                backgroundColor: '#4A3AFF',
+                backgroundColor: '#40A2D8',
+                border: '#40A2D8',
+                fontSize: "15pt"
               }}
             >
-              Log in
+              로그인
             </button>
             <div
               style={{
@@ -89,7 +102,7 @@ const LoginForm = () => {
                 color: '#666666',
               }}
             >
-              아직 회원이 아니신가요?
+              아직 회원이 아니신가요? 
               <Link
                 to="/signup"
                 style={{
