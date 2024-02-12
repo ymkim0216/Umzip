@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Client } from "@stomp/stompjs";
 import { api } from '../../services/api';
 import useAuthStore from '../../store/store';
+import { useNavigate } from 'react-router-dom';
+import UsedReview from '../MainPage/DashBoard/UsedReview';
 
 
 
@@ -15,6 +17,10 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   const [userinput, setuserinput] = useState("");
   const stompClientRef = useRef(null);
   const [userId, setUserId] = useState(null)
+  const [tradeChat, setTradeChat] = useState(null)
+  const navigate = useNavigate()
+  const [status,setStatus] = useState("first")
+  const [tradeId,setTradeId] = useState(null)
   const scrollToBottom = () => {
     // 스크롤 위치를 항상 맨 아래로 조절
     if (chatContainerRef.current) {
@@ -98,7 +104,8 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
     try {
       const response = await api.get(`/chat/rooms/${chatroomId}`, {
       });
-      console.log(response.data.result.chatMessages)
+      console.log(response.data.result)
+      setTradeChat(response.data.result.tradeItem)
       return response.data.result.chatMessages
         // console.log(response.data.result)
         // console.dir(stompClient.subscribe)
@@ -153,10 +160,35 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
       console.error('Message is empty or stomp client is not connected.');
     }
   };
+  const confirmBuy = async () => {
+
+
+    try {
+      console.log(tradeChat.tradeId)
+      const response = await api.post(`/trade-items/completed-buys`, {
+        boardId: tradeChat.tradeId
+      });
+      console.log(response)
+      // setTradeChat(response.data.result.tradeItem)
+      return response.data.result.chatMessages
+        // console.log(response.data.result)
+        // console.dir(stompClient.subscribe)
+        ;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleBuy = async(e)=>{
+    e.stopPropagation()
+    await confirmBuy()
+    stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("") 
+    setStatus("second")
+    setOpenModal(false)
+  }
   return (
     <>
       <AnimatePresence>
-        {openModal && (
+        {openModal && status==="first" &&(
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("") }}
             style={{
               zIndex: "99",
@@ -173,7 +205,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
             <div style={{
               display: "flex",
               position: 'relative',
-              width: '40%',
+              width: '50rem',
               height: "70%",
               backgroundColor: 'white',
               padding: '20px',
@@ -188,32 +220,45 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
                   flexDirection: "column",
                   overflowY: "auto"
                 }}
-              >
-                {userId && talkHistory && talkHistory.map((items, index) => (
-                  <div className='d-flex  flex-column'>
-                    <div className='' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}>
-                      {userId !== items.senderId ? <div className='d-flex align-items-center gap-1 justify-content-center'><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
-                        <p className='m-0'>{items.senderName}</p></div> : <div className='d-flex align-items-center gap-1 justify-content-center'><p className='m-0'>{items.senderName}</p><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
-                      </div>}
-                    </div>
-                    <div
-                      key={index}
-                      style={{
-
-                        maxWidth: "70%",
-                        margin: "5px",
-                        padding: "10px",
-                        borderRadius: "10px",
-                        alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
-                        background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
-
-                        color: userId !== items.senderId ? "#000" : "#fff",
-                      }}
-                    >
-                      {items.content}
-                    </div>
+              >{tradeChat && <motion.div onClick={() => navigate(`/trade/${tradeChat.tradeId}`)} whileHover={{ y: -5, cursor: "pointer", backgroundColor: "#EAEBEE" }} className='d-flex gap-2 p-2 rounded-3 ' style={{ position: "fixed", top: "", width: "48rem", height: "6rem", backgroundColor: "white" }}>
+                <img style={{ width: "5rem", height: "5rem" }} src={tradeChat.tradeItemImage} />
+                <div className='d-flex flex-column gap-3' style={{ width: "100%" }}>
+                  <div className='d-flex  justify-content-between'>
+                    <h5 className='m-0 '>제목 : {tradeChat.tradeItemTitle}</h5>
+                    <button onClick={handleBuy} className='btn btn-light'>구매확정</button>
                   </div>
-                ))}
+                  <h5 className='m-0 '>가격 : {tradeChat.tradeItemPrice}</h5>
+                  {/* <p className='m-0 '>제목 : {tradeChat.tradeItemTitle}</p> */}
+                </div>
+              </motion.div>}
+
+                <div style={{ marginTop: tradeChat === null ? "0" : "6rem" }}>
+                  {userId && talkHistory && talkHistory.map((items, index) => (
+                    <div className='d-flex  flex-column'>
+                      <div className='' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}>
+                        {userId !== items.senderId ? <div className='d-flex align-items-center gap-1 justify-content-center'><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                          <p className='m-0'>{items.senderName}</p></div> : <div className='d-flex align-items-center gap-1 justify-content-center'><p className='m-0'>{items.senderName}</p><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
+                        </div>}
+                      </div>
+                      <div
+                        key={index}
+                        style={{
+
+                          maxWidth: "70%",
+                          margin: "5px",
+                          padding: "10px",
+                          borderRadius: "10px",
+                          alignSelf: userId !== items.senderId ? "flex-start" : "flex-end",
+                          background: userId !== items.senderId ? "#e6e6e6" : "#4caf50",
+
+                          color: userId !== items.senderId ? "#000" : "#fff",
+                        }}
+                      >
+                        {items.content}
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 <div style={{ marginTop: "auto" }}>
                   <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
                     <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
@@ -250,6 +295,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
           </div>
         </div>
       </motion.button>
+      {status==="second"&& <UsedReview setStatus={setStatus} tradeId={tradeId} setTradeId={setTradeId} />}
     </>
   );
 }

@@ -36,9 +36,9 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
     // 경력에 따른 상 결정
     let imgsrc = "";
     if (yearsOfExperience >= 10) {
-        imgsrc = "./free-animated-icon-validation-14183494.gif";
+        imgsrc = "/free-animated-icon-validation-14183494.gif";
     } else if (yearsOfExperience >= 5) {
-        imgsrc = "./free-animated-icon-verified-7920876.gif";
+        imgsrc = "/free-animated-icon-verified-7920876.gif";
     }
     console.log(imgsrc)
     const scrollToBottom = () => {
