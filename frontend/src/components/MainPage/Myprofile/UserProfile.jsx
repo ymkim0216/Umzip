@@ -37,8 +37,10 @@ export default function UserProfile() {
     const [helpYouTotalPages, setHelpYouTotalPages] = useState(null)
     // 받은 리뷰
     const [reviewToMeList, setReviewToMeList] = useState(null)
+    const [reviewToMeTotalPages,setReviewToMeToTalPages] = useState(null)
     // 보낸 리뷰
     const [reviewToPeopleList, setReviewToPeopleList] = useState(null)
+    const [reviewToPeopleTotalPages,setReviewToPeopleToTalPages] = useState(null)
     // const [companyId,setCompanyId] = useState(null)
     // const [helpYouTotalPages, setHelpYouTotalPages] = useState(null)
     //    const myReceiveReview = async () => {
@@ -125,11 +127,12 @@ export default function UserProfile() {
                     memberId: id,
                     role: "USER",
                     offset: 0,
-                    limit: 5,
+                    limit: 3,
                 }
             );
             console.log(response)
             setReviewToPeopleList(response.data.reviews)
+            setReviewToPeopleToTalPages(response.data.board_cnt)
             // setReviewToMeList()
             return response
         }
@@ -147,7 +150,7 @@ export default function UserProfile() {
                     role: "USER",
                     offset: 0,
                     limit: 5,
-                    point: myprofile.point,
+                    // point: myprofile.point,
                 }
             );
             console.log(response)
@@ -204,7 +207,7 @@ export default function UserProfile() {
         axios_BuyList()
         axios_HelpMe()
         axios_HelpYou()
-        axios_ReviewToMe()
+        axios_ReviewToMe()  
         axios_ReviewToPeople()
     }, [id])
     const handleChangeButton = (event) => {
@@ -258,7 +261,7 @@ export default function UserProfile() {
     ]
     return <>
         <div className="d-flex col-8 gap-5 align-items-start p-3">
-            {myprofile && sellList && buyList && helpMeList && helpYouList && reviewToMeList && <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
+            {myprofile && sellList && buyList && helpMeList && helpYouList &&  <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
                 <div className="d-flex justify-content-center align-items-center gap-2">
                     <img className="rounded-pill shadow" style={{ width: "5rem", height: "5rem" }} src={myprofile.imageUrl} />
                     <div className="text-center">
@@ -388,8 +391,8 @@ export default function UserProfile() {
                 {/* {changeButton === "알림 내역" && <UsedView/> }
                 {changeButton === "포인트 사용이력" && <UsedView/> }       */}
 
-                {changeButton === "받은 후기" && <ReviewToMeView id={id} setReviewToMeList={setReviewToMeList} reviewToMeList={reviewToMeList} />}
-                {changeButton === "보낸 후기" && <ReviewToPeopleView id={id}  setReviewToPeopleList={setReviewToPeopleList} reviewToPeopleList={reviewToPeopleList} />}
+                {changeButton === "받은 후기" && <ReviewToMeView id={id} setReviewToMeList={setReviewToMeList} reviewToMeList={reviewToMeList} reviewToMeTotalPages={reviewToMeTotalPages} />}
+                {changeButton === "보낸 후기" && <ReviewToPeopleView id={id}  setReviewToPeopleList={setReviewToPeopleList} reviewToPeopleList={reviewToPeopleList} reviewToPeopleTotalPages={reviewToPeopleTotalPages} />}
             </div>
         </div>
     </>
