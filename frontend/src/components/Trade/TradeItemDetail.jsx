@@ -70,12 +70,12 @@ function TradeItemDetail({ trade }) {
   const chatContainerRef = useRef();
   const [userId,setUserId] = useState(null)
   const [talkHistory ,setTalkHistory] = useState([])
-
+  const [userinput, setUserInput] = useState("");
   const createTime = new Date(trade.createDt);
   const now = new Date();
   const diffTime = Math.abs(now - createTime);
   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-  const [userinput, setUserInput] = useState("");
+
   // Formatting the date part as YY-MM-DD
   const yy = createTime.getFullYear().toString();
   const mm = ('0' + (createTime.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed

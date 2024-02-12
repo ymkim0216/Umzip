@@ -23,7 +23,7 @@ function HelpDetail() {
     }
   };
 
-  console.log(boardId)
+  // console.log(boardId)
   useEffect(() => {
     setBoardId(boardId);
     fetchData();
@@ -116,7 +116,7 @@ function HelpDetail() {
                 ))}
               </Swiper>
             )}</div>
-            <div className="d-flex gap-3s" style={{ marginLeft: "auto" }}>
+            <div className="d-flex gap-3" style={{ marginLeft: "auto" }}>
               <span>조회수 : {content.readCnt}</span>
               <span>댓글 수 : {content.boardCommentCnt}</span>
             </div>

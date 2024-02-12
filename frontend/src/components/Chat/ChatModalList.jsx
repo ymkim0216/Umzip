@@ -262,7 +262,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
                 <div style={{ marginTop: "auto" }}>
                   <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
                     <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                    <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
+                    <button type="submit" className='btn btn-primary rounded-4'><img src='/Paper_Plane.png' /></button>
                   </form>
                 </div>
 
