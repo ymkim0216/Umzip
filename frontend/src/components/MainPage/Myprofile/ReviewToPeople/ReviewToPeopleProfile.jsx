@@ -32,7 +32,7 @@ export default function ReviewToPeopleProfile({ createDt, img, id, tag, name, ra
                 <div className="d-flex" style={{ width: "100%" }}>
                     <div className="d-flex flex-column align-items-center" style={{marginRight:"1rem"}} >
                         <img className="rounded-pill" style={{ width: "4rem", height: "4rem" }} src={img} />
-                        <p className="m-0 fw-bold">{name}</p>
+                        <p className="m-0 fw-bold" style={{fontSize:"0.75rem"}}>{name}</p>
                     </div>
                     <div style={{ width: "100%" }} className="d-flex flex-column  justify-content-around">
                         <div className="d-flex  justify-content-between" style={{ width: "100%" }}>

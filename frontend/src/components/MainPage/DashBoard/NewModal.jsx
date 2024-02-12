@@ -1,8 +1,8 @@
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { api } from "../../../services/api";
 // import { renewer } from "./Statusbutton";
-export default function NewModal({renewer, id, setRequestId, requestId }) {
+export default function NewModal({ renewer, id, setRequestId, requestId }) {
     const [result, setResult] = useState(null)
     const [point, setPoint] = useState(0)
     const [myProfile, setMyprofile] = useState(null)
@@ -10,6 +10,7 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
     const [endTime, setEndTIme] = useState(null)
     const [resTime, setResTIme] = useState(null)
     const [userInfo, setUserInfo] = useState({ name: '', profileImage: '' });
+    const [isLoading, setIsLoading] = useState(false)
     // const [Id, setId] = useState(null)
     useEffect(() => {
         const fetchData = async () => {
@@ -84,12 +85,14 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
         } else {
             service = "clean";
         }
-
+    
         // Display a confirmation dialog
         const userConfirmed = window.confirm("확정하시겠습니까?");
-
+    
         // Check user's response
         if (userConfirmed) {
+            setIsLoading(true);
+    
             try {
                 const response = await api.post(
                     `/${service}/user/reservation-complete`,
@@ -98,20 +101,30 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
                         "point": point,
                     }
                 );
+    
                 console.log(response);
-                setMyprofile(null)
-                setRequestId(null)
-                renewer()
+                setTimeout(() => {
+                    setIsLoading(false);
+                    setMyprofile(null);
+                setRequestId(null);
+                renewer();  
+                }, 5000);
+                
                 // You can add further actions after a successful API call if needed
+    
+                // setTimeout 내부에서 호출되도록 이동
+                
             } catch (error) {
                 console.error(error);
                 // Handle error if the API call fails
+                setIsLoading(false); // 에러 발생 시에도 isLoading을 false로 설정
             }
         } else {
             // Handle the case where the user did not confirm
             console.log("User did not confirm. Operation aborted.");
         }
-    }
+    };
+    
     const handleClose = (e) => {
         // 모달 외부의 영역을 클릭한 경우에만 닫기
         if (e.target === e.currentTarget) {
@@ -134,7 +147,8 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
         if (inputValue < 0) { setPoint(0) }
     };
     return <>
-        {myProfile && result && requestId && requestId.Id && requestId.mappingId && requestId.requestList && (
+    <AnimatePresence>
+        {!isLoading && myProfile && result && requestId && requestId.Id && requestId.mappingId && requestId.requestList && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleClose}
                 style={{
                     zIndex: "99",
@@ -151,7 +165,7 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
                 <div style={{
                     position: 'relative',
                     width: '40%',
-                    height: "50%",
+                    height: "70%",
                     overflow: "auto",
                     backgroundColor: 'white', // 내용의 배경색
                     padding: '3rem',
@@ -222,6 +236,40 @@ export default function NewModal({renewer, id, setRequestId, requestId }) {
                 </div>
             </motion.div>
         )}
+        </AnimatePresence>
+        {isLoading && <AnimatePresence>
+            {(
+                isLoading && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    style={{
+                        zIndex: "99",
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색 및 투명도 조절
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <div className="d-flex align-items-center  justify-content-center gap-5" style={{
+                        position: 'relative',
+                        width: '40%',
+                        height: "40%",
+                        backgroundColor: 'white', // 내용의 배경색
+                        padding: '20px',
+                        borderRadius: '8px', // 내용의 모서리 둥글게
+                    }}>
+                        <div className="d-flex justify-content-center align-items-center gap-5 bg-white " >
+                            <img style={{ width: "20rem", height: "20rem" }} src="/free-animated-icon-verified-7920939.gif" />
+                            <h3 style={{ color: "black" }}>예약 진행중...</h3>
+                            {/* <Wave /> */}
+                        </div>
+         
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>}
     </>
 
 }

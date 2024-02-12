@@ -37,10 +37,7 @@ export default function UsedView({id, setSellList, sellList, sellTotalPages }) {
   
     
     const [currentPage, setCurrentPage] = useState(1);
-    const [currentItems, setCurrentItems] = useState(sellList)
-    // console.log(sellList)
-    const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
-    const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+  
     // const currentItems = sellList.slice(indexOfFirstItem, indexOfLastItem);
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber)

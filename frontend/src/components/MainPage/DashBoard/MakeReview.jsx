@@ -17,6 +17,7 @@ export default function MakeReview({ reviewId, setReviewId }) {
     }, [])
     const [option, setOption] = useState({})
     const [rating, setRating] = useState("")
+    const [isloading, setIsLoading] = useState(false)
     const [userinput, setuserinput] = useState("")
     const tagDetail = async () => {
         let service = ""
@@ -41,17 +42,19 @@ export default function MakeReview({ reviewId, setReviewId }) {
         console.log(reviewId)
         const tag = Object.keys(option).map(Number);
         console.log(tag)
+        // setIsLoading(true)
         try {
             const response = await api.post(`/reviews/insert`,
-            {
-                "to": reviewId.memberId,
-                "role":service,
-                "score" :rating,
-                "tag" : tag,
-                "comment" :userinput,
-                "point":50
-            }
+                {
+                    "to": reviewId.memberId,
+                    "role": service,
+                    "score": rating,
+                    "tag": tag,
+                    "comment": userinput,
+                    "point": 50
+                }
             );
+            
             console.log(response.data)
             // setTags(response.data)
             return response.data
@@ -94,9 +97,15 @@ export default function MakeReview({ reviewId, setReviewId }) {
         if (step === "first") {
             setStep("second")
         }
-        else if(step ==="second"){
+        else if (step === "second") {
+            setIsLoading(true)
             createReview()
-            setReviewId(null)
+            setTimeout(() => {
+                setIsLoading(false);
+                setReviewId(null)
+                setTags(null)
+            }, 5000);
+            
         }
     }
     const goToBeforeForm = () => {
@@ -105,7 +114,7 @@ export default function MakeReview({ reviewId, setReviewId }) {
         }
     }
     return <>
-        {reviewId && tags && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleClose}
+        {reviewId && tags && !isloading && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleClose}
             style={{
                 zIndex: "99",
                 position: 'fixed',
@@ -202,5 +211,38 @@ export default function MakeReview({ reviewId, setReviewId }) {
                 </AnimatePresence>
             </div>
         </motion.div>}
+        {isloading && <AnimatePresence>
+            {(
+                isloading && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    style={{
+                        zIndex: "99",
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)', // 배경색 및 투명도 조절
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <div className="d-flex align-items-center  justify-content-center gap-5" style={{
+                        position: 'relative',
+                        width: '40%',
+                        height: "70%",
+                        backgroundColor: 'white', // 내용의 배경색
+                        padding: '20px',
+                        borderRadius: '8px', // 내용의 모서리 둥글게
+                    }}>
+                        <div className="d-flex justify-content-center align-items-center gap-5 bg-white " >
+                            <img style={{ width: "20rem", height: "20rem" }} src="/free-animated-icon-verified-7920939.gif" />
+                            <h3 style={{ color: "black" }}>후기 작성중...</h3>
+                            {/* <Wave /> */}
+                        </div>
+
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>}
     </>
 }
