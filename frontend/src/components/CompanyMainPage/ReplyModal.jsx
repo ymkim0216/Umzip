@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import useReplyStore from '../../store/replyStore'
 import companyDeliveryReservation from '../../store/companyDeliveryReservation'
+import companyCleanReservation from '../../store/companyCleanReservation'
 import { useState } from 'react';
 import style from './ReplyModal.module.css'
 
 function ReplyModal({ role, onClose, mappingId, price }) {
     const submitReplyStore = useReplyStore((state) => state.submitReplyStore);
     const [operPrice, setPrice] = useState(price)
-    // const { data } = companyDeliveryReservation(); => 실시간 데이터 반영 확인해보기
+    const { fetchDataDelivery } = companyDeliveryReservation();
+    const { fetchDataClean } = companyCleanReservation();
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -15,7 +17,9 @@ function ReplyModal({ role, onClose, mappingId, price }) {
       const detail = event.target.message.value;
 
       await submitReplyStore(role, mappingId, price, detail); // Zustand store의 함수 호출
-      // data => 실시간 데이터 반영 확인해보기
+      // 화면 즉각 반영을 위한 코드
+      fetchDataDelivery()
+      fetchDataClean()
       onClose(); // 모달 닫기
     };
 
