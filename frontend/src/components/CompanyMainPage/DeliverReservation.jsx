@@ -7,8 +7,10 @@ import ReplyTo from './ReplyTo';
 
 function DeliverReservation() {
   const { fetchDataDelivery, data } = companyDeliveryReservation();
-  const [itemsToShow, setItemsToShow] = useState(2); // 한 번에 보여줄 아이템의 수
+  const [itemsToShow, setItemsToShow] = useState(4); // 한 번에 보여줄 아이템의 수
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
+  const [filterStatus, setFilterStatus] = useState(null); // 필터링할 상태 코드
+  const reservationList = data?.result || [];
   console.log(data)
 
   useEffect(() => {
@@ -16,14 +18,35 @@ function DeliverReservation() {
   }, [ fetchDataDelivery ]);
 
   // console.log(data.result);
-  const reservationList = data?.result || [];
 
   useEffect(() => {
-    setVisibleItems(data?.result ? data.result.slice(0, itemsToShow) : []);
-  }, [data, itemsToShow]);
+    let filteredData = data?.result || [];
+    if (filterStatus === 1) {
+      filteredData = filteredData.filter(item => item.codeSmallId % 100 === 1);
+    }
+    if (filterStatus === 2) {
+      filteredData = filteredData.filter(item => item.codeSmallId % 100 === 2);
+    }
+    if (filterStatus === 3) { // 예약 확정 상태일 때 시간순 정렬
+      filteredData = filteredData.filter(item => item.codeSmallId % 100 === 3);
+      filteredData.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+    }
+    if (filterStatus === (4||5)) {
+      filteredData = filteredData.filter(item => item.codeSmallId % 100 === (4||5));
+    }
+    if (filterStatus === 6) {
+      filteredData = filteredData.filter(item => item.codeSmallId % 100 === 6);
+    }
+    setVisibleItems(filteredData.slice(0, itemsToShow));
+  }, [data, itemsToShow, filterStatus]);
+
+  const handleFilterChange = (status) => {
+    setFilterStatus(status);
+    setItemsToShow(4); // 필터 변경 시 보여주는 아이템 수를 초기화
+  };
 
   const handleShowMore = () => {
-    setItemsToShow(itemsToShow + 2); // 더 보기 버튼 클릭 시 3개 아이템 추가
+    setItemsToShow(itemsToShow + 3); // 더 보기 버튼 클릭 시 3개 아이템 추가
   };
 
   return (
@@ -39,7 +62,8 @@ function DeliverReservation() {
           }}
         >
           <div className="bg-white shadow rounded-3 p-2  justify-content-center align-items-center ">
-            <Status />
+            <Status
+            handleFilterChange = {handleFilterChange} />
           </div>
         </div>
         <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 150px)' }}>
