@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import useTradeDetailsStore from '../../store/tradeDetailStore';
 
 import TradesList from '../../components/Trade/TradesList';
 import SearchBar from '../../components/Trade/SearchBar';
@@ -20,6 +21,7 @@ function Trade() {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const tradeDetailsStore = useTradeDetailsStore();
 
   const getTrades = async () => {
     setLoading(true);
@@ -33,7 +35,7 @@ function Trade() {
       // Check if there are more trades to load
       setHasMore(newTrades.length === pageSize);
     } catch (error) {
-      console.error("Failed to fetch trades", error);
+      console.error('Failed to fetch trades', error);
     } finally {
       setLoading(false);
     }
@@ -41,11 +43,7 @@ function Trade() {
 
   useEffect(() => {
     getTrades(); // Fetch initial trades or trades after searchTerm change
-  }, [searchTerm]); // Fetch trades when searchTerm changes
-
-  useEffect(() => {
-    if (page > 1) getTrades(); // Fetch more trades when page changes, but not on the initial load
-  }, [page]);
+  }, [searchTerm, page]); // Fetch trades when searchTerm changes
 
   const handleLoadMore = () => {
     if (!loading && hasMore) {
@@ -71,8 +69,15 @@ function Trade() {
             <TradesList trades={trades} />
             {hasMore && (
               <div className={classes.more}>
-                <button onClick={handleLoadMore} className={classes.moreBtn} disabled={loading}>
-                  <FontAwesomeIcon icon={faCirclePlus} style={{ paddingRight: '10px' }} />
+                <button
+                  onClick={handleLoadMore}
+                  className={classes.moreBtn}
+                  disabled={loading}
+                >
+                  <FontAwesomeIcon
+                    icon={faCirclePlus}
+                    style={{ paddingRight: '10px' }}
+                  />
                   더보기
                 </button>
               </div>
@@ -82,7 +87,10 @@ function Trade() {
           <p>검색결과가 없습니다.</p>
         )}
         <p>
-          <button onClick={() => navigate('/tradewriting')} className={classes.writing}>
+          <button
+            onClick={() => navigate('/tradewriting')}
+            className={classes.writing}
+          >
             글 쓰기
           </button>
         </p>
