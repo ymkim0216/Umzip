@@ -10,7 +10,7 @@ import UsedReview from '../MainPage/DashBoard/UsedReview';
 
 
 
-export default function ChatModalList({ name, chat, date, img, chatroomId, receiverId, unReadCount }) {
+export default function ChatModalList({ setChatList, name, chat, date, img, chatroomId, receiverId, unReadCount }) {
   const [openModal, setOpenModal] = useState(false);
   const [talkHistory, setTalkHistory] = useState([]);
   const chatContainerRef = useRef();
@@ -19,8 +19,8 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
   const [userId, setUserId] = useState(null)
   const [tradeChat, setTradeChat] = useState(null)
   const navigate = useNavigate()
-  const [status,setStatus] = useState("first")
-  const [tradeId,setTradeId] = useState(null)
+  const [status, setStatus] = useState("first")
+  const [tradeId, setTradeId] = useState(null)
   const scrollToBottom = () => {
     // 스크롤 위치를 항상 맨 아래로 조절
     if (chatContainerRef.current) {
@@ -140,6 +140,45 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
       console.log("연결X")
     }
   };
+  const LeaveChat = () => {
+    const { token } = useAuthStore.getState();
+  
+    const shouldLeave = window.confirm('정말로 채팅을 나가시겠습니까?');
+  
+    if (shouldLeave) {
+      if (stompClientRef.current.active) {
+        console.log('채팅창 나가기');
+        stompClientRef.current.publish({
+          destination: `/app/chat/${chatroomId}`,
+          body: JSON.stringify({
+            content: "asdf",
+            type: 'LEAVE'
+          }),
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setuserinput(""); // 입력 필드를 비웁니다.
+        stopSocketCommunication();
+        setOpenModal(false);
+        setTalkHistory([]);
+        Chat_Call()
+      } else {
+        console.error('못나갔음 ;;');
+      }
+    }
+  };
+  const Chat_Call = async () => {
+
+    try {
+      const response = await api.get('/chat/rooms', {
+
+      });
+      setChatList(response.data.result)
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const sendMessage = () => {
     // userinput을 사용하도록 수정
     const { token } = useAuthStore.getState();
@@ -156,6 +195,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
         }
       });
       setuserinput(""); // 입력 필드를 비웁니다.
+
     } else {
       console.error('Message is empty or stomp client is not connected.');
     }
@@ -178,17 +218,18 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
       console.error(error);
     }
   };
-  const handleBuy = async(e)=>{
+  const handleBuy = async (e) => {
     e.stopPropagation()
     await confirmBuy()
-    stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("") 
+    stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("")
+
     setStatus("second")
     setOpenModal(false)
   }
   return (
     <>
       <AnimatePresence>
-        {openModal && status==="first" &&(
+        {openModal && status === "first" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => { stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("") }}
             style={{
               zIndex: "99",
@@ -262,7 +303,8 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
                 <div style={{ marginTop: "auto" }}>
                   <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
                     <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                    <button type="submit" className='btn btn-primary rounded-4'><img src='/Paper_Plane.png' /></button>
+                    <button type="submit" className='btn btn-primary rounded-4'><img style={{width:"1.5rem",height:"1.5rem"}} src='/Paper_Plane.png' /></button>
+                    <button onClick={LeaveChat} className='btn btn-danger rounded-4'><img style={{width:"1.5rem",height:"1.5rem"}}  src='/message.png' /></button>
                   </form>
                 </div>
 
@@ -295,7 +337,7 @@ export default function ChatModalList({ name, chat, date, img, chatroomId, recei
           </div>
         </div>
       </motion.button>
-      {status==="second"&& <UsedReview setStatus={setStatus} tradeId={tradeId} setTradeId={setTradeId} />}
+      {status === "second" && <UsedReview setStatus={setStatus} tradeId={tradeId} setTradeId={setTradeId} />}
     </>
   );
 }

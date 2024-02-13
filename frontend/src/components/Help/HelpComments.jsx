@@ -2,7 +2,7 @@ import { useEffect,useState } from 'react';
 import useStore from '../../store/helpDetailData';
 import ListGroup from 'react-bootstrap/ListGroup';
 import style from './HelpComments.module.css';
-
+import {motion} from "framer-motion"
 function HelpComments({toggleModal}) {
   const { loadComment, comments, loading, error, sendPostRequest, commentChoic } = useStore();
   const [commentText, setCommentText] = useState(''); // 댓글 텍스트 상태
@@ -53,12 +53,13 @@ function HelpComments({toggleModal}) {
   const handleClick=(id)=>{
     toggleModal(id)
   }
-  const handleAdopt = async (writerId, writerName) => {
+  const handleAdopt = async (commentId, writerName) => {
     const confirmAdop = window.confirm(`${writerName}님을 채택할까요?`);
+    console.log(commentId)
     if (confirmAdop) {
     try {
       // 채택 요청을 보냅니다.
-      await commentChoic(writerId);
+      await commentChoic(commentId);
       // 성공적으로 처리되면 댓글 리스트를 새로고침합니다.
       await loadComment();
     } catch (error) {
@@ -90,18 +91,19 @@ function HelpComments({toggleModal}) {
   return (
     <>
     {/* 댓글 입력 폼 , 조건 충족시 나타남 */}
-    <div style={{width:"100%"}} className='d-flex justify-content-center'>
-      <div style={{width:"60%"}}>
-    { content.sameMember === false && content.adopted === false && <div className="col-12">
-      <form className='d-flex' onSubmit={handleCommentSubmit}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{width:"100%"}} className='d-flex justify-content-center'>
+      <div  className={style.helps}>
+    { content.sameMember === false && content.adopted === false && <div className="col-12  mb-3">
+      <form className='d-flex justify-content-center gap-4' style={{width:"100%"}} onSubmit={handleCommentSubmit}>
         <input
           type="text"
           value={commentText}
-          onChange={handleCommentChange}
-          className={style.commentInput}
+          onChange={handleCommentChange}z
+          style={{width:"80%"}}
+          className='p-2 rounded-3'
           placeholder="댓글을 입력하세요"
         />
-        <button onClick={handleCommentSubmit} className={style.commentSubmit}>
+        <button  style={{width:"10%"}} className="btn btn-primary">
           댓글 달기
         </button>
         </form>
@@ -109,9 +111,10 @@ function HelpComments({toggleModal}) {
 
       {/* 댓글 리스트 */}
       <ListGroup>
-        {content.commentList.map((item) => (
-          <ListGroup.Item className={style.listGrop} key={item.id}>
-              <div className="d-flex gap-3">
+        <div className='d-flex flex-column gap-3'>
+        {content.commentList.map((item ,index) => (
+          <ListGroup.Item className='rounded-4' key={index}>
+              <div className="d-flex gap-3 p-2 ">
                 <div className='d-flex flex-column'>
               <img src={item.writerImageUrl} alt="Writer" className={style.writerImage} />
                 <span className={style.headPoint}>{item.writerName}</span>
@@ -127,17 +130,20 @@ function HelpComments({toggleModal}) {
                   <button onClick={()=>handleClick(item.writerId)}>
                     채팅하기
                   </button>
-                  <button onClick={() => handleAdopt(item.writerId, item.writerName)} className={style.chooseButton}>
+                  <button onClick={() => handleAdopt(item.commentId ,item.writerName)} className={style.chooseButton}>
                     채택하기
                   </button>
                 </div>
               )}
+              
               </div>
           </ListGroup.Item>
         ))}
+        </div>
         </ListGroup>
+        {content.commentList.length === 0  && <div className='d-flex justify-content-center align-items-center' style={{width:"100%" }}><img style={{width:"3rem" ,height:"3rem"}} src='/free-animated-icon-note-6172546.gif'/><h2 className='m-0'>아직 댓글이 없습니다!</h2></div>}
         </div>
-        </div>
+        </motion.div>
     </>
   );
 }

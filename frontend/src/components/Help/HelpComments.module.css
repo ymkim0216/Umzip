@@ -4,3 +4,13 @@
   border-radius: 20px; /* 이미지를 원형으로 만들기 */
  /* 텍스트와의 간격 */
 }
+.helps {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding: 4rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 50px;
+}
