@@ -301,7 +301,7 @@ const SignUpForm = () => {
       )}
       <div
         className="container"
-        style={{ marginTop: '100px', marginBottom: '100px' }}
+        style={{ marginTop: '100px', marginBottom: '100px', backgroundColor: 'white'}}
       >
         <div className="row justify-content-center">
           <div className="col-md-10">
@@ -312,15 +312,17 @@ const SignUpForm = () => {
             >
               <div style={{ maxWidth: '90%', margin: 'auto' }}>
                 <div style={{ textAlign: 'center' }}>
+                  <img src='/signup-human.gif' style={{width:'100px'}}></img>
                   <h2 className="mb-4" style={{ fontWeight: '800', padding: '15px' }}>회원가입</h2>
                   <div style={{ marginBottom: '1rem' }}>
                     <button
                       type="button"
                       className={`btn ${
                         selectedButton === 'normal'
-                          ? 'btn-primary text-white'
-                          : 'btn-outline-primary text-dark'
+                          ? `btn-primary text-white ${classes.signUpClickColor}`
+                          : `btn-outline-primary ${classes.signUpDefaultColor}`
                       } rounded-pill py-3 mx-2`}
+                      
                       onClick={() => handleButtonClick('normal')}
                     >
                       일반 가입
@@ -329,8 +331,8 @@ const SignUpForm = () => {
                       type="button"
                       className={`btn ${
                         selectedButton === 'company'
-                          ? 'btn-primary text-white'
-                          : 'btn-outline-primary text-dark'
+                        ? `btn-primary text-white ${classes.signUpClickColor}`
+                        : `btn-outline-primary ${classes.signUpDefaultColor}`
                       } rounded-pill py-3 mx-2`}
                       onClick={() => handleButtonClick('company')}
                     >
@@ -390,7 +392,8 @@ const SignUpForm = () => {
                       onClick={() => checkEmail(email)}
                       style={{
                         marginLeft: '-1px',
-                        backgroundColor: PRIMARY_COLOR,
+                        backgroundColor: '#40A2D8',
+                        border: '#40A2D8',
                       }}
                     >
                       중복 확인
@@ -434,7 +437,8 @@ const SignUpForm = () => {
                       onClick={() => sendPhoneCode(phone)}
                       style={{
                         marginLeft: '-1px',
-                        backgroundColor: PRIMARY_COLOR,
+                        backgroundColor: '#40A2D8',
+                        border: '#40A2D8',
                       }}
                     >
                       코드 전송
@@ -471,7 +475,8 @@ const SignUpForm = () => {
                       onClick={() => verifyPhoneCode(phone, code)}
                       style={{
                         marginLeft: '-1px',
-                        backgroundColor: PRIMARY_COLOR,
+                        backgroundColor: '#40A2D8',
+                        border: '#40A2D8',
                       }}
                     >
                       코드 확인
@@ -549,8 +554,8 @@ const SignUpForm = () => {
                       type="button"
                       className={`btn ${
                         selectedService === 'clean'
-                          ? 'btn-primary text-white'
-                          : 'btn-outline-primary text-dark'
+                        ? `btn-primary text-white ${classes.signUpClickColor}`
+                        : `btn-outline-primary ${classes.signUpDefaultColor}`
                       } rounded-pill py-3 mx-2`}
                       style={{ minWidth: '120px' }}
                       onClick={() => handleServiceClick('clean')}
@@ -561,8 +566,8 @@ const SignUpForm = () => {
                       type="button"
                       className={`btn ${
                         selectedService === 'delivery'
-                          ? 'btn-primary text-white'
-                          : 'btn-outline-primary text-dark'
+                        ? `btn-primary text-white ${classes.signUpClickColor}`
+                        : `btn-outline-primary ${classes.signUpDefaultColor}`
                       } rounded-pill py-3 mx-2`}
                       style={{ minWidth: '120px' }}
                       onClick={() => handleServiceClick('delivery')}
@@ -587,7 +592,8 @@ const SignUpForm = () => {
                     width: '100%',
                     marginTop: '5px',
                     marginBottom: '5px',
-                    backgroundColor: '#4A3AFF',
+                    backgroundColor: '#40A2D8',
+                    border: '#40A2D8',
                   }}
                 >
                   회원가입

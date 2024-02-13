@@ -162,7 +162,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
       )}
       <div
         className="container rounded p-4 border shadow-sm mx-auto"
-        style={{ marginTop: '50px', marginBottom: '50px' }}
+        style={{ marginTop: '50px', marginBottom: '50px'}}
       >
         <div className="row justify-content-center">
           <div className="col-md-12">
@@ -290,7 +290,8 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                   onClick={handleBusinessNumberVerification}
                   style={{
                     marginLeft: '-1px',
-                    backgroundColor: PRIMARY_COLOR,
+                    backgroundColor: '#40A2D8',
+                    border: '#40A2D8'
                   }}
                 >
                   인증
