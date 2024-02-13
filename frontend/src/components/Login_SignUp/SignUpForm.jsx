@@ -301,14 +301,14 @@ const SignUpForm = () => {
       )}
       <div
         className="container"
-        style={{ marginTop: '100px', marginBottom: '100px', backgroundColor: 'white'}}
+        style={{ paddingTop: '50px', paddingBottom: '100px'}}
       >
         <div className="row justify-content-center">
           <div className="col-md-10">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="rounded p-4 border shadow-sm mx-auto"
-              style={{ width: '100%', maxWidth: '70%' }}
+              style={{ width: '100%', maxWidth: '70%' , backgroundColor: 'white'}}
             >
               <div style={{ maxWidth: '90%', margin: 'auto' }}>
                 <div style={{ textAlign: 'center' }}>
