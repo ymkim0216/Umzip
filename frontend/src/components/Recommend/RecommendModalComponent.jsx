@@ -9,16 +9,16 @@ import { motion } from "framer-motion"
 
 export default function RecommendModalComponent({ companyId }) {
     // const [serviceInfo, setServiceInfo] = useState({ imageUrl: "./randomimg.png", name: "qwer", averageScore: 3.5, mostTag: [], introduction: "Asdf", reviewList: [], experience: "2018-02-08T12:34:56" })
-    const [serviceInfo, setServiceInfo] =useState(null)
-    const [imgsrc,setImgsrc] = useState(null)
+    const [serviceInfo, setServiceInfo] = useState(null)
+    const [imgsrc, setImgsrc] = useState(null)
 
     useEffect(() => {
-        const fetchData = async()=>{
+        const fetchData = async () => {
             const res = await axios_detail()
             const experienceDate = new Date(res.experience);
             // 현재 날짜를 가져오기
             const currentDate = new Date();
-        
+
             // 경과 년수 계산
             const yearsOfExperience = currentDate.getFullYear() - experienceDate.getFullYear();
             // 경력에 따른 상 결정
@@ -26,9 +26,9 @@ export default function RecommendModalComponent({ companyId }) {
                 setImgsrc("./free-animated-icon-validation-14183494.gif");
             } else if (yearsOfExperience >= 5) {
                 setImgsrc("./free-animated-icon-verified-7920876.gif");
-                
+
             }
-            
+
         }
         fetchData()
     }, [])
@@ -41,13 +41,13 @@ export default function RecommendModalComponent({ companyId }) {
                 }
             });
             console.log(response.data.result)
-            setServiceInfo(response.data.result) 
+            setServiceInfo(response.data.result)
             return response.data.result
         } catch (error) {
             console.error(error);
         }
     };
-  
+
 
     return (
         <>
@@ -60,10 +60,16 @@ export default function RecommendModalComponent({ companyId }) {
                         <StarRating rating={serviceInfo.averageScore} />
                         {serviceInfo.averageScore}
                     </div>
-                    <div className="d-flex gap-3" style={{width:'30rem'}}>
-                        {serviceInfo.mostTag.map(tag => <div className="border border-primary rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
-                            <p className="m-0" style={{fontSize:"0.75rem"}}>{tag}</p>
-                        </div>)}
+                    <div className="d-flex gap-3" style={{ width: '30rem' }}>
+                        {serviceInfo.mostTag.map(tag => {
+                            tag.tagType === 1 ? <div className="border border-primary rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
+                                <p className="m-0" style={{ fontSize: "0.75rem" }}>{tag}</p>
+                            </div> : <div className="border border-danger rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
+                            <p className="m-0" style={{ fontSize: "0.75rem" }}>{tag}</p>
+                        </div>
+                        }
+
+                        )}
 
                     </div>
                 </div>

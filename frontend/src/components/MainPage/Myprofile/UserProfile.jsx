@@ -270,10 +270,10 @@ export default function UserProfile() {
 
                     </div>
                 </div>
-                <div className="d-flex gap-2">
+                {/* <div className="d-flex gap-2">
                     <p className="text-muted m-0" style={{ fontSize: "0.75rem" }}>회원탈퇴</p>
                     <p className="text-muted m-0" style={{ fontSize: "0.75rem" }}>정보수정</p>
-                </div>
+                </div> */}
                 <div className="d-flex flex-column" style={{ width: "80%" }}>
                     <div className="d-flex justify-content-between">
                         <p>이메일 : </p>
