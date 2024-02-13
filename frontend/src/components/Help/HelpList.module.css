@@ -29,6 +29,7 @@
 
 /* 게시글 상단 */
 .head {
+  padding: 1rem;
   display: flex;
   background-color: #f0f0f0; /* 배경색 설정 */
   border-bottom: 2px solid #d0d0d0; /* 하단 경계선 설정 */
@@ -65,7 +66,7 @@
 .head span, .list-group-item span {
   text-align: center; /* 텍스트 중앙 정렬 */
   padding: 0.5rem; /* 상하 좌우 여백 설정 */
-  border-right: 1px solid #d0d0d0; /* 항목 사이의 경계선 설정 */
+  /* border-right: 1px solid #d0d0d0; 항목 사이의 경계선 설정 */
 }
 
 /* 마지막 항목의 우측 경계선 제거 */
@@ -96,7 +97,7 @@
 .content span{
   text-align: center; /* 텍스트 중앙 정렬 */
   padding: 0.5rem ; /* 상하 좌우 여백 설정 */
-  border-right: 1px solid #d0d0d0; /* 항목 사이의 경계선 설정 */
+  border-right: 1px solid #d0d0d0; 
 }
 
 /* 페이지네이션 */

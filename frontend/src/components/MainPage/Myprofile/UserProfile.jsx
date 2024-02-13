@@ -21,7 +21,7 @@ export default function UserProfile() {
     const [offset, setOffSet] = useState(0)
     const [myprofile, setMyprofile] = useState("")
     const { id } = useParams();
-    const [ openRecommendModal,setopenRecommendModal] = useState(false)
+    const [openRecommendModal, setopenRecommendModal] = useState(false)
     //판매
     const [sellList, setSellList] = useState(null)
     const [sellTotalPages, setSellTotalPages] = useState(null)
@@ -37,10 +37,10 @@ export default function UserProfile() {
     const [helpYouTotalPages, setHelpYouTotalPages] = useState(null)
     // 받은 리뷰
     const [reviewToMeList, setReviewToMeList] = useState(null)
-    const [reviewToMeTotalPages,setReviewToMeToTalPages] = useState(null)
+    const [reviewToMeTotalPages, setReviewToMeToTalPages] = useState(null)
     // 보낸 리뷰
     const [reviewToPeopleList, setReviewToPeopleList] = useState(null)
-    const [reviewToPeopleTotalPages,setReviewToPeopleToTalPages] = useState(null)
+    const [reviewToPeopleTotalPages, setReviewToPeopleToTalPages] = useState(null)
     // const [companyId,setCompanyId] = useState(null)
     // const [helpYouTotalPages, setHelpYouTotalPages] = useState(null)
     //    const myReceiveReview = async () => {
@@ -149,7 +149,7 @@ export default function UserProfile() {
                     memberId: id,
                     role: "USER",
                     offset: 0,
-                    limit: 5,
+                    limit: 3,
                     // point: myprofile.point,
                 }
             );
@@ -157,6 +157,7 @@ export default function UserProfile() {
             // setHelpMeList(response.data.result.content)
             // setHelpMeTotalPages(response.data.result.totalElements)
             setReviewToMeList(response.data.reviews)
+            setReviewToMeToTalPages(response.data.board_cnt)
             return response
         }
         catch (e) {
@@ -202,14 +203,17 @@ export default function UserProfile() {
         }
     }
     useEffect(() => {
+        renew()
+    }, [id])
+    const renew = ()=>{
         axios_myprofile()
         axios_SellList()
         axios_BuyList()
         axios_HelpMe()
         axios_HelpYou()
-        axios_ReviewToMe()  
+        axios_ReviewToMe()
         axios_ReviewToPeople()
-    }, [id])
+    }
     const handleChangeButton = (event) => {
         setChangeButton(event.target.innerText)
         setShowUsedDropDown(false);
@@ -254,14 +258,14 @@ export default function UserProfile() {
         setShowshowHelpDropDown(false);
         setshowHistoryDropDown(false);
         setshowreviewDropDown(!showreviewDropDown);
-        
+
     };
-    const closeModal = ()=>[
+    const closeModal = () => [
         setopenRecommendModal(false)
     ]
     return <>
         <div className="d-flex col-8 gap-5 align-items-start p-3">
-            {myprofile && sellList && buyList && helpMeList && helpYouList &&  <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
+            {myprofile && sellList && buyList && helpMeList && helpYouList && <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
                 <div className="d-flex justify-content-center align-items-center gap-2">
                     <img className="rounded-pill shadow" style={{ width: "5rem", height: "5rem" }} src={myprofile.imageUrl} />
                     <div className="text-center">
@@ -291,11 +295,18 @@ export default function UserProfile() {
                 </div>
 
                 <div className="d-flex justify-content-center gap-3" style={{ width: "100%" }}>
-                    {myprofile.tagList.map((items) => (
-                        <div key={items} className="d-flex align-items-center justify-content-center border border-primary rounded-5 bg-white col-3 text-center shadow" style={{ height: "2rem" }}>
-                            <p className="m-0" style={{ fontSize: "0.65rem" }}>{items}</p>
-                        </div>
+                    {myprofile.tagList.map((items, index) => (
+                        items.tagType === 1 ? (
+                            <div key={index} className="d-flex align-items-center justify-content-center border border-primary rounded-5 bg-white col-3 text-center shadow" style={{ height: "2rem" }}>
+                                <p className="m-0" style={{ fontSize: "0.65rem" }}>{items.tagName}</p>
+                            </div>
+                        ) : (
+                            <div key={index} className="d-flex align-items-center justify-content-center border border-danger rounded-5 bg-white col-3 text-center shadow" style={{ height: "2rem" }}>
+                                <p className="m-0" style={{ fontSize: "0.65rem" }}>{items.tagName}</p>
+                            </div>
+                        )
                     ))}
+
                 </div>
 
                 <h4 className="m-0">나의 평점 : {myprofile.avgScore}</h4>
@@ -391,8 +402,8 @@ export default function UserProfile() {
                 {/* {changeButton === "알림 내역" && <UsedView/> }
                 {changeButton === "포인트 사용이력" && <UsedView/> }       */}
 
-                {changeButton === "받은 후기" && <ReviewToMeView id={id} setReviewToMeList={setReviewToMeList} reviewToMeList={reviewToMeList} reviewToMeTotalPages={reviewToMeTotalPages} />}
-                {changeButton === "보낸 후기" && <ReviewToPeopleView id={id}  setReviewToPeopleList={setReviewToPeopleList} reviewToPeopleList={reviewToPeopleList} reviewToPeopleTotalPages={reviewToPeopleTotalPages} />}
+                {changeButton === "받은 후기" && <ReviewToMeView id={id} renew={renew}  setReviewToMeList={setReviewToMeList} reviewToMeList={reviewToMeList} reviewToMeTotalPages={reviewToMeTotalPages} />}
+                {changeButton === "보낸 후기" && <ReviewToPeopleView id={id} setReviewToPeopleList={setReviewToPeopleList} reviewToPeopleList={reviewToPeopleList} reviewToPeopleTotalPages={reviewToPeopleTotalPages} />}
             </div>
         </div>
     </>

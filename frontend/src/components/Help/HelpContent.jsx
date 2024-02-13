@@ -46,8 +46,24 @@ function HelpDetail() {
     return <div>No data found.</div>;
   }
   console.log(content)
-
-  const newDate = new Date(content.boardCreateDt).toISOString().split('T')[0];
+  function formatDate(dateTimeString) {
+    const currentDate = new Date();
+    const postDate = new Date(dateTimeString);
+  
+    // 시간 차이 계산 (밀리초로 변환)
+    const timeDifference = currentDate - postDate;
+  
+    // 24시간 이내라면 "시간 전"으로 표시
+    if (timeDifference < 24 * 60 * 60 * 1000) {
+      const hoursDifference = Math.floor(timeDifference / (60 * 60 * 1000));
+      return `${hoursDifference}시간 전`;
+    } else {
+      // 24시간 이상이면 날짜 형식으로 표시
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return postDate.toLocaleDateString(undefined, options);
+    }
+  }
+  
   // console.log(newDate)
   const handleClick = ()=>{
     navigate(`/myprofile/${content.writerId}`)
@@ -64,7 +80,7 @@ function HelpDetail() {
                 {content.codeSmallId === 403 && <span style={{ fontSize: "2rem", color: "#0077CC", fontWeight: "bold" }} >도와줬어요</span>}
                 <h4 className="m-0">제목: {content.boardTitle}</h4>
               </div>
-              {!content.sameMember && <span><button onClick={handlePointGive}>도움 받았어요!</button> 포인트: {content.rewardPoint}P</span> }
+              {!content.sameMember && <span><button className="btn btn-success " onClick={handlePointGive}>도움 받았어요!</button> 포인트: {content.rewardPoint}P</span> }
             </div>
             <div>
               <div className="d-flex align-items-center justify-content-between">
@@ -75,7 +91,7 @@ function HelpDetail() {
                     <span className="m-0">{content.writerName}</span>
                   </div>
                 </div>
-                <span className="m-0" >작성 시간 {newDate}</span>
+                <span className="m-0" >{formatDate(content.boardCreateDt)}</span>
               </div>
 
             </div>
@@ -94,8 +110,8 @@ function HelpDetail() {
                 style={{
                   width: '60%', /* 부모 요소의 전체 너비를 차지하도록 설정 */
                   maxWidth: '500px', /* 최대 너비 제한 */
-                  height: '500px', /* 고정 높이 설정 */
-                  margin: 'auto', /* 가운데 정렬 */
+                  // height: '500px', /* 고정 높이 설정 */
+                  // margin: 'auto', /* 가운데 정렬 */
                 }}
               >
                 {content.imagePathList.map((img, index) => (
@@ -105,7 +121,7 @@ function HelpDetail() {
                       alt={`상세 이미지 image ${index}`}
                       style={{
                         width: '10rem', // 너비를 700px로 설정
-                        height: '10rempx', // 높이를 300px로 설정
+                        height: '10rem', // 높이를 300px로 설정
                         margin: '0 auto', // 가로 중앙 정렬을 위한 margin 설정
                         display: 'flex', // Flex 사용
                         justifyContent: 'center', // 가로 중앙 정렬
@@ -120,12 +136,12 @@ function HelpDetail() {
               <span>조회수 : {content.readCnt}</span>
               <span>댓글 수 : {content.boardCommentCnt}</span>
             </div>
-            {content.sameMember === true && (
+            {/* {content.sameMember === true && (
               <div>
                 <button>글 수정</button>
                 <button>글 삭제</button>
               </div>
-            )}
+            )} */}
 
           </div>
 

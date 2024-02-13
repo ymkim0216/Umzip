@@ -48,11 +48,11 @@ export default function ReviewToPeopleView({reviewToPeopleTotalPages,reviewToPeo
          {reviewToPeopleList &&
             <div className="d-flex col-12 flex-column p-3 justify-content-between gap-3" style={{ height: "100%" }}>
                 <div className="d-flex flex-column   " >
-                    <div className="mb-3" style={{ borderBottom: "1px solid " }}><h3>보낸 후기</h3></div>
+                <div className="mb-3 d-flex gap-2 align-items-center" style={{ borderBottom: "1px solid " }}><img style={{width:"3rem" ,height:"3rem"}} src="/free-animated-icon-gift-13399189.gif"/><h3 className="m-0">보낸 후기</h3></div>
                     <AnimatePresence mode="wait">
                         <motion.div className="d-flex flex-column gap-4" >
                         {reviewToPeopleList.map((item,index) => (
-                            <ReviewToPeopleProfile createDt={item.createDt} img={item.memberImageUrl} id={item.id} tag={item.tag}  key={index} name={item.memberName} rating={item.score} review={item.content} />
+                            <ReviewToPeopleProfile createDt={item.createDt} img={item.memberImageUrl} id={item.id} tagType={item.tagType} tag={item.tag}  key={index} name={item.memberName} rating={item.score} review={item.content} />
                         ))}
                         {reviewToPeopleList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 리뷰글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
                         </motion.div>

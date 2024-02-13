@@ -7,7 +7,7 @@ import { api } from '../../services/api';
 
 
 
-const ChatModal = () => {
+const ChatModal = ({toggleDropdown}) => {
   useEffect(() => {
     Chat_Call();
   }, []);
@@ -49,6 +49,7 @@ const ChatModal = () => {
             onClick={() => setOpenModal(true)}
           >
             <ChatModalList
+            toggleDropdown={toggleDropdown}
             setChatList={setChatList}
               unReadCount={data.unReadCount}
               img={data.receiverProfileImage}
