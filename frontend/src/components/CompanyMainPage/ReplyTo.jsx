@@ -6,7 +6,7 @@ import { useState } from 'react';
 import useReplyStore from '../../store/replyStore'
 
 
-function ReplyTo({ role, status, mappingId, price }) {
+function ReplyTo({ role, status, mappingId, reissuing }) {
 
   const [showModal, setShowModal] = useState(false);
   const { fetchDataDelivery } = companyDeliveryReservation();
@@ -37,7 +37,7 @@ function ReplyTo({ role, status, mappingId, price }) {
             role={role}
             onClose={handleCloseModal}
             mappingId={mappingId}
-            price={price}
+            reissuing={reissuing}
           />
         )}
       </>
@@ -59,8 +59,10 @@ function ReplyTo({ role, status, mappingId, price }) {
 }
   // PropTypes를 사용하여 props 유형 검증
   ReplyTo.propTypes = {
+    role: PropTypes.string,
     status: PropTypes.number, // 'codeSmall' prop이 문자열이어야 함을 선언
     mappingId: PropTypes.number,
+    reissuing: PropTypes.number,
   };
   
   export default ReplyTo;

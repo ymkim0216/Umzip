@@ -3,6 +3,7 @@ import { api } from '../services/api';
 
 const useStoreClean = create((set) => ({
   data: [],
+  detail: [],
   loading: false,
   error: null,
 
@@ -20,7 +21,7 @@ const useStoreClean = create((set) => ({
       set({ error, loading: false }
         );
     }
-  }
+  },
 }));
 
 export default useStoreClean;
