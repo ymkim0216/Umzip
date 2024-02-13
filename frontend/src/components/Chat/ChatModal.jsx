@@ -49,6 +49,7 @@ const ChatModal = () => {
             onClick={() => setOpenModal(true)}
           >
             <ChatModalList
+            setChatList={setChatList}
               unReadCount={data.unReadCount}
               img={data.receiverProfileImage}
               name={data.receiverName}

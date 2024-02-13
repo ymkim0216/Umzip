@@ -14,7 +14,7 @@ export default function NewModal({ renewer, id, setRequestId, requestId }) {
     // const [Id, setId] = useState(null)
     useEffect(() => {
         const fetchData = async () => {
-            const storedUserInfo = localStorage.getItem('userInfo');
+            const storedUserInfo = localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo");
             if (storedUserInfo) {
                 try {
                     const parsedInfo = JSON.parse(storedUserInfo);
@@ -148,7 +148,7 @@ export default function NewModal({ renewer, id, setRequestId, requestId }) {
     };
     return <>
     <AnimatePresence>
-        {!isLoading && myProfile && result && requestId && requestId.Id && requestId.mappingId && requestId.requestList && (
+        {!isLoading && myProfile && result && requestId && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={handleClose}
                 style={{
                     zIndex: "99",
