@@ -39,8 +39,22 @@ export default function BookingDetails({ nowId, role, price, reissuing, name }) 
         ) : (
             <>
                 {/* 청소 관련 정보를 렌더링합니다. */}
-                <div>견적 요청일 : {estimate.reservationTime}</div>
-                <div>{estimate.roomSize}</div>
+                <div>신청자 이름 : {name}</div>
+                <div>견적 가격 : {price}</div>
+                <div>재견적 가격 : {reissuing}</div>
+                <div>청소 진행일 : {estimate.reservationTime}</div>
+                <div>장소 : {estimate.address} / {estimate.addressDetail}</div>
+                <div>방 크기 : {estimate.roomSize}</div>
+                <div>방 갯수 : {estimate.roomCount}</div>
+                <div>창 갯수 : {estimate.windowCount}</div>
+
+                <div>발코니 유무 : {estimate.balconyExistence}</div>
+                <div>복층 유무 : {estimate.duplexRoom}</div>
+                <div>외부 창 청소 : {estimate.externalWindow}</div>
+                <div>새집 증후군 제거 : {estimate.houseSyndrome}</div>
+                <div>스티커 제거 : {estimate.removeSticker}</div>
+
+
                 {/* 여기에 필요한 나머지 clean 관련 렌더링을 추가합니다. */}
             </>
         )}
