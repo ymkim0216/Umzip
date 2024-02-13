@@ -16,7 +16,11 @@ function PointDetails() {
         
       <>
       <div className={style.pointsContainer}>
-        <h4>map함수 돌리기 포인트내역</h4>
+        <div >
+        <img src="/pointImg.gif" style={{width:'100px'}}  />
+        <h4>나의 포인트 내역</h4>
+        </div>
+        
         <div className={style.head}>
         <span className={style.headDate}>일자</span>
         <span className={style.headContent}>내용</span>
