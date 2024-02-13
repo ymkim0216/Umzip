@@ -22,11 +22,6 @@ const useStoreDelivery = create((set) => ({
     }
   },
 
-    // 데이터를 수동으로 업데이트하는 메소드 추가
-    updateData: (updatedData) => {
-      set({ data: updatedData });
-    }
-
 }));
 
 export default useStoreDelivery;

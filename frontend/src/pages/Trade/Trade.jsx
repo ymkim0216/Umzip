@@ -1,6 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import useTradeDetailsStore from '../../store/tradeDetailStore';
 
 import TradesList from '../../components/Trade/TradesList';
 import SearchBar from '../../components/Trade/SearchBar';
@@ -21,7 +20,6 @@ function Trade() {
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const tradeDetailsStore = useTradeDetailsStore();
 
   const getTrades = async () => {
     setLoading(true);

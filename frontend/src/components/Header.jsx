@@ -7,7 +7,9 @@ const Header = () => {
   const [scrollY, setScrollY] = useState(0);
   const [id, setId] = useState(null);
   const [profileImage, setProfileImage] = useState('');
-  const [checkWho, setWho] = useState(null);
+  const [checkWho, setWho] = useState(null)
+  const userInfo = JSON.parse(localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo') ||'{}');
+
 
   const location = useLocation();
 
@@ -58,7 +60,7 @@ const Header = () => {
           className="navbar navbar-expand-lg navbar-light"
           style={{ height: '8vh' }}
         >
-          <NavLink className="navbar-brand" to="/dashboard">
+          <Link className="navbar-brand" to={checkWho === 1 ? "/dashboard" : '/dashbordcompany'}>
             <img
               src="/umzipLogo.png"
               alt=""
@@ -86,6 +88,8 @@ const Header = () => {
 
                 </NavLink>
               </motion.li>
+              { checkWho === 1 && (
+              <>
               <motion.li
                 whileHover={navItemVariants.hover}
                 className="nav-item"
@@ -125,6 +129,8 @@ const Header = () => {
                   </div>
                 </NavLink>
               </motion.li>
+              </>
+              )}
               <motion.li
                 whileHover={navItemVariants.hover}
                 className="nav-item"
