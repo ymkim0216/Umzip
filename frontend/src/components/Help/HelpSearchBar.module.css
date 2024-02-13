@@ -33,9 +33,11 @@
   
   .inputbox input:valid ~span,
   .inputbox input:focus ~span {
+    
     color: #608DFF;
     transform: translateX(-10px) translateY(-34px);
     font-size: 0,75em;
+  
   }
   
   .inputbox i {

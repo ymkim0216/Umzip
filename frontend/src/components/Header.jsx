@@ -60,7 +60,7 @@ const Header = () => {
           className="navbar navbar-expand-lg navbar-light"
           style={{ height: '8vh' }}
         >
-          <Link className="navbar-brand" to={checkWho === 1 ? "/dashboard" : '/dashbordcompany'}>
+          <NavLink className="navbar-brand" to={checkWho === 1 ? "/dashboard" : '/dashbordcompany'}>
             <img
               src="/umzipLogo.png"
               alt=""
@@ -83,9 +83,9 @@ const Header = () => {
                 >
                   <div className='d-flex align-items-center gap-1'>
                     <img style={{ width: "2rem", height: "2rem" }} src='/free-animated-icon-upcoming-12146104.gif' />
-                    <p className="m-0">대시보드</p>
+                  <p className="m-0">대시보드</p>
                   </div>
-
+                  
                 </NavLink>
               </motion.li>
               { checkWho === 1 && (
@@ -156,6 +156,7 @@ const Header = () => {
                   activeClassName="active" // 이 부분이 추가되었습니다
                 >
                   <img
+                  className='shadow'
                     src={profileImage}
                     alt="Profile"
                     style={{
