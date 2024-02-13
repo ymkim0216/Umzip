@@ -291,9 +291,9 @@ export default function UserProfile() {
                 </div>
 
                 <div className="d-flex justify-content-center gap-3" style={{ width: "100%" }}>
-                    {myprofile.tagList.map((items) => (
-                        <div key={items} className="d-flex align-items-center justify-content-center border border-primary rounded-5 bg-white col-3 text-center shadow" style={{ height: "2rem" }}>
-                            <p className="m-0" style={{ fontSize: "0.65rem" }}>{items}</p>
+                    {myprofile.tagList.map((tag) => (
+                        <div key={tag.tagName} className="d-flex align-items-center justify-content-center border border-primary rounded-5 bg-white col-3 text-center shadow" style={{ height: "2rem" }}>
+                            <p className="m-0" style={{ fontSize: "0.65rem" }}>{tag.tagName}</p>
                         </div>
                     ))}
                 </div>
