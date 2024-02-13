@@ -8,6 +8,8 @@ const Header = () => {
   const [id,setId] =useState(null)
   const [profileImage, setProfileImage] = useState('');
   const [checkWho, setWho] = useState(null)
+  const userInfo = JSON.parse(localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo') ||'{}');
+
 
 
   const handleScroll = () => {
@@ -58,7 +60,7 @@ const Header = () => {
           className="navbar navbar-expand-lg navbar-light"
           style={{ height: '6vh' }}
         >
-          <Link className="navbar-brand" to="/dashboard">
+          <Link className="navbar-brand" to={checkWho === 1 ? "/dashboard" : '/dashbordcompany'}>
             <img
               src="/umzipLogo.png"
               alt=""
@@ -79,6 +81,8 @@ const Header = () => {
                   대시보드
                 </Link>
               </motion.li>
+              { checkWho === 1 && (
+              <>
               <motion.li
                 whileHover={{
                   translateY: -3,
@@ -121,6 +125,8 @@ const Header = () => {
                   도움
                 </Link>
               </motion.li>
+              </>
+              )}
               <motion.li
                 whileHover={{
                   translateY: -3,
