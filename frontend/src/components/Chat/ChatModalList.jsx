@@ -10,18 +10,19 @@ import UsedReview from '../MainPage/DashBoard/UsedReview';
 
 
 
-export default function ChatModalList({toggleDropdown, setChatList, name, chat, date, img, chatroomId, receiverId, unReadCount }) {
+export default function ChatModalList({ toggleDropdown, setChatList, name, chat, date, img, chatroomId, receiverId, unReadCount }) {
   const [openModal, setOpenModal] = useState(false);
   const [talkHistory, setTalkHistory] = useState([]);
   const chatContainerRef = useRef();
   const [userinput, setuserinput] = useState("");
- const [unReadChat , setunReadChat] = useState(unReadCount)
+  const [unReadChat, setunReadChat] = useState(unReadCount)
   const stompClientRef = useRef(null);
   const [userId, setUserId] = useState(null)
   const [tradeChat, setTradeChat] = useState(null)
   const navigate = useNavigate()
   const [status, setStatus] = useState("first")
   const [tradeId, setTradeId] = useState(null)
+  const [userinfo,setUserInfo] = useState(null)
   const scrollToBottom = () => {
     // 스크롤 위치를 항상 맨 아래로 조절
     if (chatContainerRef.current) {
@@ -31,7 +32,17 @@ export default function ChatModalList({toggleDropdown, setChatList, name, chat, 
   useEffect(() => {
     scrollToBottom();
   }, [talkHistory, openModal]);
-
+  useEffect(() => {
+    const storedUserInfo = localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo");
+    if (storedUserInfo) {
+        const parsedInfo = JSON.parse(storedUserInfo);
+        console.log(parsedInfo);
+        setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage, id: parsedInfo.id });
+    }
+    else {
+        navigate("/login")
+    }
+}, []);
 
   const handleinput = (event) => {
     setuserinput(event.target.value);
@@ -39,7 +50,7 @@ export default function ChatModalList({toggleDropdown, setChatList, name, chat, 
 
   const toggleModal = async () => {
     setOpenModal(true);
-    
+
     setunReadChat(0)
     // 모달이 열릴 때만 대화 내용을 불러옴
     if (!talkHistory.length) {
@@ -145,9 +156,9 @@ export default function ChatModalList({toggleDropdown, setChatList, name, chat, 
   };
   const LeaveChat = () => {
     const { token } = useAuthStore.getState();
-  
+
     const shouldLeave = window.confirm('정말로 채팅을 나가시겠습니까?');
-  
+
     if (shouldLeave) {
       if (stompClientRef.current.active) {
         console.log('채팅창 나가기');
@@ -213,7 +224,7 @@ export default function ChatModalList({toggleDropdown, setChatList, name, chat, 
       });
       console.log(response)
       // setTradeChat(response.data.result.tradeItem)
-      return response.data.result.chatMessages
+      return response.data.isSuccess
         // console.log(response.data.result)
         // console.dir(stompClient.subscribe)
         ;
@@ -223,10 +234,15 @@ export default function ChatModalList({toggleDropdown, setChatList, name, chat, 
   };
   const handleBuy = async (e) => {
     e.stopPropagation()
-    await confirmBuy()
-    stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("")
+    const answer = await confirmBuy()
+    if(answer){
+      stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("")
 
-    setStatus("second")
+      setStatus("second")
+    }
+    else{
+      alert("이미 구매완료된 중고글 입니다!")
+    }
     // setOpenModal(false)
   }
   return (
@@ -269,22 +285,26 @@ export default function ChatModalList({toggleDropdown, setChatList, name, chat, 
                 <div className='d-flex flex-column gap-3' style={{ width: "100%" }}>
                   <div className='d-flex  justify-content-between'>
                     <h5 className='m-0 '>제목 : {tradeChat.tradeItemTitle}</h5>
-                    <button onClick={handleBuy} className='btn btn-light'>구매확정</button>
+                    {tradeChat.memberId !==userinfo.id && <button onClick={handleBuy} className='btn btn-light'>구매확정</button>}
+                    
                   </div>
-                  <h5 className='m-0 '>가격 : {tradeChat.tradeItemPrice}</h5>
+                  <h5 className='m-0 '>가격 : {tradeChat.tradeItemPrice}원</h5>
                   {/* <p className='m-0 '>제목 : {tradeChat.tradeItemTitle}</p> */}
                 </div>
               </motion.div>}
 
                 <div style={{ marginTop: tradeChat === null ? "0" : "6rem" }}>
                   {userId && talkHistory && talkHistory.map((items, index) => (
-                    <div className='d-flex  flex-column'>
+                    <motion.div initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 5 }} className='d-flex  flex-column'>
                       <div className='' style={{ alignSelf: userId !== items.senderId ? "flex-start" : "flex-end", }}>
                         {userId !== items.senderId ? <div className='d-flex align-items-center gap-1 justify-content-center'><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
                           <p className='m-0'>{items.senderName}</p></div> : <div className='d-flex align-items-center gap-1 justify-content-center'><p className='m-0'>{items.senderName}</p><img src={items.senderProfileImage} style={{ width: "2rem", height: "2rem" }} className='rounded-pill' />
                         </div>}
                       </div>
-                      <div
+                      <motion.div
+
                         key={index}
                         style={{
 
@@ -299,15 +319,15 @@ export default function ChatModalList({toggleDropdown, setChatList, name, chat, 
                         }}
                       >
                         {items.content}
-                      </div>
-                    </div>
+                      </motion.div>
+                    </motion.div>
                   ))}
                 </div>
                 <div style={{ marginTop: "auto" }}>
                   <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setuserinput(''); }}>
                     <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                    <button type="submit" className='btn btn-primary rounded-4'><img style={{width:"1.5rem",height:"1.5rem"}} src='/Paper_Plane.png' /></button>
-                    <button onClick={LeaveChat} className='btn btn-danger rounded-4'><img style={{width:"1.5rem",height:"1.5rem"}}  src='/message.png' /></button>
+                    <button type="submit" className='btn btn-primary rounded-4'><img style={{ width: "1.5rem", height: "1.5rem" }} src='/Paper_Plane.png' /></button>
+                    <button onClick={LeaveChat} className='btn btn-danger rounded-4'><img style={{ width: "1.5rem", height: "1.5rem" }} src='/message.png' /></button>
                   </form>
                 </div>
 

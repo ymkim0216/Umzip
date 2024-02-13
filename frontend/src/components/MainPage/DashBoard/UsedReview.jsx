@@ -16,7 +16,7 @@ export default function UsedReview({setStatus, setTradeId, tradeId }) {
         setTradeId({memberId:15 , })
     }, [])
     const [option, setOption] = useState({})
-    const [rating, setRating] = useState("")
+    const [rating, setRating] = useState(5)
     const [isloading, setIsLoading] = useState(false)
     const [userinput, setuserinput] = useState("")
     const tagDetail = async () => {
@@ -139,6 +139,9 @@ export default function UsedReview({setStatus, setTradeId, tradeId }) {
                 <AnimatePresence mode="wait">
 
                     {step === "first" ? <motion.div key="first" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} >
+                        <div className="text-center mb-3" >
+                            <h5>후기를 작성해주세요</h5>
+                        </div>
                         <div className="text-center mb-3">
                             최대 3개의 태그를 선택해주세요!
                         </div>
