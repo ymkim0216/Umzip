@@ -95,7 +95,7 @@ function DeliverReservation() {
                   {item.reissuing ? item.reissuing : item.price}
                 </h5>
                 <h5 className="m-0 col-md-2">
-                  {item.deliveryId}/{item.memberName}
+                  {item.deliveryId}/{item.memberName}/{item.mappingId}
                 </h5>
                 <div className="m-0 col-md-2">
                   <StatusChange status={item.codeSmallId} />
@@ -105,7 +105,7 @@ function DeliverReservation() {
                     role="delivery"
                     status={item.codeSmallId}
                     mappingId={item.mappingId}
-                    price={item.price}
+                    reissuing={item.reissuing ? item.reissuing : item.price}
                   />
                 </h5>
               </motion.div>
