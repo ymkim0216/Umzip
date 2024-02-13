@@ -16,34 +16,57 @@ function DeliverReservation() {
   // 견적서 모달
   const [modalShow, setModalShow] = useState(new Map());
   const toggleModal = (cleanId) => {
-    setModalShow(prev => new Map(prev).set(cleanId, !prev.get(cleanId)));
+    setModalShow((prev) => new Map(prev).set(cleanId, !prev.get(cleanId)));
   };
 
+  // 새로운 마우스 오버 상태 관리
+  const [hoverState, setHoverState] = useState(new Map());
 
+  // 마우스 오버 이벤트 핸들러
+  const handleMouseEnter = (id) => {
+    setHoverState((prev) => new Map(prev).set(id, true));
+  };
 
-  console.log(data)
+  const handleMouseLeave = (id) => {
+    setHoverState((prev) => new Map(prev).set(id, false));
+  };
+
+  console.log(data);
 
   useEffect(() => {
     fetchDataClean();
-  }, [ fetchDataClean ]);
-  
+  }, [fetchDataClean]);
+
   useEffect(() => {
     let filteredData = data?.result || [];
     if (filterStatus === 1) {
-      filteredData = filteredData.filter(item => item.codeSmallId % 100 === 1);
+      filteredData = filteredData.filter(
+        (item) => item.codeSmallId % 100 === 1
+      );
     }
     if (filterStatus === 2) {
-      filteredData = filteredData.filter(item => item.codeSmallId % 100 === 2);
+      filteredData = filteredData.filter(
+        (item) => item.codeSmallId % 100 === 2
+      );
     }
-    if (filterStatus === 3) { // 예약 확정 상태일 때 시간순 정렬
-      filteredData = filteredData.filter(item => item.codeSmallId % 100 === 3);
-      filteredData.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+    if (filterStatus === 3) {
+      // 예약 확정 상태일 때 시간순 정렬
+      filteredData = filteredData.filter(
+        (item) => item.codeSmallId % 100 === 3
+      );
+      filteredData.sort(
+        (a, b) => new Date(a.startTime) - new Date(b.startTime)
+      );
     }
-    if (filterStatus === (4||5)) {
-      filteredData = filteredData.filter(item => item.codeSmallId % 100 === (4||5));
+    if (filterStatus === (4 || 5)) {
+      filteredData = filteredData.filter(
+        (item) => item.codeSmallId % 100 === (4 || 5)
+      );
     }
     if (filterStatus === 6) {
-      filteredData = filteredData.filter(item => item.codeSmallId % 100 === 6);
+      filteredData = filteredData.filter(
+        (item) => item.codeSmallId % 100 === 6
+      );
     }
     setVisibleItems(filteredData.slice(0, itemsToShow));
   }, [data, itemsToShow, filterStatus]);
@@ -63,20 +86,19 @@ function DeliverReservation() {
         <div
           className="d-flex justify-content-between mx-5"
           style={{
-            position: "sticky",
+            position: 'sticky',
             top: 0,
-            background: "white",
+            background: 'white',
           }}
         >
-          <div className="bg-white shadow rounded-3 p-2  justify-content-center align-items-center " >
-          <Status
-            handleFilterChange = {handleFilterChange} />
+          <div className="bg-white shadow rounded-3 p-2  justify-content-center align-items-center ">
+            <Status handleFilterChange={handleFilterChange} />
           </div>
         </div>
-        <div style={{ overflowY: "auto", maxHeight: "calc(100vh - 150px)" }}>
+        <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 150px)' }}>
           <div
             className=" rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center"
-            style={{ background: "#D9E4FF" }}
+            style={{ background: '#D9E4FF' }}
           >
             <h5 className="m-0 col-md-2">견적서</h5>
             <h5 className="m-0 col-md-2">작업 일시</h5>
@@ -85,7 +107,7 @@ function DeliverReservation() {
             <h5 className="m-0 col-md-2">상태</h5>
             <h5 className="m-0  col-md-2">응답</h5>
           </div>
-          <motion.div style={{ width: "100%", minHeight: "10rem" }}>
+          <motion.div style={{ width: '100%', minHeight: '10rem' }}>
             {visibleItems.map((item, index) => (
               <motion.div
                 key={index}
@@ -94,24 +116,42 @@ function DeliverReservation() {
                 exit={{ opacity: 0 }}
                 className="rounded-3 mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative"
                 style={{
-                  border: "1px solid #006EEE",
-                  minHeight: "6rem",
+                  border: '1px solid #006EEE',
+                  minHeight: '6rem',
                 }}
               >
                 <h5 className="m-0 col-md-2">
-                  <button onClick={() => toggleModal(item.cleanId)}>
-                    견적서
-                  </button>
+                  <img
+                    onMouseEnter={() => handleMouseEnter(item.cleanId)}
+                    onMouseLeave={() => handleMouseLeave(item.cleanId)}
+                    onClick={() => toggleModal(item.cleanId)}
+                    style={
+                      hoverState.get(item.cleanId)
+                        ? {
+                            width: '4rem',
+                            height: '4rem',
+                            cursor: 'pointer',
+                            transition: 'width 1s ease, height 1s ease',
+                          }
+                        : { width: '2rem', height: '2rem', cursor: 'pointer' }
+                    } // cursor 추가
+                    src={
+                      hoverState.get(item.cleanId)
+                        ? '/detailHover.gif'
+                        : '/detail.png'
+                    }
+                    alt="Detail"
+                  />
                 </h5>
                 <h5 className="m-0 col-md-2">{item.reservationTime}</h5>
                 <h5 className="m-0 col-md-2">
                   {item.reissuing
                     ? item.reissuing
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                     : item.price
                         .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </h5>
                 <h5 className="m-0 col-md-2">
                   {item.cleanId}/{item.memberName}/{item.mappingId}
@@ -135,7 +175,7 @@ function DeliverReservation() {
                       exit={{ y: 20, opacity: 0 }}
                       transition={{ duration: 0.2 }}
                       style={{
-                        zIndex: "99",
+                        zIndex: '99',
                         position: 'fixed',
                         top: 0,
                         left: 0,
@@ -145,12 +185,18 @@ function DeliverReservation() {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                    }}
-                    onClick={() => toggleModal(item.cleanId)} // 모달 외부 클릭 시 모달 닫기
+                      }}
+                      onClick={() => toggleModal(item.cleanId)} // 모달 외부 클릭 시 모달 닫기
                     >
                       {/* 모달 내용 클릭 시 이벤트 버블링 방지 */}
                       <div onClick={(e) => e.stopPropagation()}>
-                      <BookingDetails nowId={item.cleanId} role={"clean"} price={item.price} reissuing={item.reissuing} name={item.memberName} />
+                        <BookingDetails
+                          nowId={item.cleanId}
+                          role={'clean'}
+                          price={item.price}
+                          reissuing={item.reissuing}
+                          name={item.memberName}
+                        />
                       </div>
                     </motion.div>
                   )}
