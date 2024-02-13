@@ -15,6 +15,7 @@ export default function ChatModalList({ setChatList, name, chat, date, img, chat
   const [talkHistory, setTalkHistory] = useState([]);
   const chatContainerRef = useRef();
   const [userinput, setuserinput] = useState("");
+ const [unReadChat , setunReadChat] = useState(unReadCount)
   const stompClientRef = useRef(null);
   const [userId, setUserId] = useState(null)
   const [tradeChat, setTradeChat] = useState(null)
@@ -38,7 +39,7 @@ export default function ChatModalList({ setChatList, name, chat, date, img, chat
 
   const toggleModal = async () => {
     setOpenModal(true);
-
+    setunReadChat(0)
     // 모달이 열릴 때만 대화 내용을 불러옴
     if (!talkHistory.length) {
 
@@ -330,8 +331,8 @@ export default function ChatModalList({ setChatList, name, chat, date, img, chat
           </div>
           <div className='d-= position-relative p-2'>
             <small className="form-text text-muted">{date}</small>
-            {unReadCount !== 0 ? <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {unReadCount}
+            {unReadChat !== 0 ? <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {unReadChat}
             </span> : null}
 
           </div>

@@ -17,7 +17,7 @@ export default function RecommendMain() {
     // location.state에서 데이터를 추출합니다.
 
     const data = location.state.axios_data.result
-    // console.log(data)
+    console.log(data)
     // console.log(location.state)
     // console.log(location.state.userInput)
     const userInput = location.state.userInput
@@ -217,8 +217,8 @@ export default function RecommendMain() {
                 >
                     {data && data.slice(0, visibleItems).map((item, index) => (
                         <motion.div key={index} variants={{ visible: { opacity: 1, y: 0 } }} initial={{ opacity: 0, y: 20 }}>
-                            {status === "용달 " ? <RecommendPeople experience={item.experience} memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.companyName} rating={3.8} img={item.imageUrl} /> :
-                                <RecommendPeople experience={item.experience} memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.tags} name={item.companyName} rating={3.8} img={item.imageUrl} />}
+                            {status === "용달 " ? <RecommendPeople experience={item.experience} memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.topTagList} name={item.companyName} rating={item.score} img={item.imageUrl} /> :
+                                <RecommendPeople experience={item.experience} memberId={item.memberId} status={status} userChoice={userChoice} setUserChoice={setUserChoice} companyId={item.companyId} tag={item.tags} name={item.companyName} rating={item.score} img={item.imageUrl} />}
                         </motion.div>
                     ))}
                 </motion.div>

@@ -40,7 +40,7 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
     } else if (yearsOfExperience >= 5) {
         imgsrc = "/free-animated-icon-verified-7920876.gif";
     }
-    console.log(imgsrc)
+    // console.log(imgsrc)
     const scrollToBottom = () => {
         // 스크롤 위치를 항상 맨 아래로 조절
         if (chatContainerRef.current) {

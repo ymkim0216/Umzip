@@ -9,7 +9,7 @@ function HelpPagination() {
 
     return (
         <>
-            <motion.div  initial={{opacity:0 ,y:10}} animate={{opacity:1, y:0}} exit={{opacity:0,y:10 }}  className='d-flex' style={{ width: "100%" }}>
+            <motion.div  initial={{opacity:0 ,y:10}} animate={{opacity:1, y:0}} exit={{opacity:0,y:10 }}  className='d-flex justify-content-center' style={{ width: "100%" }}>
                 <div className="d-flex  gap-3">
                     {[...Array(Math.ceil(totalElements / 10))].map((_, index) => (
                         <motion.button whileHover={{ y: -5 }} className="btn btn-light" key={index} onClick={() => setPage(index + 1)}>

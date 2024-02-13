@@ -367,7 +367,7 @@ export default function DeliveryForm() {
             borderRadius: '8px', // 내용의 모서리 둥글게
           }}>
             <div className="d-flex justify-content-center align-items-center gap-4 " style={{ width: "100%" }}>
-              <img style={{ width: "20rem", height: "20rem" }} src="./cal.png" />
+              <img style={{ width: "20rem", height: "20rem" }} src="/cal.png" />
               {/* <h2 style={{color:"white"}}>계산이 진행중입니다..</h2> */}
               <Wave />
             </div>
@@ -438,6 +438,7 @@ export default function DeliveryForm() {
                       />
                       <p className="m-0 fw-bold">AM</p>
                     </motion.div>
+
 
                     {/* 두 번째 라디오 버튼 */}
                     <motion.div
