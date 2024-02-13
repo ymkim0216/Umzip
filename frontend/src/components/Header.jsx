@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import useAuthStore from '../store/store';
-
+import './Header.css'
 const Header = () => {
   const [scrollY, setScrollY] = useState(0);
-  const [id,setId] =useState(null)
+  const [id, setId] = useState(null);
   const [profileImage, setProfileImage] = useState('');
-  const [checkWho, setWho] = useState(null)
+  const [checkWho, setWho] = useState(null);
 
+  const location = useLocation();
 
   const handleScroll = () => {
     setScrollY(window.scrollY);
   };
 
   useEffect(() => {
-    
     window.addEventListener('scroll', handleScroll);
 
-    const storedUserInfo = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
-    console.log(storedUserInfo)
+    const storedUserInfo =
+      localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
+    console.log(storedUserInfo);
     if (storedUserInfo) {
-      const { profileImage, who ,id} = JSON.parse(storedUserInfo);
-      setProfileImage(profileImage || ''); // Fallback to an empty string if profilePic is not found
-      setWho(who || '')
-      setId(id || "")
+      const { profileImage, who, id } = JSON.parse(storedUserInfo);
+      setProfileImage(profileImage || '');
+      setWho(who || '');
+      setId(id || '');
     }
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -56,15 +56,15 @@ const Header = () => {
       <div className="">
         <div
           className="navbar navbar-expand-lg navbar-light"
-          style={{ height: '6vh' }}
+          style={{ height: '8vh' }}
         >
-          <Link className="navbar-brand" to="/dashboard">
+          <NavLink className="navbar-brand" to="/dashboard">
             <img
               src="/umzipLogo.png"
               alt=""
               style={{ width: '60px', height: 'auto' }}
             />
-          </Link>
+          </NavLink>
           <div
             className="collapse navbar-collapse justify-content-end"
             id="navbarNav"
@@ -74,77 +74,93 @@ const Header = () => {
                 whileHover={navItemVariants.hover}
                 className="nav-item"
               >
-                <Link className="nav-link mx-3 px-3" 
-                to={checkWho === 1 ? "/dashboard":"/dashbordcompany"}>
-                  대시보드
-                </Link>
+                <NavLink
+                  className="nav-link mx-3 px-3"
+                  to={checkWho === 1 ? '/dashboard' : '/dashbordcompany'}
+                  activeClassName="active" // 이 부분이 추가되었습니다
+                >
+                  <div className='d-flex align-items-center gap-1'>
+                    <img style={{ width: "2rem", height: "2rem" }} src='/free-animated-icon-upcoming-12146104.gif' />
+                    <p className="m-0">대시보드</p>
+                  </div>
+
+                </NavLink>
               </motion.li>
               <motion.li
-                whileHover={{
-                  translateY: -3,
-                  fontWeight: 'bold',
-                  textDecoration: 'underline',
-                }}
+                whileHover={navItemVariants.hover}
                 className="nav-item"
               >
-                <Link
+                <NavLink
                   className="nav-link mx-3 px-3 d-flex align-items-center"
                   to="/trade"
+                  activeClassName="active" // 이 부분이 추가되었습니다
                 >
-                  <img
-                    style={{ width: 17, height: 17 }}
-                    className="mb-1"
-                    src="/iconoir.png"
-                    alt=""
-                  />
-                  <p className="m-0">중고</p>
-                </Link>
+                  <div className='d-flex align-items-center gap-1'>
+                    <img
+                      style={{ width: '2rem', height: '2rem' }}
+                      className=""
+                      src="/free-animated-icon-handshake-6416336.gif"
+                      alt=""
+                    />
+                    <p className="m-0">중고</p></div>
+                </NavLink>
               </motion.li>
               <motion.li
-                whileHover={{
-                  translateY: -3,
-                  fontWeight: 'bold',
-                  textDecoration: 'underline',
-                }}
+                whileHover={navItemVariants.hover}
                 className="nav-item"
               >
-                <Link
+                <NavLink
                   className="nav-link mx-3 px-3 d-flex align-items-center"
                   to="/help"
+                  activeClassName="active" // 이 부분이 추가되었습니다
                 >
-                  <img
-                    style={{ width: 17, height: 17 }}
-                    className="mb-1"
-                    src="/iconoir.png"
-                    alt=""
-                  />
-                  도움
-                </Link>
+                  <div className='d-flex align-items-center gap-1'>
+                    <img
+                      style={{ width: "2rem", height: "2rem" }}
+                      className=""
+                      src="/free-animated-icon-care-11688376.gif"
+                      alt=""
+                    />
+                    <p className="m-0">도움</p>
+                  </div>
+                </NavLink>
               </motion.li>
               <motion.li
-                whileHover={{
-                  translateY: -3,
-                  fontWeight: 'bolder',
-                  textDecoration: 'underline',
-                }}
-                className="nav-item "
-              >
-                <Link className="nav-link mx-3 px-3" to="/Alarm">
-                  알림
-                </Link>
-              </motion.li>
-              <motion.li
-                whileHover={{
-                  translateY: -3,
-                  fontWeight: 'bold',
-                  textDecoration: 'underline',
-                }}
+                whileHover={navItemVariants.hover}
                 className="nav-item"
               >
-                <Link className="nav-link mx-3 px-3" to={`/myprofile/${id}`}>
-                <img src={profileImage} alt="Profile" style={{ maxWidth: '30px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }}/>
+                <NavLink
+                  className="nav-link mx-3 px-3"
+                  to="/Alarm"
+                  activeClassName="active" // 이 부분이 추가되었습니다
+                >
+                  <div className='d-flex align-items-center gap-1'>
+                    <img src='/free-animated-icon-notifications-11919490.gif' style={{ width: "2rem", height: "2rem" }} />
+                    <p className="m-0">알림</p>
+                  </div>
+                </NavLink>
+              </motion.li>
+              <motion.li
+                whileHover={navItemVariants.hover}
+                className="nav-item"
+              >
+                <NavLink
+                  className="nav-link mx-3 px-3"
+                  to={`/myprofile/${id}`}
+                  activeClassName="active" // 이 부분이 추가되었습니다
+                >
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    style={{
+                      maxWidth: '30px',
+                      height: 'auto',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                    }}
+                  />
                   프로필
-                </Link>
+                </NavLink>
               </motion.li>
             </ul>
           </div>
