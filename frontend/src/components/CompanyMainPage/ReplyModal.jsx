@@ -5,18 +5,18 @@ import companyCleanReservation from '../../store/companyCleanReservation'
 import { useState } from 'react';
 import style from './ReplyModal.module.css'
 
-function ReplyModal({ role, onClose, mappingId, price }) {
+function ReplyModal({ role, onClose, mappingId, reissuing }) {
     const submitReplyStore = useReplyStore((state) => state.submitReplyStore);
-    const [operPrice, setPrice] = useState(price)
+    const [operReissuing, setReissuing] = useState(reissuing)
     const { fetchDataDelivery } = companyDeliveryReservation();
     const { fetchDataClean } = companyCleanReservation();
 
     const handleSubmit = async (event) => {
       event.preventDefault();
-      const price = operPrice; // input으로부터의 값은 문자열이므로, 숫자로 변환
+      const reissuing = operReissuing; // input으로부터의 값은 문자열이므로, 숫자로 변환
       const detail = event.target.message.value;
 
-      await submitReplyStore(role, mappingId, price, detail); // Zustand store의 함수 호출
+      await submitReplyStore(role, mappingId, reissuing, detail); // Zustand store의 함수 호출
       // 화면 즉각 반영을 위한 코드
       fetchDataDelivery()
       fetchDataClean()
@@ -31,7 +31,7 @@ function ReplyModal({ role, onClose, mappingId, price }) {
         {/* 견적 가격과 메시지 입력 필드 */}
         <div>
           <label>견적 가격:</label>
-          <input name="estimate" type="number" value={operPrice} onChange={(e) => setPrice(parseFloat(e.target.value))} required />      
+          <input name="estimate" type="number" value={operReissuing} onChange={(e) => setReissuing(parseFloat(e.target.value))} required />      
         </div>
         <div>
           <label>메시지:</label>
@@ -50,7 +50,7 @@ function ReplyModal({ role, onClose, mappingId, price }) {
     role: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
     mappingId: PropTypes.number.isRequired,
-    price: PropTypes.number // price의 유형을 string으로 가정, 필요에 따라 수정 가능
+    reissuing: PropTypes.number // price의 유형을 string으로 가정, 필요에 따라 수정 가능
 };
   
   export default ReplyModal;

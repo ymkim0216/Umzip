@@ -1,6 +1,5 @@
 import { useSubmit, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import useTradeDetailsStore from '../../store/tradeDetailStore';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -75,7 +74,6 @@ function TradeItemDetail({ trade }) {
   const now = new Date();
   const diffTime = Math.abs(now - createTime);
   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-  const tradeDetailsStore = useTradeDetailsStore();
 
   // Formatting the date part as YY-MM-DD
   const yy = createTime.getFullYear().toString();
@@ -100,10 +98,7 @@ function TradeItemDetail({ trade }) {
   let navigate = useNavigate();
 
   const goBack = () => {
-    tradeDetailsStore.setTrades([]);
-    tradeDetailsStore.setScrollPosition(window.scrollY);
-  
-    navigate('/trade', { state: { trades: tradeDetailsStore.trades, scrollPosition: tradeDetailsStore.scrollPosition } });
+    navigate(-1);
   };
 
   const handleClick = () => {

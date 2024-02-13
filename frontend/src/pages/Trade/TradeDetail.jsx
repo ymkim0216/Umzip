@@ -6,17 +6,16 @@ import Header from '../../components/Header';
 import Chat from '../../components/Chat/Chat';
 
 import { api } from '../../services/api';
-import useTradeDetailsStore from '../../store/tradeDetailStore';
 
 function TradeDetail() {
   const { tradeId } = useParams();
   const [loading, setLoading] = useState(true);
   const [trade, setTrade] = useState({});
-  const tradeDetailsStore = useTradeDetailsStore();
 
   const getTrade = async () => {
     const response = await api.get(`/trade-items/detail/${tradeId}`);
     setTrade(response.data.result);
+    console.log(response)
     setLoading(false);
   };
 

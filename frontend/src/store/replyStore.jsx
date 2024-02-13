@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import { api } from '../services/api';
 
-const replyStore = create((set, get) => ({
+const replyStore = create((set) => ({
   data: [],
   loading: false,
   error: null,
-  submitReplyStore: async (role, mappingId, price, detail) => {
+  submitReplyStore: async (role, mappingId, reissuing, detail) => {
     const quotation = {        
         mappingId: mappingId,
-        price : price,
+        reissuing : reissuing,
         detail: detail
 }
 
