@@ -1,4 +1,4 @@
-import { Link, useSubmit } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import classes from './TradeItem.module.css';
 

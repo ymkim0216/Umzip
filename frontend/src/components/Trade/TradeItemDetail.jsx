@@ -1,6 +1,6 @@
 import { useSubmit, useNavigate } from 'react-router-dom';
-import Chat from '../Chat/Chat';
 import { useEffect, useRef, useState } from 'react';
+import useTradeDetailsStore from '../../store/tradeDetailStore';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -75,17 +75,12 @@ function TradeItemDetail({ trade }) {
   const now = new Date();
   const diffTime = Math.abs(now - createTime);
   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+  const tradeDetailsStore = useTradeDetailsStore();
 
   // Formatting the date part as YY-MM-DD
   const yy = createTime.getFullYear().toString();
   const mm = ('0' + (createTime.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed
   const dd = ('0' + createTime.getDate()).slice(-2);
-
-  const [isChatOpen, setIsChatOpen] = useState(false);
-
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-  };
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -105,10 +100,23 @@ function TradeItemDetail({ trade }) {
   let navigate = useNavigate();
 
   const goBack = () => {
-    navigate(-1);
+    tradeDetailsStore.setTrades([]);
+    tradeDetailsStore.setScrollPosition(window.scrollY);
+  
+    navigate('/trade', { state: { trades: tradeDetailsStore.trades, scrollPosition: tradeDetailsStore.scrollPosition } });
   };
+
   const handleClick = () => {
     navigate(`/myprofile/${trade.writerId}`);
+  };
+  const handleSale = async () => {
+    try {
+      const response = await api.post('/trade-items/completed-sales', {boardId: trade.boardId} );
+      navigate(-1);
+      console.log(response);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   //========================
@@ -125,9 +133,6 @@ function TradeItemDetail({ trade }) {
     scrollToBottom();
   }, [isModalOpen]);
 
-  const handleModal = () => {
-    setIsModalOpen((prev) => !prev)
-  }
   const toggleModal = async ({tradeId,memberId}) => {
     console.log(tradeId,memberId)
     setIsModalOpen(true)
@@ -366,10 +371,10 @@ function TradeItemDetail({ trade }) {
             </p>
           </div>
           <p>{trade.direct ? '직거래' : '택배배송'}</p>
-          <p className={classes.content}>
+          <div className={classes.content}>
             {trade.content}
             <p className={classes.view}>조회 {trade.readCnt}</p>
-          </p>
+          </div>
           <div className={classes.report}>
             {trade.writer ? (
               <div className={classes.actions}>
@@ -391,7 +396,7 @@ function TradeItemDetail({ trade }) {
           <div>
             {trade.writer ? (
               <menu className={classes.sold}>
-                <button>판매완료</button>
+                <button onClick={handleSale}>판매완료</button>
               </menu>
             ) : (
               <menu className={classes.chat}>
