@@ -13,7 +13,6 @@ import ReviewToMeView from "./ReviewToMe/ReviewToMeView";
 import ReviewToPeopleView from "./ReviewToPeople/ReviewToPeopleView";
 import { api } from "../../../services/api";
 import RecommendModal from "../../Recommend/RecommendModal";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function UserProfile() {

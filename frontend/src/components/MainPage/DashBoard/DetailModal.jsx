@@ -7,6 +7,13 @@ export default function DetailModal({setServiceId,serviceId}) {
     const [endTime,setEndTIme] = useState(null)
     const [resTime,setResTIme] = useState(null)
     useEffect(()=>{reservationDetail()},[])
+    function formatDateString(originalDateString) {
+        const parsedDate = new Date(originalDateString);
+      
+        const formattedDate = `${parsedDate.getFullYear()}-${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}-${parsedDate.getDate().toString().padStart(2, '0')} ${parsedDate.getHours().toString().padStart(2, '0')}:${parsedDate.getMinutes().toString().padStart(2, '0')}`;
+      
+        return formattedDate;
+      }
     const reservationDetail = async () => {
         let service = ""
         console.log(serviceId)
@@ -21,11 +28,11 @@ export default function DetailModal({setServiceId,serviceId}) {
             console.log(response.data.result)
             setResult(response.data.result)
             if (service === "delivery") {
-                setStartTIme(new Date(response.data.result.startTime).toISOString().split('T')[0])
-                setEndTIme(new Date(response.data.result.endTime).toISOString().split('T')[0]);
+                setStartTIme(formatDateString(response.data.result.endTime))
+                setEndTIme(formatDateString(response.data.result.startTime));
             }
             else {
-                setResTIme(new Date(response.data.result.reservationTime).toISOString().split('T')[0])
+                setResTIme(formatDateString(response.data.result.reservationTime))
             }
             console.log(response)
             return response.data.result

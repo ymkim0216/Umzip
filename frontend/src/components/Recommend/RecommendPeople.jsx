@@ -304,9 +304,12 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
                         <h1 className=" col-md-3"></h1>
                     </div>
                     <div className="gap-3 d-flex justify-content-center">
-                        {tag && tag.map((item, index) => <div key={index} className="border border-primary rounded-5 bg-white col-md-3 text-center">
-                            {item}
-                        </div>)}
+                        {tag && tag.slice(0, 3).map((item, index) => (
+                            <div key={index} className="border border-primary rounded-5 d-flex align-items-center justify-content-center p-2 bg-white col-3 text-center">
+                                <p className="m-0" style={{fontSize:"0.8rem"}}>{item}</p>
+                            </div>
+                        ))}
+
 
                     </div>
                 </div>
