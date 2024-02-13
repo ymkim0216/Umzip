@@ -142,7 +142,7 @@ const Header = () => {
                 className="nav-item"
               >
                 <Link className="nav-link mx-3 px-3" to={`/myprofile/${id}`}>
-                <img src={profileImage} alt="Profile" style={{ maxWidth: '30px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }}/>
+                <img className="shadow-sm" src={profileImage} alt="Profile" style={{ maxWidth: '30px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }}/>
                   프로필
                 </Link>
               </motion.li>
