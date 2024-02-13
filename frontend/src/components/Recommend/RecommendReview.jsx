@@ -30,10 +30,19 @@ export default function RecommendReview({ tag, img, name, date, rating, text }) 
                     <p className="fs-12 m-0">{date}</p>
                 </div>
                 <div className="gap-3 d-flex justify-content-start col-12">
-                    {tag.map(item => <div className="d-flex border border-primary rounded-5 bg-white col-3 align-items-center justify-content-center p-2 " style={{ fontSize: "13px" }}>
+                    {tag.map((item, index) => (
+                        item.tagType === 1 ?
+                            (
+                                <div key={index} className="border border-primary rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
+                                    <p className="m-0" style={{ fontSize: "0.75rem" }}>{item.tagName}</p>
+                                </div>
+                            ) : (
+                                <div key={index} className="border border-danger rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
+                                    <p className="m-0" style={{ fontSize: "0.75rem" }}>{item.tagName}</p>
+                                </div>
+                            )
+                    ))}
 
-                        <p className="m-0" style={{ fontSize: "0.75rem" }}>{item}</p>
-                    </div>)}
 
                 </div>
                 <text>

@@ -92,7 +92,7 @@ const Chat = () => {
           }}
             initial="hidden" animate="visible" exit="hidden"  >
 
-            <ChatModal onClose={closeDropdown} />
+            <ChatModal toggleDropdown={toggleDropdown} onClose={closeDropdown} />
           </motion.div>
         )}
       </AnimatePresence>

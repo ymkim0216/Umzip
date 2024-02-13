@@ -10,6 +10,23 @@ import HelpPagination from './HelpPagination';
 
 function HelpList() {
   const { data, loading, error, fetchData, page } = useStore();
+  function formatDate(dateTimeString) {
+    const currentDate = new Date();
+    const postDate = new Date(dateTimeString);
+  
+    // 시간 차이 계산 (밀리초로 변환)
+    const timeDifference = currentDate - postDate;
+  
+    // 24시간 이내라면 "시간 전"으로 표시
+    if (timeDifference < 24 * 60 * 60 * 1000) {
+      const hoursDifference = Math.floor(timeDifference / (60 * 60 * 1000));
+      return `${hoursDifference}시간 전`;
+    } else {
+      // 24시간 이상이면 날짜 형식으로 표시
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return postDate.toLocaleDateString(undefined, options);
+    }
+  }
   const navigate = useNavigate();
   function navigateHandler() {
     navigate('/helpwriting');
@@ -66,14 +83,15 @@ function HelpList() {
                 {helps.codeSmallId === 403 && <span style={{color:"gray"}} className={style.headType}>도와줬어요</span> }
                 <span className={style.headTitle}>{helps.title}{`(${helps.commentCnt})`}</span> 
                 <span className={style.headPoint}>{helps.rewardPoint}P</span>
-                <span className={style.headDate}>{helps.createDt}</span>
+                <span className={style.headDate}>{formatDate(helps.createDt)}</span>
                 <span className={style.headUserName}>{helps.writerName}</span>
                 <span className={style.headLocation}>{helps.sigungu}</span>
                 <span className={style.headView}>{helps.readCnt}</span>
-              </motion.div>
+              </motion.div> 
             </Link>
           </ListGroup.Item>
         ))}
+        {content.length === 0  && <div className='mt-5 gap-3 d-flex justify-content-center align-items-center' style={{width:"100%" }}><img style={{width:"3rem" ,height:"3rem"}} src='/free-animated-icon-note-6172546.gif'/><h4 className='m-0'>아직 글이 없습니다!</h4></div>}
         </ListGroup>
       </ul>
       <button className='btn btn-primary' onClick={navigateHandler}>글쓰기</button>

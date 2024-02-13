@@ -10,7 +10,7 @@ import UsedReview from '../MainPage/DashBoard/UsedReview';
 
 
 
-export default function ChatModalList({ setChatList, name, chat, date, img, chatroomId, receiverId, unReadCount }) {
+export default function ChatModalList({toggleDropdown, setChatList, name, chat, date, img, chatroomId, receiverId, unReadCount }) {
   const [openModal, setOpenModal] = useState(false);
   const [talkHistory, setTalkHistory] = useState([]);
   const chatContainerRef = useRef();
@@ -39,6 +39,7 @@ export default function ChatModalList({ setChatList, name, chat, date, img, chat
 
   const toggleModal = async () => {
     setOpenModal(true);
+    
     setunReadChat(0)
     // 모달이 열릴 때만 대화 내용을 불러옴
     if (!talkHistory.length) {
@@ -140,6 +141,7 @@ export default function ChatModalList({ setChatList, name, chat, date, img, chat
       stompClientRef.current.deactivate();
       console.log("연결X")
     }
+    // toggleDropdown()
   };
   const LeaveChat = () => {
     const { token } = useAuthStore.getState();
@@ -225,7 +227,7 @@ export default function ChatModalList({ setChatList, name, chat, date, img, chat
     stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("")
 
     setStatus("second")
-    setOpenModal(false)
+    // setOpenModal(false)
   }
   return (
     <>

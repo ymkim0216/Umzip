@@ -61,28 +61,31 @@ export default function RecommendModalComponent({ companyId }) {
                         {serviceInfo.averageScore}
                     </div>
                     <div className="d-flex gap-3" style={{ width: '30rem' }}>
-                        {serviceInfo.mostTag.map(tag => {
-                            tag.tagType === 1 ? <div className="border border-primary rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
-                                <p className="m-0" style={{ fontSize: "0.75rem" }}>{tag}</p>
-                            </div> : <div className="border border-danger rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
-                            <p className="m-0" style={{ fontSize: "0.75rem" }}>{tag}</p>
-                        </div>
-                        }
+                        {serviceInfo.mostTag.map((tag, index) => (
+                            tag.tagType === 1 ?
+                                (
+                                    <div key={index} className="border border-primary rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
+                                        <p className="m-0" style={{ fontSize: "0.75rem" }}>{tag.tagName}</p>
+                                    </div>
+                                ) : (
+                                    <div key={index} className="border border-danger rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
+                                        <p className="m-0" style={{ fontSize: "0.75rem" }}>{tag.tagName}</p>
+                                    </div>
+                                )
+                        ))}
 
-                        )}
 
                     </div>
                 </div>
                 <div style={{ width: "100%", borderBottom: "1px solid #888888", overflowY: "auto" }} className="p-4">
-                    <h5>기사님 소개글</h5>
+                    <h5 style={{ fontSize: "1rem", fontWeight: "bold" }}>기사님 소개글</h5>
                     <div className="rounded-3 p-4 shadow" style={{ backgroundColor: "#EAEBEE" }}>
-                        <h5 style={{ fontSize: "1rem", fontWeight: "bold" }}>98년 무사고 빠른 속도와 꼼꼼함으로 완벽한 이사를 돕겠습니다.</h5>
                         <p>{serviceInfo.introduction}</p>
                     </div>
                 </div>
                 <div className="p-4 bg-white d-flex flex-column gap-3" >
                     <h5>후기</h5>
-                    {serviceInfo.reviewList.map(data => <RecommendReview tag={data.tagList} img={data.writerProfileImage} name={data.writerName} rating={data.score} date={data.createDt} text={data.content} />)}
+                    {serviceInfo.reviewList.map((data, index) => <RecommendReview key={index} tag={data.tagList} img={data.writerProfileImage} name={data.writerName} rating={data.score} date={data.createDt} text={data.content} />)}
 
 
                 </div>

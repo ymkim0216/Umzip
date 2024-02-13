@@ -1,3 +1,5 @@
+import Chat from "../../components/Chat/Chat";
+import Header from "../../components/Header";
 import HelpWrite from "../../components/Help/HelpWrite";
 import BackButton from "../../components/PublicUse/BackButton";
 
@@ -5,7 +7,8 @@ import BackButton from "../../components/PublicUse/BackButton";
 export default function HelpWriting() {
     return(
         <>
-        <h1>글쓰기페이지</h1>
+        <Chat/>
+        <Header/>
         <BackButton />
         <HelpWrite />
         </>

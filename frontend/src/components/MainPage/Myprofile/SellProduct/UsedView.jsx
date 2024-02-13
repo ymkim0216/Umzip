@@ -53,7 +53,7 @@ export default function UsedView({id, setSellList, sellList, sellTotalPages }) {
         {sellList &&
             <div className="d-flex col-12 flex-column p-3 justify-content-between gap-3" style={{ height: "100%" }}>
                 <div className="d-flex flex-column   " >
-                    <div className="mb-3" style={{ borderBottom: "1px solid " }}><h3>판매 물품</h3></div>
+                    <div className="mb-3 d-flex gap-2 align-items-center" style={{ borderBottom: "1px solid " }}><img style={{width:"3rem" ,height:"3rem"}} src="/free-animated-icon-sale-12707571.gif"/><h3 className="m-0">판매 물품</h3></div>
                     <AnimatePresence mode="wait">
                         <motion.div className="d-flex flex-column gap-4" >
                             {sellList.map((item, index) => (
