@@ -1,11 +1,19 @@
-import { useEffect,useState } from 'react';
-import useStore from '../../store/helpDetailData';
-import ListGroup from 'react-bootstrap/ListGroup';
-import style from './HelpComments.module.css';
-import {motion} from "framer-motion"
-function HelpComments({toggleModal}) {
-  const { fetchData, loadComment, comments, loading, error, sendPostRequest, commentChoic } = useStore();
-  const [commentText, setCommentText] = useState(''); // 댓글 텍스트 상태
+import { useEffect, useState } from "react";
+import useStore from "../../store/helpDetailData";
+import ListGroup from "react-bootstrap/ListGroup";
+import style from "./HelpComments.module.css";
+import { motion } from "framer-motion";
+function HelpComments({ toggleModal }) {
+  const {
+    fetchData,
+    loadComment,
+    comments,
+    loading,
+    error,
+    sendPostRequest,
+    commentChoic,
+  } = useStore();
+  const [commentText, setCommentText] = useState(""); // 댓글 텍스트 상태
   const formatTimeAgo = (dateString) => {
     const currentDate = new Date();
     const itemDate = new Date(dateString);
@@ -30,7 +38,7 @@ function HelpComments({toggleModal}) {
   };
   useEffect(() => {
     loadComment();
-  }, [loadComment,]);
+  }, [loadComment]);
 
   const handleCommentChange = (e) => {
     setCommentText(e.target.value); // 입력 값으로 댓글 텍스트 상태 업데이트
@@ -51,7 +59,7 @@ function HelpComments({toggleModal}) {
       console.error("댓글 등록 실패:", error);
       alert("댓글을 등록하는 중 오류가 발생했습니다.");
     }
-    fetchData()
+    fetchData();
   };
   const handleClick = (id) => {
     toggleModal(id);
@@ -129,38 +137,51 @@ function HelpComments({toggleModal}) {
             <div className="d-flex flex-column gap-3">
               {content.commentList.map((item, index) => (
                 <ListGroup.Item className="rounded-4" key={index}>
-                  <div className="d-flex gap-3 p-2 ">
-                    <div className="d-flex flex-column">
-                      <img
-                        src={item.writerImageUrl}
-                        alt="Writer"
-                        className={style.writerImage}
-                      />
-                      <span className={style.headPoint}>{item.writerName}</span>
-                    </div>
-                    <div>
-                      <span className={style.headUserName}>{item.comment}</span>
-                    </div>
-                    <div style={{ marginLeft: "auto" }}>
-                      <span className={style.headDate}>
-                        {formatTimeAgo(item.createDt)}
-                      </span>
-                    </div>
-                    {content.sameMember && !content.adopted && (
-                      <div className={style.buttonGroup}>
-                        <button onClick={() => handleClick(item.writerId)}>
-                          채팅하기
-                        </button>
-                        <button
-                          onClick={() =>
-                            handleAdopt(item.commentId, item.writerName)
-                          }
-                          className={style.chooseButton}
-                        >
-                          채택하기
-                        </button>
+                  <div className="d-flex p-2 row" style={{ display: "flex" }}>
+                    <div className="col-2">
+                      <div className="d-flex flex-column">
+                        <img
+                          src={item.writerImageUrl}
+                          alt="Writer"
+                          className={style.writerImage}
+                        />
+                        <span className={style.headPoint}>
+                          {item.writerName}
+                        </span>
+                        <div>
+                          <span className={style.headDate}>
+                            {formatTimeAgo(item.createDt)}
+                          </span>
+                        </div>
                       </div>
-                    )}
+                    </div>
+                    <div className="col-8">
+                      <div>
+                        <span className={style.headUserName}>
+                          {item.comment}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="col-2 d-flex align-items-center text-lg-end">
+                      {content.sameMember && !content.adopted && (
+                        <div className={`${style.buttonGroup}`}>
+                          <button onClick={() => handleClick(item.writerId)}
+                          className={`${style.btn} ${style.chat}`}
+                          >
+                            채팅하기
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleAdopt(item.commentId, item.writerName)
+                            }
+                            className={`${style.chooseButton} ${style.btnEach} ${style.btn} ${style.selected}`}
+                            
+                          >
+                            채택하기
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </ListGroup.Item>
               ))}
