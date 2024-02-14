@@ -15,6 +15,7 @@ function HelpDetail() {
   const { boardId } = useParams();
   const navigate = useNavigate()
   const { setBoardId, fetchData, data, loading, error, pointGive } = useStore();
+  
   // 도움 받았어요 버튼 클릭시 다시한번 확인하는 alert 코드
   const handlePointGive = () => {
     const confirmGivePoint = window.confirm(`${content.rewardPoint}P를 보내시겠습니까?`);

@@ -5,11 +5,15 @@ import style from "./HelpList.module.css";
 import HelpSearchBar from "./HelpSearchBar";
 import HelpCategorySelect from "./HelpCategorySelect";
 import useStore from "../../store/helpData";
+import usePointStore from '../../store/pointData'
 import { motion } from "framer-motion";
 import HelpPagination from "./HelpPagination";
 
 function HelpList() {
   const { data, loading, error, fetchData, page } = useStore();
+  const { pointLoad, pointDetail } = usePointStore()
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo"))
+
   function formatDate(dateTimeString) {
     const currentDate = new Date();
     const postDate = new Date(dateTimeString);
@@ -29,11 +33,17 @@ function HelpList() {
   }
   const navigate = useNavigate();
   function navigateHandler() {
+    if (nowPoint < 50) { // 지금 포인트가 50보다 많은지 확인
+      alert("최소 50포인트 이상 있어야 해요.");
+      return; 
+    }
+    
     navigate("/helpwriting");
   }
 
   useEffect(() => {
     fetchData(); // 컴포넌트 마운트 시 데이터를 가져옵니다.
+    pointLoad(storedUserInfo.id);
   }, [fetchData, page]); // fetchData가 변경될 때마다 호출됩니다.
 
   // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
@@ -47,6 +57,7 @@ function HelpList() {
   }
 
   const content = data?.result?.content;
+  const nowPoint = pointDetail.result?.point
   // 데이터가 로드되면, 해당 데이터를 사용하여 무언가를 렌더링합니다.
   if (!content) {
     // 데이터가 비어있으면 메시지를 표시합니다.
