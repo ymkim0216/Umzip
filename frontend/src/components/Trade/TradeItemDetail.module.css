@@ -20,6 +20,7 @@
 .report button {
   color: #FF0000;
   border: none;
+  margin-top: 10px;
   background-color: white;
 }
 
@@ -55,6 +56,19 @@
   border-radius: 20px;
 }
 
+.writer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px;
+  padding-inline: 10px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
 .article {
   margin: auto;
   max-width: 80%;
@@ -63,26 +77,40 @@
 
 .title {
   background-color: #ECF2FF;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+.detail {
+  display: flex;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .price {
-  display: flex;
   font-weight: bold;
+  font-size: 1.1rem;
 }
 
 .date {
   margin-left: auto;
-  font-weight: normal;
+}
+
+.direct {
+  padding-left: 10px;
 }
 
 .content {
   background-color: #ECF2FF;
+  border-radius: 25px;
   min-height: 300px;
   position: relative;
+  padding: 15px;
 }
 
 .view {
   position: absolute;
+  padding-left: 15px;
   bottom: 0;
   left: 0;
 }

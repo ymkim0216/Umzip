@@ -9,7 +9,7 @@ function TradeItem({ trade }) {
         <img src={trade.thumbnailPath} alt={trade.title} />
         <div className={classes.content}>
           <h2>{trade.title}</h2>
-          <address>{trade.sigunguName}</address>
+          <address>{trade.address}</address>
           <p className={classes.price}>{trade.price}원</p>
         </div>
       </div>

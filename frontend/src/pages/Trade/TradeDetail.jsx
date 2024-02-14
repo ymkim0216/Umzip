@@ -15,7 +15,6 @@ function TradeDetail() {
   const getTrade = async () => {
     const response = await api.get(`/trade-items/detail/${tradeId}`);
     setTrade(response.data.result);
-    console.log(response)
     setLoading(false);
   };
 
