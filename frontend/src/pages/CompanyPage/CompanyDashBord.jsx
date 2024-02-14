@@ -10,7 +10,7 @@ function CompanyDsahBord() {
         return (
         <>
             <Header />
-            <h1>업체 대시보드</h1>
+            {/* <h1>업체 대시보드</h1> */}
             <AnimatePresence>
             <CompanyMain />
             </AnimatePresence>

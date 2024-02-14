@@ -23,13 +23,13 @@ export default function Status({ handleFilterChange }) {
           viewBox="0 0 512 512"
         >
           <path
-            fill="#8FFF00"
+            fill="#45B649"
             d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"
           />
         </svg>
         <h5
           className={styles.statusTitle}
-          style={{ color: "#8FFF00" }}
+          style={{ color: "#45B649" }}
         >
           새로운 신청
         </h5>

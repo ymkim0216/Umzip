@@ -12,7 +12,7 @@ export default function StatusChange({ status }) {
   // console.log(newstatus)
   let color = null;
   if (newstatus === 1) {
-    color = "#8FFF00";
+    color = "#45B649";
   } else if (newstatus === 2) {
     color = "#ffc107";
   } else if (newstatus === 4) {
