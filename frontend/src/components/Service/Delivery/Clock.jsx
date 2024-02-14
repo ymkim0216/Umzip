@@ -25,7 +25,7 @@ export default function Clock({setisWhatTime ,toggleClockDropdown}) {
   };
 
   return (
-    <div className="clock-container shadow" style={{height:"20rem", width:"20rem"}}>
+    <div className="clock-container shadow" style={{height:"20rem"}}>
       <div className="time-options p-3">{generateTimeOptions()}</div>
     </div>
   );
