@@ -6,6 +6,7 @@ import SearchBar from '../../components/Trade/SearchBar';
 import Header from '../../components/Header';
 import Chat from '../../components/Chat/Chat';
 import classes from './Trade.module.css';
+import Loading from '../../components/PublicUse/Loading';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
@@ -59,40 +60,48 @@ function Trade() {
     <>
       <Header />
       <Chat />
-      <article style={{ marginTop: '4rem' }}>
-        <h1>중고 거래</h1>
-        <SearchBar onSearch={handleSearch} />
-        {trades.length > 0 ? (
-          <>
-            <TradesList trades={trades} />
-            {hasMore && (
-              <div className={classes.more}>
-                <button
-                  onClick={handleLoadMore}
-                  className={classes.moreBtn}
-                  disabled={loading}
-                >
-                  <FontAwesomeIcon
-                    icon={faCirclePlus}
-                    style={{ paddingRight: '10px' }}
-                  />
-                  더보기
-                </button>
-              </div>
-            )}
-          </>
-        ) : (
-          <p>검색결과가 없습니다.</p>
-        )}
-        <p>
-          <button
-            onClick={() => navigate('/tradewriting')}
-            className={classes.writing}
-          >
-            글 쓰기
-          </button>
-        </p>
-      </article>
+      {loading ? (
+        <Loading />
+      ) : (
+        <article style={{ marginTop: '4rem' }}>
+          <div className={classes.head}>
+            <h1>중고 거래</h1>
+            <div className={classes.search}>
+              <SearchBar onSearch={handleSearch} />
+            </div>
+          </div>
+          {trades.length > 0 ? (
+            <>
+              <TradesList trades={trades} />
+              {hasMore && (
+                <div className={classes.more}>
+                  <button
+                    onClick={handleLoadMore}
+                    className={classes.moreBtn}
+                    disabled={loading}
+                  >
+                    <FontAwesomeIcon
+                      icon={faCirclePlus}
+                      style={{ paddingRight: '10px' }}
+                    />
+                    더보기
+                  </button>
+                </div>
+              )}
+            </>
+          ) : (
+            <div style={{marginLeft: '10%' }}>검색결과가 없습니다.</div>
+          )}
+          <p>
+            <button
+              onClick={() => navigate('/tradewriting')}
+              className={classes.writing}
+            >
+              글 쓰기
+            </button>
+          </p>
+        </article>
+      )}
     </>
   );
 }

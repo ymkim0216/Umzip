@@ -8,9 +8,9 @@ function TradeItem({ trade }) {
       <div className={classes.item}>
         <img src={trade.thumbnailPath} alt={trade.title} />
         <div className={classes.content}>
-          <h2>{trade.title}</h2>
+          <div>{trade.title}</div>
           <address>{trade.address}</address>
-          <p className={classes.price}>{trade.price}원</p>
+          <p className={classes.price}>{trade.price.toLocaleString('ko-KR')}원</p>
         </div>
       </div>
     </Link>
