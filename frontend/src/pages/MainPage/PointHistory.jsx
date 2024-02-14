@@ -10,6 +10,7 @@ export default function PointHistory() {
   <>
     <Header />
     <BackButton />
+    
     <div className="row" style={{marginTop: '50px'}}>
     <PointDetails/>
     </div>

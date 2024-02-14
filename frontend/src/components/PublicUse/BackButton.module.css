@@ -14,7 +14,7 @@
     transition-duration: .3s;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
     background: linear-gradient(to left, #7daede, #8471d7);
-    
+    margin-top: 2rem;
   }
   
   /* plus sign */

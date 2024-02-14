@@ -61,7 +61,7 @@ function HelpList() {
       exit={{ opacity: 0, y: 10 }}
       className={style.helps}
     >
-      <div className={style.logoContainer}>
+      <div className={style.logoContainer} style={{marginTop:'50px'}}>
         <span className="d-flex align-items-center gap-1">
           <span className={style.logo}>도움</span>
           <span style={{ fontSize: "20px" }}>을 나눠요</span>

@@ -100,7 +100,7 @@ function HelpWrite() {
       className=" d-flex align-items-center flex-column justify-content-cetner"
     >
       <div className="d-flex gap-2 " style={{ width: "60%" }}>
-        <h3 className="d-flex flex-content-start">도움 글쓰기</h3>
+        <h2 className="d-flex flex-content-start">도움 글쓰기</h2>
         <img
           style={{ width: "2rem", height: "2rem" }}
           src="/free-animated-icon-pen-12747616.gif"
@@ -265,7 +265,7 @@ function HelpWrite() {
         </AnimatePresence>
 
         {/* 보내기버튼 */}
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ textAlign: 'right',marginBottom: '30px' }}>
           <button type="submit" className={`btn btn-primary mt-4 ${style.btnWrite}`}>
             글 등록
           </button>
