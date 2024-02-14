@@ -152,7 +152,7 @@ function CleanReservation() {
                         ? '/detailHover.gif'
                         : '/detail.png'
                     }
-                    alt="Detail"
+                    alt="Detail(견적서)"
                   />
                 </h5>
                 <h5 className="m-0 col-md-2">{item.reservationTime}</h5>
