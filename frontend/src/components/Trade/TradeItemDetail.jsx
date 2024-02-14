@@ -444,9 +444,11 @@ function TradeItemDetail({ trade }) {
                     <button onClick={startDeleteHandler}>삭제</button>
                   </menu>
                 </div>
-                <menu className={classes.sold}>
-                  <button onClick={handleSale}>판매완료</button>
-                </menu>
+                {trade.codeSmallName === '판매중' ? (
+                  <menu className={classes.sold}>
+                    <button onClick={handleSale}>판매완료</button>
+                  </menu>
+                ) : null}
               </div>
             ) : (
               <div className={classes.buttons}>
