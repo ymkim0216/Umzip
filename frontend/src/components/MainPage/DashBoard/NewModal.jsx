@@ -57,7 +57,7 @@ export default function NewModal({ renewer, id, setRequestId, requestId }) {
         console.log(requestId)
         if (requestId.requestList === "용달") { service = "delivery" }
         else { service = "clean" }
-        console.log(service)
+        
         try {
             const response = await api.get(
                 `/${service}/user/reservation/${requestId.Id}`,
@@ -88,7 +88,7 @@ export default function NewModal({ renewer, id, setRequestId, requestId }) {
     
         // Display a confirmation dialog
         const userConfirmed = window.confirm("확정하시겠습니까?");
-    
+        console.log(requestId)
         // Check user's response
         if (userConfirmed) {
             setIsLoading(true);
