@@ -29,8 +29,8 @@
   
 .car-description-container {
     position: absolute;
-    top: -180%;
-    left: 250%; /* Change this from left: 100% to left: 0 */
+    top: 0%;
+    left: 100%; /* Change this from left: 100% to left: 0 */
     width: 50rem;
     padding: 10px;  
     background-color: #f0f0f0;

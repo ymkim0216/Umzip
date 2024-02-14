@@ -354,7 +354,7 @@ export default function DeliveryForm() {
     </AnimatePresence>
 
     <AnimatePresence>
-      {isLoading && (
+      { isLoading&&(
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)}
           style={{
             zIndex: "99",
@@ -370,7 +370,7 @@ export default function DeliveryForm() {
           }}>
           <div style={{
             position: 'relative',
-            width: '40%',
+            width: '80%',
             // backgroundColor: 'white', // 내용의 배경색
             padding: '20px',
             borderRadius: '8px', // 내용의 모서리 둥글게
@@ -421,8 +421,8 @@ export default function DeliveryForm() {
         </motion.h5>
         <motion.div ref={scope} className="d-flex justify-content-center align-items-center" style={{ width: "100vw", height: "100vh" }} initial={{ opacity: 0, x: -200 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -200 }} transition={{ duration: 0.3 }} >
 
-          <div className="col-12 d-flex flex-column justify-content-center align-items-center">
-            <div className="col-6 gap-5 d-flex flex-column" >
+          <div className="col-9 d-flex  justify-content-center align-items-center">
+            <div className="col-5 gap-5 d-flex flex-column" >
 
               <div className="mb-3 d-flex align-items-center ">
                 <div className="col-3">
@@ -478,7 +478,7 @@ export default function DeliveryForm() {
                     <AnimatePresence>
                       {isDropdownClockOpen && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                          className="mt-2" style={{ position: "absolute", top: "-200%", left: "150%", zIndex: 1 }}>
+                          className="mt-2" style={{ position: "absolute", top: "100%", left: "0%", zIndex: 1 }}>
                           <Clock setisWhatTime={setisWhatTime} toggleClockDropdown={toggleClockDropdown} />
                         </motion.div>
                       )}
@@ -526,6 +526,9 @@ export default function DeliveryForm() {
                   </AnimatePresence>
                 </div>
               </div>
+            </div>
+            <div className="col-4 d-flex justify-content-center">
+                <img style={{width:"25rem" ,height:"25rem"}}  src="/free-animated-icon-delivery-truck-11614810.gif"/>
             </div>
           </div>
         </motion.div>

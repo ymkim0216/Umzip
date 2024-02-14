@@ -23,11 +23,11 @@ export default function Car({ data, setisWhatCar, toggleCarDropdown ,setCarID}) 
             >
               {info.name}
               <motion.div className="car-description-container" >
-                <img  style={{width:"40rem"}} src={info.name === "다마스" ? "/damas.jpg" :""} />
-                <img  style={{width:"40rem"}} src={info.name === "라보" ? "/labo.jpg" :""} />
-                <img  style={{width:"40rem"}} src={info.name === "1톤 트럭" ? "/1톤 트럭.jpg" :""} />
-                <img  style={{width:"40rem"}} src={info.name === "1톤 리프트 트럭" ? "/1톤 리프트 트럭.jpg" :""} />
-                <img  style={{width:"40rem"}} src={info.name === "1톤 냉장/냉동 탑차" ? "/1톤냉장냉동탑차.jpg" :""} />
+                {/* <img  style={{width:"20rem", height:"20rem" }} src={info.name === "다마스" ? "/damas.jpg" :""} />
+                <img  style={{width:"20rem", height:"20rem" }} src={info.name === "라보" ? "/labo.jpg" :""} />
+                <img  style={{width:"20rem", height:"20rem" }} src={info.name === "1톤 트럭" ? "/1톤 트럭.jpg" :""} />
+                <img  style={{width:"20rem", height:"20rem" }} src={info.name === "1톤 리프트 트럭" ? "/1톤 리프트 트럭.jpg" :""} />
+                <img  style={{width:"20rem", height:"20rem" }} src={info.name === "1톤 냉장/냉동 탑차" ? "/1톤냉장냉동탑차.jpg" :""} /> */}
                  <p className="m-2">{info.description} </p>
                   
               </motion.div>

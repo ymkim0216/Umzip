@@ -36,7 +36,7 @@ export default function DropDown({ reissuing, setReviewId, setServiceId, memberI
             whileHover={{ cursor: "pointer" }}
             className='rounded-3 p-2 d-flex justify-content-around text-center align-items-center position-relative '
                 style={{
-                    border: '4px solid',
+                    border: '2px solid',
                     borderImage: 'linear-gradient(to right, #cfc7f8, #a6c1ee)',
                     borderImageSlice: 2, // Stretch the gradient across the entire border
                     minHeight: "8rem",
