@@ -9,16 +9,29 @@ function PointPagination() {
     return (
     <>
         <div className={style.pagination}>
-            {pages.map((pageNumber) => (
-        <button
-            key={pageNumber}
-            className={page === pageNumber ? style.active : ""}
-            onClick={() => setPage(pageNumber)}
-            >
-            {pageNumber}
-        </button>
-        ))}
-        </div>
+  {page > 1 && (
+    <button 
+    className={style.arrow}
+    onClick={() => setPage(page - 5 > 0 ? page - 5 : 1)}> {'<'} </button>
+  )}
+
+  {pages.slice((Math.ceil(page / 5) - 1) * 5, (Math.ceil(page / 5) * 5)).map((pageNumber) => (
+    <button
+      key={pageNumber}
+      className={page === pageNumber ? style.active : style.unActive}
+      onClick={() => setPage(pageNumber)}
+    >
+      {pageNumber}
+    </button>
+  ))}
+
+  {page < totalPages && (
+    <button 
+    className={style.arrow}
+    onClick={() => setPage(page + 5 < totalPages ? page + 5 : totalPages)}> {'>'} </button>
+  )}
+</div>
+
     </>
     );
   }
