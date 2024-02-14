@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import companyCleanReservation from '../../store/companyCleanReservation'
 import { AnimatePresence, motion } from "framer-motion";
+import companyCleanReservation from '../../store/companyCleanReservation'
 import BookingDetails from './BookingDetails';
 import Status from './Status';
 import StatusChange from './StatusChange';
@@ -165,6 +165,7 @@ function DeliverReservation() {
                     status={item.codeSmallId}
                     mappingId={item.mappingId}
                     reissuing={item.reissuing ? item.reissuing : item.price}
+                    memberId={item.memberId}
                   />
                 </h5>
                 <AnimatePresence>
