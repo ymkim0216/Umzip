@@ -61,7 +61,7 @@ export default function CleaningFrom() {
     setDropdownClockOpen((prev) => !prev);
   };
 
-
+  
   const goToNextForm = async () => {
 
     if (isActive === "first") {
@@ -192,6 +192,7 @@ export default function CleaningFrom() {
   const goTobeforeForm = () => {
     if (isActive === "second") { setIsActive("first") }
     else if (isActive === "third") { setIsActive("second") }
+    else if (isActive === "fourth") { setIsActive("third") }
     if (activeStep > 1) {
       setActiveStep(activeStep - 1);
     }

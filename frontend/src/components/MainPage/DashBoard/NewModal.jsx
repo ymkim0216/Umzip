@@ -92,7 +92,7 @@ export default function NewModal({ renewer, id, setRequestId, requestId }) {
         // Check user's response
         if (userConfirmed) {
             setIsLoading(true);
-    
+            console.log()
             try {
                 const response = await api.post(
                     `/${service}/user/reservation-complete`,

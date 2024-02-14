@@ -148,11 +148,19 @@ export default function DeliveryForm() {
 
   }
 
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
 
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  }
   const hadlesubmit = async () => {
     try {
       const result = await axios_CallDel();
-      console.log(result)
+      // console.log(result)
 
       let packaging = ""
       let move = ""
@@ -262,12 +270,13 @@ export default function DeliveryForm() {
           }
         }
       );
-
+      console.log(response)
       setcalresult(response.data.result.price)
 
       const endtimee = new Date(response.data.result.endTime)
-      console.log(endtimee.toISOString().slice(0, 16).replace('T', ' '))
-      setEndTime(endtimee.toISOString().slice(0, 16).replace('T', ' '))
+      const formattedEndTime = formatDate(endtimee);
+      console.log(formattedEndTime)
+      setEndTime(formattedEndTime)
       setIsLoading(false)
 
       return response
@@ -296,7 +305,7 @@ export default function DeliveryForm() {
           }
         }
       );
-      console.log(response)
+      // console.log(response)
       return response
     }
     catch (e) {
@@ -456,9 +465,16 @@ export default function DeliveryForm() {
                   </div>
                   {/* 드롭다운 버튼 */}
                   <div style={{ position: "relative" }} className="d-flex align-items-center gap-4">
-                    <button id={isWhatTime ? "" : "inputcomponent"} className="btn btn-primary rounded-5 d-flex  align-items-center gap-2 p-2 " style={{ width: "10rem", height: "4rem" }} onClick={toggleClockDropdown}>
+                    <motion.button id={isWhatTime ? "" : "inputcomponent"} className="btn btn-primary rounded-5 d-flex  align-items-center gap-2 p-2 " whileHover={{ background: 'linear-gradient(to right bottom, #0052D4 , #6FB1FC)' }} style={{
+                      background: 'linear-gradient(to right bottom, #6FB1FC, #0052D4)',
+                      width: '10rem', height: '4rem',
+                      border: 'none',
+                      color: '#fff', // 텍스트 색상 조정
+                      borderRadius: '8px', // 둥근 모서리 조정
+                      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
+                    }} onClick={toggleClockDropdown}>
                       <p className="m-0 col-10">{isWhatTime || "시간선택"}</p><img className="col-2" src='/clock.png' style={{ width: "1rem", height: "1rem" }} />
-                    </button>
+                    </motion.button>
                     <AnimatePresence>
                       {isDropdownClockOpen && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -476,8 +492,16 @@ export default function DeliveryForm() {
                 <div style={{ position: "relative" }} className="d-flex align-items-center gap-4">
                   <motion.button
                     id={isWhatCar ? "" : "inputcomponent"}
+                    whileHover={{ background: 'linear-gradient(to right bottom, #0052D4 , #6FB1FC)' }}
                     className="btn btn-primary rounded-5 d-flex justify-content-center align-items-center  p-2"
-                    style={{ width: "10rem", height: "4rem" }}
+                    style={{
+                      background: 'linear-gradient(to right bottom, #6FB1FC, #0052D4)',
+                      width: '10rem', height: '4rem',
+                      border: 'none',
+                      color: '#fff', // 텍스트 색상 조정
+                      borderRadius: '8px', // 둥근 모서리 조정
+                      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
+                    }}
                     onClick={toggleCarDropdown}
                   >
                     <p className="m-0 col-10">{isWhatCar || "차량선택"}</p>
@@ -545,7 +569,7 @@ export default function DeliveryForm() {
                 ) : (
                   <p className="m-0 text-muted">출발지를 입력해주세요.</p>
                 )}</div>
-                <button onClick={() => hadleModal("start")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
+                <motion.button whileHover={{ background: 'linear-gradient(to right bottom, #0052D4 , #6FB1FC)' }} onClick={() => hadleModal("start")}  className=" btn btn-primary col-2 d-flex justify-content-center align-items-center" style={{ color:"white", height: "100%" , background: 'linear-gradient(to right bottom, #6FB1FC, #0052D4)',border:"none" }}><p className="m-0">찾기</p></motion.button>
               </div>
               <div id={startDetailAddress === "" ? "secondcomponent" : ""}>
                 <div className="col-9 d-flex align-items-center " style={{ width: "100%" }} >
@@ -562,7 +586,7 @@ export default function DeliveryForm() {
                     <p className="m-0 text-muted">도착지를 입력해주세요.</p>
                   )}
                 </div>
-                <button onClick={() => hadleModal("end")} className="btn-primary btn col-2 d-flex justify-content-center align-items-center" style={{ height: "100%" }}><p className="m-0">찾기</p></button>
+                <motion.button whileHover={{ background: 'linear-gradient(to right bottom, #0052D4 , #6FB1FC)' }} onClick={() => hadleModal("end")}  className=" btn btn-primary col-2 d-flex justify-content-center align-items-center" style={{ color:"white", height: "100%" , background: 'linear-gradient(to right bottom, #6FB1FC, #0052D4)',border:"none" }}><p className="m-0">찾기</p></motion.button>
               </div>
               <div id={endDetailAddress === "" ? "secondcomponent" : ""} className="col-9 d-flex align-items-center " style={{ width: "100%" }} >
                 <div className="col-2 fw-bold">도착상세주소</div>
@@ -588,7 +612,7 @@ export default function DeliveryForm() {
 
       </motion.div>}
       {isActive === "third" &&
-        <motion.div  key="thirdForm">
+        <motion.div key="thirdForm">
           <motion.h5 initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} onClick={goToNextForm} className="d-flex align-items-center gap-2" style={{
             position: 'absolute',
             top: '85%',

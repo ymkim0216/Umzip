@@ -16,7 +16,7 @@ export default function MakeReview({ reviewId, setReviewId }) {
 
     }, [])
     const [option, setOption] = useState({})
-    const [rating, setRating] = useState("")
+    const [rating, setRating] = useState(5)
     const [isloading, setIsLoading] = useState(false)
     const [userinput, setuserinput] = useState("")
     const tagDetail = async () => {
