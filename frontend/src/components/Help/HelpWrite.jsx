@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./HelpWrite.module.css";
 import useStore from "../../store/helpDetailData";
+import usePointStore from '../../store/pointData'
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { AnimatePresence, motion } from "framer-motion";
 
 function HelpWrite() {
+  const { pointLoad, pointDetail } = usePointStore()
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo"))
   const { sendPostBulletin } = useStore();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -16,7 +19,7 @@ function HelpWrite() {
   const [showNow, setShowNow] = useState([]);
   //  401: 도와줘요, 402: 도와줄게요, 403: 도와줬어요
   const [codeSmall, setCodeSmall] = useState(401);
-  const [point, setPoint] = useState(100);
+  const [point, setPoint] = useState(50);
 
   // 이미지 미리보기를 위한 상대경로
   const handleAddImages = (e) => {
@@ -89,6 +92,12 @@ function HelpWrite() {
     console.log(showImages);
     console.log(showNow);
   };
+  // 페이지 로드하면서 포인트 정보 불러오기
+  useEffect(() => {
+    pointLoad(storedUserInfo.id);
+  }, [])
+  const nowPoint = pointDetail.result?.point
+
 
   return (
     <motion.div
@@ -155,7 +164,7 @@ function HelpWrite() {
                   className={`${style.rangeCss}`}
                   id="pointRange"
                   min={50}
-                  max={500}
+                  max={500 < nowPoint ? 500 : nowPoint}
                   step={50}
                   value={point}
                   style={{ width: '200px', accentColor: '#6ec8e0',border:0 ,backgroundColor: "white"}} 

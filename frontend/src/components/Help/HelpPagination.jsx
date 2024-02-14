@@ -4,7 +4,6 @@ import {motion} from "framer-motion"
 function HelpPagination() {
     const { data, page, setPage } = useStore(); // 현재 페이지와 페이지 변경 함수, 총 페이지 수를 가져옴
     const totalElements = data?.result?.totalElements || 1;
-    console.log(totalElements)
     const pages = Array.from({ length: totalElements }, (_, i) => i + 1);
 
     return (

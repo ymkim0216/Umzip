@@ -3,6 +3,7 @@ import { api } from '../services/api';
 
 const useStorePoint = create((set, get) => ({
   data: [],
+  pointDetail: [],
   loading: false,
   error: null,
   // 192.168.30.206:8080 동현이 API
@@ -24,6 +25,19 @@ const useStorePoint = create((set, get) => ({
       const response = await api.get(`/point?page=${page}&size=10`,
       );
       set({ data: response.data, loading: false },
+        console.log(response.data));
+    } catch (error) {
+      set({ error, loading: false });
+    }
+  },
+
+  pointLoad: async (memberId) => {
+    set({ loading: true });
+    try {
+        // 도메인주소로 할시에는 https로 바꿔줘야함
+      const response = await api.get(`/users/${memberId}`,
+      );
+      set({ pointDetail: response.data, loading: false },
         console.log(response.data));
     } catch (error) {
       set({ error, loading: false });
