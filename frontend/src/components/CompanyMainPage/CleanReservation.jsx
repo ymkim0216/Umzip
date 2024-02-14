@@ -6,7 +6,7 @@ import Status from './Status';
 import StatusChange from './StatusChange';
 import ReplyTo from './ReplyTo';
 
-function CleanReservation() {
+function CleanReservation({chatModal}) {
   const { fetchDataClean, data } = companyCleanReservation();
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
@@ -173,11 +173,12 @@ function CleanReservation() {
                 </div>
                 <h5 className="m-0 col-md-2">
                   <ReplyTo
+                  chatModal={chatModal}
                     role="clean"
                     status={item.codeSmallId}
                     mappingId={item.mappingId}
                     reissuing={item.reissuing ? item.reissuing : item.price}
-                    memberId={item.memberId}
+                    memberId={String(item.memberId)}
                   />
                 </h5>
                 <AnimatePresence>
@@ -216,12 +217,12 @@ function CleanReservation() {
                 </AnimatePresence>
               </motion.div>
             ))}
-      <div className="pagination">
+      <div className="pagination d-flex justify-content-center gap-2 mt-3">
         {pageNumbers.map(number => (
           <button
             key={number}
             onClick={() => goToPage(number)}
-            className={currentPage === number ? 'active' : ''}
+            className={currentPage === number ? 'active btn btn-light' : 'btn btn-light'}
           >
             {number}
           </button>

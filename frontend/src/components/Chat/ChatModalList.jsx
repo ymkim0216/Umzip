@@ -234,15 +234,19 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
   };
   const handleBuy = async (e) => {
     e.stopPropagation()
-    const answer = await confirmBuy()
-    if(answer){
-      stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("")
-
-      setStatus("second")
+    const userConfirmed = window.confirm("구매를 확정하시겠습니까?");
+    if(userConfirmed){
+      const answer = await confirmBuy()
+      if(answer){
+        stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("")
+  
+        setStatus("second")
+      }
+      else{
+        alert("이미 구매완료된 중고글 입니다!")
+      }
     }
-    else{
-      alert("이미 구매완료된 중고글 입니다!")
-    }
+    
     // setOpenModal(false)
   }
   return (

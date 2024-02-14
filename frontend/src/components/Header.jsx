@@ -140,7 +140,7 @@ const Header = () => {
                 <NavLink
                   className="nav-link mx-3 px-3"
                   to={checkWho === 1 ? "/dashboard" : "/dashbordcompany"}
-                  activeClassName="active" // 이 부분이 추가되었습니다
+                  activeclassname="active" // 이 부분이 추가되었습니다
                 >
                   <div className="d-flex align-items-center gap-1" onMouseOver={dashBoardChangeImage} onMouseOut={dashBoardResetImage}>
                     <img 
@@ -162,7 +162,7 @@ const Header = () => {
                     <NavLink
                       className="nav-link mx-3 px-3 d-flex align-items-center"
                       to="/trade"
-                      activeClassName="active" // 이 부분이 추가되었습니다
+                      activeclassname="active" // 이 부분이 추가되었습니다
                     >
                       <div className="d-flex align-items-center gap-1"  onMouseOver={tradeChangeImage} onMouseOut={tradeResetImage}>
                         <img
@@ -183,7 +183,7 @@ const Header = () => {
                     <NavLink
                       className="nav-link mx-3 px-3 d-flex align-items-center"
                       to="/help"
-                      activeClassName="active" // 이 부분이 추가되었습니다
+                      activeclassname="active" // 이 부분이 추가되었습니다
                     >
                       <div className="d-flex align-items-center gap-1" onMouseOver={helpChangeImage} onMouseOut={helpResetImage}>
                         <img
@@ -206,7 +206,7 @@ const Header = () => {
                 <NavLink
                   className="nav-link mx-3 px-3"
                   to="/Alarm"
-                  activeClassName="active" // 이 부분이 추가되었습니다
+                  activeclassname="active" // 이 부분이 추가되었습니다
                 >
                   <div className="d-flex align-items-center gap-1" onMouseOver={alarmChangeImage} onMouseOut={alarmResetImage}>
                     <img
@@ -225,7 +225,7 @@ const Header = () => {
                 <NavLink
                   className="nav-link mx-3 px-3"
                   to={`/myprofile/${id}`}
-                  activeClassName="active" // 이 부분이 추가되었습니다
+                  activeclassname="active" // 이 부분이 추가되었습니다
                 >
                   <img
                     className="shadow"
