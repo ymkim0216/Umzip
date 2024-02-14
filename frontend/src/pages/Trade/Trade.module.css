@@ -8,12 +8,13 @@
 
 .writing {
   margin-left: 10%;
-  background-color: #336DFF;
-  color: white;
+  background-color: #5f9fff; 
+  padding: 7px;
+  border-radius: 6px;
   border: none;
-  border-radius: 40px;
-  font-size: 20px;
-  line-height: 30px;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
 .more {

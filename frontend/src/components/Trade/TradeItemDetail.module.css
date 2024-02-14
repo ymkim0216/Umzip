@@ -131,10 +131,13 @@
 }
 
 .chat button {
-  border: none;
-  background-color: #84F1A3;
-  border-radius: 4px;
-  color: #1E5EFF;
+    padding: 7px;
+    border-radius: 6px;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #5f9fff;
 }
 
 .sold {

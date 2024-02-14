@@ -92,14 +92,14 @@ function Trade() {
           ) : (
             <div style={{marginLeft: '10%' }}>검색결과가 없습니다.</div>
           )}
-          <p>
+          <div>
             <button
               onClick={() => navigate('/tradewriting')}
               className={classes.writing}
             >
               글 쓰기
             </button>
-          </p>
+          </div>
         </article>
       )}
     </>
