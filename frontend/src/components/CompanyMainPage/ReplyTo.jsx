@@ -13,7 +13,7 @@ function ReplyTo({ role, status, mappingId, reissuing, memberId }) {
   const [showModal, setShowModal] = useState(false);
   const { fetchDataDelivery } = companyDeliveryReservation();
   const { fetchDataClean } = companyCleanReservation();
-  const { makeChatRoom, roomNumber } = chatToCompanyStore()
+  const { makeChatRoom } = chatToCompanyStore()
 
 
   const handleOpenModal = () => setShowModal(true);
@@ -21,9 +21,6 @@ function ReplyTo({ role, status, mappingId, reissuing, memberId }) {
   const rejectionReservation = useReplyStore((state) => state.rejectionReservation);
 
   const code = status % 100;
-  // roomNumber 저장 변수
-  const roomId = roomNumber?.result;
-
 
   const rejectionHandle = async () => {
     await rejectionReservation(role, mappingId); // Zustand store의 함수 호출
@@ -79,6 +76,7 @@ function ReplyTo({ role, status, mappingId, reissuing, memberId }) {
     status: PropTypes.number, // 'codeSmall' prop이 문자열이어야 함을 선언
     mappingId: PropTypes.number,
     reissuing: PropTypes.number,
+    memberId: PropTypes.string,
   };
   
   export default ReplyTo;

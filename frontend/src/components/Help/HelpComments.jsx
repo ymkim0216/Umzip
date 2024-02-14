@@ -4,7 +4,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import style from './HelpComments.module.css';
 import {motion} from "framer-motion"
 function HelpComments({toggleModal}) {
-  const { loadComment, comments, loading, error, sendPostRequest, commentChoic } = useStore();
+  const { fetchData, loadComment, comments, loading, error, sendPostRequest, commentChoic } = useStore();
   const [commentText, setCommentText] = useState(''); // 댓글 텍스트 상태
   const formatTimeAgo = (dateString) => {
     const currentDate = new Date();
@@ -28,7 +28,7 @@ function HelpComments({toggleModal}) {
   };
   useEffect(() => {
     loadComment();
-  }, [loadComment]);
+  }, [loadComment,]);
 
     const handleCommentChange = (e) => {
     setCommentText(e.target.value); // 입력 값으로 댓글 텍스트 상태 업데이트
@@ -49,6 +49,7 @@ function HelpComments({toggleModal}) {
       console.error('댓글 등록 실패:', error);
       alert('댓글을 등록하는 중 오류가 발생했습니다.');
     }
+    fetchData()
   };
   const handleClick=(id)=>{
     toggleModal(id)

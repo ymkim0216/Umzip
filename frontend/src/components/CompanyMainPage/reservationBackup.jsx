@@ -8,7 +8,6 @@ import ReplyTo from './ReplyTo';
 
 function DeliverReservation() {
   const { fetchDataClean, data } = companyCleanReservation();
-  const [currentPage, setCurrentPage] = useState(1); // Current page
   const [itemsToShow, setItemsToShow] = useState(2); // 한 번에 보여줄 아이템의 수
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
   const [filterStatus, setFilterStatus] = useState(null); // 필터링할 상태 코드
@@ -69,28 +68,17 @@ function DeliverReservation() {
         (item) => item.codeSmallId % 100 === 6
       );
     }
-    const firstItemIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    // Slice the data based on pagination
-    setVisibleItems(filteredData.slice(firstItemIndex, firstItemIndex + ITEMS_PER_PAGE));
-  }, [data, currentPage, filterStatus]);
+    setVisibleItems(filteredData.slice(0, itemsToShow));
+  }, [data, itemsToShow, filterStatus]);
 
   const handleFilterChange = (status) => {
     setFilterStatus(status);
-    setCurrentPage(1);
+    setItemsToShow(4); // 필터 변경 시 보여주는 아이템 수를 초기화
   };
 
-  // Function to navigate to the next page
-  const nextPage = () => {
-    setCurrentPage(currentPage + 1);
+  const handleShowMore = () => {
+    setItemsToShow(itemsToShow + 2); // 더 보기 버튼 클릭 시 3개 아이템 추가
   };
-
-  // Function to navigate to the previous page
-  const prevPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(reservationList.length / ITEMS_PER_PAGE);
 
   return (
     <>
@@ -216,11 +204,9 @@ function DeliverReservation() {
                 </AnimatePresence>
               </motion.div>
             ))}
-      <div>
-        <button onClick={prevPage} disabled={currentPage <= 1}>Previous</button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button onClick={nextPage} disabled={currentPage >= totalPages}>Next</button>
-      </div>
+            {itemsToShow < reservationList.length && (
+              <button onClick={handleShowMore}>더 보기</button>
+            )}
           </motion.div>
         </div>
       </div>
