@@ -26,6 +26,7 @@ const useStorePoint = create((set, get) => ({
       );
       set({ data: response.data, loading: false },
         console.log(response.data));
+        console.log(`/point?page=${page}&size=10`)
     } catch (error) {
       set({ error, loading: false });
     }

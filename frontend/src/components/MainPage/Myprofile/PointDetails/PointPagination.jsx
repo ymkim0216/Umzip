@@ -1,11 +1,19 @@
 import style from './PointPagination.module.css'
 import useStorePoint from '../../../../store/pointData';
+import { useEffect } from "react";
+
 
 function PointPagination() {
-    const { data, page, setPage } = useStorePoint(); // 현재 페이지와 페이지 변경 함수, 총 페이지 수를 가져옴
+    const { fetchData, data, page, setPage } = useStorePoint(); // 현재 페이지와 페이지 변경 함수, 총 페이지 수를 가져옴
     const totalPages = data?.result?.totalPage || 1;
+    console.log(data?.result)
     const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    
+    useEffect(() => {
+      fetchData();
+    }, [ fetchData, page ]);
 
+    
     return (
     <>
         <div className={style.pagination}>

@@ -4,13 +4,18 @@ import style from "./PointDetails.module.css";
 import useStorePoint from "../../../../store/pointData";
 
 function PointDetails() {
-  const { page, fetchData, data } = useStorePoint();
+  const { fetchData, data, pointLoad, pointDetail } = useStorePoint();
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo"))
 
   useEffect(() => {
     fetchData();
-  }, [fetchData, page]);
+    pointLoad(storedUserInfo.id);
+  }, [fetchData]);
 
   const points = data?.result?.pointUsageDtoList ?? [];
+  console.log(points)
+  const nowPoint = pointDetail.result?.point
+
   return (
     <>
       <div className={style.pointsContainer}>
@@ -28,6 +33,13 @@ function PointDetails() {
             <img src="/starIcon.gif" style={{ width: "100px" }} />
           </div>
           <div className="col-3"></div>
+          
+          <div class="tooltip-container">
+  <span class="tooltip">Uiverse.io</span>
+  <span class="text">500P</span>
+  <span>당신의 포인트! 👋</span>
+</div>
+
         </div>
 
         <div className={style.head}>
