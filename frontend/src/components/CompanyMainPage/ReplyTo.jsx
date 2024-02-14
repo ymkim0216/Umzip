@@ -4,6 +4,7 @@ import companyDeliveryReservation from '../../store/companyDeliveryReservation'
 import companyCleanReservation from '../../store/companyCleanReservation'
 import useReplyStore from '../../store/replyStore'
 import chatToCompanyStore from '../../store/chatToCompanyStore'
+import styles from './ReplyTo.module.css'
 import { useState } from 'react';
 
 
@@ -39,8 +40,18 @@ function ReplyTo({ role, status, mappingId, reissuing, memberId }) {
       {/* 견적제안과 거절 버튼 */}
       {code === 1 && (
         <>
-          <button onClick={handleOpenModal}>견적제안</button>
-          <button onClick={() => rejectionHandle(role, mappingId)}>거절</button>
+          {/* <button onClick={handleOpenModal}>견적제안</button> */}
+          <div onClick={handleOpenModal} className={styles.uiverseCheck}>
+            <span className={styles.tooltipCheck}>재견적 보내기</span>
+            <span>O</span>
+          </div>
+          {/* <button onClick={() => rejectionHandle(role, mappingId)}>거절</button> */}
+          <div
+            onClick={() => rejectionHandle(role, mappingId)}
+            className={styles.uiverseCancel}>
+            <span className={styles.tooltipCancel}>요청 거절하기</span>
+            <span>X</span>
+          </div>
           {showModal && (
             <ReplyModal
               role={role}
