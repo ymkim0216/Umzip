@@ -1,12 +1,12 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import ListGroup from 'react-bootstrap/ListGroup';
-import style from './HelpList.module.css';
-import HelpSearchBar from './HelpSearchBar'
-import HelpCategorySelect from './HelpCategorySelect';
-import useStore from '../../store/helpData';
-import { motion } from "framer-motion"
-import HelpPagination from './HelpPagination';
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import ListGroup from "react-bootstrap/ListGroup";
+import style from "./HelpList.module.css";
+import HelpSearchBar from "./HelpSearchBar";
+import HelpCategorySelect from "./HelpCategorySelect";
+import useStore from "../../store/helpData";
+import { motion } from "framer-motion";
+import HelpPagination from "./HelpPagination";
 
 function HelpList() {
   const { data, loading, error, fetchData, page } = useStore();
@@ -23,13 +23,13 @@ function HelpList() {
       return `${hoursDifference}시간 전`;
     } else {
       // 24시간 이상이면 날짜 형식으로 표시
-      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      const options = { year: "numeric", month: "2-digit", day: "2-digit" };
       return postDate.toLocaleDateString(undefined, options);
     }
   }
   const navigate = useNavigate();
   function navigateHandler() {
-    navigate('/helpwriting');
+    navigate("/helpwriting");
   }
 
   useEffect(() => {
@@ -52,58 +52,117 @@ function HelpList() {
     // 데이터가 비어있으면 메시지를 표시합니다.
     return <div>No data found.</div>;
   }
+  console.log(content)
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className={style.helps}>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 10 }}
+      className={style.helps}
+    >
       <div className={style.logoContainer}>
-        <span className='d-flex align-items-center gap-1'>
+        <span className="d-flex align-items-center gap-1">
           <span className={style.logo}>도움</span>
-          <span>을 나눠요</span>
+          <span style={{ fontSize: "20px" }}>을 나눠요</span>
           <img
-            style={{ width: "2rem", height: "2rem" }}
+            style={{ width: "4rem", height: "auto", marginLeft: "15px" }}
             className=""
             src="/free-animated-icon-care-11688516.gif"
             alt=""
           />
         </span>
-        <div className='d-flex align-items-center'>
         <HelpSearchBar />
-        <HelpCategorySelect />
-        </div>
       </div>
+      <div className="row" style={{ marginLeft: "0px" }}>
+        <HelpCategorySelect />
+      </div>
+
       <div className={style.head}>
         <span className={style.headType}>글 종류</span>
         <span className={style.headTitle}>제목(댓글)</span>
         <span className={style.headPoint}>포인트</span>
         <span className={style.headDate}>날짜</span>
         <span className={style.headUserName}>작성자</span>
-        <span className={style.headLocation}>지역</span>
         <span className={style.headView}>조회수</span>
       </div>
       <ul className={style.list}>
         <ListGroup>
           {content.map((helps) => (
             <ListGroup.Item className={style.listGrop} key={helps.id}>
-              <Link style={{ textDecoration: "none", color: "black" }} to={`/helpdetail/${helps.id}`}>
-                <motion.div whileHover={{ fontWeight: "bold", textDecoration: "underline" }} className={style.content}>
-                  {helps.codeSmallId === 401 && <span style={{ color: "red" }} className={style.headType}>도와주세요</span>}
-                  {helps.codeSmallId === 402 && <span style={{ color: "#4A3AFF" }} className={style.headType}>도와줄게요</span>}
-                  {helps.codeSmallId === 403 && <span style={{ color: "gray" }} className={style.headType}>도와줬어요</span>}
-                  <span className={style.headTitle}>{helps.title}{`(${helps.commentCnt})`}</span>
+              <Link
+                style={{ textDecoration: "none", color: "black" }}
+                to={`/helpdetail/${helps.id}`}
+              >
+                <motion.div
+                  whileHover={{
+                    fontWeight: "bold",
+                    textDecoration: "underline",
+                  }}
+                  className={style.content}
+                >
+                  {helps.codeSmallId === 401 && (
+                    <span style={{ color: "#f06565", fontWeight: 'bold' }} className={style.headType}>
+                      도와주세요
+                    </span>
+                  )}
+                  {helps.codeSmallId === 402 && (
+                    <span
+                      style={{ color: "#4A3AFF", fontWeight: 'bold'  }}
+                      className={style.headType}
+                    >
+                      도와줄게요
+                    </span>
+                  )}
+                  {helps.codeSmallId === 403 && (
+                    <span style={{ color: "gray", fontWeight: 'bold'  }} className={style.headType}>
+                      도와줬어요
+                    </span>
+                  )}
+                  <span className={style.headTitle}>
+                    {helps.title}
+                    {`(${helps.commentCnt})`}
+                  </span>
                   <span className={style.headPoint}>{helps.rewardPoint}P</span>
-                  <span className={style.headDate}>{formatDate(helps.createDt)}</span>
+                  <span className={style.headDate}>
+                    {formatDate(helps.createDt)}
+                  </span>
                   <span className={style.headUserName}>{helps.writerName}</span>
-                  <span className={style.headLocation}>{helps.sigungu}</span>
                   <span className={style.headView}>{helps.readCnt}</span>
                 </motion.div>
               </Link>
             </ListGroup.Item>
           ))}
-          {content.length === 0 && <div className='mt-5 gap-3 d-flex justify-content-center align-items-center' style={{ width: "100%" }}><img style={{ width: "3rem", height: "3rem" }} src='/free-animated-icon-note-6172546.gif' /><h4 className='m-0'>아직 글이 없습니다!</h4></div>}
+          {content.length === 0 && (
+            <div
+              className="mt-5 gap-3 d-flex justify-content-center align-items-center"
+              style={{ width: "100%" }}
+            >
+              <img
+                style={{ width: "3rem", height: "3rem" }}
+                src="/free-animated-icon-note-6172546.gif"
+              />
+              <h4 className="m-0">아직 글이 없습니다!</h4>
+            </div>
+          )}
         </ListGroup>
       </ul>
-      <button className='btn btn-primary' onClick={navigateHandler}>글쓰기</button>
-      <div className='m-4 d-flex justify-content-center' style={{ width: "100%" }}>
+      <div className="d-flex justify-content-end">
+        <button
+          className="btn btn-primary"
+          style={{ backgroundColor: "#78cad5",
+                    border: 0,
+         }}
+          onClick={navigateHandler}
+        >
+          글쓰기
+        </button>
+      </div>
+
+      <div
+        className="m-4 d-flex justify-content-center"
+        style={{ width: "100%" }}
+      >
         <HelpPagination />
       </div>
     </motion.div>

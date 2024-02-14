@@ -71,23 +71,23 @@ function HelpDetail() {
   return (
     <>
       <AnimatePresence>
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ marginTop: "8rem" }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ marginTop: "4rem" }}>
           <div className={style.helps}>
             <div className="d-flex align-items-center gap-4 justify-content-between">
               <div className="d-flex align-items-center gap-4">
-                {content.codeSmallId === 401 && <span style={{ fontSize: "2rem", color: "#0077CC", fontWeight: "bold" }} >도와주세요</span>}
+                {content.codeSmallId === 401 && <span style={{ fontSize: "2rem", color: "#f06565", fontWeight: "bold" }} >도와주세요</span>}
                 {content.codeSmallId === 402 && <span style={{ fontSize: "2rem", color: "#0077CC", fontWeight: "bold" }}>도와줄게요</span>}
                 {content.codeSmallId === 403 && <span style={{ fontSize: "2rem", color: "#0077CC", fontWeight: "bold" }} >도와줬어요</span>}
-                <h4 className="m-0">제목: {content.boardTitle}</h4>
+                <h4 className="m-0"> {content.boardTitle}</h4>
               </div>
               {!content.sameMember && <span><button className="btn btn-success " onClick={handlePointGive}>도움 받았어요!</button> 포인트: {content.rewardPoint}P</span> }
             </div>
             <div>
               <div className="d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center gap-4">
-                  <span className="m-0">작성자 : </span>
+                <div className="d-flex align-items-center gap-2">
+                  <span className="m-0"></span>
                   <div className="d-flex align-items-center gap-2">
-                    <motion.img  whileHover={{y:-5,cursor:"pointer"}} onClick={handleClick}  className="rounded-pill" style={{ width: "4rem" }} src={content.writerImageUrl} />
+                    <motion.img  whileHover={{y:-5,cursor:"pointer"}} onClick={handleClick}  className="rounded-pill" style={{ width: "2rem" }} src={content.writerImageUrl} />
                     <span className="m-0">{content.writerName}</span>
                   </div>
                 </div>
@@ -95,7 +95,7 @@ function HelpDetail() {
               </div>
 
             </div>
-            <div>{content.boardContent}</div>
+           
             <div>{content.imagePathList && content.imagePathList.length > 0 && ( //사진이 없을 경우엔 나타내지 않음
               <Swiper
                 modules={[Navigation, Pagination]}
@@ -125,6 +125,7 @@ function HelpDetail() {
                         margin: '0 auto', // 가로 중앙 정렬을 위한 margin 설정
                         display: 'flex', // Flex 사용
                         justifyContent: 'center', // 가로 중앙 정렬
+                        borderRadius: '8px',
                         alignItems: 'center', // 세로 중앙 정렬
                       }}
                     />
@@ -132,9 +133,10 @@ function HelpDetail() {
                 ))}
               </Swiper>
             )}</div>
-            <div className="d-flex gap-3" style={{ marginLeft: "auto" }}>
+             <div style={{marginLeft: '20px'}}>{content.boardContent}</div>
+            <div className="d-flex gap-3" style={{ marginLeft: "20px" }}>
               <span>조회수 : {content.readCnt}</span>
-              <span>댓글 수 : {content.boardCommentCnt}</span>
+              <span>댓글수 : {content.boardCommentCnt}</span>
             </div>
             {/* {content.sameMember === true && (
               <div>
