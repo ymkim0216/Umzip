@@ -17,7 +17,7 @@ export default function RecommendMain() {
     // location.state에서 데이터를 추출합니다.
 
     const data = location.state.axios_data.result
-    console.log(data)
+    console.log(location.state)
     // console.log(location.state)
     // console.log(location.state.userInput)
     const userInput = location.state.userInput
@@ -37,7 +37,7 @@ export default function RecommendMain() {
                 axios_CLE_reservation(userChoice);
             }
             const { token } = useAuthStore.getState();
-            console.log(token)
+            // console.log(token)
             // 로딩 상태 변경
             setIsLoading(true);
 
@@ -68,12 +68,12 @@ export default function RecommendMain() {
             "moveList": userInput.delivery.moveList, // 실제 이사 목록 값으로 교체 (문자열)
             "sigungu": userInput.delivery.sigungu // 실제 sigungu 값으로 교체 (긴 정수)
         }
-
+        console.log(delivery)
         const price = userInput.price
         console.log(memberId)
         const companys = memberId
         // console.log(companys)
-
+        console.log(userInput.imageFileList)
         const selectedFiles = userInput.imageFileList[0]
         const formData = new FormData()
         formData.append("delivery", new Blob([JSON.stringify(delivery)], { type: "application/json" }));
@@ -81,19 +81,16 @@ export default function RecommendMain() {
         formData.append("companys", new Blob([JSON.stringify(companys)], { type: "application/json" }));
 
         // 이미지 파일들은 별도로 추가
-        selectedFiles.forEach((fileObj, index) => {
-            formData.append(`imageFileList[${index}]`, fileObj.file);
+        selectedFiles.forEach((fileObj) => {
+            // 파일 객체를 개별적으로 추가
+            formData.append('imageFileList', fileObj.file);
         });
+
         console.log(formData)
         try {
             const response = await api.post(
                 '/delivery/user/reservation',
                 formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }
-                }
             );
 
             console.log(response)
@@ -130,18 +127,15 @@ export default function RecommendMain() {
         formData.append("companys", new Blob([JSON.stringify(companys)], { type: "application/json" }));
 
         // 이미지 파일들은 별도로 추가
-        selectedFiles.forEach((fileObj, index) => {
-            formData.append(`imageFileList[${index}]`, fileObj.file);
-        });
+        selectedFiles.forEach((fileObj) => {
+            // 파일 객체를 개별적으로 추가
+            formData.append('imageFileList', fileObj.file);
+          });
+      
         try {
             const response = await api.post(
                 '/clean/user/reservation',
                 formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    }
-                }
             );
 
 

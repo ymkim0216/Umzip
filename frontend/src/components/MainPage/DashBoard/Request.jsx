@@ -5,7 +5,8 @@ import StatusChange from './Status_Change';
 import { Client } from "@stomp/stompjs";
 import useAuthStore from '../../../store/store';
 
-export default function Requests({setReviewId,setServiceId , setRequestId, Id, setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
+export default function Requests({ setReviewId, setServiceId, setRequestId, Id, setOpenRecommendModal, setChoiceCompanyId, isAll, setRequestList, requestList, date, orderName, orderNumber, status, list }) {
+    // console.log(list)
     const [chatRoom, setChatRoom] = useState("")
     const scrollToBottom = () => {
         // 스크롤 위치를 항상 맨 아래로 조절
@@ -207,11 +208,22 @@ export default function Requests({setReviewId,setServiceId , setRequestId, Id, s
                     </motion.div>
                 )}
             </AnimatePresence>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className='rounded-3 mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative' style={{ border: '1px solid #006EEE', minHeight: '6rem' }}>
-                <h5 className="m-0 col-md-2">{date}</h5>
-                <h5 className="m-0 col-md-2">{orderName}</h5>
-                <h5 className="m-0 col-md-2">{orderNumber}</h5>
-                <div className="m-0 col-md-2">
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className=' rounded- mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative'
+                style={{
+                    border: '2px solid',
+                    borderImage: 'linear-gradient(to bottom, #ebbba7, #cfc7f8)',
+                    borderImageSlice: 2,
+                     // 원하는 정도의 border-radius 값을 설정해보세요
+                    minHeight: "6rem",
+                }}>
+                <h5 className="m-0 col-2">{date}</h5>
+                <h5 className="m-0 col-2">{orderName}</h5>
+                <h5 className="m-0 col-2">{orderNumber}</h5>
+                <div className="m-0 col-2">
                     <StatusChange status={status} />
                 </div>
                 <div className="col-md-2 ">
@@ -229,8 +241,9 @@ export default function Requests({setReviewId,setServiceId , setRequestId, Id, s
                     <AnimatePresence>
                         {isDropdownOpen && (
                             <motion.div
-                                className="position-absolute top-100 start-0 bg-white rounded-3 shadow p-2 d-flex flex-column gap-3"
-                                style={{ zIndex: 1, width: '100%' }}
+                                className="position-absolute top-100 bg-white rounded-3 shadow p-2 d-flex flex-column gap-3"
+
+                                style={{ zIndex: 1, width: '108%',left:"-4%" }}
                                 initial="hidden"
                                 animate="visible"
                                 variants={containerVariants}
@@ -238,17 +251,18 @@ export default function Requests({setReviewId,setServiceId , setRequestId, Id, s
                                 {list.map((data, index) => (
                                     <motion.div
 
-                                        className='shadow'
+                                        className='shadow rounded-3'
                                         style={{ backgroundColor: "white" }}
                                         key={data.companyName}
                                         variants={{ visible: { opacity: 1, y: 0 } }} initial={{ opacity: 0, y: -20 }}
                                         exit={{ opacity: 0, y: 20 }}
-                                        whileHover={{ scale: 1.02 }}
+                                        whileHover={{ scale: 1.01 }}
                                         transition={{ duration: 0.3 }}
                                     >
                                         <DropDown
-                                        setReviewId={setReviewId}
-                                        setServiceId={setServiceId}
+                                            reissuing={data.reissuing}
+                                            setReviewId={setReviewId}
+                                            setServiceId={setServiceId}
                                             memberId={data.memberId}
                                             setRequestId={setRequestId}
                                             Id={Id}

@@ -33,7 +33,7 @@ export default function RecommendReview({ tag, img, name, date, rating, text }) 
                     {tag.map((item, index) => (
                         item.tagType === 1 ?
                             (
-                                <div key={index} className="border border-primary rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
+                                <div key={index} className=" border border-primary rounded-5 justify-content-center bg-white text-center shadow p-2" style={{ width: "9rem" }}>
                                     <p className="m-0" style={{ fontSize: "0.75rem" }}>{item.tagName}</p>
                                 </div>
                             ) : (
