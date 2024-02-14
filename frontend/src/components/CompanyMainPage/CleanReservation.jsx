@@ -6,94 +6,96 @@ import Status from './Status';
 import StatusChange from './StatusChange';
 import ReplyTo from './ReplyTo';
 
-function DeliverReservation() {
+function CleanReservation() {
   const { fetchDataClean, data } = companyCleanReservation();
   const [currentPage, setCurrentPage] = useState(1); // Current page
-  const [itemsToShow, setItemsToShow] = useState(2); // 한 번에 보여줄 아이템의 수
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
   const [filterStatus, setFilterStatus] = useState(null); // 필터링할 상태 코드
+  const itemsPerPage = 5; // 보여줄 갯수
+
   const reservationList = data?.result || [];
 
+  
   // 견적서 모달
   const [modalShow, setModalShow] = useState(new Map());
   const toggleModal = (cleanId) => {
     setModalShow((prev) => new Map(prev).set(cleanId, !prev.get(cleanId)));
   };
-
+  
   // 새로운 마우스 오버 상태 관리
   const [hoverState, setHoverState] = useState(new Map());
-
+  
   // 마우스 오버 이벤트 핸들러
   const handleMouseEnter = (id) => {
     setHoverState((prev) => new Map(prev).set(id, true));
   };
-
+  
   const handleMouseLeave = (id) => {
     setHoverState((prev) => new Map(prev).set(id, false));
   };
-
+  
   console.log(data);
-
+  
   useEffect(() => {
     fetchDataClean();
   }, [fetchDataClean]);
-
+  
   useEffect(() => {
     let filteredData = data?.result || [];
     if (filterStatus === 1) {
       filteredData = filteredData.filter(
         (item) => item.codeSmallId % 100 === 1
-      );
-    }
-    if (filterStatus === 2) {
-      filteredData = filteredData.filter(
-        (item) => item.codeSmallId % 100 === 2
-      );
-    }
-    if (filterStatus === 3) {
-      // 예약 확정 상태일 때 시간순 정렬
-      filteredData = filteredData.filter(
-        (item) => item.codeSmallId % 100 === 3
-      );
-      filteredData.sort(
-        (a, b) => new Date(a.startTime) - new Date(b.startTime)
-      );
-    }
-    if (filterStatus === (4 || 5)) {
-      filteredData = filteredData.filter(
-        (item) => item.codeSmallId % 100 === (4 || 5)
-      );
-    }
-    if (filterStatus === 6) {
-      filteredData = filteredData.filter(
-        (item) => item.codeSmallId % 100 === 6
-      );
-    }
-    const firstItemIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    // Slice the data based on pagination
-    setVisibleItems(filteredData.slice(firstItemIndex, firstItemIndex + ITEMS_PER_PAGE));
-  }, [data, currentPage, filterStatus]);
+        );
+      }
+      if (filterStatus === 2) {
+        filteredData = filteredData.filter(
+          (item) => item.codeSmallId % 100 === 2
+          );
+        }
+        if (filterStatus === 3) {
+          // 예약 확정 상태일 때 시간순 정렬
+          filteredData = filteredData.filter(
+            (item) => item.codeSmallId % 100 === 3
+            );
+            filteredData.sort(
+              (a, b) => new Date(a.startTime) - new Date(b.startTime)
+              );
+            }
+            if (filterStatus === (4 || 5)) {
+              filteredData = filteredData.filter(
+                (item) => item.codeSmallId % 100 === (4 || 5)
+                );
+              }
+              if (filterStatus === 6) {
+                filteredData = filteredData.filter(
+                  (item) => item.codeSmallId % 100 === 6
+                  );
+                }
+                const firstItemIndex = (currentPage - 1) * itemsPerPage;
+                // Slice the data based on pagination
+                setVisibleItems(filteredData.slice(firstItemIndex, firstItemIndex + itemsPerPage));
+              }, [data, currentPage, filterStatus, itemsPerPage]);
+              
+              const handleFilterChange = (status) => {
+                setFilterStatus(status);
+                setCurrentPage(1);
+              };
 
-  const handleFilterChange = (status) => {
-    setFilterStatus(status);
-    setCurrentPage(1);
-  };
+              const goToPage = (pageNumber) => {
+                setCurrentPage(pageNumber);
+              };
 
-  // Function to navigate to the next page
-  const nextPage = () => {
-    setCurrentPage(currentPage + 1);
-  };
+              
+              // Calculate the total number of pages
+              const totalPages = Math.ceil((filterStatus ? visibleItems.length + 1 : reservationList.length + 1) / itemsPerPage);
+              
+              const pageNumbers = [];
+              for (let i = 1; i <= totalPages; i++) {
+                pageNumbers.push(i);
+              }
 
-  // Function to navigate to the previous page
-  const prevPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(reservationList.length / ITEMS_PER_PAGE);
-
-  return (
-    <>
+              return (
+                <>
       <div className="col-md-10 p-5 gap-4 d-flex flex-column">
         <div
           className="d-flex justify-content-between mx-5"
@@ -216,10 +218,16 @@ function DeliverReservation() {
                 </AnimatePresence>
               </motion.div>
             ))}
-      <div>
-        <button onClick={prevPage} disabled={currentPage <= 1}>Previous</button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button onClick={nextPage} disabled={currentPage >= totalPages}>Next</button>
+      <div className="pagination">
+        {pageNumbers.map(number => (
+          <button
+            key={number}
+            onClick={() => goToPage(number)}
+            className={currentPage === number ? 'active' : ''}
+          >
+            {number}
+          </button>
+        ))}
       </div>
           </motion.div>
         </div>
@@ -228,4 +236,4 @@ function DeliverReservation() {
   );
 }
 
-export default DeliverReservation;
+export default CleanReservation;
