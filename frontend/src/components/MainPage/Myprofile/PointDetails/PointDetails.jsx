@@ -34,11 +34,11 @@ function PointDetails() {
           </div>
           <div className="col-3"></div>
           
-          <div class="tooltip-container">
-  <span class="tooltip">Uiverse.io</span>
-  <span class="text">500P</span>
-  <span>당신의 포인트! 👋</span>
-</div>
+          <div className={style.tooltipContainer}>
+            <span className={style.tooltip}>현재 포인트</span>
+            <span className={style.text}>{nowPoint}P</span>
+            <span>{nowPoint}🪙</span>
+          </div>
 
         </div>
 
