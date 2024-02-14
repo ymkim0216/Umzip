@@ -3,7 +3,11 @@
   width: 100%;
 }
 
-.content h2,
+.content div {
+  font-size: 1.6rem;
+}
+
+.content div,
 .content address,
 .content p {
   white-space: nowrap;

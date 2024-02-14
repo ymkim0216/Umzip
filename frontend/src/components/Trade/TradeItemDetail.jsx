@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination } from 'swiper/modules';
-import StarRating from '../Recommend/StarRating';
+import BackButton from '../PublicUse/BackButton';
 
 import classes from './TradeItemDetail.module.css';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -72,14 +72,27 @@ function TradeItemDetail({ trade }) {
   const [talkHistory, setTalkHistory] = useState([]);
   const [userinput, setUserInput] = useState('');
   const createTime = new Date(trade.createDt);
+  const options = { timeZone: 'Asia/Seoul' };
+  const createTimeKST = new Date(createTime.toLocaleString('en-US', options));
   const now = new Date();
-  const diffTime = Math.abs(now - createTime);
+  createTimeKST.setHours(createTimeKST.getHours() + 9);
+  const diffTime = Math.abs(now - createTimeKST);
   const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+  const diffMinutes = Math.floor(diffTime / (1000 * 60));
 
-  // Formatting the date part as YY-MM-DD
-  const yy = createTime.getFullYear().toString();
-  const mm = ('0' + (createTime.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed
-  const dd = ('0' + createTime.getDate()).slice(-2);
+  let displayText = '';
+
+  if (diffMinutes < 60) {
+    displayText = `${diffMinutes}분 전`;
+  } else if (diffHours < 24) {
+    displayText = `${diffHours}시간 전`;
+  } else {
+    const yy = createTimeKST.getFullYear();
+    const mm = String(createTimeKST.getMonth() + 1).padStart(2, '0');
+    const dd = String(createTimeKST.getDate()).padStart(2, '0');
+
+    displayText = `${yy}-${mm}-${dd}`;
+  }
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -97,10 +110,6 @@ function TradeItemDetail({ trade }) {
   }
 
   let navigate = useNavigate();
-
-  const goBack = () => {
-    navigate(-1);
-  };
 
   const handleClick = () => {
     navigate(`/myprofile/${trade.writerId}`);
@@ -360,10 +369,8 @@ function TradeItemDetail({ trade }) {
           </motion.div>
         )}
       </AnimatePresence>
-      <article className={classes.trade} style={{ marginTop: '8rem' }}>
-        <div className={classes.back}>
-          <button onClick={goBack}>뒤로</button>
-        </div>
+      <BackButton />
+      <article className={classes.trade} style={{ marginTop: '4rem' }}>
         <Swiper
           modules={[Navigation, Pagination]}
           spaceBetween={20}
@@ -403,7 +410,7 @@ function TradeItemDetail({ trade }) {
                 src="/filled-star.png"
                 alt="star"
                 className={classes.star}
-                style={{ width: '30px', height: 'auto' }}
+                style={{ marginTop: '2px', width: '17px', height: '20px' }}
               />
               <small className="form-text text-muted">
                 {trade.writerRating}
@@ -412,59 +419,52 @@ function TradeItemDetail({ trade }) {
           </div>
         </div>
         <div className={classes.article}>
-          <h2 className={classes.title}>{trade.title}</h2>
+          <div className={classes.title}>{trade.title}</div>
           <div className={classes.detail}>
-            <p className={classes.price}>
+            <div className={classes.price}>
               {trade.price.toLocaleString('ko-KR')}원
-            </p>
-            <p className={classes.date}>
-              {diffHours < 24 ? `${diffHours} 시간 전` : `${yy}-${mm}-${dd}`}
-            </p>
+            </div>
+            <div className={classes.date}>{displayText}</div>
           </div>
-          <p className={classes.direct}>
+          <div className={classes.direct}>
             {trade.direct ? '직거래' : '택배배송'}
-          </p>
+          </div>
           <div className={classes.content}>
             {trade.content}
-            <p className={classes.view}>조회 {trade.readCnt}</p>
+            <div className={classes.view}>조회수 : {trade.readCnt}</div>
           </div>
           <div className={classes.report}>
             {trade.writer ? (
-              <div className={classes.actions}>
-                <menu className={classes.edit}>
-                  <button>수정</button>
-                </menu>
-                <menu className={classes.cancle}>
-                  <button onClick={startDeleteHandler}>삭제</button>
+              <div>
+                <div className={classes.actions}>
+                  <menu className={classes.edit}>
+                    <button>수정</button>
+                  </menu>
+                  <menu className={classes.cancle}>
+                    <button onClick={startDeleteHandler}>삭제</button>
+                  </menu>
+                </div>
+                <menu className={classes.sold}>
+                  <button onClick={handleSale}>판매완료</button>
                 </menu>
               </div>
             ) : (
-              <div>
+              <div className={classes.buttons}>
                 <button onClick={showModal}>신고하기</button>
                 {modalShow && <ReportModal onClose={hideModal} />}
+                <menu className={classes.chat}>
+                  <button
+                    onClick={() =>
+                      toggleModal({
+                        tradeId: trade.boardId,
+                        memberId: trade.writerId,
+                      })
+                    }
+                  >
+                    채팅
+                  </button>
+                </menu>
               </div>
-            )}
-          </div>
-
-          <div>
-            {trade.writer ? (
-              <menu className={classes.sold}>
-                <button onClick={handleSale}>판매완료</button>
-              </menu>
-            ) : (
-              <menu className={classes.chat}>
-                <button
-                  onClick={() =>
-                    toggleModal({
-                      tradeId: trade.boardId,
-                      memberId: trade.writerId,
-                    })
-                  }
-                >
-                  채팅
-                </button>
-                {/* {isChatOpen && <Chat />} */}
-              </menu>
             )}
           </div>
         </div>

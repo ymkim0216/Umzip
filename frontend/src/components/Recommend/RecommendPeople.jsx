@@ -295,7 +295,7 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
                 </div>
                 <div className="d-flex col-md-8 flex-column justify-content-center gap-3">
                     <div className="gap-3 d-flex justify-content-center ">
-                        <div className="m-0  col-md-3 fw-bold d-flex align-items-center"> {imgsrc === "" ? null : <img src={imgsrc} style={{ width: "2.5rem", height: "2.5rem" }} />}<h5 className="m-0">{name}</h5></div>
+                    <div className="m-0  col-md-3 fw-bold d-flex align-items-center"> {imgsrc === "" ? null : <img className="rounded-pill" src={imgsrc} style={{ width: "2.5rem", height: "2.5rem" }} />}<h5 className="m-0">{name}</h5></div>
 
                         <div className=" col-md-3 d-flex flex-column justify-content-center align-items-center">
                             <StarRating rating={rating} />

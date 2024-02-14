@@ -28,7 +28,7 @@ const MainComponent = () => {
     const [requestMappingId, setRequestMappingId] = useState(null)
     const [requestId, setRequestId] = useState(null)
     const [serviceId, setServiceId] = useState(null)
-    const [reviewId,setReviewId] = useState(null)
+    const [reviewId, setReviewId] = useState(null)
     useEffect(() => {
         const storedUserInfo = localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo");
         if (storedUserInfo) {
@@ -130,6 +130,34 @@ const MainComponent = () => {
         CLE_Call();
         ALL_Call();
     }
+    const goConsulting = () => {
+        window.location.href = 'https://mfdo.site/#/consulting';
+    }
+    const renderPaginationButtons = () => {
+        const maxVisibleButtons = 5;
+        const maxButtonsBeforeCurrent = Math.floor(maxVisibleButtons / 2);
+        const maxButtonsAfterCurrent = Math.ceil(maxVisibleButtons / 2);
+
+        let startPage = Math.max(0, pageNumber - maxButtonsBeforeCurrent);
+        let endPage = Math.min(startPage + maxVisibleButtons - 1, pageCount - 1);
+
+        // 만약 endPage가 최대치에 도달했을 때 startPage를 조정
+        startPage = Math.max(0, endPage - maxVisibleButtons + 1);
+
+        return Array.from({ length: endPage - startPage + 1 }, (_, index) => (
+            <li key={index} className={`page-item ${pageNumber === startPage + index ? 'active' : ''} d-flex gap-1`}>
+                <motion.button
+                    whileHover={{ y: -5 }}
+                    className={`btn btn-light${pageNumber === startPage + index ? ' active' : ''}`}
+                    key={pageNumber}
+                    onClick={() => handlePageClick(startPage + index)}
+                >
+                    {startPage + index + 1}
+                </motion.button>
+            </li>
+        ));
+    };
+
     return (
         <>
             <AnimatePresence>
@@ -148,7 +176,7 @@ const MainComponent = () => {
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="col-10">
                     <div className="col-12 px-3">
                         <div className="row my-5" style={{ height: '50%' }}>
-                            <div className="col-2 p-3 gap-3 d-flex flex-column align-items-center justify-content-center text-center border-dark-subtle border-end">
+                            <div className=" col-2 p-3 gap-3 d-flex flex-column align-items-center justify-content-center text-center" >
                                 <img src={userInfo.profileImage} alt="Profile" style={{ maxWidth: '100px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }} />
                                 <h5 className="m-0">{userInfo.name}님</h5>
                                 <h5 className='m-0'>안녕하세요</h5  >
@@ -168,62 +196,113 @@ const MainComponent = () => {
                                 <div className="d-flex flex-column justify-content-center align-items-center gap-5" style={{ width: '11rem' }}>
                                     <motion.button
                                         type="button"
-                                        className="btn btn-primary btn-lg  d-flex justify-content-center gap-4 align-items-center"
-                                        style={{ width: '80%' }}
-                                        whileHover="hover"
+                                        whileHover={{ background: 'linear-gradient(to right bottom, #ACB6E5, #005bea)' }}
+                                        className="btn  btn-lg d-flex justify-content-center gap-4 align-items-center"
+                                        style={{
+                                            background: 'linear-gradient(to right bottom, #005bea, #ACB6E5)',
+                                            width: '80%',
+                                            border: 'none',
+                                            color: '#fff', // 텍스트 색상 조정
+                                            borderRadius: '8px', // 둥근 모서리 조정
+                                            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
+                                        }}
                                         onClick={() => handlestatus('전체')}
                                     >
                                         <img src="/store.png" alt="" style={{ width: '2rem', height: '2rem' }} /> 전체
                                     </motion.button>
                                     <motion.button
                                         type="button"
-                                        className="btn btn-primary btn-lg  d-flex justify-content-center gap-4 align-items-center"
-                                        style={{ width: '80%' }}
-                                        whileHover="hover"
+                                        whileHover={{ background: 'linear-gradient(to right bottom, #ACB6E5, #005bea)' }}
+                                        className="btn  btn-lg d-flex justify-content-center gap-4 align-items-center"
+                                        style={{
+                                            background: 'linear-gradient(to right bottom, #005bea, #ACB6E5)',
+                                            width: '80%',
+                                            border: 'none',
+                                            color: '#fff', // 텍스트 색상 조정
+                                            borderRadius: '8px', // 둥근 모서리 조정
+                                            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
+                                        }}
                                         onClick={() => handlestatus('청소')}
                                     >
                                         <img style={{ width: '2rem', height: '2rem' }} src="/mop (2) 1.png" alt="" /> 청소
                                     </motion.button>
+
+
                                     <motion.button
                                         type="button"
-                                        className="btn btn-primary btn-lg  d-flex justify-content-center gap-4 align-items-center"
-                                        style={{ width: '80%' }}
-                                        whileHover="hover"
+                                        whileHover={{ background: 'linear-gradient(to right bottom, #ACB6E5, #005bea)' }}
+                                        className="btn  btn-lg d-flex justify-content-center gap-4 align-items-center"
+                                        style={{
+                                            background: 'linear-gradient(to right bottom, #005bea, #ACB6E5)',
+                                            width: '80%',
+                                            border: 'none',
+                                            color: '#fff', // 텍스트 색상 조정
+                                            borderRadius: '8px', // 둥근 모서리 조정
+                                            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
+                                        }}
                                         onClick={() => handlestatus('용달')}
                                     >
                                         <img style={{ width: '2rem', height: '2rem' }} src="/truck 1.png" alt="" />
                                         <h5 className="m-0">용달</h5>
                                     </motion.button>
-                                    <motion.button type="button" className="btn btn-light btn-lg" s whileHover="hover" style={{ width: '80%' }}>
+
+                                    <motion.button onClick={goConsulting}  type="button" className="btn btn-light btn-lg" s whileHover="hover" style={{ width: '80%' }}>
                                         상담하기 <img src="/Wavy_Help.png" alt="" />
                                     </motion.button>
                                 </div>
                             </div>
-                            <div className="col-10 p-5 gap-4 d-flex flex-column" >
+                            <div className="col-10 p-5 gap-4 d-flex flex-column ">
 
                                 <div className="d-flex justify-content-between mx-5">
                                     <div className="bg-white shadow rounded-3 p-2  justify-content-center align-items-center ">
                                         <Status />
                                     </div>
                                     <div className="d-flex gap-4">
-                                        <button onClick={hadleDelivery} type="button" className="btn btn-outline-primary rounded-5 shadow-5">
-                                            용달 신청
-                                        </button>
-                                        <button onClick={hadleCleaning} type="button" className="btn btn-outline-primary rounded-5 shadow-5">
-                                            청소 신청
-                                        </button>
+                                    <motion.button
+                                        type="button"
+                                        whileHover={{ background: 'linear-gradient(to right bottom, #0072ff , #00c6ff)' }}
+                                        className="btn  d-flex justify-content-center gap-4 align-items-center"
+                                        style={{
+                                            background: 'linear-gradient(to right bottom, #00c6ff, #0072ff)',
+                                            // width: '80%',
+                                            border: 'none',
+                                            color: '#fff', // 텍스트 색상 조정
+                                            borderRadius: '8px', // 둥근 모서리 조정
+                                            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
+                                        }}
+                                        onClick={hadleDelivery}
+                                    >
+                                        <p className='m-0'>용달 신청</p>
+                                    </motion.button>
+                                    <motion.button
+                                        type="button"
+                                        whileHover={{ background: 'linear-gradient(to right bottom, #0072ff , #00c6ff)' }}
+                                        className="btn  d-flex justify-content-center gap-4 align-items-center"
+                                        style={{
+                                            background: 'linear-gradient(to right bottom, #00c6ff, #0072ff)',
+                                            // width: '80%',
+                                            border: 'none',
+                                            color: '#fff', // 텍스트 색상 조정
+                                            borderRadius: '8px', // 둥근 모서리 조정
+                                            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
+                                        }}
+                                        onClick={hadleCleaning}
+                                    >
+                                        <p className='m-0'>청소 신청</p>
+                                    </motion.button>
+        
                                     </div>
                                 </div>
-                                <div className="rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center" style={{ background: '#D9E4FF' }}>
-                                    <h5 className="m-0 col-md-2">일시</h5>
-                                    <h5 className="m-0 col-md-2">주문명</h5>
-                                    <h5 className="m-0 col-md-2">주문번호</h5>
-                                    <h5 className="m-0 col-md-2">상태</h5>
-                                    <h5 className="m-0  col-md-2">내가 보낸견적서</h5>
+                                <div className="rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center" style={{ background: 'linear-gradient(to right, #ebbba7, #cfc7f8)'  }}>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><img style={{ width: "1.65rem", height: "1.65rem" }} src='/free-icon-date-7342030.png' /><h5 style={{color:"white"}} className="m-0 ">일시</h5></div>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><img style={{ width: "1.65rem", height: "1.65rem" }} src='/check-list.png' /><h5 style={{color:"white"}} className="m-0 ">주문명</h5></div>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><img style={{ width: "1.65rem", height: "1.65rem" }} src='/free-icon-purchase-order-7387754.png' /><h5 style={{color:"white"}} className="m-0 ">주문번호</h5></div>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><img style={{ width: "1.65rem", height: "1.65rem" }} src='/free-icon-changes-3800840.png' /><h5 style={{color:"white"}} className="m-0 ">상태</h5></div>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2 '><img style={{ width:"1.65rem", height: "1.65rem" }} src='/free-icon-receipt-869698.png' /><h5 style={{color:"white"}} className="m-0 ">내가보낸견적서</h5></div>
                                 </div>
                                 <motion.div style={{ width: '100%', height: '100%' }} className='d-flex flex-column justify-content-between '>
-                                    <div style={{ height: "30rem" }}>
-                                        {getDisplayedData().length === 0 ? <div style={{ width: "100%", height: "10rem" }} className='d-flex justify-content-center align-items-center gap-3' ><h2 className='m-0'>저희 서비스를 사용해 주세요!</h2><img style={{ width: "4rem" }} src='./free-animated-icon-happy-11175727.gif' /> </div> :
+                                    <div className='d-flex flex-column gap-2' style={{ height: "30rem" }}>
+                                        {getDisplayedData().length === 0 ? <div style={{ width: "100%", height: "10rem" }} className='d-flex justify-content-center align-items-center gap-3' ><h2 className='m-0'>저희 서비스를 사용해 주세요!</h2><img style={{ width: "4rem" }} src='/free-animated-icon-happy-11175727.gif' /> </div> :
                                             getDisplayedData().map((item, index) => {
                                                 if (requestList === "전체") {
                                                     if (item.role === "DELIVER") {
@@ -271,7 +350,7 @@ const MainComponent = () => {
 
                                                     return (
                                                         <Requests
-                                                        setReviewId={setReviewId}
+                                                            setReviewId={setReviewId}
                                                             setServiceId={setServiceId}
                                                             setRequestId={setRequestId}
                                                             Id={requestList === "용달" ? item.id : item.cleanId}
@@ -292,17 +371,14 @@ const MainComponent = () => {
                                             })}
 
                                     </div>
-                                    <div className="d-flex justify-content-center" style={{ zIndex: 0 }}>
-                                        <ul className="pagination">
-                                            {Array.from({ length: pageCount }, (_, index) => (
-                                                <li key={index} className={`page-item ${pageNumber === index ? 'active' : ''}`}>
-                                                    <button className="page-link" onClick={() => handlePageClick(index)}>{index + 1}</button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
+                           
 
                                 </motion.div>
+                                <div className="d-flex justify-content-center" style={{ zIndex: 0 }}>
+                                        <ul className="d-flex gap-2 mt-3">
+                                            {renderPaginationButtons()}
+                                        </ul>
+                                    </div>
                             </div>
 
                         </div>

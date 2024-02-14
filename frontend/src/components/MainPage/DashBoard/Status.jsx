@@ -7,9 +7,9 @@ export default function Status() {
     <div className="d-flex justify-content-around align-items-center gap-2 " >
       <div className="d-flex align-items-center gap-2" style={{ fontSize: '2rem' }}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1rem" height="1rem">
-          <path fill="#8FFF00" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/>
+          <path fill="#45B649" d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z"/>
         </svg>
-        <h5 className="m-0 fw-bold" style={{ color: "#8FFF00", marginLeft: '4px',fontSize:"1rem" }}>신청중</h5>
+        <h5 className="m-0 fw-bold" style={{ color: "#45B649", marginLeft: '4px',fontSize:"1rem" }}>신청중</h5>
       </div>
 
       <div className="d-flex align-items-center  gap-2" style={{ fontSize: '14px' }}>

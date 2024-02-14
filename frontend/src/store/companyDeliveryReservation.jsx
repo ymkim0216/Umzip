@@ -14,7 +14,7 @@ const useStoreDelivery = create((set) => ({
       const response = await api.get(`/delivery/company/reservation`,
       );
       set({ data: response.data, loading: false },
-        // console.log(response.data)
+        console.log(response.data)
         );
     } catch (error) {
       set({ error, loading: false }

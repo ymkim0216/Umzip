@@ -1,5 +1,9 @@
-h1 {
+.head {
   margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 6rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .writing {

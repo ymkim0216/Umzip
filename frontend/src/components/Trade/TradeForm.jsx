@@ -58,7 +58,7 @@ function TradeForm({ method }) {
       address: address,
       content: event.target.content.value,
     };
-
+    console.log(selectedFiles)
     const formData = new FormData();
     formData.append(
       "boardTrade",

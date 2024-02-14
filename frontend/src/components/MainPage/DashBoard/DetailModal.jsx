@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react"
 import { api } from "../../../services/api"
-import {motion} from "framer-motion"
-export default function DetailModal({setServiceId,serviceId}) {
-    const [result,setResult]= useState(null)
-    const [startTime,setStartTIme] = useState(null)
-    const [endTime,setEndTIme] = useState(null)
-    const [resTime,setResTIme] = useState(null)
-    useEffect(()=>{reservationDetail()},[])
+import { motion } from "framer-motion"
+export default function DetailModal({ setServiceId, serviceId }) {
+    const [result, setResult] = useState(null)
+    const [startTime, setStartTIme] = useState(null)
+    const [endTime, setEndTIme] = useState(null)
+    const [resTime, setResTIme] = useState(null)
+    useEffect(() => { reservationDetail() }, [])
     function formatDateString(originalDateString) {
         const parsedDate = new Date(originalDateString);
-      
+
         const formattedDate = `${parsedDate.getFullYear()}-${(parsedDate.getMonth() + 1).toString().padStart(2, '0')}-${parsedDate.getDate().toString().padStart(2, '0')} ${parsedDate.getHours().toString().padStart(2, '0')}:${parsedDate.getMinutes().toString().padStart(2, '0')}`;
-      
+
         return formattedDate;
-      }
+    }
     const reservationDetail = async () => {
         let service = ""
         console.log(serviceId)
@@ -28,8 +28,8 @@ export default function DetailModal({setServiceId,serviceId}) {
             console.log(response.data.result)
             setResult(response.data.result)
             if (service === "delivery") {
-                setStartTIme(formatDateString(response.data.result.endTime))
-                setEndTIme(formatDateString(response.data.result.startTime));
+                setStartTIme(formatDateString(response.data.result.startTime))
+                setEndTIme(formatDateString(response.data.result.endTime));
             }
             else {
                 setResTIme(formatDateString(response.data.result.reservationTime))
@@ -40,7 +40,7 @@ export default function DetailModal({setServiceId,serviceId}) {
             console.error(error);
         }
     }
-    const handleClose=()=>{
+    const handleClose = () => {
         setResult(null)
         setServiceId(null)
     }
@@ -68,7 +68,7 @@ export default function DetailModal({setServiceId,serviceId}) {
                     padding: '3rem',
                     borderRadius: '8px', // 내용의 모서리 둥글게
                 }}>
-                    {serviceId.requestList === "용달" ? <div>
+                    {serviceId.requestList === "용달" ? <div><div className="d-flex flex-column p-3 rounded-4 " style={{ backgroundColor: "#EAEBEE" }}>
                         <div className="d-flex justify-content-between"><p>차량 </p><p>{result.carName}</p></div>
                         <div className="d-flex justify-content-between"><p>시작 시간</p><p>{startTime}</p></div>
                         <div className="d-flex justify-content-between"><p>끝나는 시간 </p><p>{endTime}</p></div>
@@ -89,10 +89,12 @@ export default function DetailModal({setServiceId,serviceId}) {
                                 ))}
                             </div>
                         </div>
-                        <div className="p-3 rounded-4" style={{ border: "blue 1px solid" }}>
+
+
+                    </div>
+                        <div className="p-3 rounded-4 mt-3" style={{ border: "blue 1px solid" }}>
                             <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{serviceId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p></div>
-                        </div>
-                    </div> : <div className="d-flex flex-column p-3">
+                        </div></div> :<> <div className="d-flex flex-column p-3 rounded-4 " style={{ backgroundColor: "#EAEBEE" }}>
                         <div className="d-flex justify-content-between"><p>예약시간 </p><p>{resTime}</p></div>
                         <div className="d-flex justify-content-between"><p>집크기 </p><p>{result.roomSize}</p></div>
                         <div className="d-flex justify-content-between"><p>방개수 </p><p>{result.roomCount}</p></div>
@@ -113,11 +115,12 @@ export default function DetailModal({setServiceId,serviceId}) {
                                 ))}
                             </div>
                         </div>
-                        <div className="p-3 rounded-4" style={{ border: "blue 1px solid" }}>
-                            <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{serviceId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p></div>
                         </div>
+                        <div className="p-3 rounded-4 mt-3" style={{ border: "blue 1px solid" }}>
+                            <div className="d-flex justify-content-between"><p className="m-0">가격</p><p className="m-0">{serviceId.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p></div>
+                        </div></> 
 
-                    </div>}
+                    }
 
 
 
