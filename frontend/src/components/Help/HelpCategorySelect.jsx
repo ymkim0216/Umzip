@@ -1,5 +1,5 @@
 import useStore from '../../store/helpData';
-
+import classes from './HelpCategorySelect.module.css';
 
 function HelpCategorySelect() {
   const { setcodeSmall, fetchData, codeSmall } = useStore();
@@ -13,7 +13,7 @@ function HelpCategorySelect() {
 
   return (
   <>
-   <div>
+   <div className={`${classes.select} align-items-end`} >
       <input 
         type="radio" 
         id="all" 

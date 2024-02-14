@@ -50,7 +50,7 @@ export default function AlarmComponent() {
     <>
       <div
         className="col-12 d-flex justify-content-center "
-        style={{ marginTop: '10rem', marginBottom: '10rem' }}
+        style={{ marginTop: '7rem', marginBottom: '10rem' }}
       >
         <div className="col-6 justify-content-center align-items-center">
           <p className="fw-bold">{name} 님이 받은 알람</p>
