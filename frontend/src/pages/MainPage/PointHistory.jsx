@@ -10,8 +10,18 @@ export default function PointHistory() {
   <>
     <Header />
     <BackButton />
+    <div className="row" style={{marginTop: '50px'}}>
     <PointDetails/>
-    <PointPagination />
+    </div>
+    <div className="row">
+      <dir className="col-5"></dir>
+      <dir className="col-2">
+      <PointPagination />
+      </dir>
+      <dir className="col-5"></dir>
+    
+    </div>
+    
   </>
   );
 }

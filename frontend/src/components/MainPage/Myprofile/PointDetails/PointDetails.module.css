@@ -1,15 +1,23 @@
 /* 포인트게시판 */
 .pointsContainer {
-    width: 70%; /* 전체 너비의 60%를 사용 */
+    width: 70%; 
+    margin-top: 900px;
     padding-top: 5rem;
-    margin: 0 auto; /* 상하 여백은 0, 좌우 여백은 자동으로 설정해서 중앙 정렬 */
+    margin: 0 auto; 
+    border-radius: 10px; 
+    padding: 20px; 
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
+    
+  
   }
 
 /* 포인트 상단 */
 .head {
     display: flex;
-    background-color: #f0f0f0; /* 배경색 설정 */
+    background: linear-gradient(to right, #7daede, #7a64dc);
     border-bottom: 2px solid #d0d0d0; /* 하단 경계선 설정 */
+    color: white;
+    font-weight: 400;
   }
 
 .headDate{
@@ -58,4 +66,10 @@
   
   .pageLink:hover {
     background-color: #ddd;
+  }
+  .minus{
+    color: red;
+  }
+  .plus{
+    color: green;
   }
