@@ -8,9 +8,11 @@ import ReplyTo from './ReplyTo';
 
 function DeliverReservation() {
   const { fetchDataDelivery, data } = companyDeliveryReservation();
-  const [itemsToShow, setItemsToShow] = useState(4); // 한 번에 보여줄 아이템의 수
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
   const [filterStatus, setFilterStatus] = useState(null); // 필터링할 상태 코드
+  const itemsPerPage = 5; // 보여줄 갯수
+
   const reservationList = data?.result || [];
 
   // 견적서 모달
@@ -36,8 +38,6 @@ function DeliverReservation() {
   useEffect(() => {
     fetchDataDelivery();
   }, [fetchDataDelivery]);
-
-  // console.log(data.result);
 
   useEffect(() => {
     let filteredData = data?.result || [];
@@ -70,17 +70,27 @@ function DeliverReservation() {
         (item) => item.codeSmallId % 100 === 6
       );
     }
-    setVisibleItems(filteredData.slice(0, itemsToShow));
-  }, [data, itemsToShow, filterStatus]);
+    const firstItemIndex = (currentPage - 1) * itemsPerPage;
+    // Slice the data based on pagination
+    setVisibleItems(filteredData.slice(firstItemIndex, firstItemIndex + itemsPerPage));
+  }, [data, currentPage, filterStatus, itemsPerPage]);
 
   const handleFilterChange = (status) => {
     setFilterStatus(status);
-    setItemsToShow(4); // 필터 변경 시 보여주는 아이템 수를 초기화
+    setCurrentPage(1);
   };
 
-  const handleShowMore = () => {
-    setItemsToShow(itemsToShow + 3); // 더 보기 버튼 클릭 시 3개 아이템 추가
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
+
+    // 페이지 계산
+    const totalPages = Math.ceil((filterStatus ? visibleItems.length + 1 : reservationList.length + 1) / itemsPerPage);
+  
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
 
   return (
     <>
@@ -205,9 +215,17 @@ function DeliverReservation() {
                 </AnimatePresence>
               </motion.div>
             ))}
-            {itemsToShow < reservationList.length && (
-              <button onClick={handleShowMore}>더 보기</button>
-            )}
+      <div className="pagination">
+        {pageNumbers.map(number => (
+          <button
+            key={number}
+            onClick={() => goToPage(number)}
+            className={currentPage === number ? 'active' : ''}
+          >
+            {number}
+          </button>
+        ))}
+      </div>
           </motion.div>
         </div>
       </div>

@@ -8,7 +8,7 @@ import ReplyTo from './ReplyTo';
 
 function CleanReservation() {
   const { fetchDataClean, data } = companyCleanReservation();
-  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
   const [filterStatus, setFilterStatus] = useState(null); // 필터링할 상태 코드
   const itemsPerPage = 5; // 보여줄 갯수
@@ -33,9 +33,7 @@ function CleanReservation() {
   const handleMouseLeave = (id) => {
     setHoverState((prev) => new Map(prev).set(id, false));
   };
-  
-  console.log(data);
-  
+    
   useEffect(() => {
     fetchDataClean();
   }, [fetchDataClean]);
