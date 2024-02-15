@@ -1,7 +1,7 @@
 .trades {
   margin: 2rem auto;
   width: 80%;
-  background-color: #F8F6F6;
+  background-color: #b6d8f83a;
   border-radius: 4px;
   display: table;
 }
@@ -67,8 +67,7 @@
 
 .item img {
   width: 100%;
-  min-height: 270px;
-  max-height: 270px;
+  height: 65%;
   object-fit: cover;
   object-position: center;
 }

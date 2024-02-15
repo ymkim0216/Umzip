@@ -77,16 +77,20 @@
 .main {
   display: flex;
   justify-content: right; 
+  margin-bottom: 10px;
+  margin-right: 20px;
+  width: 100%;
+  
   }
 .tooltipContainer {
-  --background: #00CCCC;
-  --color: #00CCCC;
+  --background:  linear-gradient(to right, #7daede, #7a64dc);
+  --color: #7a64dc;
   position: relative;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   font-size: 18px;
   font-weight: 600;
   color: var(--color);
-  padding: 0.7em 1.8em;
+  padding: 1em 3em;
   border-radius: 8px;
   text-transform: uppercase;
   height: 40px;
@@ -117,9 +121,9 @@
   height: 100%;
   border-radius: 8px;
   opacity: 1;
-  background-color: var(--background);
+  background-color: var(#7a64dc);
   z-index: -1;
-  border: 2px solid var(--background);
+  border: 2px solid var(#7a64dc);
   transform: scale(0);
   transform-origin: 0;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
@@ -137,7 +141,7 @@
   left: 50%;
   height: 100%;
   transform: translateX(-50%);
-  padding: 0.3em 0.6em;
+  padding: 0.5em 1em; 
   opacity: 0;
   pointer-events: none;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
@@ -150,7 +154,7 @@
   font-weight: 400;
   font-size: 14px;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-  width: 120px; /* Adjust the width here */
+  width: 120px; /* Adjust the width here */ 
 }
 
 .tooltip::before {
@@ -181,6 +185,7 @@
 
 .tooltipContainer:hover span:last-child {
   transform: scale(1);
+  color: #7a64dc;
   left: 0;
 }
 
