@@ -138,7 +138,7 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
 
         let service = "";
         if (status === "용달") {
-            service = "deliver";
+            service = "delivery";
         } else {
             service = "clean";
         }
@@ -260,7 +260,7 @@ export default function RecommendPeople({ experience, status, memberId, userChoi
                                 <div style={{ marginTop: "auto" }}>
                                     <form className='d-flex justify-content-around' onSubmit={(e) => { e.preventDefault(); sendMessage(); setUserInput(''); }}>
                                         <input value={userinput} className='col-10 border px-3 bg-white shadow-lg rounded-3' type='text' onChange={handleinput} />
-                                        <button type="submit" className='btn btn-primary rounded-4'><img src='./Paper_Plane.png' /></button>
+                                        <button type="submit" className='btn btn-primary rounded-4'><img src='/Paper_Plane.png' /></button>
                                     </form>
                                 </div>
 

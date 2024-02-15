@@ -37,7 +37,7 @@ export default function DropDown({ reissuing, setReviewId, setServiceId, memberI
             className='rounded-3 p-2 d-flex justify-content-around text-center align-items-center position-relative '
                 style={{
                     border: '2px solid',
-                    borderImage: 'linear-gradient(to right, #cfc7f8, #a6c1ee)',
+                    borderImage: 'linear-gradient(to left, #005bea, #ACB6E5)',
                     borderImageSlice: 2, // Stretch the gradient across the entire border
                     minHeight: "8rem",
                     borderRadius: '3rem'

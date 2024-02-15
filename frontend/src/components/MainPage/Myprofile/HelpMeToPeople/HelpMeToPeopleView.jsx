@@ -44,7 +44,9 @@ export default function HelpMeToPeopleView({id, setHelpYouList, helpYouList, hel
             <div className="d-flex flex-column   " >
             <div className="mb-3 d-flex gap-2 align-items-center" style={{ borderBottom: "1px solid " }}><img style={{width:"3rem" ,height:"3rem"}} src="/free-animated-icon-kindness-9534941.gif"/><h3 className="m-0">도움 내역</h3></div>
                 <AnimatePresence mode="wait">
-                    <motion.div className="d-flex flex-column gap-4" >
+                    <motion.div initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 50 }}  className="d-flex flex-column gap-4" >
                         {helpYouList.map((item, index) => (
                             <HelpMeToPeopleProfile createDt={item.createDt} writerName={item.writerName} codeSmallName={item.codeSmallName} id={item.boardId} key={index} title={item.title} point={item.point} />
                         ))}

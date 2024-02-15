@@ -428,7 +428,7 @@ export default function DeliveryForm() {
                 <div className="col-3">
                   <Calendar setStartDate={setStartDate} startDate={startDate} />
                 </div>
-                <h3 className="m-0 col-6">일</h3>
+                <h3 className="m-0 col-6 text-center">일에</h3>
               </div>
 
               <div>
