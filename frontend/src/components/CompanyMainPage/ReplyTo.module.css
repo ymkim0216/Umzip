@@ -192,3 +192,37 @@ svg:hover .tooltipChat {
   background: linear-gradient(320deg, #f06cf5,rgb(213, 11, 235));
   color: #ffffff;
 }
+
+/* 취소 또는 거절되어진 항목 아이콘 */
+.rejectedOfferContainer {
+  display: inline-flex;
+  align-items: center;
+  background-color: red;
+  color: white;
+  padding: 10px;
+  border-radius: 20px; /* Adjust as needed for a circular shape */
+  font-size: 20px; /* Set the text size */
+}
+
+.rejectedOfferIcon {
+  width: 20px; /* Set icon width */
+  height: 20px; /* Set icon height */
+  margin-left: 8px; /* Space between text and icon */
+}
+
+/* 완료된 항목 */
+.clearOfferContainer {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgb(0, 34, 255);
+  color: white;
+  padding: 10px;
+  border-radius: 20px; /* Adjust as needed for a circular shape */
+  font-size: 20px; /* Set the text size */
+}
+
+.clearOfferIcon {
+  width: 20px; /* Set icon width */
+  height: 20px; /* Set icon height */
+  margin-left: 8px; /* Space between text and icon */
+}

@@ -103,13 +103,28 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
       )}
 
       {/* 제안 거절시 */}
-      {code === 4 && <h5>거절한 제안</h5>}
+      {code === 4 && (
+        <div className={styles.rejectedOfferContainer}>
+          <h5>Rejected offer</h5>
+          <img src="/cancel.png" className={styles.rejectedOfferIcon} alt="Cancel" />
+        </div>
+      )}
 
       {/* 제안 취소시 */}
-      {code === 5 && <h5>취소된 제안</h5>}
+      {code === 5 && (
+        <div className={styles.rejectedOfferContainer}>
+          <h5>Rejected offer</h5>
+          <img src="/cancel.png" className={styles.rejectedOfferIcon} alt="Cancel" />
+        </div>
+      )}
 
       {/* 업무 완료시 */}
-      {code === 6 && <h5>완료된 업무</h5>}
+      {code === 6 && (
+        <div className={styles.clearOfferContainer}>
+          <h5>Rejected offer</h5>
+          <img src="/cancel.png" className={styles.clearOfferIcon} alt="Cancel" />
+        </div>
+      )}
     </div>
   );
 }
