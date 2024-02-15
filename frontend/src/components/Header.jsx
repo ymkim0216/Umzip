@@ -49,52 +49,52 @@ const Header = () => {
   //대시보드
   const dashBoardChangeImage =() =>{
     const imgElement = document.getElementById('dashBoard')
-    imgElement.src = '/free-animated-icon-upcoming-12146104.gif'; // 호버
+    imgElement.src = '/dashboardIcon.gif'; // 호버
     imgElement.style.width = '1.7rem'; // 너비 조정
     imgElement.style.height = 'auto'; // 높이 자동 조정
   }
   const dashBoardResetImage = ()=> {
     const imgElement = document.getElementById('dashBoard');
-    imgElement.src = '/free-animated-icon-upcoming-12146104-static.png'; // 호버 out
+    imgElement.src = '/dashboardIcon-static.png'; // 호버 out
     imgElement.style.width = '1.5rem'; // 너비 조정
     imgElement.style.height = 'auto'; // 높이 자동 조정
   }
   //중고
   const tradeChangeImage =() =>{
     const imgElement = document.getElementById('trade')
-    imgElement.src = "/free-animated-icon-handshake-6416336.gif"; // 호버
+    imgElement.src = '/saleIcon2.gif'; // 호버
     imgElement.style.width = '1.7rem'; // 너비 조정
     imgElement.style.height = 'auto'; // 높이 자동 조정
   }
   const tradeResetImage = ()=> {
     const imgElement = document.getElementById('trade')
-    imgElement.src = "/free-animated-icon-best-price-11679061-static.png"; // 호버 out
+    imgElement.src = '/saleIcon2-static.png'; // 호버 out
     imgElement.style.width = '1.5rem'; // 너비 조정
     imgElement.style.height = 'auto'; // 높이 자동 조정
   }
   //도움
   const helpChangeImage =() =>{
     const imgElement = document.getElementById('help')
-    imgElement.src = "/free-animated-icon-care-11688376.gif";
+    imgElement.src = '/careIcon.gif';
     imgElement.style.width = '1.7rem'; // 너비 조정
     imgElement.style.height = 'auto'; // 높이 자동 조정
   }
   const helpResetImage = ()=> {
     const imgElement = document.getElementById('help')
-    imgElement.src = "/free-animated-icon-care-11688376-static.png"
+    imgElement.src = '/careIcon-static.png';
     imgElement.style.width = '1.5rem'; // 너비 조정
     imgElement.style.height = 'auto'; // 높이 자동 조정
   }
   //알람
   const alarmChangeImage =() =>{
     const imgElement = document.getElementById('alarm')
-    imgElement.src = "/free-animated-icon-notifications-11919490.gif"
+    imgElement.src = '/alarmIcon.gif'
     imgElement.style.width = '1.7rem'; // 너비 조정
     imgElement.style.height = 'auto'; // 높이 자동 조정
   }
   const alarmResetImage = ()=> {
     const imgElement = document.getElementById('alarm')
-    imgElement.src = "/free-animated-icon-notification-bell-11186843-static.png"
+    imgElement.src = '/alarmIcon-static.png';
     imgElement.style.width = '1.5rem'; // 너비 조정
     imgElement.style.height = 'auto'; // 높이 자동 조정
   }
@@ -147,7 +147,7 @@ const Header = () => {
                     
                       id ="dashBoard"
                       style={{ width: "1.5rem", height: "auto", marginRight: "5px"}}
-                      src="/free-animated-icon-upcoming-12146104-static.png"
+                      src='/dashboardIcon-static.png'
                     />
                     <p className="m-0">대시보드</p>
                   </div>
@@ -169,7 +169,7 @@ const Header = () => {
                           id ="trade"
                           style={{ width: "1.5rem", height: "auto", marginRight: "5px"}}
                           className=""
-                          src="/free-animated-icon-best-price-11679061-static.png"
+                          src='/saleIcon2-static.png'
                           alt=""
                         />
                         <p className="m-0">중고</p>
@@ -190,7 +190,7 @@ const Header = () => {
                         id ="help"
                         style={{ width: "1.5rem", height: "auto", marginRight: "5px"}}
                           className=""
-                          src="/free-animated-icon-care-11688376-static.png"
+                          src='/careIcon-static.png'
                           alt=""
                         />
                         <p className="m-0">도움</p>
@@ -211,8 +211,8 @@ const Header = () => {
                   <div className="d-flex align-items-center gap-1" onMouseOver={alarmChangeImage} onMouseOut={alarmResetImage}>
                     <img
                     id ="alarm"
-                      src="/free-animated-icon-notification-bell-11186843-static.png"
-                      style={{ width: "1.5rem", height: "auto", marginRight: "5px"}}
+                      src= '/alarmIcon-static.png'
+                      style={{ width: "1.4rem", height: "auto", marginRight: "5px"}}
                     />
                     <p className="m-0">알림</p>
                   </div>
