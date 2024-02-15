@@ -54,7 +54,7 @@ function Trade() {
           
           <Col lg={1}></Col>
           <Col className='p-2' sm={6} lg={3}>
-            <div className='p-2' style={{ backgroundColor: '#e5f7ff', border: 'solid 2px #fefefe', borderRadius: '10px'}}>
+            <div className='p-2' style={{ backgroundColor: '#e3f5ff', border: 'solid 4px #fefefe', borderRadius: '10px'}}>
               <div  className='d-flex justify-content-center align-items-center'>
                 <h4> 🛒 모호한 가격은 끝!</h4> 
               </div>
@@ -66,7 +66,7 @@ function Trade() {
             </div>
           </Col>
           <Col className='p-2' sm={6} lg={3}>
-            <div className='p-2' style={{ backgroundColor: '#f0f5fe', borderRadius: '10px'}}>
+            <div className='p-2' style={{ backgroundColor: '#e3f5ff', border: 'solid 4px #fefefe', borderRadius: '10px'}}>
               <div  className='d-flex justify-content-center align-items-center'>
                 <h4> 💪 믿음직한 업체 </h4> 
               </div>
@@ -78,7 +78,7 @@ function Trade() {
             </div>
           </Col>
           <Col className='p-2' sm={6} lg={3}>
-            <div className='p-2' style={{ backgroundColor: '#f0f5fe', borderRadius: '10px'}}>
+            <div className='p-2' style={{ backgroundColor: '#e3f5ff', border: 'solid 4px #fefefe', borderRadius: '10px'}}>
               <div  className='d-flex justify-content-center align-items-center'>
                 <h4> 💎 돈이되는 짐정리 </h4> 
               </div>
@@ -93,7 +93,7 @@ function Trade() {
           
           <Col lg={2}></Col>
           <Col className='p-2' sm={6} lg={3}>
-            <div className='p-2' style={{ backgroundColor: '#f0f5fe', borderRadius: '10px'}}>
+            <div className='p-2' style={{ backgroundColor: '#e3f5ff', border: 'solid 4px #fefefe', borderRadius: '10px'}}>
               <div  className='d-flex justify-content-center align-items-center'>
                 <h4> 🧔 동네 추천 업체</h4> 
               </div>
@@ -105,7 +105,7 @@ function Trade() {
             </div>
           </Col>
           <Col className='p-2' sm={6} lg={3}>
-            <div className='p-2' style={{ backgroundColor: '#f0f5fe', borderRadius: '10px'}}>
+            <div className='p-2' style={{ backgroundColor: '#e3f5ff', border: 'solid 4px #fefefe', borderRadius: '10px'}}>
               <div  className='d-flex justify-content-center align-items-center'>
                 <h4> 👓 간편한게 최고야 </h4> 
               </div>
@@ -117,7 +117,7 @@ function Trade() {
             </div>
           </Col>
           <Col className='p-2' sm={6} lg={3}>
-            <div className='p-2' style={{ backgroundColor: '#f0f5fe', borderRadius: '10px'}}>
+            <div className='p-2' style={{ backgroundColor: '#e3f5ff', border: 'solid 4px #fefefe', borderRadius: '10px'}}>
               <div  className='d-flex justify-content-center align-items-center'>
                 <h4> 💗 따뜻한 이웃간 정</h4> 
               </div>
