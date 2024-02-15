@@ -1,24 +1,24 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import TradesList from '../../components/Trade/TradesList';
-import SearchBar from '../../components/Trade/SearchBar';
-import Header from '../../components/Header';
-import Chat from '../../components/Chat/Chat';
-import classes from './Trade.module.css';
-import Loading from '../../components/PublicUse/Loading';
+import TradesList from "../../components/Trade/TradesList";
+import SearchBar from "../../components/Trade/SearchBar";
+import Header from "../../components/Header";
+import Chat from "../../components/Chat/Chat";
+import classes from "./Trade.module.css";
+import Loading from "../../components/PublicUse/Loading";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCirclePlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 
-import { api } from '../../services/api';
+import { api } from "../../services/api";
 
 function Trade() {
   const navigate = useNavigate();
   const [trades, setTrades] = useState([]);
   const [page, setPage] = useState(1);
   const pageSize = 12;
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
@@ -32,7 +32,7 @@ function Trade() {
       setTrades((prevTrades) => [...prevTrades, ...newTrades]);
       setHasMore(newTrades.length === pageSize);
     } catch (error) {
-      console.error('Failed to fetch trades', error);
+      console.error("Failed to fetch trades", error);
     } finally {
       setLoading(false);
     }
@@ -61,10 +61,22 @@ function Trade() {
       {loading ? (
         <Loading />
       ) : (
-        <article style={{ marginTop: '7rem', width : '90%', margin: '0 auto'}}>
-          <div className={classes.head}>
-            <h1>중고 거래</h1>
-            <div className={classes.search}>
+        <article style={{ width: "90%", margin: "0 auto" , marginTop: '8rem'}}>
+          <div className={`${classes.head} row`} >
+            <div
+              className="col-10 "
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <h1 style={{marginLeft: '20px'}}>중고 거래</h1>
+              <img
+                src="/saleIcon2.gif"
+                style={{ width: "4rem", height: "4rem", marginLeft: '7px' }}
+              ></img>
+            </div>
+            <div
+              className={`${classes.search} col-2 d-flex flex-column justify-content-end`}
+              style={{ }}
+            >
               <SearchBar onSearch={handleSearch} />
             </div>
           </div>
@@ -80,7 +92,7 @@ function Trade() {
                   >
                     <FontAwesomeIcon
                       icon={faCirclePlus}
-                      style={{ paddingRight: '10px' }}
+                      style={{ paddingRight: "10px" }}
                     />
                     더보기
                   </button>
@@ -88,11 +100,11 @@ function Trade() {
               )}
             </>
           ) : (
-            <div style={{marginLeft: '10%' }}>검색결과가 없습니다.</div>
+            <div style={{ marginLeft: "10%" }}>검색결과가 없습니다.</div>
           )}
           <div className={classes.writing}>
             <button
-              onClick={() => navigate('/tradewriting')}
+              onClick={() => navigate("/tradewriting")}
               className={classes.writingBtn}
             >
               글 쓰기
