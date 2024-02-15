@@ -37,7 +37,7 @@ function Trade() {
           <Col lg={1}></Col>
           <Col sm={12} lg={12}>
             <div style={{ position: "relative" }}>
-              <img src="/titleImage.png" style={titleImageStyle} />
+              <img src="/titleImage.gif" style={titleImageStyle} />
               <div className='d-flex justify-content-center align-items-center' style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
                 <motion.button
                   whileHover={{ background: 'linear-gradient(to right bottom, #0052D4 , #6FB1FC)' }}
