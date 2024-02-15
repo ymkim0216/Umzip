@@ -11,6 +11,8 @@ function DeliverReservation({ chatModal }) {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
   const [filterStatus, setFilterStatus] = useState(null); // 필터링할 상태 코드
+  const userData = JSON.parse(localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo'))
+
   const itemsPerPage = 5; // 보여줄 갯수
 
   const reservationList = data?.result || [];

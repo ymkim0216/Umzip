@@ -38,7 +38,6 @@
 .head span, .listContainer span {
     text-align: center; /* 텍스트 중앙 정렬 */
     padding: 0.5rem; /* 상하 좌우 여백 설정 */
-    border-right: 30px solid #d0d0d0; /* 항목 사이의 경계선 설정 */
   }
 
 .listContainer{
@@ -75,6 +74,10 @@
   }
 
   /* 현재 포인트 */
+.main {
+  display: flex;
+  justify-content: right; 
+  }
 .tooltipContainer {
   --background: #00CCCC;
   --color: #00CCCC;
@@ -87,11 +90,10 @@
   border-radius: 8px;
   text-transform: uppercase;
   height: 40px;
-  width: 150px;
-  display: grid;
+  width: 40px;
   place-items: center;
   border: 2px solid var(--color);
-  margin-left: 1rem; /* Adjust this value to move right */
+  
 }
 
 .text {
@@ -188,6 +190,7 @@
   left: 100%;
   transform: scale(0);
 }
+
 
 @keyframes shake {
   0% {

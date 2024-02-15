@@ -33,13 +33,13 @@ function PointDetails() {
             <img src="/starIcon.gif" style={{ width: "100px" }} />
           </div>
           <div className="col-3"></div>
-          
+          <div className={style.main}>
           <div className={style.tooltipContainer}>
             <span className={style.tooltip}>현재 포인트</span>
             <span className={style.text}>{nowPoint}P</span>
-            <span>{nowPoint}🪙</span>
+            <span>{nowPoint}<span></span><img src="/coin.gif" style={{ width: "20px", marginLeft: "8px" }} /></span>
           </div>
-
+          </div>
         </div>
 
         <div className={style.head}>

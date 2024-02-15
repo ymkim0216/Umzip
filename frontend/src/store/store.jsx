@@ -61,6 +61,21 @@ const useAuthStore = create((set) => {
         set({ error: error.response?.data?.message || 'Logout failed' });
       }
     },
+    authChange: async (authNo) => {
+      try {
+        const response = await api.get(`/auth/new/${authNo}`,);
+        const { accessToken } = response.data.result;  // acess토큰 값 가져오기
+        const storage = localStorage ? localStorage : sessionStorage;  // 로컬스토리지 or 세션스토리지 확인
+        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
+        storage.setItem('token', accessToken); // 토큰 교체
+        console.log('authChange:', response);
+        
+      } catch (error) {
+        console.error('Error during logout:', error);
+        set({ error: error.response?.data?.message || 'Logout failed' });
+      }
+    },
   };
 });
 
