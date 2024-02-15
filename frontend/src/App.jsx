@@ -27,6 +27,7 @@ import RequestCleaningForm from './pages/Service/Cleaning/RequestCleaningForm';
 import SubmitCleaningEstimate from './pages/Service/Cleaning/SubmitCleaningEstimate';
 import PoinHistory from './pages/MainPage/PointHistory';
 import CompanyDashBord from './pages/CompanyPage/CompanyDashBord';
+import Landing from './pages/LandingPage/Landing'
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuthStore(); // Access the user state
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
       // </ProtectedRoute>
     ),
   },
+  {path: 'home', element: <Landing/>},
   // 회원가입
   { path: 'signup', element: <SignUp /> },
   //로그인
