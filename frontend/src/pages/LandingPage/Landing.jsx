@@ -29,10 +29,7 @@ function Trade() {
           <Col>
           </Col>
         </Row>
-        <Row className='mt-3'>
-
-        </Row>
-        <Row className="mt-4 mb-5">
+        <Row className="mb-5">
 
           <Col lg={1}></Col>
           <Col sm={12} lg={12}>
