@@ -11,12 +11,12 @@ function ReplyModal({ role, onClose, mappingId, reissuing }) {
   const [operReissuing, setReissuing] = useState(reissuing)
   const { fetchDataDelivery } = companyDeliveryReservation();
   const { fetchDataClean } = companyCleanReservation();
+  console.log(role)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const reissuing = operReissuing; // input으로부터의 값은 문자열이므로, 숫자로 변환
     const detail = event.target.message.value;
-
     await submitReplyStore(role, mappingId, reissuing, detail); // Zustand store의 함수 호출
     // 화면 즉각 반영을 위한 코드
     fetchDataDelivery()
