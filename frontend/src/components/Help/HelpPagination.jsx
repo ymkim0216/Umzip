@@ -1,18 +1,28 @@
-import style from './HelpPagination.module.css'
+
+import style from './HelpPagination.module.css'; // CSS 모듈 임포트
 import useStore from '../../store/helpData';
-import {motion} from "framer-motion"
+import { motion } from "framer-motion";
+
 function HelpPagination() {
-    const { data, page, setPage } = useStore(); // 현재 페이지와 페이지 변경 함수, 총 페이지 수를 가져옴
+    const { data, page, setPage } = useStore();
     const totalElements = data?.result?.totalElements || 1;
-    const pages = Array.from({ length: totalElements }, (_, i) => i + 1);
+    const totalPages = Math.ceil(totalElements / 10);
+    const correctedPage = page;
+    const startPage = Math.max(correctedPage - 5, 1);
+    const endPage = Math.min(correctedPage + 5, totalPages);
 
     return (
         <>
-            <motion.div  initial={{opacity:0 ,y:10}} animate={{opacity:1, y:0}} exit={{opacity:0,y:10 }}  className='d-flex justify-content-center' style={{ width: "100%" }}>
-                <div className="d-flex  gap-3">
-                    {[...Array(Math.ceil(totalElements / 10))].map((_, index) => (
-                        <motion.button whileHover={{ y: -5 }} className="btn btn-light" key={index} onClick={() => setPage(index + 1)}>
-                            {index + 1}
+            <motion.div initial={{opacity:0, y:10}} animate={{opacity:1, y:0}} exit={{opacity:0, y:10}} className='d-flex justify-content-center' style={{ width: "100%" }}>
+                <div className="d-flex gap-3">
+                    {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map(pageNumber => (
+                        <motion.button
+                            whileHover={{y:-5}}
+                            // 현재 페이지인 경우 특별한 스타일 적용
+                            className={`btn ${pageNumber === correctedPage ? style.currentPage : 'btn btn-light'}`}
+                            key={pageNumber}
+                            onClick={() => setPage(pageNumber)}>
+                            {pageNumber}
                         </motion.button>
                     ))}
                 </div>
