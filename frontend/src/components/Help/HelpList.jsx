@@ -8,30 +8,34 @@ import useStore from "../../store/helpData";
 import usePointStore from '../../store/pointData'
 import { motion } from "framer-motion";
 import HelpPagination from "./HelpPagination";
+import moment from 'moment-timezone';
+
+
 
 function HelpList() {
   const { data, loading, error, fetchData, page } = useStore();
   const { pointLoad, pointDetail } = usePointStore()
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo"))
-
-  function formatDate(dateTimeString) {
-    const currentDate = new Date();
-    const postDate = new Date(dateTimeString);
-
-    // 시간 차이 계산 (밀리초로 변환)
-    const timeDifference = currentDate - postDate;
-
-    // 24시간 이내라면 "시간 전"으로 표시
-    if (timeDifference < 24 * 60 * 60 * 1000) {
-      const hoursDifference = Math.floor(timeDifference / (60 * 60 * 1000));
-      return `${hoursDifference}시간 전`;
-    } else {
-      // 24시간 이상이면 날짜 형식으로 표시
-      const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-      return postDate.toLocaleDateString(undefined, options);
-    }
-  }
   const navigate = useNavigate();
+
+  const formatDate = (dateString) => {
+    const serverDate = moment(dateString+'Z').tz("Asia/Seoul"); // Adjust for timezone and ensure Z is capitalized for UTC offset
+    const now = moment().tz("Asia/Seoul");
+  
+    if (serverDate.isSame(now, 'day')) {
+      // If the date is today, show how many hours ago
+      const diffHours = now.diff(serverDate, 'hours');
+      return `${diffHours} 시간전`;
+    } else if (serverDate.year() === now.year()) {
+      // If the year is the same, show month and day
+      return serverDate.format('MM-DD');
+    } else {
+      // Show full date for different years
+      return serverDate.format('YYYY-MM-DD');
+    }
+  };
+
+
   function navigateHandler() {
     if (nowPoint < 50) { // 지금 포인트가 50보다 많은지 확인
       alert("최소 50포인트 이상 있어야 해요.");
@@ -136,8 +140,8 @@ function HelpList() {
                   </span>
                   <span className={style.headPoint}>{helps.rewardPoint}P</span>
                   <span className={style.headDate}>
-                    {formatDate(helps.createDt)}
-                  </span>
+          {formatDate(helps.createDt)}
+        </span>
                   <span className={style.headUserName}>{helps.writerName}</span>
                   <span className={style.headView}>{helps.readCnt}</span>
                 </motion.div>
