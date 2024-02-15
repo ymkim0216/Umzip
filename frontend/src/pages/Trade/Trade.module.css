@@ -7,7 +7,13 @@
 }
 
 .writing {
-  margin-left: 10%;
+  display: flex;
+  justify-content: right;
+  margin-right: 10%;
+  margin-bottom: 3%;
+}
+
+.writingBtn {
   background-color: #5f9fff; 
   padding: 7px;
   border-radius: 6px;

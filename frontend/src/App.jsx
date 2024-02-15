@@ -1,11 +1,8 @@
 import './App.css';
 import {
-  Navigate,
   RouterProvider,
   createBrowserRouter,
 } from 'react-router-dom';
-import useAuthStore from './store/store';
-import HomePage from './pages/MainPage/Hompage';
 import DashBoard from './pages/MainPage/DashBoard';
 import Help from './pages/Help/Help';
 import Login from './pages/Login_SignUp/Login';
@@ -27,27 +24,16 @@ import RequestCleaningForm from './pages/Service/Cleaning/RequestCleaningForm';
 import SubmitCleaningEstimate from './pages/Service/Cleaning/SubmitCleaningEstimate';
 import PoinHistory from './pages/MainPage/PointHistory';
 import CompanyDashBord from './pages/CompanyPage/CompanyDashBord';
-
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuthStore(); // Access the user state
-
-  if (!user) {
-    // If not authenticated, redirect to the login page
-    return <Navigate to="/login" replace />;
-  }
-
-  return children; // If authenticated, render the children components
-};
+import Landing from './pages/LandingPage/Landing'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      // <ProtectedRoute>
         <DashBoard />
-      // </ProtectedRoute>
     ),
   },
+  {path: 'home', element: <Landing/>},
   // 회원가입
   { path: 'signup', element: <SignUp /> },
   //로그인
@@ -60,9 +46,7 @@ const router = createBrowserRouter([
   {
     path: 'dashboard',
     element: (
-      // <ProtectedRoute>
         <DashBoard />
-      // </ProtectedRoute>
     ),
   },
   // 대시보드 업체

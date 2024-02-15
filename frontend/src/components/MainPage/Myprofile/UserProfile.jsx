@@ -3,17 +3,16 @@ import StarRating from "../../Recommend/StarRating";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { AnimatePresence, motion } from "framer-motion"
-import UsedProfile from "./SellProduct/UsedProfile";
-import UsedView from "./SellProduct/UsedView";
-import HelpMeToPeopleView from "./HelpMeToPeople/HelpMeToPeopleView";
-import HelpPeopleToMeView from "./HelpPeopleToMe/HelpPeopleToMeView";
-import BuyView from "./BuyProduct/BuyView";
-import ReviewToMeView from "./ReviewToMe/ReviewToMeView";
-import ReviewToPeopleView from "./ReviewToPeople/ReviewToPeopleView";
-import { api } from "../../../services/api";
-import RecommendModal from "../../Recommend/RecommendModal";
-
+import { AnimatePresence, motion } from 'framer-motion';
+import UsedProfile from './SellProduct/UsedProfile';
+import UsedView from './SellProduct/UsedView';
+import HelpMeToPeopleView from './HelpMeToPeople/HelpMeToPeopleView';
+import HelpPeopleToMeView from './HelpPeopleToMe/HelpPeopleToMeView';
+import BuyView from './BuyProduct/BuyView';
+import ReviewToMeView from './ReviewToMe/ReviewToMeView';
+import ReviewToPeopleView from './ReviewToPeople/ReviewToPeopleView';
+import { api } from '../../../services/api';
+import RecommendModal from '../../Recommend/RecommendModal';
 
 export default function UserProfile() {
     const [changeButton, setChangeButton] = useState("판매 물품")
@@ -60,27 +59,27 @@ export default function UserProfile() {
     // const [helpYouTotalPages, setHelpYouTotalPages] = useState(null)
     //    const myReceiveReview = async () => {
 
-    //     console.log(`${getToday(startDate)} ${isWhatTime}`)
-    //     console.log(sigungu)
-    //     try {
-    //       const response = await api.post(
-    //         '/reviews/myReceive',
-    //         {
-    //           "memberId":
-    //           "role" : a
+  //     console.log(`${getToday(startDate)} ${isWhatTime}`)
+  //     console.log(sigungu)
+  //     try {
+  //       const response = await api.post(
+  //         '/reviews/myReceive',
+  //         {
+  //           "memberId":
+  //           "role" : a
 
-    //           "limit": 5 // 실제 limit 값으로 교체 (정수)
-    //           "offset": offset
-    //         },
-    //         {
-    //           headers: {
-    //           }
-    //         }
-    //       );
-    //       console.log(response)
-    //       return response
-    //     }
-    //     catch (e) {
+  //           "limit": 5 // 실제 limit 값으로 교체 (정수)
+  //           "offset": offset
+  //         },
+  //         {
+  //           headers: {
+  //           }
+  //         }
+  //       );
+  //       console.log(response)
+  //       return response
+  //     }
+  //     catch (e) {
 
     //     }
     //   }
@@ -119,36 +118,34 @@ export default function UserProfile() {
 
     }
 
-    const axios_HelpYou = async () => {
+  const [showUsedDropDown, setShowUsedDropDown] = useState(false);
 
-        try {
-            const response = await api.get(
-                `/helps/profiles/help-you?memberId=${id}&page=1&size=5`,
+  const handleDropdownToggle = () => {
+    setShowUsedDropDown(!showUsedDropDown);
+    setShowshowHelpDropDown(false);
+    setshowHistoryDropDown(false);
+    setshowreviewDropDown(false);
+  };
 
-            );
-            console.log(response.data.result)
-            setHelpYouList(response.data.result.content)
-            setHelpYouTotalPages(response.data.result.totalElements)
-            return response
-        }
-        catch (e) {
+  const [showHelpDropDown, setShowshowHelpDropDown] = useState(false);
 
-        }
-    }
+  const handleHelpDropdownToggle = () => {
+    setShowUsedDropDown(false);
+    setShowshowHelpDropDown(!showHelpDropDown);
+    setshowHistoryDropDown(false);
+    setshowreviewDropDown(false);
+  };
 
-    const axios_HelpMe = async () => {
+  const [showHistoryDropDown, setshowHistoryDropDown] = useState(false);
 
-        try {
-            const response = await api.get(
-                `/helps/profiles/help-me?memberId=${id}&page=1&size=5`,
+  const handleHistoryDropdownToggle = () => {
+    setShowUsedDropDown(false);
+    setShowshowHelpDropDown(false);
+    setshowHistoryDropDown(!showHistoryDropDown);
+    setshowreviewDropDown(false);
+  };
 
-            );
-            // console.log(response.data.result)
-            setHelpMeList(response.data.result.content)
-            setHelpMeTotalPages(response.data.result.totalElements)
-            return response
-        }
-        catch (e) {
+  const [showreviewDropDown, setshowreviewDropDown] = useState(false);
 
         }
     }
@@ -324,77 +321,163 @@ export default function UserProfile() {
                     <p className="text-muted m-0" style={{ fontSize: "0.75rem" }}>회원탈퇴</p>
                     <p className="text-muted m-0" style={{ fontSize: "0.75rem" }}>정보수정</p>
                 </div> */}
-                <div className="d-flex flex-column" style={{ width: "80%" }}>
-                    <div className="d-flex justify-content-between">
-                        <p>이메일 : </p>
-                        <p >{myprofile.email}</p>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                        <p className="m-0">보유포인트 : </p>
-                        <p className="m-0">{myprofile.point}</p>
-                    </div>
-                    {myprofile.me && <div className="d-flex justify-content-between">
-                        <p className="m-0">전화번호 : </p>
-                        <p className="m-0">{myprofile.phone}</p>
-                    </div>}
-                    <Link to={`/mypoint/1`} style={{ fontSize: "0.75rem", marginLeft: "auto" }}>내역조회</Link>
+            <div className="d-flex flex-column" style={{ width: '80%' }}>
+              <div className="d-flex justify-content-between">
+                <p>이메일 : </p>
+                <p>{myprofile.email}</p>
+              </div>
+              <div className="d-flex justify-content-between">
+                <p className="m-0">보유포인트 : </p>
+                <p className="m-0">{myprofile.point}</p>
+              </div>
+              {myprofile.me && (
+                <div className="d-flex justify-content-between">
+                  <p className="m-0">전화번호 : </p>
+                  <p className="m-0">{myprofile.phone}</p>
                 </div>
+              )}
+              <Link
+                to={`/mypoint/1`}
+                style={{ fontSize: '0.75rem', marginLeft: 'auto' }}
+              >
+                내역조회
+              </Link>
+            </div>
 
-                <div className="d-flex justify-content-center gap-3" style={{ width: "100%" }}>
-                    {myprofile.tagList.map((items, index) => (
-                        items.tagType === 1 ? (
-                            <div key={index} className="d-flex align-items-center justify-content-center border border-primary rounded-5 bg-white col-3 text-center shadow" style={{ height: "2rem" }}>
-                                <p className="m-0" style={{ fontSize: "0.65rem" }}>{items.tagName}</p>
-                            </div>
-                        ) : (
-                            <div key={index} className="d-flex align-items-center justify-content-center border border-danger rounded-5 bg-white col-3 text-center shadow" style={{ height: "2rem" }}>
-                                <p className="m-0" style={{ fontSize: "0.65rem" }}>{items.tagName}</p>
-                            </div>
-                        )
-                    ))}
+            <div
+              className="d-flex justify-content-center gap-3"
+              style={{ width: '100%' }}
+            >
+              {myprofile.tagList.map((items, index) =>
+                items.tagType === 1 ? (
+                  <div
+                    key={index}
+                    className="d-flex align-items-center justify-content-center border border-primary rounded-5 bg-white col-3 text-center shadow"
+                    style={{ height: '2rem' }}
+                  >
+                    <p className="m-0" style={{ fontSize: '0.65rem' }}>
+                      {items.tagName}
+                    </p>
+                  </div>
+                ) : (
+                  <div
+                    key={index}
+                    className="d-flex align-items-center justify-content-center border border-danger rounded-5 bg-white col-3 text-center shadow"
+                    style={{ height: '2rem' }}
+                  >
+                    <p className="m-0" style={{ fontSize: '0.65rem' }}>
+                      {items.tagName}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
 
-                </div>
+            <h4 className="m-0">나의 평점 : {myprofile.avgScore}</h4>
+            <StarRating rating={myprofile.avgScore} />
+            <div
+              style={{ width: '100%' }}
+              className="d-flex flex-column p-4 gap-2"
+            >
+              <div
+                className="d-flex align-items-center justify-content-between"
+                style={{ position: 'relative' }}
+              >
+                <p className="m-0">중고</p>
+                <motion.button
+                  className="btn btn-light"
+                  onClick={handleDropdownToggle}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  &rarr;
+                </motion.button>
+                <AnimatePresence>
+                  {showUsedDropDown && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      className="bg-white gap-2  p-3 shadow rounded-3 d-flex flex-column justify-content-center align-items-center"
+                      style={{
+                        position: 'absolute',
+                        top: '0%',
+                        left: '110%',
+                        width: '70% ',
+                        zIndex: '10',
+                      }}
+                    >
+                      {/* 드롭다운 아이템이 여기에 들어갑니다 */}
+                      <motion.button
+                        whileHover={{ y: -5, fontWeight: 'bold' }}
+                        onClick={handleChangeButton}
+                        className="m-0 btn bg-white"
+                      >
+                        판매 물품
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ y: -5, fontWeight: 'bold' }}
+                        onClick={handleChangeButton}
+                        className="m-0 btn bg-white"
+                      >
+                        구매 물품
+                      </motion.button>
+                      {/* ... 필요한 만큼 아이템을 추가합니다 */}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
-                <h4 className="m-0">나의 평점 : {myprofile.avgScore}</h4>
-                <StarRating rating={myprofile.avgScore} />
-                <div style={{ width: "100%" }} className="d-flex flex-column p-4 gap-2">
-                    <div className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}  >
-                        <p className="m-0">중고</p>
-                        <motion.button className="btn btn-light" onClick={handleDropdownToggle} whileHover={{ x: 5 }} transition={{ duration: 0.3 }} >
-                            &rarr;
-                        </motion.button>
-                        <AnimatePresence>
-                            {showUsedDropDown && (
-                                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
-                                    className="bg-white gap-2  p-3 shadow rounded-3 d-flex flex-column justify-content-center align-items-center" style={{ position: "absolute", top: "0%", left: "110%", width: "70% ", zIndex: "10" }}>
-                                    {/* 드롭다운 아이템이 여기에 들어갑니다 */}
-                                    <motion.button whileHover={{ y: -5, fontWeight: "bold" }} onClick={handleChangeButton} className="m-0 btn bg-white">판매 물품</motion.button>
-                                    <motion.button whileHover={{ y: -5, fontWeight: "bold" }} onClick={handleChangeButton} className="m-0 btn bg-white">구매 물품</motion.button>
-                                    {/* ... 필요한 만큼 아이템을 추가합니다 */}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+              <div
+                className="d-flex align-items-center justify-content-between"
+                style={{ position: 'relative' }}
+              >
+                <p className="m-0">도움</p>
+                <motion.button
+                  className="btn btn-light"
+                  onClick={handleHelpDropdownToggle}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  &rarr;
+                </motion.button>
+                <AnimatePresence>
+                  {showHelpDropDown && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      className="bg-white gap-2  p-3 shadow rounded-3 d-flex flex-column justify-content-center align-items-center"
+                      style={{
+                        position: 'absolute',
+                        top: '0%',
+                        left: '110%',
+                        width: '70% ',
+                        zIndex: '10',
+                      }}
+                    >
+                      {/* 드롭다운 아이템이 여기에 들어갑니다 */}
+                      <motion.button
+                        whileHover={{ y: -5, fontWeight: 'bold' }}
+                        onClick={handleChangeButton}
+                        className="m-0 btn bg-white"
+                      >
+                        도움 구인
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ y: -5, fontWeight: 'bold' }}
+                        onClick={handleChangeButton}
+                        className="m-0 btn bg-white"
+                      >
+                        도움 내역
+                      </motion.button>
+                      {/* ... 필요한 만큼 아이템을 추가합니다 */}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
 
-                    <div className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}  >
-                        <p className="m-0">도움</p>
-                        <motion.button className="btn btn-light" onClick={handleHelpDropdownToggle} whileHover={{ x: 5 }} transition={{ duration: 0.3 }} >
-                            &rarr;
-                        </motion.button>
-                        <AnimatePresence>
-                            {showHelpDropDown && (
-                                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
-                                    className="bg-white gap-2  p-3 shadow rounded-3 d-flex flex-column justify-content-center align-items-center" style={{ position: "absolute", top: "0%", left: "110%", width: "70% ", zIndex: "10" }}>
-                                    {/* 드롭다운 아이템이 여기에 들어갑니다 */}
-                                    <motion.button whileHover={{ y: -5, fontWeight: "bold" }} onClick={handleChangeButton} className="m-0 btn bg-white">도움 구인</motion.button>
-                                    <motion.button whileHover={{ y: -5, fontWeight: "bold" }} onClick={handleChangeButton} className="m-0 btn bg-white">도움 내역</motion.button>
-                                    {/* ... 필요한 만큼 아이템을 추가합니다 */}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-
-                    {/* <div className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}  >
+              {/* <div className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}  >
                         <p className="m-0">활동 이력</p>
                         <motion.button className="btn btn-light" onClick={handleHistoryDropdownToggle} whileHover={{ x: 5 }} transition={{ duration: 0.3 }} >
                             &rarr;
@@ -412,40 +495,94 @@ export default function UserProfile() {
                         </AnimatePresence>
                     </div> */}
 
-                    <div className="d-flex align-items-center justify-content-between" style={{ position: "relative" }}  >
-                        <p className="m-0">후기</p>
-                        <motion.button className="btn btn-light" onClick={handlereviewDropdownToggle} whileHover={{ x: 5 }} transition={{ duration: 0.3 }} >
-                            &rarr;
-                        </motion.button>
-                        <AnimatePresence>
-                            {showreviewDropDown && (
-                                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}
-                                    className="bg-white gap-2  p-3 shadow rounded-3 d-flex flex-column justify-content-center align-items-center" style={{ position: "absolute", top: "0%", left: "110%", width: "70% ", zIndex: "10" }}>
-                                    {/* 드롭다운 아이템이 여기에 들어갑니다 */}
-                                    <motion.button whileHover={{ y: -5, fontWeight: "bold" }} onClick={handleChangeButton} className="m-0 btn bg-white">받은 후기</motion.button>
-                                    <motion.button whileHover={{ y: -5, fontWeight: "bold" }} onClick={handleChangeButton} className="m-0 btn bg-white">보낸 후기</motion.button>
-                                    {/* ... 필요한 만큼 아이템을 추가합니다 */}
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
+              <div
+                className="d-flex align-items-center justify-content-between"
+                style={{ position: 'relative' }}
+              >
+                <p className="m-0">후기</p>
+                <motion.button
+                  className="btn btn-light"
+                  onClick={handlereviewDropdownToggle}
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  &rarr;
+                </motion.button>
+                <AnimatePresence>
+                  {showreviewDropDown && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      className="bg-white gap-2  p-3 shadow rounded-3 d-flex flex-column justify-content-center align-items-center"
+                      style={{
+                        position: 'absolute',
+                        top: '0%',
+                        left: '110%',
+                        width: '70% ',
+                        zIndex: '10',
+                      }}
+                    >
+                      {/* 드롭다운 아이템이 여기에 들어갑니다 */}
+                      <motion.button
+                        whileHover={{ y: -5, fontWeight: 'bold' }}
+                        onClick={handleChangeButton}
+                        className="m-0 btn bg-white"
+                      >
+                        받은 후기
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ y: -5, fontWeight: 'bold' }}
+                        onClick={handleChangeButton}
+                        className="m-0 btn bg-white"
+                      >
+                        보낸 후기
+                      </motion.button>
+                      {/* ... 필요한 만큼 아이템을 추가합니다 */}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </div>
+        )}
 
+        <div className="d-flex col-8 flex-column " style={{ height: '100%' }}>
+          {changeButton === '판매 물품' && (
+            <UsedView
+              id={id}
+              setSellList={setSellList}
+              sellList={sellList}
+              sellTotalPages={sellTotalPages}
+            />
+          )}
+          {changeButton === '구매 물품' && (
+            <BuyView
+              id={id}
+              setBuyList={setBuyList}
+              buyTotalPages={buyTotalPages}
+              buyList={buyList}
+            />
+          )}
 
+          {changeButton === '도움 구인' && (
+            <HelpPeopleToMeView
+              id={id}
+              setHelpMeList={setHelpMeList}
+              helpMeList={helpMeList}
+              helpMeTotalPages={helpMeTotalPages}
+            />
+          )}
+          {changeButton === '도움 내역' && (
+            <HelpMeToPeopleView
+              id={id}
+              setHelpYouList={setHelpYouList}
+              helpYouList={helpYouList}
+              helpYouTotalPages={helpYouTotalPages}
+            />
+          )}
 
-
-
-
-                </div>
-            </div>}
-
-            <div className="d-flex col-8 flex-column " style={{ height: "100%" }}>
-                {changeButton === "판매 물품" && <UsedView id={id} setSellList={setSellList} sellList={sellList} sellTotalPages={sellTotalPages} />}
-                {changeButton === "구매 물품" && <BuyView id={id} setBuyList={setBuyList} buyTotalPages={buyTotalPages} buyList={buyList} />}
-
-                {changeButton === "도움 구인" && <HelpPeopleToMeView id={id} setHelpMeList={setHelpMeList} helpMeList={helpMeList} helpMeTotalPages={helpMeTotalPages} />}
-                {changeButton === "도움 내역" && <HelpMeToPeopleView id={id} setHelpYouList={setHelpYouList} helpYouList={helpYouList} helpYouTotalPages={helpYouTotalPages} />}
-
-                {/* {changeButton === "알림 내역" && <UsedView/> }
+          {/* {changeButton === "알림 내역" && <UsedView/> }
                 {changeButton === "포인트 사용이력" && <UsedView/> }       */}
 
                 {changeButton === "받은 후기" && <ReviewToMeView id={id} renew={renew} setReviewToMeList={setReviewToMeList} reviewToMeList={reviewToMeList} reviewToMeTotalPages={reviewToMeTotalPages} />}
@@ -455,4 +592,5 @@ export default function UserProfile() {
         {userInfo && userInfo.who === -1 && <div><RecommendModal companyId={userInfo.id} isOpen={isOpen} closeModal={hadleModal} /></div>}
 
     </>
+  );
 }
