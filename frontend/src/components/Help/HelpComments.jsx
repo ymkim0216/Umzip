@@ -34,10 +34,10 @@ function HelpComments({ toggleModal }) {
       }
     } else if (serverDate.year() === now.year()) {
       // 달이 같을때
-      return serverDate.format('MM-DD');
+      return serverDate.format('MM.DD');
     } else {
       // 해당사항 없을때
-      return serverDate.format('YYYY-MM-DD');
+      return serverDate.format('YYYY.MM.DD');
     }
   };
 
@@ -173,11 +173,11 @@ function HelpComments({ toggleModal }) {
                           alt="Writer"
                           className={style.writerImage}
                         />
-                        <span className={style.headPoint}>
+                        <span>
                           {item.writerName}
                         </span>
                         <div>
-                          <span className={style.headDate}>
+                          <span >
                             {formatDate(item.createDt)}
                           </span>
                         </div>
@@ -185,7 +185,7 @@ function HelpComments({ toggleModal }) {
                     </div>
                     <div className="col-8">
                       <div>
-                        <span className={style.headUserName}>
+                        <span className={style.commentBox}>
                           {item.comment}
                         </span>
                       </div>

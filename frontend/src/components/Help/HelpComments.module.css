@@ -39,3 +39,10 @@
 .writeComment{
   background: #5f9fff;
 }
+
+.commentBox {
+  background-color: #f8f9fa; /* 밝은 회색 */
+  padding: 8px; /* 내용과 테두리 사이의 여백 */
+  border-radius: 8px; /* 모서리를 둥글게 */
+  display: inline-block; /* 콘텐츠 크기에 맞게 조정 */
+}
