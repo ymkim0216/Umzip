@@ -27,7 +27,7 @@ const Map = ({ start_lat, start_lon, end_lat, end_lon , setCarDistance , setCarT
 
                 const mapInstance = new Tmapv2.Map("map_div", {
                     center: new Tmapv2.LatLng((startLatFloat + endLatFloat) / 2, (startLonFloat + endLonFloat) / 2),
-                    width: "100%",
+                    width: "400px",
                     height: "400px",
                     zoom: 7,
                     zoomControl: true,

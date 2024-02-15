@@ -61,7 +61,7 @@ export default function ReviewToMeView({ renew, id, setReviewToMeList, reviewToM
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 50 }} className="d-flex flex-column gap-4" >
                         {reviewToMeList.map((item,index) => (
-                            <ReviewToMeProfile key={index} renew={renew} createDt={item.createDt} img={item.memberImageUrl} id={item.id} tag={item.tag} tagType={item.tagType}  name={item.memberName} rating={item.score} review={item.content} />
+                            <ReviewToMeProfile memberId={item.memberId} key={index} renew={renew} createDt={item.createDt} img={item.memberImageUrl} id={item.id} tag={item.tag} tagType={item.tagType}  name={item.memberName} rating={item.score} review={item.content} />
                         ))}
                         {reviewToMeList.length === 0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 리뷰글이 없습니다!</p><img style={{ width: "3rem", height: "3rem" }} src="/free-animated-icon-note-6172546.gif" /></div>}
                     </motion.div>

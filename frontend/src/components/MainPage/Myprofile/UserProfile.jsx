@@ -19,6 +19,7 @@ export default function UserProfile() {
   const [offset, setOffSet] = useState(0)
   const [myprofile, setMyprofile] = useState("")
   const { id } = useParams();
+  
   const [openRecommendModal, setopenRecommendModal] = useState(false)
   const [userInfo, setUserInfo] = useState(null)
   //판매
@@ -57,7 +58,7 @@ export default function UserProfile() {
 
   const navigate = useNavigate()
   const axios_myprofile = async (ans) => {
-    console.log(ans)
+
     if (ans.who === 1) {
       try {
         const response = await api.get(
@@ -72,21 +73,7 @@ export default function UserProfile() {
 
       }
     }
-    else {
-      // try {
-      //     const response = await api.get(
-      //         `/company/${ans.id}`,
-      //     );
-      //     console.log(response.data.result)
-      //     setMyprofile(response.data.result)
-
-      //     return response
-      // }
-      // catch (e) {
-
-      // }
-      setIsOpen(true)
-    }
+    
 
   }
 

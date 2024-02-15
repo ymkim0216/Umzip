@@ -2,7 +2,7 @@ import { motion, useScroll } from "framer-motion"
 import StarRating from "../../../Recommend/StarRating"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-export default function ReviewToMeProfile({renew, tagType, createDt, img, id, tag, name, rating, review }) {
+export default function ReviewToMeProfile({memberId,renew, tagType, createDt, img, id, tag, name, rating, review }) {
     // console.log(createDt)
     
     const navigate = useNavigate()
@@ -30,8 +30,8 @@ export default function ReviewToMeProfile({renew, tagType, createDt, img, id, ta
     }, [id])
     const handleClick = () => {
         
-        navigate(`/myprofile/${id}`)
-        // renew()
+        navigate(`/myprofile/${memberId}`)
+        renew()
     }
     return <>
         <motion.div whileHover={{ y: -5, cursor: "pointer" }} onClick={handleClick} className="d-flex p-2 rounded-4 shadow align-items-center gap-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ width: "100%" }}>
