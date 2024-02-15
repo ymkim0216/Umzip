@@ -282,14 +282,14 @@ export default function UserProfile() {
                         <p>이메일 : </p>
                         <p >{myprofile.email}</p>
                     </div>
-                    <div className="d-flex justify-content-between">
-                        <p className="m-0">보유포인트 : </p>
-                        <p className="m-0">{myprofile.point}</p>
-                    </div>
                     {myprofile.me && <div className="d-flex justify-content-between">
                         <p className="m-0">전화번호 : </p>
                         <p className="m-0">{myprofile.phone}</p>
                     </div>}
+                    <div className="d-flex justify-content-between">
+                        <p className="m-0">보유포인트 : </p>
+                        <p className="m-0">{myprofile.point}</p>
+                    </div>
                     <Link to={`/mypoint/1`} style={{ fontSize: "0.75rem", marginLeft: "auto" }}>내역조회</Link>
                 </div>
 
