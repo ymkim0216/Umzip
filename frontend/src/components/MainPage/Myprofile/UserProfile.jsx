@@ -201,7 +201,7 @@ export default function UserProfile() {
       renew(ans)
     }
     fetchData()
-
+    setChangeButton("판매 물품")
   }, [id])
   const renew = (ans) => {
     axios_myprofile(ans)

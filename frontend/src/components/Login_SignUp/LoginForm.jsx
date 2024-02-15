@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '../../store/store';
 import classes from './LoginForm.module.css';
+import {motion} from "framer-motion"
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,7 +18,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={`container mt-5 `} >
+    <motion.div initial={{opacity:0}}  animate={{opacity:1}}   className={`container mt-5 `} >
       <div className="row justify-content-center">
         <div className="col-md-10">
           <form
@@ -121,7 +122,7 @@ const LoginForm = () => {
           {isLoading && <p>Loading...</p>}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

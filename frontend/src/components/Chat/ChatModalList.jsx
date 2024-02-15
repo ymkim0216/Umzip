@@ -29,6 +29,9 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   };
+  const truncatedTitle = chat.length > 10
+  ? chat.slice(0, 10) + '...'
+  : chat
   useEffect(() => {
     scrollToBottom();
   }, [talkHistory, openModal]);
@@ -354,7 +357,7 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
             ></img>
             <div className='text-start'>
               <p className='m-0'>{name}</p>
-              <p className='m-0'>{chat}</p>
+              <p className='m-0'>{truncatedTitle}</p>
             </div>
           </div>
           <div className='d-= position-relative p-2'>
