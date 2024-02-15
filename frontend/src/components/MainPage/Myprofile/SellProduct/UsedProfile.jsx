@@ -19,7 +19,7 @@ export default function UsedProfile({ id, img, title, status, price }) {
                         <h5>{title}</h5>
                         <h5 style={{ color: getStatusColor() }} >[{status}]</h5>
                     </div>
-                    <h5 style={{ fontSize: "1rem" }}>{price}원</h5>
+                    <h5 style={{ fontSize: "1rem" }}>{price.toLocaleString('ko-KR')}원</h5>
                 </div>
             </div>
         </motion.div >

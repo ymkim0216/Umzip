@@ -306,7 +306,7 @@ export default function UserProfile() {
                     </div>}
                     <div className="d-flex justify-content-between">
                         <p className="m-0">보유포인트 : </p>
-                        <p className="m-0">{myprofile.point}</p>
+                        <p className="m-0">{myprofile.point.toLocaleString('ko-KR')}</p>
                     </div>
                     <Link to={`/mypoint/1`} style={{ fontSize: "0.75rem", marginLeft: "auto" }}>내역조회</Link>
                 </div>
