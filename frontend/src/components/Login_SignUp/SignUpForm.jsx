@@ -26,6 +26,7 @@ const SignUpForm = () => {
   const [code, setCode] = useState('');
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [companyFormData, setCompanyFormData] = useState({});
+  const [companyCreateRequestList, setCompanyCreateRequestList] = useState([]);
   const navigate = useNavigate();
 
   const {
@@ -119,9 +120,21 @@ const SignUpForm = () => {
   };
 
   const handleCompanyDataSubmit = (companyData) => {
-    setCompanyFormData(companyData);
+    setCompanyCreateRequestList((prevList) => {
+      const isCompanyTypeExists = prevList.some(
+        (item) => item.companyType === companyData.companyType
+      );
+
+      const updatedList = isCompanyTypeExists
+        ? prevList.map((item) =>
+            item.companyType === companyData.companyType ? companyData : item
+          )
+        : [...prevList, companyData];
+
+      return updatedList.length > 2 ? updatedList.slice(0, 2) : updatedList;
+    });
+
     setIsFormVisible(false);
-    console.log(companyData);
   };
 
   const onSubmit = async (data) => {
@@ -160,47 +173,87 @@ const SignUpForm = () => {
           }
         )
       );
-      const formattedStartDate = companyFormData.startDate.replace(
-        /^(\d{4})(\d{2})(\d{2})$/,
-        '$1-$2-$3'
-      );
+      const companyCreateRequestDtoList = [];
 
-      const companyCreateRequestDtoList = {
-        companyName: companyFormData.companyName,
-        companyType: companyFormData.companyType,
-        businessNumber: companyFormData.businessNumber,
-        startDate: formattedStartDate,
-        introduction: companyFormData.introduction,
-        ceo: companyFormData.ceo,
-        address: companyFormData.address,
-        addressDetail: companyFormData.addressDetail,
-        sigungu: companyFormData.sigungu,
-      };
+      const companyFormData1 = companyCreateRequestList[0];
+
+      if (companyFormData1) {
+        const formattedStartDate = companyFormData1.startDate.replace(
+          /^(\d{4})(\d{2})(\d{2})$/,
+          '$1-$2-$3'
+        );
+
+        companyCreateRequestDtoList.push({
+          companyName: companyFormData1.companyName,
+          companyType: companyFormData1.companyType,
+          businessNumber: companyFormData1.businessNumber,
+          startDate: formattedStartDate,
+          introduction: companyFormData1.introduction,
+          ceo: companyFormData1.ceo,
+          address: companyFormData1.address,
+          addressDetail: companyFormData1.addressDetail,
+          sigungu: companyFormData1.sigungu,
+        });
+
+        if (companyFormData1.companyType === 1) {
+          payload.append(
+            'deliveryCertificate',
+            companyFormData1.deliveryCertificate.file
+          );
+          payload.append('deliveryImg', companyFormData1.deliveryImgUrl);
+          payload.append('cleanImg', '');
+        } else {
+          payload.append('deliveryImg', '');
+          payload.append('cleanImg', companyFormData1.cleanImgUrl);
+        }
+      }
+
+      if (companyCreateRequestList.length === 2) {
+        const companyFormData2 = companyCreateRequestList[1];
+
+        const formattedStartDate2 = companyFormData2.startDate.replace(
+          /^(\d{4})(\d{2})(\d{2})$/,
+          '$1-$2-$3'
+        );
+
+        companyCreateRequestDtoList.push({
+          companyName: companyFormData2.companyName,
+          companyType: companyFormData2.companyType,
+          businessNumber: companyFormData2.businessNumber,
+          startDate: formattedStartDate2,
+          introduction: companyFormData2.introduction,
+          ceo: companyFormData2.ceo,
+          address: companyFormData2.address,
+          addressDetail: companyFormData2.addressDetail,
+          sigungu: companyFormData2.sigungu,
+        });
+
+        if (companyFormData2.companyType === 1) {
+          payload.append(
+            'deliveryCertificate',
+            companyFormData2.deliveryCertificate.file
+          );
+          payload.delete('deliveryImg');
+          payload.append('deliveryImg', companyFormData2.deliveryImgUrl);
+        } else {
+          payload.delete('cleanImg');
+          payload.append('cleanImg', companyFormData2.cleanImgUrl);
+        }
+      }
+
       payload.append(
         'companyCreateRequestDtoList',
-        new Blob([JSON.stringify([companyCreateRequestDtoList])], {
+        new Blob([JSON.stringify(companyCreateRequestDtoList)], {
           type: 'application/json',
         })
       );
-
-      if (companyFormData.companyType === 1) {
-        payload.append(
-          'deliveryCertificate',
-          companyFormData.deliveryCertificate.file
-        );
-        payload.append('deliveryImgUrl', companyFormData.deliveryImgUrl);
-      } else {
-        payload.append('cleanImgUrl', companyFormData.cleanImgUrl);
-      }
 
       headers['Content-Type'] = 'multipart/form-data';
       url = 'https://i10e108.p.ssafy.io/api/company';
     }
 
-    console.log(companyFormData.deliveryCertificate);
-    console.log(payload);
-
     try {
+      console.log(payload);
       const response = await axios.post(url, payload, { headers });
       if (response.data.isSuccess) {
         alert('Join Success!');
@@ -301,19 +354,28 @@ const SignUpForm = () => {
       )}
       <div
         className="container"
-        style={{ paddingTop: '50px', paddingBottom: '100px'}}
+        style={{ paddingTop: '50px', paddingBottom: '100px' }}
       >
         <div className="row justify-content-center">
           <div className="col-md-10">
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="rounded p-4 border shadow-sm mx-auto"
-              style={{ width: '100%', maxWidth: '70%' , backgroundColor: 'white'}}
+              style={{
+                width: '100%',
+                maxWidth: '70%',
+                backgroundColor: 'white',
+              }}
             >
               <div style={{ maxWidth: '90%', margin: 'auto' }}>
                 <div style={{ textAlign: 'center' }}>
-                  <img src='/signup-human.gif' style={{width:'100px'}}></img>
-                  <h2 className="mb-4" style={{ fontWeight: '800', padding: '15px' }}>회원가입</h2>
+                  <img src="/signup-human.gif" style={{ width: '100px' }}></img>
+                  <h2
+                    className="mb-4"
+                    style={{ fontWeight: '800', padding: '15px' }}
+                  >
+                    회원가입
+                  </h2>
                   <div style={{ marginBottom: '1rem' }}>
                     <button
                       type="button"
@@ -322,7 +384,6 @@ const SignUpForm = () => {
                           ? `btn-primary text-white ${classes.signUpClickColor}`
                           : `btn-outline-primary ${classes.signUpDefaultColor}`
                       } rounded-pill py-3 mx-2`}
-                      
                       onClick={() => handleButtonClick('normal')}
                     >
                       일반 가입
@@ -331,8 +392,8 @@ const SignUpForm = () => {
                       type="button"
                       className={`btn ${
                         selectedButton === 'company'
-                        ? `btn-primary text-white ${classes.signUpClickColor}`
-                        : `btn-outline-primary ${classes.signUpDefaultColor}`
+                          ? `btn-primary text-white ${classes.signUpClickColor}`
+                          : `btn-outline-primary ${classes.signUpDefaultColor}`
                       } rounded-pill py-3 mx-2`}
                       onClick={() => handleButtonClick('company')}
                     >
@@ -554,8 +615,8 @@ const SignUpForm = () => {
                       type="button"
                       className={`btn ${
                         selectedService === 'clean'
-                        ? `btn-primary text-white ${classes.signUpClickColor}`
-                        : `btn-outline-primary ${classes.signUpDefaultColor}`
+                          ? `btn-primary text-white ${classes.signUpClickColor}`
+                          : `btn-outline-primary ${classes.signUpDefaultColor}`
                       } rounded-pill py-3 mx-2`}
                       style={{ minWidth: '120px' }}
                       onClick={() => handleServiceClick('clean')}
@@ -566,8 +627,8 @@ const SignUpForm = () => {
                       type="button"
                       className={`btn ${
                         selectedService === 'delivery'
-                        ? `btn-primary text-white ${classes.signUpClickColor}`
-                        : `btn-outline-primary ${classes.signUpDefaultColor}`
+                          ? `btn-primary text-white ${classes.signUpClickColor}`
+                          : `btn-outline-primary ${classes.signUpDefaultColor}`
                       } rounded-pill py-3 mx-2`}
                       style={{ minWidth: '120px' }}
                       onClick={() => handleServiceClick('delivery')}
