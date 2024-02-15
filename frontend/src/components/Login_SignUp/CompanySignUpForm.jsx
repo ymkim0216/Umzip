@@ -18,7 +18,10 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
   const [sigungu, setSigungu] = useState('');
   const [isBusinessNumberVerified, setIsBusinessNumberVerified] =
     useState(false);
-  const [uploadedImage, setUploadedImage] = useState('/blank-profile.png');
+  const [uploadedImage, setUploadedImage] = useState({
+    file: null,
+    previewURL: '/blank-profile.png',
+  });
   const [deliveryCertificate, setDeliveryCertificate] = useState('');
   const fileInput = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,8 +72,8 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
       addressDetail,
       sigungu,
       ...(companyType === 1
-        ? { deliveryImgUrl: uploadedImage, deliveryCertificate }
-        : { cleanImgUrl: uploadedImage }),
+        ? { deliveryImgUrl: uploadedImage.file, deliveryCertificate }
+        : { cleanImgUrl: uploadedImage.file }),
       ...(companyType === 1 && { deliveryCertificate }),
     };
     onCompanyDataSubmit(formData);
@@ -81,19 +84,20 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
   };
 
   const onChangeImage = (event) => {
-    if (event.target.files[0]) {
-      setUploadedImage(event.target.files[0]);
+    const file = event.target.files[0];
+
+    if (file) {
+      setUploadedImage({
+        file: file,
+        previewURL: URL.createObjectURL(file),
+      });
     } else {
-      setUploadedImage(null);
+      setUploadedImage({
+        file: null,
+        previewURL: '/blank-profile.png',
+      });
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState == 2) {
-        setUploadedImage(reader.result);
-      }
-    };
-    reader.readAsDataURL(event.target.files[0]);
   };
 
   const handleBusinessNumberVerification = async () => {
@@ -102,7 +106,6 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
         'https://i10e108.p.ssafy.io/api/auth/business-code',
         { businessNumber, startDate, personName: ceo }
       );
-      console.log(response.data);
 
       if (response.data.isSuccess) {
         alert('인증되었습니다.');
@@ -162,11 +165,16 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
       )}
       <div
         className="container rounded p-4 border shadow-sm mx-auto"
-        style={{ marginTop: '50px', marginBottom: '50px'}}
+        style={{ marginTop: '50px', marginBottom: '50px' }}
       >
         <div className="row justify-content-center">
           <div className="col-md-12">
-            <h2 className="mb-4" style={{ textAlign: 'center', fontWeight: '800' }}>업체 등록</h2>
+            <h2
+              className="mb-4"
+              style={{ textAlign: 'center', fontWeight: '800' }}
+            >
+              업체 등록
+            </h2>
             <div className={`form-group mb-4 ${classes.inputStyling}`}>
               <label htmlFor="companyName">업체 이름</label>
               <input
@@ -179,7 +187,16 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                 required
               />
             </div>
-            <div htmlFor="uploadedImage" style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.2em' }}>업체 대표 사진</div>
+            <div
+              htmlFor="uploadedImage"
+              style={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: '1.2em',
+              }}
+            >
+              업체 대표 사진
+            </div>
             <div
               style={{
                 display: 'flex',
@@ -190,7 +207,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
               }}
             >
               <img
-                src={uploadedImage}
+                src={uploadedImage.previewURL}
                 alt="Uploaded"
                 style={{
                   width: '120px',
@@ -291,7 +308,7 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
                   style={{
                     marginLeft: '-1px',
                     backgroundColor: '#40A2D8',
-                    border: '#40A2D8'
+                    border: '#40A2D8',
                   }}
                 >
                   인증
@@ -300,7 +317,9 @@ const CompanySignUpForm = ({ companyType, onCompanyDataSubmit }) => {
             </div>
             {companyType === 1 && (
               <div className={`form-group mb-4 ${classes.inputStyling}`}>
-                <label htmlFor="deliveryCertificate">화물운송종사자 자격증</label>
+                <label htmlFor="deliveryCertificate">
+                  화물운송종사자 자격증
+                </label>
                 <input
                   id="deliveryCertificate"
                   className="form-control rounded-pill py-4"
