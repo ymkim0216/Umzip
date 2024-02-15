@@ -26,9 +26,10 @@ export default function AlarmComponent() {
       const queryString = `limit=${limit}&offset=${offset}`;
       const response = await api.get(`/alarm?${queryString}`);
       const newAlarms = response.data || [];
-      // console.log(response)
+      console.log(response)
       setAlarms((prevAlarms) => [...prevAlarms, ...newAlarms]);
       setHasMore(newAlarms.length === limit);
+
     } catch (error) {
       console.error('Failed to fetch alarms', error);
     } finally {

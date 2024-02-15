@@ -62,7 +62,7 @@ export default function UsedView({ id, setSellList, sellList, sellTotalPages }) 
                         <motion.div className="d-flex flex-column gap-4" variants={variants} initial="hidden" animate="visible" exit="hidden"  >
 
                             {sellList.map((item, index) => (
-                                <UsedProfile id={item.boardId} img={item.thumbnailPath} title={item.title} price={item.price} status={item.codeSmallName} />
+                                <UsedProfile key={index} id={item.boardId} img={item.thumbnailPath} title={item.title} price={item.price} status={item.codeSmallName} />
                             ))}
 
                             {sellList.length === 0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 판매글이 없습니다!</p><img style={{ width: "3rem", height: "3rem" }} src="/free-animated-icon-note-6172546.gif" /></div>}
