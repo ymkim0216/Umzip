@@ -174,7 +174,7 @@ function DeliverReservation({ chatModal }) {
                 <h5 className="m-0 col-md-2">
                   <ReplyTo
                     chatModal={chatModal}
-                    role="deliver"
+                    role="delivery"
                     memberId={String(item.memberId)}
                     status={item.codeSmallId}
                     mappingId={item.mappingId}
