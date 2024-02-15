@@ -3,6 +3,7 @@ import useStore from "../../store/helpDetailData";
 import ListGroup from "react-bootstrap/ListGroup";
 import style from "./HelpComments.module.css";
 import { motion } from "framer-motion";
+import moment from 'moment-timezone';
 function HelpComments({ toggleModal }) {
   const {
     fetchData,
@@ -14,28 +15,28 @@ function HelpComments({ toggleModal }) {
     commentChoic,
   } = useStore();
   const [commentText, setCommentText] = useState(""); // 댓글 텍스트 상태
-  const formatTimeAgo = (dateString) => {
-    const currentDate = new Date();
-    const itemDate = new Date(dateString);
 
-    const timeDifference = currentDate - itemDate;
-    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
-
-    if (hoursDifference < 24) {
-      // 24시간 이내의 경우 시간으로 표시
-      const formattedTime = `${hoursDifference}시간 전`;
-      return formattedTime;
+  const formatDate = (dateString) => {
+    const serverDate = moment(dateString+'Z').tz("Asia/Seoul"); // 유럽시간 포멧
+    const now = moment().tz("Asia/Seoul");  // 현재 우리나라시간
+  
+    if (serverDate.isSame(now, 'day')) {
+      // 날짜가 같을때
+      const diffHours = now.diff(serverDate, 'hours');
+      if (diffHours === 0) {
+        return '최근'; // 1시간 안된 글
+      } else {
+        return `${diffHours} 시간 전`;
+      }
+    } else if (serverDate.year() === now.year()) {
+      // 달이 같을때
+      return serverDate.format('MM-DD');
     } else {
-      // 24시간 이후의 경우 날짜로 표시
-      const year = itemDate.getFullYear();
-      const month = itemDate.getMonth() + 1; // 월은 0부터 시작하므로 +1
-      const day = itemDate.getDate();
-      const formattedDate = `${year}-${month < 10 ? "0" : ""}${month}-${
-        day < 10 ? "0" : ""
-      }${day}`;
-      return formattedDate;
+      // 해당사항 없을때
+      return serverDate.format('YYYY-MM-DD');
     }
   };
+
   useEffect(() => {
     loadComment();
   }, [loadComment]);
@@ -155,7 +156,7 @@ function HelpComments({ toggleModal }) {
                         </span>
                         <div>
                           <span className={style.headDate}>
-                            {formatTimeAgo(item.createDt)}
+                            {formatDate(item.createDt)}
                           </span>
                         </div>
                       </div>

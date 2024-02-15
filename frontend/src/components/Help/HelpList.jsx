@@ -28,7 +28,7 @@ function HelpList() {
       if (diffHours === 0) {
         return '최근'; // 1시간 안된 글
       } else {
-        return `${diffHours} hours ago`;
+        return `${diffHours} 시간 전`;
       }
     } else if (serverDate.year() === now.year()) {
       // 달이 같을때
