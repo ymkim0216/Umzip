@@ -83,7 +83,7 @@ function HelpComments({ toggleModal }) {
 
   // 데이터 로딩 중이면 로딩 인디케이터를 표시합니다.
   if (loading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   // 에러가 있으면 에러 메시지를 표시합니다.
@@ -95,7 +95,7 @@ function HelpComments({ toggleModal }) {
   // 데이터가 로드되면, 해당 데이터를 사용하여 무언가를 렌더링합니다.
   if (!content) {
     // 데이터가 비어있으면 메시지를 표시합니다.
-    return <div>No data found.</div>;
+    return <div>해당 데이터가 없습니다. </div>;
   }
 
   return (
@@ -109,24 +109,28 @@ function HelpComments({ toggleModal }) {
         className="d-flex justify-content-center"
       >
         <div className={style.helps}>
+          <div className="col">
+            <h4 style={{marginBottom: '20px',marginLeft: '10px',fontWeight:'bold'}}>댓글</h4>
+          </div>
           {content.sameMember === false && content.adopted === false && (
+            
             <div className="col-12  mb-3">
               <form
                 className="d-flex justify-content-center gap-4"
                 style={{ width: "100%" }}
                 onSubmit={handleCommentSubmit}
-              >
+              > 
                 <input
                   type="text"
                   value={commentText}
                   onChange={handleCommentChange}
                   z
-                  style={{ width: "80%" }}
+                  style={{ width: "85%", border:"1px solid #d7d7d7"}}
                   className="p-2 rounded-3"
                   placeholder="댓글을 입력하세요"
                 />
-                <button style={{ width: "10%" }} className="btn btn-primary">
-                  댓글 달기
+                <button style={{ width: "13%" }} className={`btn btn-primary ${style.btn} ${style.writeComment}`}>
+                  댓글 작성
                 </button>
               </form>
             </div>
@@ -190,13 +194,13 @@ function HelpComments({ toggleModal }) {
           {content.commentList.length === 0 && (
             <div
               className="d-flex justify-content-center align-items-center"
-              style={{ width: "100%" }}
+              style={{ width: "100%", marginTop: '30px' }}
             >
               <img
                 style={{ width: "3rem", height: "3rem" }}
                 src="/free-animated-icon-note-6172546.gif"
               />
-              <h2 className="m-0">아직 댓글이 없습니다!</h2>
+              <h2 className="m-0" >아직 댓글이 없습니다!</h2>
             </div>
           )}
         </div>

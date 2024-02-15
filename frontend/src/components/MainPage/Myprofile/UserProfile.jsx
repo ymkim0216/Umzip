@@ -295,28 +295,21 @@ export default function UserProfile() {
                     <p className="text-muted m-0" style={{ fontSize: "0.75rem" }}>회원탈퇴</p>
                     <p className="text-muted m-0" style={{ fontSize: "0.75rem" }}>정보수정</p>
                 </div> */}
-        <div className="d-flex flex-column mt-3" style={{ width: '80%' }}>
-          <div className="d-flex justify-content-between">
-            <p>이메일 : </p>
-            <p>{myprofile.email}</p>
-          </div>
-          <div className="d-flex justify-content-between">
-            <p className="m-0">보유포인트 : </p>
-            <p className="m-0">{myprofile.point}</p>
-          </div>
-          {myprofile.me && (
-            <div className="d-flex justify-content-between">
-              <p className="m-0">전화번호 : </p>
-              <p className="m-0">{myprofile.phone}</p>
-            </div>
-          )}
-          <Link
-            to={`/mypoint/1`}
-            style={{ fontSize: '0.75rem', marginLeft: 'auto' }}
-          >
-            내역조회
-          </Link>
-        </div>
+                <div className="d-flex flex-column" style={{ width: "80%" }}>
+                    <div className="d-flex justify-content-between">
+                        <p>이메일 : </p>
+                        <p >{myprofile.email}</p>
+                    </div>
+                    {myprofile.me && <div className="d-flex justify-content-between">
+                        <p className="m-0">전화번호 : </p>
+                        <p className="m-0">{myprofile.phone}</p>
+                    </div>}
+                    <div className="d-flex justify-content-between">
+                        <p className="m-0">보유포인트 : </p>
+                        <p className="m-0">{myprofile.point}</p>
+                    </div>
+                    <Link to={`/mypoint/1`} style={{ fontSize: "0.75rem", marginLeft: "auto" }}>내역조회</Link>
+                </div>
 
         <div
           className="d-flex justify-content-center gap-3"

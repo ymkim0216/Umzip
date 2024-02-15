@@ -15,6 +15,7 @@ const replyStore = create((set) => ({
     set({ loading: true });
     try {
         // 도메인주소로 할시에는 https로 바꿔줘야함
+        console.log(role)
       const response = await api.put(`/${role}/company/quotation`, quotation
       );
       set({ data: response.data, loading: false },
