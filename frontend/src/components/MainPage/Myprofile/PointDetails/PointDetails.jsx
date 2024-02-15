@@ -16,7 +16,7 @@ function PointDetails() {
 
   const points = data?.result?.pointUsageDtoList ?? [];
   console.log(points);
-  const nowPoint = pointDetail.result?.point;
+  const nowPoint = pointDetail.result?.point.toLocaleString();
 
   return (
     <>
@@ -41,9 +41,9 @@ function PointDetails() {
         <div className={`row ${style.main}`}>
             <div className={style.tooltipContainer}>
               <span className={style.tooltip}>현재 포인트</span>
-              <span className={style.text}>{nowPoint.toLocaleString()}P</span>
+              <span className={style.text}>{nowPoint}P</span>
               <span>
-                {nowPoint.toLocaleString()}P
+                {nowPoint}P
               </span>
           </div>
         </div>
