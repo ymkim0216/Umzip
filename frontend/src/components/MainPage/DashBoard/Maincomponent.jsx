@@ -172,7 +172,7 @@ const MainComponent = () => {
             <AnimatePresence>
                 {requestId && requestId.price && <NewModal renewer={renewer} id={userInfo.id} setRequestId={setRequestId} requestId={requestId} setRequestMappingId={setRequestMappingId} requestMappingId={requestMappingId} isModalOpen={requestCheck} setIsModalOpen={setRequestCheck} />}
             </AnimatePresence>
-            <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh', width: '100%', marginTop: "5rem" }}>
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh', width: '100%', marginTop: "7rem" }}>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }} className="col-10">
                     <div className="col-12 px-3">
                         <div className="row my-5" style={{ height: '50%' }}>
@@ -293,12 +293,12 @@ const MainComponent = () => {
         
                                     </div>
                                 </div>
-                                <div className="rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center" style={{ background: 'linear-gradient(to right, #ebbba7, #cfc7f8)'  }}>
-                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><img style={{ width: "1.65rem", height: "1.65rem" }} src='/free-icon-date-7342030.png' /><h5 style={{color:"white"}} className="m-0 ">일시</h5></div>
-                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><img style={{ width: "1.65rem", height: "1.65rem" }} src='/check-list.png' /><h5 style={{color:"white"}} className="m-0 ">주문명</h5></div>
-                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><img style={{ width: "1.65rem", height: "1.65rem" }} src='/free-icon-purchase-order-7387754.png' /><h5 style={{color:"white"}} className="m-0 ">주문번호</h5></div>
-                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><img style={{ width: "1.65rem", height: "1.65rem" }} src='/free-icon-changes-3800840.png' /><h5 style={{color:"white"}} className="m-0 ">상태</h5></div>
-                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2 '><img style={{ width:"1.65rem", height: "1.65rem" }} src='/free-icon-receipt-869698.png' /><h5 style={{color:"white"}} className="m-0 ">내가보낸견적서</h5></div>
+                                <div className="rounded-3 mx-5 p-2 d-flex justify-content-around align-items-center text-center" style={{ height:"4rem" ,background: 'linear-gradient(to left, #005bea, #ACB6E5)'  }}>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><h5 style={{color:"white"}} className="m-0 ">일시</h5></div>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><h5 style={{color:"white"}} className="m-0 ">주문명</h5></div>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><h5 style={{color:"white"}} className="m-0 ">주문번호</h5></div>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2'><h5 style={{color:"white"}} className="m-0 ">상태</h5></div>
+                                    <div className='d-flex col-2 align-items-center justify-content-center gap-2 '><h5 style={{color:"white"}} className="m-0 ">내가보낸견적서</h5></div>
                                 </div>
                                 <motion.div style={{ width: '100%', height: '100%' }} className='d-flex flex-column justify-content-between '>
                                     <div className='d-flex flex-column gap-2' style={{ height: "30rem" }}>

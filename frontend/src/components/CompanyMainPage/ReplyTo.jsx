@@ -42,10 +42,15 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
     }
   };
   const rejectionHandle = async () => {
-    await rejectionReservation(role, mappingId); // Zustand store의 함수 호출
+    const ans = window.confirm("취소하시겠습니까?")
+    if(ans)
+    {
+      await rejectionReservation(role, mappingId); // Zustand store의 함수 호출
     // 화면 즉각 반영을 위한 코드
     fetchDataDelivery()
     fetchDataClean()
+    }
+    
   };
 
   const chatStart = async () => {

@@ -8,12 +8,13 @@ import StarRating from "../../Recommend/StarRating"
 export default function UsedReview({setStatus, setTradeId, tradeId }) {
     const [tags, setTags] = useState(null)
     const [step, setStep] = useState("first")
+    console.log(tradeId)
     useEffect(() => {
         const fetch = async () => {
             const res = await tagDetail()
         }
         fetch()
-        setTradeId({memberId:15 , })
+        // setTradeId({memberId:15 , })
     }, [])
     const [option, setOption] = useState({})
     const [rating, setRating] = useState(5)
@@ -36,15 +37,16 @@ export default function UsedReview({setStatus, setTradeId, tradeId }) {
     }
     const createReview = async () => {
         let service = "TRADE"
-        // console.log(reviewId)
+        console.log(tradeId)
         const tag = Object.keys(option).map(Number);
         console.log(tag)
         // setIsLoading(true)
         try {
             const response = await api.post(`/reviews/insert`,
                 {
-                    "to": tradeId.memberId,
-                    "role": service,
+                    "to": tradeId,
+                    "role": "USER",
+                    "reviewType":"TRADE",
                     "score": rating,
                     "tag": tag,
                     "comment": userinput,

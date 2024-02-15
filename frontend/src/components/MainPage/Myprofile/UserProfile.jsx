@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import StarRating from "../../Recommend/StarRating";
 import { useEffect, useState } from "react";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { AnimatePresence, motion } from "framer-motion"
 import UsedProfile from "./SellProduct/UsedProfile";
@@ -21,6 +21,7 @@ export default function UserProfile() {
     const [myprofile, setMyprofile] = useState("")
     const { id } = useParams();
     const [openRecommendModal, setopenRecommendModal] = useState(false)
+    const [userInfo, setUserInfo] = useState(null)
     //판매
     const [sellList, setSellList] = useState(null)
     const [sellTotalPages, setSellTotalPages] = useState(null)
@@ -40,6 +41,21 @@ export default function UserProfile() {
     // 보낸 리뷰
     const [reviewToPeopleList, setReviewToPeopleList] = useState(null)
     const [reviewToPeopleTotalPages, setReviewToPeopleToTalPages] = useState(null)
+    const call_profile = async () => {
+        const storedUserInfo = localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo");
+        if (storedUserInfo) {
+            const parsedInfo = JSON.parse(storedUserInfo);
+            console.log(parsedInfo);
+            setUserInfo({ name: parsedInfo.name, profileImage: parsedInfo.profileImage, id: parsedInfo.id, role: parsedInfo.roleList, who: parsedInfo.who });
+            const res = { name: parsedInfo.name, profileImage: parsedInfo.profileImage, id: parsedInfo.id, role: parsedInfo.roleList, who: parsedInfo.who }
+            return res
+        }
+        else {
+            navigate("/login")
+        }
+    }
+
+
     // const [companyId,setCompanyId] = useState(null)
     // const [helpYouTotalPages, setHelpYouTotalPages] = useState(null)
     //    const myReceiveReview = async () => {
@@ -68,20 +84,39 @@ export default function UserProfile() {
 
     //     }
     //   }
-    const axios_myprofile = async () => {
+    const navigate =useNavigate()
+    const axios_myprofile = async (ans) => {
+        console.log(ans)
+        if (ans.who === 1) {
+            try {
+                const response = await api.get(
+                    `/users/${id}`,
+                );
+                console.log(response.data.result)
+                setMyprofile(response.data.result)
 
-        try {
-            const response = await api.get(
-                `/users/${id}`,
-            );
-            console.log(response.data.result)
-            setMyprofile(response.data.result)
+                return response
+            }
+            catch (e) {
 
-            return response
+            }
         }
-        catch (e) {
+        else {
+            // try {
+            //     const response = await api.get(
+            //         `/company/${ans.id}`,
+            //     );
+            //     console.log(response.data.result)
+            //     setMyprofile(response.data.result)
 
+            //     return response
+            // }
+            // catch (e) {
+
+            // }
+            setIsOpen(true)
         }
+
     }
 
     const axios_HelpYou = async () => {
@@ -140,15 +175,15 @@ export default function UserProfile() {
         }
     }
     const axios_ReviewToMe = async () => {
-
+        console.log(id)
         try {
             const response = await api.post(
                 `/reviews/myReceive`,
                 {
-                    memberId: id,
-                    role: "USER",
-                    offset: 0,
-                    limit: 3,
+                    "memberId": id,
+                    "role": "USER",
+                    "offset": 0,
+                    "limit": 3,
                     // point: myprofile.point,
                 }
             );
@@ -201,17 +236,26 @@ export default function UserProfile() {
 
         }
     }
+    const [isOpen, setIsOpen] = useState(false)
     useEffect(() => {
-        renew()
+        const fetchData = async () => {
+            const ans = await call_profile()
+            renew(ans)
+        }
+        fetchData()
+
     }, [id])
-    const renew = ()=>{
-        axios_myprofile()
-        axios_SellList()
-        axios_BuyList()
-        axios_HelpMe()
-        axios_HelpYou()
-        axios_ReviewToMe()
-        axios_ReviewToPeople()
+    const renew = (ans) => {
+        axios_myprofile(ans)
+        if (ans.who === 1) {
+            axios_SellList()
+            axios_BuyList()
+            axios_HelpMe()
+            axios_HelpYou()
+            axios_ReviewToMe()
+            axios_ReviewToPeople()
+        }
+
     }
     const handleChangeButton = (event) => {
         setChangeButton(event.target.innerText)
@@ -262,8 +306,11 @@ export default function UserProfile() {
     const closeModal = () => [
         setopenRecommendModal(false)
     ]
+    const hadleModal = ()=>{
+        navigate("/dashbordcompany")
+    }
     return <>
-        <div className="d-flex col-8 gap-5 align-items-start p-3">
+        {userInfo && userInfo.who === 1 && <div className="d-flex col-8 gap-5 align-items-start p-3">
             {myprofile && sellList && buyList && helpMeList && helpYouList && <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
                 <div className="d-flex justify-content-center align-items-center gap-2">
                     <img className="rounded-pill shadow" style={{ width: "5rem", height: "5rem" }} src={myprofile.imageUrl} />
@@ -401,9 +448,11 @@ export default function UserProfile() {
                 {/* {changeButton === "알림 내역" && <UsedView/> }
                 {changeButton === "포인트 사용이력" && <UsedView/> }       */}
 
-                {changeButton === "받은 후기" && <ReviewToMeView id={id} renew={renew}  setReviewToMeList={setReviewToMeList} reviewToMeList={reviewToMeList} reviewToMeTotalPages={reviewToMeTotalPages} />}
+                {changeButton === "받은 후기" && <ReviewToMeView id={id} renew={renew} setReviewToMeList={setReviewToMeList} reviewToMeList={reviewToMeList} reviewToMeTotalPages={reviewToMeTotalPages} />}
                 {changeButton === "보낸 후기" && <ReviewToPeopleView id={id} setReviewToPeopleList={setReviewToPeopleList} reviewToPeopleList={reviewToPeopleList} reviewToPeopleTotalPages={reviewToPeopleTotalPages} />}
             </div>
-        </div>
+        </div>}
+        {userInfo && userInfo.who === -1 && <div><RecommendModal companyId={userInfo.id} isOpen={isOpen} closeModal={hadleModal} /></div>}
+
     </>
 }
