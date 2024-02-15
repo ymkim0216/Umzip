@@ -26,7 +26,7 @@ function HelpDetail() {
     const confirmGivePoint = window.confirm(`${content.rewardPoint}P를 보내시겠습니까?`);
     if (confirmGivePoint) {
       pointGive(content.boardId);
-      const confirmHelpReview = window.confirm(`후기를 작성하시겠습니까?`)
+      const confirmHelpReview = window.confirm(`${content.writerId} 님에게 후기를 작성하시겠습니까?`)
       if (confirmHelpReview) {
         // 오픈 모달 또는 페이지 불러오기
         setShowReviewModal(true); // 모달 표시
@@ -85,15 +85,15 @@ function HelpDetail() {
   }
   return (
     <>
-                {/* 후기 모달 */}
-                <AnimatePresence>
+        {/* 후기 모달 */}
+        <AnimatePresence>
         {showReviewModal && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <HelpReview onClose={() => setShowReviewModal(false)} setStatus={setStatus} to={content.writerId} role={"USER"} /> {/* HelpReview에 모달을 닫는 함수를 전달 */}
+            <HelpReview onClose={() => setShowReviewModal(false)} setStatus={setStatus} to={content.writerId} /> {/* HelpReview에 모달을 닫는 함수를 전달 */}
           </motion.div>
         )}
       </AnimatePresence>
