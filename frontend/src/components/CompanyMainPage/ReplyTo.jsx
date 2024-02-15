@@ -88,7 +88,12 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
 
       {/* 취소 버튼 */}
       {code === 2 && (
-        <button className='btn btn-danger' onClick={() => rejectionHandle(role, mappingId)}>취소</button>
+                  <div
+                  onClick={() => rejectionHandle(role, mappingId)}
+                  className={styles.uiverseCancel}>
+                  <span className={styles.tooltipCancel}>취소하기</span>
+                  <span>X</span>
+                </div>
       )}
 
       {/* 1대1 채팅 버튼 */}
@@ -104,26 +109,29 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
 
       {/* 제안 거절시 */}
       {code === 4 && (
-        <div className={styles.rejectedOfferContainer}>
-                    <span>Cancel</span>
-          <img src="/cancel.png" className={styles.rejectedOfferIcon} alt="Cancel" />
-        </div>
+        <div
+        className={styles.uiverseComplete}>
+        <span className={styles.tooltipComplete}> 거절한 견적 </span>
+        <span>X</span>
+      </div>
       )}
 
       {/* 제안 취소시 */}
       {code === 5 && (
-        <div className={styles.rejectedOfferContainer}>
-          <span>Cancel</span>
-          <img src="/cancel.png" className={styles.rejectedOfferIcon} alt="Cancel" />
-        </div>
+        <div
+        className={styles.uiverseComplete}>
+        <span className={styles.tooltipComplete}> 취소한 견적 </span>
+        <span>X</span>
+      </div>
       )}
 
       {/* 업무 완료시 */}
       {code === 6 && (
-        <div className={styles.clearOfferContainer}>
-          <span>Complete</span>
-          <img src="/cancel.png" className={styles.clearOfferIcon} alt="Cancel" />
-        </div>
+                  <div
+                  className={styles.uiverseComplete}>
+                  <span className={styles.tooltipComplete}>완료되었습니다!</span>
+                  <span>√</span>
+                </div>
       )}
     </div>
   );
