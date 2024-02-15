@@ -7,8 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { Client } from "@stomp/stompjs";
 import chatToCompanyStore from '../../store/chatToCompanyStore'
 
-
-
 const CompanyMain = () => {
   // const [requestList, setrequestList] = useState("용달")
   const { makeChatRoom } = chatToCompanyStore()
@@ -25,6 +23,7 @@ const CompanyMain = () => {
     const [userinput, setuserinput] = useState("");
     const [openModal, setOpenModal] = useState(false)
     const stompClientRef = useRef(null);
+
     const handleinput = (event) => {
         setuserinput(event.target.value);
     };
@@ -48,22 +47,25 @@ const CompanyMain = () => {
   // console.log(userRole)
   const [roleBtn, setRoleBtn] = useState(userRole[0])
   const logout = useAuthStore((state) => state.logout);
-  const authChange = useAuthStore((state) => state.authChange);
-  const navigate = useNavigate();
 
-  const handleDeliveryClick = (role, authNum) => {
+  const navigate = useNavigate();
+  const { authChange } = useAuthStore();
+
+
+  const handleDeliveryClick = async (role, authNum) => {
     if (!userRole.includes(role)) {
-      alert('Please register your business!');
+      alert('사업자 등록을 해주세요!!');
       return; 
     }
     
-    authChange(authNum).then(() => {
+    try {
+      await authChange(authNum);
+      // Then set role
       setRoleBtn(role);
-    }).catch(error => {
-      console.error('Error after authChange:', error);
-      
-    });
-  };
+    } catch (error) {
+      console.error('오 이런...:', error);
+    }
+};
 
 
   const handleLogout = async (event) => {

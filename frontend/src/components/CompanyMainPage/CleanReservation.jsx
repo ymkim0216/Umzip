@@ -12,10 +12,8 @@ function CleanReservation({chatModal}) {
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
   const [filterStatus, setFilterStatus] = useState(null); // 필터링할 상태 코드
   const itemsPerPage = 5; // 보여줄 갯수
-  const userData = JSON.parse(localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo'))
   const reservationList = data?.result || [];
-
-  
+    
   // 견적서 모달
   const [modalShow, setModalShow] = useState(new Map());
   const toggleModal = (cleanId) => {
