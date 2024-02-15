@@ -12,8 +12,8 @@ function DeliverReservation({ chatModal }) {
   const [visibleItems, setVisibleItems] = useState([]); // 현재 화면에 보여줄 아이템 목록
   const [filterStatus, setFilterStatus] = useState(null); // 필터링할 상태 코드
   const itemsPerPage = 5; // 보여줄 갯수
-
   const reservationList = data?.result || [];
+  
   // 견적서 모달
   const [modalShow, setModalShow] = useState(new Map());
   const toggleModal = (deliveryId) => {
@@ -174,7 +174,7 @@ function DeliverReservation({ chatModal }) {
                 <h5 className="m-0 col-md-2">
                   <ReplyTo
                     chatModal={chatModal}
-                    role="deliver"
+                    role="delivery"
                     memberId={String(item.memberId)}
                     status={item.codeSmallId}
                     mappingId={item.mappingId}

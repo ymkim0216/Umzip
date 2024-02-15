@@ -127,7 +127,7 @@ function HelpList() {
                   )}
                   {helps.codeSmallId === 403 && (
                     <span style={{ color: "gray", fontWeight: 'bold'  }} className={style.headType}>
-                      도와줬어요
+                      도움 받았어요
                     </span>
                   )}
                   <span className={style.headTitle}>

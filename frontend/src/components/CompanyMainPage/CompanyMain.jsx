@@ -6,9 +6,6 @@ import CleanReservation from "./CleanReservation"
 import { useNavigate } from 'react-router-dom';
 import { Client } from "@stomp/stompjs";
 import chatToCompanyStore from '../../store/chatToCompanyStore'
-import useStoreChatToCompany from '../../store/chatToCompanyStore';
-
-
 
 const CompanyMain = () => {
   // const [requestList, setrequestList] = useState("용달")
@@ -26,12 +23,13 @@ const CompanyMain = () => {
     const [userinput, setuserinput] = useState("");
     const [openModal, setOpenModal] = useState(false)
     const stompClientRef = useRef(null);
+
     const handleinput = (event) => {
         setuserinput(event.target.value);
     };
     useEffect(() => {
         scrollToBottom();
-    }, [openModal, talkHistory]);
+    }, [openModal, talkHistory ]);
 
   const buttonVariants = {
     hover: {
@@ -49,15 +47,25 @@ const CompanyMain = () => {
   // console.log(userRole)
   const [roleBtn, setRoleBtn] = useState(userRole[0])
   const logout = useAuthStore((state) => state.logout);
-  const navigate = useNavigate();
 
-  const handleDeliveryClick = (role) => {
+  const navigate = useNavigate();
+  const { authChange } = useAuthStore();
+
+
+  const handleDeliveryClick = async (role, authNum) => {
     if (!userRole.includes(role)) {
-      alert('사업자 등록을 해주세요!');
-      return; // Early return to prevent further execution
+      alert('사업자 등록을 해주세요!!');
+      return; 
     }
-    setRoleBtn(role);
-  };
+    
+    try {
+      await authChange(authNum);
+      // Then set role
+      setRoleBtn(role);
+    } catch (error) {
+      console.error('오 이런...:', error);
+    }
+};
 
 
   const handleLogout = async (event) => {
@@ -145,6 +153,8 @@ const CompanyMain = () => {
       console.log("연결X")
     }
   };
+
+  // 권한변경 함수 넣어주기
   const chatModal = async (res) => {
     setOpenModal(true)
     setChatRoom(res)
@@ -281,7 +291,7 @@ const CompanyMain = () => {
                     variants={buttonVariants}
                     whileHover="hover"
                     style={{ width: "10rem" }}
-                    onClick={() => handleDeliveryClick("DELIVER")}
+                    onClick={() => handleDeliveryClick("DELIVER", 1)}
                   >
                     <img
                       style={{ width: "2rem", height: "2rem" }}
@@ -298,7 +308,7 @@ const CompanyMain = () => {
                     variants={buttonVariants}
                     style={{ width: "10rem" }}
                     whileHover="hover"
-                    onClick={() => handleDeliveryClick("CLEAN")}
+                    onClick={() => handleDeliveryClick("CLEAN", -1)}
                   >
                     <img
                       style={{ width: "2rem", height: "2rem" }}

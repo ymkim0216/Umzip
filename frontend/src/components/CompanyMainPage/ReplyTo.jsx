@@ -64,12 +64,11 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
       {/* 견적제안과 거절 버튼 */}
       {code === 1 && (
         <>
-          {/* <button onClick={handleOpenModal}>견적제안</button> */}
           <div onClick={handleOpenModal} className={styles.uiverseCheck}>
             <span className={styles.tooltipCheck}>재견적 보내기</span>
             <span>O</span>
           </div>
-          {/* <button onClick={() => rejectionHandle(role, mappingId)}>거절</button> */}
+          
           <div
             onClick={() => rejectionHandle(role, mappingId)}
             className={styles.uiverseCancel}>
@@ -94,7 +93,13 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
 
       {/* 1대1 채팅 버튼 */}
       {code === 3 && (
-        <button className='btn btn-primary' onClick={() => chatStart()}>1대1 채팅</button>
+        // <button className='btn btn-primary' onClick={() => chatStart()}>1대1 채팅</button>
+        <div
+        onClick={() => chatStart()}
+        className={styles.uiverseChat}>
+        <span className={styles.tooltipChat}> 1:1 채팅하기 </span>
+        <span>Chat<img src="/chatIcon.gif" style={{ width: "20px", marginLeft: "8px" }} /></span>
+      </div>
       )}
 
       {/* 제안 거절시 */}
@@ -102,6 +107,9 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
 
       {/* 제안 취소시 */}
       {code === 5 && <h5>취소된 제안</h5>}
+
+      {/* 업무 완료시 */}
+      {code === 6 && <h5>완료된 업무</h5>}
     </div>
   );
 }

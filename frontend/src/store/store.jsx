@@ -11,6 +11,9 @@ const useAuthStore = create((set) => {
     token: token,
     isLoading: false,
     error: null,
+
+    setToken: (newToken) => set({ token: newToken }),
+
     login: async (email, pwd, navigate, rememberMe) => {
       set({ isLoading: true, error: null });
       try {
@@ -61,6 +64,20 @@ const useAuthStore = create((set) => {
         set({ error: error.response?.data?.message || 'Logout failed' });
       }
     },
+ authChange: async (authNo) => {
+    try {
+      const response = await api.get(`/auth/new/${authNo}`);
+      const { accessToken } = response.data.result;
+      const storage = localStorage.token !== undefined ? localStorage : sessionStorage;
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      storage.setItem('token', accessToken); // Update token in storage
+      
+      set({ token: accessToken }); // Update token in Zustand store
+    } catch (error) {
+      console.error('Error during authChange:', error);
+    }
+  },
   };
 });
 
