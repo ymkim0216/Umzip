@@ -9,7 +9,7 @@ export default function RecommendReview({ tag, img, name, date, rating, text }) 
             animate={{ opacity: 1 }} // 애니메이션 상태
             transition={{ duration: 0.5 }} // 트랜지션 지속 시간
         >
-            <div className="d-flex flex-column justify-content-around  align-items-center gap-2 col-2">
+            <div style={{marginRight:"1rem"}} className="d-flex flex-column justify-content-around  align-items-center gap-2 col-2">
                 <motion.img
                     className="rounded-pill shadow"
                     src={img}
@@ -25,9 +25,9 @@ export default function RecommendReview({ tag, img, name, date, rating, text }) 
                 </div>
             </div>
             <div className="d-flex col-10 flex-column justify-content-center gap-2">
-                <div className="gap-3 d-flex justify-content-between">
+                <div className="gap-3 d-flex justify-content-between ">
                     <h5 className="m-0 ">{name}</h5>
-                    <p className="fs-12 m-0">{date}</p>
+                    <p style={{marginBottom:0,marginRight:"2rem"}} className="fs-12">{date}</p>
                 </div>
                 <div className="gap-3 d-flex justify-content-start col-12">
                     {tag.map((item, index) => (
@@ -45,9 +45,9 @@ export default function RecommendReview({ tag, img, name, date, rating, text }) 
 
 
                 </div>
-                <text>
+                <div>
                     {text}
-                </text>
+                </div>
             </div>
             <AnimatePresence>
 

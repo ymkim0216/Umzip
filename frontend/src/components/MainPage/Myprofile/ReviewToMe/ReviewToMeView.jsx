@@ -32,7 +32,7 @@ export default function ReviewToMeView({ renew, id, setReviewToMeList, reviewToM
                     // point: myprofile.point,
                 }
             );
-            console.log(response)
+            // console.log(response)
             // setHelpMeList(response.data.result.content)
             // setHelpMeTotalPages(response.data.result.totalElements)
             setReviewToMeList(response.data.reviews)

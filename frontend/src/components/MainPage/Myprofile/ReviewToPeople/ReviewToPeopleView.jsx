@@ -10,7 +10,7 @@ const MAX_DISPLAY_PAGES = 5
 
 export default function ReviewToPeopleView({ reviewToPeopleTotalPages, reviewToPeopleList, setReviewToPeopleList, id }) {
     const axios_ReviewToPeople = async (pageNumber) => {
-        console.log(pageNumber)
+        // console.log(pageNumber)
         try {
             const response = await api.post(
                 `/reviews/myWrite`,
@@ -21,7 +21,7 @@ export default function ReviewToPeopleView({ reviewToPeopleTotalPages, reviewToP
                     limit: 3,
                 }
             );
-            console.log(response)
+            // console.log(response)
             setReviewToPeopleList(response.data.reviews)
             // setReviewToPeopleToTalPages(response.data.board_cnt)
             // setReviewToMeList()
