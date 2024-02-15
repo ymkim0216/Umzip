@@ -13,9 +13,13 @@ import { api } from "../../../../services/api";
 //     { title: "p7", price: 8, status: "판매중" },
 // ]
 const ITEMS_PER_PAGE = 5;
-const MAX_DISPLAY_PAGES=5
-export default function UsedView({id, setSellList, sellList, sellTotalPages }) {
-    const axios_SellList = async ( pageNumber ) => {
+const MAX_DISPLAY_PAGES = 5
+export default function UsedView({ id, setSellList, sellList, sellTotalPages }) {
+    const variants = {
+        hidden: { opacity: 0, x: 50 },
+        visible: { opacity: 1, x: 0 },
+    };
+    const axios_SellList = async (pageNumber) => {
         console.log(pageNumber)
         try {
             const response = await api.get(
@@ -34,10 +38,10 @@ export default function UsedView({id, setSellList, sellList, sellTotalPages }) {
 
         }
     }
-  
-    
+
+
     const [currentPage, setCurrentPage] = useState(1);
-  
+
     // const currentItems = sellList.slice(indexOfFirstItem, indexOfLastItem);
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber)
@@ -53,13 +57,15 @@ export default function UsedView({id, setSellList, sellList, sellTotalPages }) {
         {sellList &&
             <div className="d-flex col-12 flex-column p-3 justify-content-between gap-3" style={{ height: "100%" }}>
                 <div className="d-flex flex-column   " >
-                    <div className="mb-3 d-flex gap-2 align-items-center" style={{ borderBottom: "1px solid " }}><img style={{width:"3rem" ,height:"3rem"}} src="/free-animated-icon-sale-12707571.gif"/><h3 className="m-0">판매 물품</h3></div>
+                    <div className="mb-3 d-flex gap-2 align-items-center" style={{ borderBottom: "1px solid " }}><img style={{ width: "3rem", height: "3rem" }} src="/free-animated-icon-sale-12707571.gif" /><h3 className="m-0">판매 물품</h3></div>
                     <AnimatePresence mode="wait">
-                        <motion.div className="d-flex flex-column gap-4" >
+                        <motion.div className="d-flex flex-column gap-4" variants={variants} initial="hidden" animate="visible" exit="hidden"  >
+
                             {sellList.map((item, index) => (
-                                <UsedProfile key={index} id={item.boardId} img={item.thumbnailPath}  title={item.title} price={item.price} status={item.codeSmallName} />
+                                <UsedProfile id={item.boardId} img={item.thumbnailPath} title={item.title} price={item.price} status={item.codeSmallName} />
                             ))}
-                            {sellList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 판매글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
+
+                            {sellList.length === 0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 판매글이 없습니다!</p><img style={{ width: "3rem", height: "3rem" }} src="/free-animated-icon-note-6172546.gif" /></div>}
                         </motion.div>
                     </AnimatePresence>
                 </div>

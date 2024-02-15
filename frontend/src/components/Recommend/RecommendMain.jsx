@@ -65,7 +65,7 @@ export default function RecommendMain() {
             "move": userInput.delivery.move, // 실제 값으로 교체 (부울)
             "elevator": userInput.delivery.elevator, // 실제 값으로 교체 (부울)
             "parking": userInput.delivery.parking, // 실제 값으로 교체 (부울)
-            "moveList": userInput.delivery.moveList, // 실제 이사 목록 값으로 교체 (문자열)
+            "movelist": userInput.delivery.moveList, // 실제 이사 목록 값으로 교체 (문자열)
             "sigungu": userInput.delivery.sigungu // 실제 sigungu 값으로 교체 (긴 정수)
         }
         console.log(delivery)

@@ -121,11 +121,10 @@ export default function UserProfile() {
       const response = await api.post(
         `/reviews/myReceive`,
         {
-          "memberId": id,
-          "role": "USER",
-          "offset": 0,
-          "limit": 3,
-          // point: myprofile.point,
+          memberId: id,
+          role: "USER",
+          offset: 0,
+          limit: 3,
         }
       );
       console.log(response)
@@ -282,11 +281,11 @@ export default function UserProfile() {
     navigate("/dashbordcompany")
   }
   return <>
-    {userInfo && userInfo.who === 1 && <div className="d-flex col-9 gap-3 align-items-start p-3">
-      {myprofile && sellList && buyList && helpMeList && helpYouList && <div className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
-        <div className="d-flex justify-content-center align-items-center gap-2">
-          <img className="rounded-pill shadow" style={{ width: "5rem", height: "5rem" }} src={myprofile.imageUrl} />
-          <div className="text-center">
+    {userInfo && userInfo.who === 1 && <div className="d-flex col-10 gap-3 align-items-start p-3 justify-content-center">
+      {myprofile && sellList && buyList && helpMeList && helpYouList && <motion.div initial={{opacity:0 , y:100}} animate={{opacity:1 , y:0}} exit={{opacity:0,y:100}} className="d-flex col-4 flex-column align-items-center rounded-5 gap-3 p-4 shadow">
+        <div className="d-flex justify-content-center align-items-center gap-2 mt-4">
+          <img className="rounded-pill shadow" style={{ width: "6rem", height: "6rem" }} src={myprofile.imageUrl} />
+          <div className="text-center p-3">
             <p className="m-0 fw-bold">{myprofile.name}님</p>
             {myprofile.me === true ? <p className="m-0">반가워요 !</p> : <p className="m-0" >의 프로필입니다!</p>}
 
@@ -512,10 +511,10 @@ export default function UserProfile() {
             </AnimatePresence>
           </div>
         </div>
-      </div>
+      </motion.div>
       }
 
-      <div className="d-flex col-8 flex-column " style={{ height: '100%' }}>
+      <div className="d-flex col-7 flex-column " style={{ height: '100%' }}>
         {changeButton === '판매 물품' && (
           <UsedView
             id={id}

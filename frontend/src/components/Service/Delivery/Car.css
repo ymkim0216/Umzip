@@ -30,8 +30,8 @@
 .car-description-container {
     position: absolute;
     top: 0%;
-    left: 100%; /* Change this from left: 100% to left: 0 */
-    width: 50rem;
+    left: 120%; /* Change this from left: 100% to left: 0 */
+    width: 30rem;
     padding: 10px;  
     background-color: #f0f0f0;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

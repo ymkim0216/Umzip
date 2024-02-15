@@ -14,19 +14,20 @@ import { api } from "../../../../services/api";
 //     { name: "p7", rating: 3,review:"최대글 길이 확인용 확인용 확인용" },
 // ]
 const ITEMS_PER_PAGE = 3;
-const MAX_DISPLAY_PAGES=5
-export default function ReviewToMeView({renew,id,setReviewToMeList,reviewToMeList,reviewToMeTotalPages}) {
+const MAX_DISPLAY_PAGES = 5
+export default function ReviewToMeView({ renew, id, setReviewToMeList, reviewToMeList, reviewToMeTotalPages }) {
     const [currentPage, setCurrentPage] = useState(1);
-    
-    const axios_ReviewToMe = async (pageNumber) => {
 
-        try {
+    const axios_ReviewToMe = async (pageNumber) => {
+        console.log(pageNumber-1)
+        const num = pageNumber-1
+        try { 
             const response = await api.post(
                 `/reviews/myReceive`,
                 {
                     memberId: id,
                     role: "USER",
-                    offset: 3*(pageNumber-1),
+                    offset: num,
                     limit: 3,
                     // point: myprofile.point,
                 }
@@ -51,33 +52,35 @@ export default function ReviewToMeView({renew,id,setReviewToMeList,reviewToMeLis
         Math.ceil(reviewToMeTotalPages / ITEMS_PER_PAGE)
     );
     const pageButtons = Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
-    return <>{ reviewToMeList&&
+    return <>{reviewToMeList &&
         <div className="d-flex col-12 flex-column p-3 justify-content-between gap-3" style={{ height: "100%" }}>
             <div className="d-flex flex-column   " >
-            <div className="mb-3 d-flex gap-2 align-items-center" style={{ borderBottom: "1px solid " }}><img style={{width:"3rem" ,height:"3rem"}} src="/free-animated-icon-valentines-day-14118612.gif"/><h3 className="m-0">받은 후기</h3></div>
+                <div className="mb-3 d-flex gap-2 align-items-center" style={{ borderBottom: "1px solid " }}><img style={{ width: "3rem", height: "3rem" }} src="/free-animated-icon-valentines-day-14118612.gif" /><h3 className="m-0">받은 후기</h3></div>
                 <AnimatePresence mode="wait">
-                    <motion.div  className="d-flex flex-column gap-4" >
-                        {reviewToMeList.map((item) => (
-                            <ReviewToMeProfile renew={renew} createDt={item.createDt} img={item.memberImageUrl} id={item.id} tag={item.tag} tagType={item.tagType} key={item.id} name={item.memberName} rating={item.score} review={item.content} />
+                    <motion.div initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: 50 }} className="d-flex flex-column gap-4" >
+                        {reviewToMeList.map((item,index) => (
+                            <ReviewToMeProfile key={index} renew={renew} createDt={item.createDt} img={item.memberImageUrl} id={item.id} tag={item.tag} tagType={item.tagType}  name={item.memberName} rating={item.score} review={item.content} />
                         ))}
-                        {reviewToMeList.length===0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 리뷰글이 없습니다!</p><img style={{width:"3rem",height:"3rem"}} src="/free-animated-icon-note-6172546.gif"/></div>}
+                        {reviewToMeList.length === 0 && <div className="d-flex gap-3 justify-content-center align-items-center mt-5"><p className="m-0">아직 리뷰글이 없습니다!</p><img style={{ width: "3rem", height: "3rem" }} src="/free-animated-icon-note-6172546.gif" /></div>}
                     </motion.div>
                 </AnimatePresence>
             </div>
             <div className="pagination d-flex justify-content-center gap-3">
-                    <div className="pagination d-flex justify-content-center gap-3">
-                        {pageButtons.map((pageNumber) => (
-                            <motion.button
-                                whileHover={{ y: -5 }}
-                                className={`btn btn-light${pageNumber === currentPage ? ' active' : ''}`}
-                                key={pageNumber}
-                                onClick={() => paginate(pageNumber)}
-                            >
-                                {pageNumber}
-                            </motion.button>
-                        ))}
-                    </div>
+                <div className="pagination d-flex justify-content-center gap-3">
+                    {pageButtons.map((pageNumber) => (
+                        <motion.button
+                            whileHover={{ y: -5 }}
+                            className={`btn btn-light${pageNumber === currentPage ? ' active' : ''}`}
+                            key={pageNumber}
+                            onClick={() => paginate(pageNumber)}
+                        >
+                            {pageNumber}
+                        </motion.button>
+                    ))}
                 </div>
+            </div>
         </div>
     }</>
 }

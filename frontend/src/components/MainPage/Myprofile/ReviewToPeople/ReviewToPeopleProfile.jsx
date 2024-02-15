@@ -31,7 +31,7 @@ export default function ReviewToPeopleProfile({ tagType, createDt, img, id, tag,
     //     navigate(`/myprofile/${id}`)
     // }
     return <>
-        <motion.div whileHover={{ y: -5 }} className="d-flex p-2 rounded-4 shadow align-items-center gap-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ width: "100%" }}>
+        <motion.div whileHover={{ y: -5 }} className="d-flex p-2 rounded-4 shadow align-items-center gap-3" style={{ width: "100%" }}>
             <div className="p-2 d-flex flex-column gap-3 " style={{ width: "100%" }}>
                 <div className="d-flex" style={{ width: "100%" }}>
                     <div className="d-flex flex-column align-items-center" style={{ marginRight: "1rem" }} >

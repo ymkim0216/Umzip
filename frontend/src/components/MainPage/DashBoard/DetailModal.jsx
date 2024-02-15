@@ -80,7 +80,7 @@ export default function DetailModal({ setServiceId, serviceId }) {
                         <div className="d-flex justify-content-between"><p>탑승 여부</p><p>{result.move === true ? "탑승" : "미탑승"}</p></div>
                         <div className="d-flex justify-content-between"><p>엘레베이터</p><p>{result.elevator === true ? "있음" : "없음"}</p></div>
                         <div className="d-flex justify-content-between"><p>주차장</p><p>{result.parking === true ? "있음" : "없음"}</p></div>
-                        <p>추가사항 : {result.moveList}  </p>
+                        <div className="d-flex justify-content-between"><p>추가사항</p><p>{result.movelist}</p></div>
                         <div>
                             <p >첨부사진</p>
                             <div style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>

@@ -74,7 +74,7 @@ export default function StatusButton({setReviewId,setServiceId, memberId ,price,
 
         let service = "";
         if (requestList === "용달") {
-            service = "deliver";
+            service = "delivery";
         } else {
             service = "clean";
         }
