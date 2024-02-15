@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { api } from '../services/api';
 
-const sueStoreEstimate = create((set) => ({
+const useStoreEstimate = create((set) => ({
   data: [],
   loading: false,
   error: null,
@@ -24,4 +24,4 @@ const sueStoreEstimate = create((set) => ({
   },
 }));
 
-export default sueStoreEstimate;
+export default useStoreEstimate;

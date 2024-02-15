@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion"
 import useStore from "../../store/helpDetailData";
 import ListGroup from "react-bootstrap/ListGroup";
 import style from "./HelpComments.module.css";
-import { motion } from "framer-motion";
+import HelpReview from "./HelpReview"
 import moment from 'moment-timezone';
 function HelpComments({ toggleModal }) {
   const {
@@ -15,6 +16,9 @@ function HelpComments({ toggleModal }) {
     commentChoic,
   } = useStore();
   const [commentText, setCommentText] = useState(""); // 댓글 텍스트 상태
+  const [showReviewModal, setShowReviewModal] = useState(false); // 모달 상태 관리
+  const [nowWriterId, setNowWriterId] = useState()
+  const [status, setStatus] = useState("first")
 
   const formatDate = (dateString) => {
     const serverDate = moment(dateString+'Z').tz("Asia/Seoul"); // 유럽시간 포멧
@@ -30,10 +34,10 @@ function HelpComments({ toggleModal }) {
       }
     } else if (serverDate.year() === now.year()) {
       // 달이 같을때
-      return serverDate.format('MM-DD');
+      return serverDate.format('MM.DD');
     } else {
       // 해당사항 없을때
-      return serverDate.format('YYYY-MM-DD');
+      return serverDate.format('YYYY.MM.DD');
     }
   };
 
@@ -65,7 +69,7 @@ function HelpComments({ toggleModal }) {
   const handleClick = (id) => {
     toggleModal(id);
   };
-  const handleAdopt = async (commentId, writerName) => {
+  const handleAdopt = async (commentId, writerName, writerId) => {
     const confirmAdop = window.confirm(`${writerName}님을 채택할까요?`);
     console.log(commentId);
     if (confirmAdop) {
@@ -75,6 +79,13 @@ function HelpComments({ toggleModal }) {
         // 성공적으로 처리되면 댓글 리스트를 새로고침합니다.
         await loadComment();
         fetchData()
+        setNowWriterId(writerId)  // 유저 아이디를 전달
+        console.log(nowWriterId)
+        const confirmHelpReview = window.confirm(`${writerName} 님에게 후기를 작성할까요?`)
+        if(confirmHelpReview) {
+          console.log('모달열림')
+          setShowReviewModal(true); // 모달 표시
+        }
       } catch (error) {
         // 에러 처리를 합니다.
         console.error("채택 처리 실패:", error);
@@ -102,6 +113,17 @@ function HelpComments({ toggleModal }) {
 
   return (
     <>
+        {/* 후기 모달 */}
+        <AnimatePresence>
+        {showReviewModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}>
+            <HelpReview onClose={() => setShowReviewModal(false)} setStatus={setStatus} to={nowWriterId} /> {/* HelpReview에 모달을 닫는 함수를 전달 */}
+          </motion.div>
+        )}
+      </AnimatePresence>
       {/* 댓글 입력 폼 , 조건 충족시 나타남 */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -151,11 +173,11 @@ function HelpComments({ toggleModal }) {
                           alt="Writer"
                           className={style.writerImage}
                         />
-                        <span className={style.headPoint}>
+                        <span>
                           {item.writerName}
                         </span>
                         <div>
-                          <span className={style.headDate}>
+                          <span >
                             {formatDate(item.createDt)}
                           </span>
                         </div>
@@ -163,7 +185,7 @@ function HelpComments({ toggleModal }) {
                     </div>
                     <div className="col-8">
                       <div>
-                        <span className={style.headUserName}>
+                        <span className={style.commentBox}>
                           {item.comment}
                         </span>
                       </div>
@@ -178,7 +200,7 @@ function HelpComments({ toggleModal }) {
                           </button>
                           <button
                             onClick={() =>
-                              handleAdopt(item.commentId, item.writerName)
+                              handleAdopt(item.commentId, item.writerName, item.writerId)
                             }
                             className={`${style.chooseButton} ${style.btnEach} ${style.btn} ${style.selected}`}
                             

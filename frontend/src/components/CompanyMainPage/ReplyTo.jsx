@@ -130,7 +130,7 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
                   <div
                   className={styles.uiverseComplete}>
                   <span className={styles.tooltipComplete}>완료되었습니다!</span>
-                  <span>√</span>
+                  <span>✓</span>
                 </div>
       )}
     </div>
