@@ -4,6 +4,7 @@ import style from './HelpContent.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { AnimatePresence, motion } from "framer-motion";
+import HelpReview from "./HelpReview"
 import useStore from '../../store/helpDetailData';
 import moment from 'moment-timezone';
 import "swiper/css";
@@ -16,12 +17,20 @@ function HelpDetail() {
   const { boardId } = useParams();
   const navigate = useNavigate()
   const { setBoardId, fetchData, data, loading, error, pointGive } = useStore();
+  const [showReviewModal, setShowReviewModal] = useState(false); // 모달 상태 관리
+  const [status, setStatus] = useState("first")
+
   
   // 도움 받았어요 버튼 클릭시 다시한번 확인하는 alert 코드
   const handlePointGive = () => {
     const confirmGivePoint = window.confirm(`${content.rewardPoint}P를 보내시겠습니까?`);
     if (confirmGivePoint) {
       pointGive(content.boardId);
+      const confirmHelpReview = window.confirm(`후기를 작성하시겠습니까?`)
+      if (confirmHelpReview) {
+        // 오픈 모달 또는 페이지 불러오기
+        setShowReviewModal(true); // 모달 표시
+      }
     }
   };
 
@@ -76,6 +85,18 @@ function HelpDetail() {
   }
   return (
     <>
+                {/* 후기 모달 */}
+                <AnimatePresence>
+        {showReviewModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <HelpReview onClose={() => setShowReviewModal(false)} setStatus={setStatus} to={content.writerId} role={"USER"} /> {/* HelpReview에 모달을 닫는 함수를 전달 */}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <AnimatePresence>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ marginTop: "4rem" }}>
           <div className={style.helps}>
@@ -88,6 +109,7 @@ function HelpDetail() {
               </div>
               {!content.sameMember && content.codeSmallId === 402 && <span><button className={`btn btn-success ${style.helpBtn}`} onClick={handlePointGive} >도움 받았어요!</button> 포인트: {content.rewardPoint}P</span> }
             </div>
+            
             <div>
               <div className="d-flex align-items-center justify-content-between">
                 <div className="d-flex align-items-center gap-2">
