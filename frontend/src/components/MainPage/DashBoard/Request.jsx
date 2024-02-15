@@ -215,7 +215,7 @@ export default function Requests({ setReviewId, setServiceId, setRequestId, Id, 
                 className=' rounded- mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative'
                 style={{
                     border: '2px solid',
-                    borderImage: 'linear-gradient(to bottom, #ebbba7, #cfc7f8)',
+                    borderImage: 'linear-gradient(to left, #005bea, #ACB6E5)',
                     borderImageSlice: 2,
                      // 원하는 정도의 border-radius 값을 설정해보세요
                     minHeight: "6rem",

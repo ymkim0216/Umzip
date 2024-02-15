@@ -238,10 +238,10 @@ const CompanyMain = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="col-10"
+          className="col-10 mt-5"
         >
-          <div className="col-12 px-3">
-            <div className="row my-5" style={{ height: "50%" }}>
+          <div className="col-12 px-3" style={{marginTop:"10rem"}}>
+            <div className="row my-5" style={{ height: "50%"  }}>
               <div className="col-2 p-3 gap-3 d-flex flex-column align-items-center justify-content-center text-center border-dark-subtle border-end">
                 <img
                   src={userData.profileImage}
