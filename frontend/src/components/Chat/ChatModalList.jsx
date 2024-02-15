@@ -152,7 +152,7 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
       stompClientRef.current.deactivate();
       console.log("연결X")
     }
-    // toggleDropdown()
+   
   };
   const LeaveChat = () => {
     const { token } = useAuthStore.getState();
@@ -176,6 +176,7 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
         stopSocketCommunication();
         setOpenModal(false);
         setTalkHistory([]);
+        toggleDropdown()
         Chat_Call()
       } else {
         console.error('못나갔음 ;;');
@@ -237,6 +238,7 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
     const userConfirmed = window.confirm("구매를 확정하시겠습니까?");
     if(userConfirmed){
       const answer = await confirmBuy()
+      setTradeId(tradeChat.memberId)
       if(answer){
         stopSocketCommunication(), setOpenModal(false); setTalkHistory([]); setuserinput("")
   

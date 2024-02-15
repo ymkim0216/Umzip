@@ -3,6 +3,13 @@
   max-width: 50rem;
   margin: 2rem auto;
   text-align: center;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  border-radius: 9px;
+  border: 1.5px solid #b6d8f8;
+  box-shadow:0 3px 20px rgba(0, 0, 0, 0.3);
 }
 
 .trade
@@ -15,38 +22,6 @@
   margin: 1rem auto;
   text-align: left;
   margin-left: 10%;
-}
-
-.report button {
-  color: #FF0000;
-  border: none;
-  margin-top: 10px;
-  background-color: white;
-}
-
-.actions {
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  padding: 0;
-}
-
-.edit button {
-  padding: 0.25rem 1rem;
-  cursor: pointer;
-  background-color: white;
-  border: 1px solid #D7DBEC;
-  color: #1E5EFF;
-  border-radius: 4px;
-}
-
-.cancle button {
-  padding: 0.25rem 1rem;
-  cursor: pointer;
-  background-color: #FF1E1E;
-  border: none;
-  color: white;
-  border-radius: 4px;
 }
 
 .back button{
@@ -120,11 +95,6 @@
   font-size: 0.9rem;
 }
 
-.buttons {
-  display: flex;
-  justify-content: space-between
-}
-
 .chat {
   display: flex;
   justify-content: right;
@@ -143,12 +113,15 @@
 .sold {
   display: flex;
   justify-content: right;
-  margin-top: 0;
+  margin-top: 15px;
 }
 
 .sold button {
+  padding: 7px;
   border: none;
   background-color: lightgray;
-  border-radius: 4px;
+  border-radius: 6px;
+  padding: 10px 20px;
+  border-radius: 5px;
   color: black;
 }

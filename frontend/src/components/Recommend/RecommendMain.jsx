@@ -145,7 +145,7 @@ export default function RecommendMain() {
             console.error(error);
             return error
         }
-    }
+    }   
 
 
     const containerVariants = {
@@ -157,8 +157,8 @@ export default function RecommendMain() {
     };
     return (<>
         <AnimatePresence>
-            {(
-                isLoading && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            {(isLoading&&
+           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     style={{
                         zIndex: "99",
                         position: 'fixed',
@@ -173,8 +173,8 @@ export default function RecommendMain() {
                     }}>
                     <div className="d-flex align-items-center  justify-content-center gap-5" style={{
                         position: 'relative',
-                        width: '40%',
-                        height: "40%",
+                        width: '50%',
+                        height: "60%",
                         backgroundColor: 'white', // 내용의 배경색
                         padding: '20px',
                         borderRadius: '8px', // 내용의 모서리 둥글게

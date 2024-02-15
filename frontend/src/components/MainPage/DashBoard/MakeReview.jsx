@@ -47,7 +47,8 @@ export default function MakeReview({ reviewId, setReviewId }) {
             const response = await api.post(`/reviews/insert`,
                 {
                     "to": reviewId.memberId,
-                    "role": service,
+                    "role": "USER",
+                    "reviewType":service,
                     "score": rating,
                     "tag": tag,
                     "comment": userinput,
@@ -130,8 +131,8 @@ export default function MakeReview({ reviewId, setReviewId }) {
             <div onClick={(event) => event.stopPropagation()}
                 style={{
                     position: 'relative',
-                    width: '40%',
-                    height: "70%",
+                    width: '45%',
+                    height: "80%",
 
                     backgroundColor: 'white', // 내용의 배경색
                     padding: '3rem',

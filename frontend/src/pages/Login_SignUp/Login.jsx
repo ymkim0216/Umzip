@@ -1,5 +1,4 @@
 import React from 'react';
-import './Login.css';
 import LoginForm from '../../components/Login_SignUp/LoginForm';
 import classes from './Login.module.css';
 export default function Login() {
