@@ -81,7 +81,7 @@ function HelpDetail() {
                 {content.codeSmallId === 403 && <span style={{ fontSize: "2rem", color: "#0077CC", fontWeight: "bold" }} >도와줬어요</span>}
                 <h4 className="m-0"> {content.boardTitle}</h4>
               </div>
-              {!content.sameMember && <span><button className="btn btn-success " onClick={handlePointGive}>도움 받았어요!</button> 포인트: {content.rewardPoint}P</span> }
+              {!content.sameMember && <span><button className={`btn btn-success ${style.helpBtn}`} onClick={handlePointGive} >도움 받았어요!</button> 포인트: {content.rewardPoint}P</span> }
             </div>
             <div>
               <div className="d-flex align-items-center justify-content-between">
