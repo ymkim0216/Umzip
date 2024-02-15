@@ -46,43 +46,43 @@ const router = createBrowserRouter([
   //로그인
   { path: 'login', element: <Login /> },
   //프로필보기
-  { path: 'myprofile/:id', element: privateElement(MyProfile) },
-  //포인트적립내역
-  { path: 'mypoint/:id', element: privateElement(PoinHistory) },
+  { path: 'myprofile/:id', element: <MyProfile/> },
+  //포인트적립내/>
+  { path: 'mypoint/:id', element: <PoinHistory/> },
   // 대시보드 유저
-  {path: 'dashboard',element: privateElement(DashBoard)},
+  {path: 'dashboard',element: <DashBoard/>},
   // 대시보드 업체
-  {path: 'dashbordcompany', element: privateElement(CompanyDashBord)},
+  {path: 'dashbordcompany', element: <CompanyDashBord/>},
   //청소요청
-  { path: 'requestcleaning', element: privateElement(RequestCleaning) }, // 날짜,차량,시간,위치,짐종류 같은거 제출
-  { path: 'requestcleaning', element: privateElement(RequestCleaningForm)}, // 계산기 통해서 예산 견적
-  { path: 'submitcleaningestimate', element: privateElement(SubmitCleaningEstimate)}, //  업체입장에서 다시 제안 아마 페이지가 아니라 컴포넌트
+  { path: 'requestcleaning', element: <RequestCleaning/> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
+  { path: 'requestcleaning', element: <RequestCleaningForm/>}, // 계산기 통해서 예산 견적
+  { path: 'submitcleaningestimate', element: <SubmitCleaningEstimate/>}, //  업체입장에서 다시 제안 아마 페이지가 아니라 컴포넌트
   //용달
-  { path: 'requestdelivery', element: privateElement(RequestDelivery) }, // 날짜,차량,시간,위치,짐종류 같은거 제출
-  { path: 'requestdeliveryform', element: privateElement(RequestDeliveryForm) }, // 계산기 통해서 예산 견적
-  { path: 'submideliveryestimate', element: privateElement(SubmitDeliveryEstimate) }, //  업체입장에서 다시 제안 아마 페이지가 아니라 컴포넌트
-  { path: 'payment', element: privateElement(Payment) }, // 결제
-  { path: 'recommend', element: privateElement(Recommend) }, //용달,청소 추천
-  { path: 'alarm', element: privateElement(Alarm) }, //모든 알람 볼수 있는 페이지
+  { path: 'requestdelivery', element: <RequestDelivery/> }, // 날짜,차량,시간,위치,짐종류 같은거 제출
+  { path: 'requestdeliveryform', element: <RequestDeliveryForm/> }, // 계산기 통해서 예산 견적
+  { path: 'submideliveryestimate', element: <SubmitDeliveryEstimate/> }, //  업체입장에서 다시 제안 아마 페이지가 아니라 컴포넌트
+  { path: 'payment', element: <Payment/> }, // 결제
+  { path: 'recommend', element: <Recommend/> }, //용달,청소 추천
+  { path: 'alarm', element: <Alarm/> }, //모든 알람 볼수 있는 페이지
   // 중고
   {
     path: 'trade',
     children: [
       {
         index: true,
-        element: privateElement(Trade),
+        element: <Trade/>,
       }, //글목록
-      { path: ':tradeId', id: 'trade-detail', element: privateElement(TradeDetail) }, // 글 상세보기
+      { path: ':tradeId', id: 'trade-detail', element: <TradeDetail/> }, // 글 상세보기
     ],
   },
-  { path: 'tradewriting', element: privateElement(TradeWriting) }, // 글쓰기
+  { path: 'tradewriting', element: <TradeWriting/> }, // 글쓰기
   // 원래 형식
   //   { path: 'tradewriting', element: <TradeWriting /> }, // 글쓰기
 
   //도움
-  { path: 'help', element: privateElement(Help) }, // 글목록
-  { path: 'helpdetail/:boardId', element: privateElement(HelpDetail) }, //글상세보기
-  { path: 'helpwriting', element: privateElement(HelpWriting)}, //글쓰기
+  { path: 'help', element: <Help/> }, // 글목록
+  { path: 'helpdetail/:boardId', element: <HelpDetail/> }, //글상세보기
+  { path: 'helpwriting', element: <HelpWriting/>}, //글쓰기
 ]);
 export const PRIMARY_COLOR = '#4A3AFF';
 function App() {
