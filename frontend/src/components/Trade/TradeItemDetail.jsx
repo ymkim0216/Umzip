@@ -410,9 +410,9 @@ function TradeItemDetail({ trade }) {
                 src="/filled-star.png"
                 alt="star"
                 className={classes.star}
-                style={{ marginTop: '2px', width: '17px', height: '20px' }}
+                style={{ marginTop: '3px', width: 'auto', height: '20px' }}
               />
-              <small className="form-text text-muted">
+              <small className="form-text text-dark">
                 {trade.writerRating}
               </small>
             </div>
@@ -436,37 +436,25 @@ function TradeItemDetail({ trade }) {
           <div className={classes.report}>
             {trade.writer ? (
               <div>
-                <div className={classes.actions}>
-                  <menu className={classes.edit}>
-                    <button>수정</button>
-                  </menu>
-                  <menu className={classes.cancle}>
-                    <button onClick={startDeleteHandler}>삭제</button>
-                  </menu>
-                </div>
-                {trade.codeSmallName === '판매중' ? (
+                {trade.codeSmallId === 301 ? (
                   <menu className={classes.sold}>
                     <button onClick={handleSale}>판매완료</button>
                   </menu>
                 ) : null}
               </div>
             ) : (
-              <div className={classes.buttons}>
-                <button onClick={showModal}>신고하기</button>
-                {modalShow && <ReportModal onClose={hideModal} />}
-                <menu className={classes.chat}>
-                  <button
-                    onClick={() =>
-                      toggleModal({
-                        tradeId: trade.boardId,
-                        memberId: trade.writerId,
-                      })
-                    }
-                  >
-                    채팅
-                  </button>
-                </menu>
-              </div>
+              <menu className={classes.chat}>
+                <button
+                  onClick={() =>
+                    toggleModal({
+                      tradeId: trade.boardId,
+                      memberId: trade.writerId,
+                    })
+                  }
+                >
+                  채팅
+                </button>
+              </menu>
             )}
           </div>
         </div>

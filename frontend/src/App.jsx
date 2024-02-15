@@ -1,11 +1,8 @@
 import './App.css';
 import {
-  Navigate,
   RouterProvider,
   createBrowserRouter,
 } from 'react-router-dom';
-import useAuthStore from './store/store';
-import HomePage from './pages/MainPage/Hompage';
 import DashBoard from './pages/MainPage/DashBoard';
 import Help from './pages/Help/Help';
 import Login from './pages/Login_SignUp/Login';
@@ -29,24 +26,11 @@ import PoinHistory from './pages/MainPage/PointHistory';
 import CompanyDashBord from './pages/CompanyPage/CompanyDashBord';
 import Landing from './pages/LandingPage/Landing'
 
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuthStore(); // Access the user state
-
-  if (!user) {
-    // If not authenticated, redirect to the login page
-    return <Navigate to="/login" replace />;
-  }
-
-  return children; // If authenticated, render the children components
-};
-
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      // <ProtectedRoute>
         <DashBoard />
-      // </ProtectedRoute>
     ),
   },
   {path: 'home', element: <Landing/>},
@@ -62,9 +46,7 @@ const router = createBrowserRouter([
   {
     path: 'dashboard',
     element: (
-      // <ProtectedRoute>
         <DashBoard />
-      // </ProtectedRoute>
     ),
   },
   // 대시보드 업체
