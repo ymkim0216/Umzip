@@ -19,18 +19,22 @@ function HelpList() {
   const navigate = useNavigate();
 
   const formatDate = (dateString) => {
-    const serverDate = moment(dateString+'Z').tz("Asia/Seoul"); // Adjust for timezone and ensure Z is capitalized for UTC offset
-    const now = moment().tz("Asia/Seoul");
+    const serverDate = moment(dateString+'Z').tz("Asia/Seoul"); // 유럽시간 포멧
+    const now = moment().tz("Asia/Seoul");  // 현재 우리나라시간
   
     if (serverDate.isSame(now, 'day')) {
-      // If the date is today, show how many hours ago
+      // 날짜가 같을때
       const diffHours = now.diff(serverDate, 'hours');
-      return `${diffHours} 시간전`;
+      if (diffHours === 0) {
+        return '최근'; // 1시간 안된 글
+      } else {
+        return `${diffHours} hours ago`;
+      }
     } else if (serverDate.year() === now.year()) {
-      // If the year is the same, show month and day
+      // 달이 같을때
       return serverDate.format('MM-DD');
     } else {
-      // Show full date for different years
+      // 해당사항 없을때
       return serverDate.format('YYYY-MM-DD');
     }
   };
