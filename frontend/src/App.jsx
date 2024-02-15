@@ -30,7 +30,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: (
-        <DashBoard />
+        <Landing />
     ),
   },
   {path: 'home', element: <Landing/>},

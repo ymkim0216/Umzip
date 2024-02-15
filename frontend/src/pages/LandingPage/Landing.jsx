@@ -24,8 +24,6 @@ function Trade() {
   }
   return (
     <>
-      <Header />
-      <Chat />
       <Container fluid style={{ backgroundColor: '#eff7ff', width: '100%', height: '100%' }} >
         <Row>
           <Col>
