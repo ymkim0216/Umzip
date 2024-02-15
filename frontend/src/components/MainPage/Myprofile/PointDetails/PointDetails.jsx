@@ -5,7 +5,9 @@ import useStorePoint from "../../../../store/pointData";
 
 function PointDetails() {
   const { fetchData, data, pointLoad, pointDetail } = useStorePoint();
-  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo"))
+  const storedUserInfo = JSON.parse(
+    localStorage.getItem("userInfo") || sessionStorage.getItem("userInfo")
+  );
 
   useEffect(() => {
     fetchData();
@@ -13,13 +15,13 @@ function PointDetails() {
   }, [fetchData]);
 
   const points = data?.result?.pointUsageDtoList ?? [];
-  console.log(points)
-  const nowPoint = pointDetail.result?.point
+  console.log(points);
+  const nowPoint = pointDetail.result?.point;
 
   return (
     <>
       <div className={style.pointsContainer}>
-        <div className="row" style={{marginBottom: '10px'}}>
+        <div className="row" style={{ marginBottom: "10px" }}>
           <div className="col-3"></div>
           <div className="col-1 d-flex justify-content-center align-items-center">
             <img src="/starIcon.gif" style={{ width: "100px" }} />
@@ -33,15 +35,18 @@ function PointDetails() {
             <img src="/starIcon.gif" style={{ width: "100px" }} />
           </div>
           <div className="col-3"></div>
-          <div className={style.main}>
-          <div className={style.tooltipContainer}>
-            <span className={style.tooltip}>현재 포인트</span>
-            <span className={style.text}>{nowPoint}P</span>
-            <span>{nowPoint}<span></span><img src="/coin.gif" style={{ width: "20px", marginLeft: "8px" }} /></span>
-          </div>
+          
+        </div>
+        
+        <div className={`row ${style.main}`}>
+            <div className={style.tooltipContainer}>
+              <span className={style.tooltip}>현재 포인트</span>
+              <span className={style.text}>{nowPoint.toLocaleString()}P</span>
+              <span>
+                {nowPoint.toLocaleString()}P
+              </span>
           </div>
         </div>
-
         <div className={style.head}>
           <span className={style.headDate}>일자</span>
           <span className={style.headContent}>내용</span>
@@ -52,7 +57,16 @@ function PointDetails() {
             <ListGroup.Item className={style.listContainer} key={index}>
               <span className={style.headDate}>{pointData.date}</span>
               <span className={style.headContent}>{pointData.message}</span>
-              <span className={style.headPoint} style={{ color: pointData.change < 0 ? 'red' : 'green',fontWeight:'900'}}> {pointData.change.toLocaleString()}</span>
+              <span
+                className={style.headPoint}
+                style={{
+                  color: pointData.change < 0 ? "red" : "green",
+                  fontWeight: "900",
+                }}
+              >
+                {" "}
+                {pointData.change.toLocaleString()}
+              </span>
             </ListGroup.Item>
           ))}
         </ListGroup>
