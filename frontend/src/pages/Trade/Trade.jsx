@@ -17,7 +17,7 @@ function Trade() {
   const navigate = useNavigate();
   const [trades, setTrades] = useState([]);
   const [page, setPage] = useState(1);
-  const pageSize = 12; // Set the number of items per page
+  const pageSize = 12;
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -29,9 +29,7 @@ function Trade() {
       const response = await api.get(`/trade-items?${queryString}`);
       const newTrades = response.data.result || [];
 
-      // Append new trades to the existing list
       setTrades((prevTrades) => [...prevTrades, ...newTrades]);
-      // Check if there are more trades to load
       setHasMore(newTrades.length === pageSize);
     } catch (error) {
       console.error('Failed to fetch trades', error);
@@ -41,8 +39,8 @@ function Trade() {
   };
 
   useEffect(() => {
-    getTrades(); // Fetch initial trades or trades after searchTerm change
-  }, [searchTerm, page]); // Fetch trades when searchTerm changes
+    getTrades();
+  }, [searchTerm, page]);
 
   const handleLoadMore = () => {
     if (!loading && hasMore) {
@@ -51,9 +49,9 @@ function Trade() {
   };
 
   const handleSearch = (term) => {
-    setTrades([]); // Clear existing trades before searching
-    setPage(1); // Reset to the first page
-    setSearchTerm(term); // Update searchTerm which triggers useEffect to fetch trades
+    setTrades([]);
+    setPage(1);
+    setSearchTerm(term);
   };
 
   return (
@@ -63,7 +61,7 @@ function Trade() {
       {loading ? (
         <Loading />
       ) : (
-        <article style={{ marginTop: '4rem' }}>
+        <article style={{ marginTop: '7rem', width : '90%', margin: '0 auto'}}>
           <div className={classes.head}>
             <h1>중고 거래</h1>
             <div className={classes.search}>
@@ -92,10 +90,10 @@ function Trade() {
           ) : (
             <div style={{marginLeft: '10%' }}>검색결과가 없습니다.</div>
           )}
-          <div>
+          <div className={classes.writing}>
             <button
               onClick={() => navigate('/tradewriting')}
-              className={classes.writing}
+              className={classes.writingBtn}
             >
               글 쓰기
             </button>

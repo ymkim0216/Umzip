@@ -15,7 +15,7 @@
   padding-right: 0px;
   padding-top: 15px;
   padding-bottom: 15px;
-  margin-left: 2%;
+  margin-left: calc(2% + 5px);
   margin-right: 2%;
 }
 
