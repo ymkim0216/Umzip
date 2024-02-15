@@ -25,8 +25,6 @@ import SubmitCleaningEstimate from './pages/Service/Cleaning/SubmitCleaningEstim
 import PoinHistory from './pages/MainPage/PointHistory';
 import CompanyDashBord from './pages/CompanyPage/CompanyDashBord';
 import Landing from './pages/LandingPage/Landing'
-
-import PrivateRoute from "./store/PrivateRoute";
 import { Navigate } from 'react-router-dom';
 
 // isLogin 상태를 확인하는 함수
