@@ -152,7 +152,7 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
       stompClientRef.current.deactivate();
       console.log("연결X")
     }
-    // toggleDropdown()
+   
   };
   const LeaveChat = () => {
     const { token } = useAuthStore.getState();
@@ -176,6 +176,7 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
         stopSocketCommunication();
         setOpenModal(false);
         setTalkHistory([]);
+        toggleDropdown()
         Chat_Call()
       } else {
         console.error('못나갔음 ;;');
