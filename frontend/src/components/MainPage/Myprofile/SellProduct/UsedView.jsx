@@ -20,7 +20,7 @@ export default function UsedView({ id, setSellList, sellList, sellTotalPages }) 
         visible: { opacity: 1, x: 0 },
     };
     const axios_SellList = async (pageNumber) => {
-        console.log(pageNumber)
+        // console.log(pageNumber)
         try {
             const response = await api.get(
                 `/trade-items/profiles/sell?memberId=${id}&page=${pageNumber}&size=5`,
@@ -30,7 +30,7 @@ export default function UsedView({ id, setSellList, sellList, sellTotalPages }) 
                     "size": 5
                 }
             );
-            console.log(response.data.result)
+            // console.log(response.data.result)
             setSellList(response.data.result.content)
             return
         }

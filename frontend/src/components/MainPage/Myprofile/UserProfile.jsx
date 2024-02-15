@@ -194,7 +194,7 @@ export default function UserProfile() {
 
     }
   }
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
   useEffect(() => {
     const fetchData = async () => {
       const ans = await call_profile()
