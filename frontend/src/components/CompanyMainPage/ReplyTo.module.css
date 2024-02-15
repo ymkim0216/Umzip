@@ -193,36 +193,66 @@ svg:hover .tooltipChat {
   color: #ffffff;
 }
 
-/* 취소 또는 거절되어진 항목 아이콘 */
-.rejectedOfferContainer {
-  display: inline-flex;
-  align-items: center;
-  background-color: rgb(251, 39, 39);
-  color: white;
-  padding: 5px;
-  border-radius: 20px; /* Adjust as needed for a circular shape */
-  font-size: 17px;
-}
-
-.rejectedOfferIcon {
-  width: 20px; /* Set icon width */
-  height: 20px; /* Set icon height */
-  margin-left: 8px; /* Space between text and icon */
-}
-
 /* 완료된 항목 */
-.clearOfferContainer {
-  display: inline-flex;
-  align-items: center;
-  background-color: rgb(53, 80, 255);
-  color: white;
-  padding: 5px;
-  border-radius: 20px; /* Adjust as needed for a circular shape */
+.uiverseComplete {
+  position: relative;
+  background: #a6a8ad;
+  color: #000;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 10px;
+  width: 100px;
+  height: 30px;
   font-size: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.clearOfferIcon {
-  width: 20px; /* Set icon width */
-  height: 20px; /* Set icon height */
-  margin-left: 8px; /* Space between text and icon */
+.tooltipComplete {
+  position: absolute;
+  top: 0;
+  font-size: 14px;
+  background: #ffffff;
+  color: #ffffff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.tooltipComplete::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.uiverseComplete:hover .tooltipComplete {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+svg:hover span,
+svg:hover .tooltipComplete {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.uiverseComplete:hover,
+.uiverseComplete:hover .tooltipComplete,
+.uiverseComplete:hover .tooltipComplete::before {
+  background: linear-gradient(320deg, #a6a8ad, #989898);
+  color: #ffffff;
 }

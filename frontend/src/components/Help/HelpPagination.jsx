@@ -1,15 +1,17 @@
 
 import style from './HelpPagination.module.css'; // CSS 모듈 임포트
+import { useEffect } from "react";
 import useStore from '../../store/helpData';
 import { motion } from "framer-motion";
 
 function HelpPagination() {
-    const { data, page, setPage } = useStore();
+    const { data, page, setPage, codeSmall } = useStore();
     const totalElements = data?.result?.totalElements || 1;
     const totalPages = Math.ceil(totalElements / 10);
     const correctedPage = page;
     const startPage = Math.max(correctedPage - 5, 1);
     const endPage = Math.min(correctedPage + 5, totalPages);
+
 
     return (
         <>

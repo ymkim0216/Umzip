@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import { AnimatePresence, motion } from "framer-motion";
 import useStore from '../../store/helpDetailData';
+import moment from 'moment-timezone';
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -21,6 +22,27 @@ function HelpDetail() {
     const confirmGivePoint = window.confirm(`${content.rewardPoint}P를 보내시겠습니까?`);
     if (confirmGivePoint) {
       pointGive(content.boardId);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const serverDate = moment(dateString+'Z').tz("Asia/Seoul"); // 유럽시간 포멧
+    const now = moment().tz("Asia/Seoul");  // 현재 우리나라시간
+  
+    if (serverDate.isSame(now, 'day')) {
+      // 날짜가 같을때
+      const diffHours = now.diff(serverDate, 'hours');
+      if (diffHours === 0) {
+        return '최근'; // 1시간 안된 글
+      } else {
+        return `${diffHours} 시간 전`;
+      }
+    } else if (serverDate.year() === now.year()) {
+      // 달이 같을때
+      return serverDate.format('MM-DD');
+    } else {
+      // 해당사항 없을때
+      return serverDate.format('YYYY-MM-DD');
     }
   };
 
@@ -47,23 +69,6 @@ function HelpDetail() {
     return <div>No data found.</div>;
   }
   console.log(content)
-  function formatDate(dateTimeString) {
-    const currentDate = new Date();
-    const postDate = new Date(dateTimeString);
-  
-    // 시간 차이 계산 (밀리초로 변환)
-    const timeDifference = currentDate - postDate;
-  
-    // 24시간 이내라면 "시간 전"으로 표시
-    if (timeDifference < 24 * 60 * 60 * 1000) {
-      const hoursDifference = Math.floor(timeDifference / (60 * 60 * 1000));
-      return `${hoursDifference}시간 전`;
-    } else {
-      // 24시간 이상이면 날짜 형식으로 표시
-      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-      return postDate.toLocaleDateString(undefined, options);
-    }
-  }
   
   // console.log(newDate)
   const handleClick = ()=>{
@@ -81,7 +86,7 @@ function HelpDetail() {
                 {content.codeSmallId === 403 && <span style={{ fontSize: "2rem", color: "#0077CC", fontWeight: "bold" }} >도움 받았어요</span>}
                 <h4 className="m-0"> {content.boardTitle}</h4>
               </div>
-              {!content.sameMember && <span><button className={`btn btn-success ${style.helpBtn}`} onClick={handlePointGive} >도움 받았어요!</button> 포인트: {content.rewardPoint}P</span> }
+              {!content.sameMember && content.codeSmallId === 402 && <span><button className={`btn btn-success ${style.helpBtn}`} onClick={handlePointGive} >도움 받았어요!</button> 포인트: {content.rewardPoint}P</span> }
             </div>
             <div>
               <div className="d-flex align-items-center justify-content-between">
