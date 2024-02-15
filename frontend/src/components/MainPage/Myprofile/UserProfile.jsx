@@ -81,7 +81,7 @@ export default function UserProfile() {
 
 
   const axios_ReviewToPeople = async () => {
-
+    
     try {
       const response = await api.post(
         `/reviews/myWrite`,
