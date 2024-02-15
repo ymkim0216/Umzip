@@ -214,10 +214,11 @@ export default function Requests({ setReviewId, setServiceId, setRequestId, Id, 
                 exit={{ opacity: 0 }}
                 className=' rounded- mx-5 p-2 d-flex justify-content-around text-center align-items-center position-relative'
                 style={{
+                    position: "relative",
                     border: '2px solid',
                     borderImage: 'linear-gradient(to left, #005bea, #ACB6E5)',
                     borderImageSlice: 2,
-                     // 원하는 정도의 border-radius 값을 설정해보세요
+                    // 원하는 정도의 border-radius 값을 설정해보세요
                     minHeight: "6rem",
                 }}>
                 <h5 className="m-0 col-2">{date}</h5>
@@ -225,6 +226,10 @@ export default function Requests({ setReviewId, setServiceId, setRequestId, Id, 
                 <h5 className="m-0 col-2">{orderNumber}</h5>
                 <div className="m-0 col-2">
                     <StatusChange status={status} />
+                </div>
+                <div className=" rounded-pill p-1 position-absolute top-5 start-0 translate-middle bg-white " style={{borderBottom:"solid 3px #a1c4fd"}}>
+                    {requestList ==="용달" ? <img className=' rounded-pill' style={{width:"2.75rem" ,height:"2.75rem"}} src='/free-icon-fast-delivery-6491506.png'/> :<img className=' rounded-pill' style={{width:"2.75rem" ,height:"2.75rem"}} src='/free-icon-cleaning-tools-2452217.png'/> }
+                    
                 </div>
                 <div className="col-md-2 ">
                     <motion.button
@@ -243,7 +248,7 @@ export default function Requests({ setReviewId, setServiceId, setRequestId, Id, 
                             <motion.div
                                 className="position-absolute top-100 bg-white rounded-3 shadow p-2 d-flex flex-column gap-3"
 
-                                style={{ zIndex: 1, width: '108%',left:"-4%" }}
+                                style={{ zIndex: 1, width: '108%', left: "-4%" }}
                                 initial="hidden"
                                 animate="visible"
                                 variants={containerVariants}

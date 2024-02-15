@@ -131,8 +131,8 @@ export default function UsedReview({setStatus, setTradeId, tradeId }) {
             <div onClick={(event) => event.stopPropagation()}
                 style={{
                     position: 'relative',
-                    width: '50rem',
-                    height: "70%",
+                    width: '50%',
+                    height: "80%",
 
                     backgroundColor: 'white', // 내용의 배경색
                     padding: '3rem',

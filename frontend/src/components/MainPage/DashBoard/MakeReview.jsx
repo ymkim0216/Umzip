@@ -41,13 +41,14 @@ export default function MakeReview({ reviewId, setReviewId }) {
         else { service = "CLEAN" }
         console.log(reviewId)
         const tag = Object.keys(option).map(Number);
+
         console.log(tag)
         // setIsLoading(true)
         try {
             const response = await api.post(`/reviews/insert`,
                 {
                     "to": reviewId.memberId,
-                    "role": "USER",
+                    "role": service,
                     "reviewType":service,
                     "score": rating,
                     "tag": tag,
@@ -141,6 +142,7 @@ export default function MakeReview({ reviewId, setReviewId }) {
                 <AnimatePresence mode="wait">
 
                     {step === "first" ? <motion.div key="first" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} >
+                        
                         <div className="text-center mb-3">
                             최대 3개의 태그를 선택해주세요!
                         </div>

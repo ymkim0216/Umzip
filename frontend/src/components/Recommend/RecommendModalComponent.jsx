@@ -23,9 +23,9 @@ export default function RecommendModalComponent({ companyId }) {
             const yearsOfExperience = currentDate.getFullYear() - experienceDate.getFullYear();
             // 경력에 따른 상 결정
             if (yearsOfExperience >= 10) {
-                setImgsrc("./free-animated-icon-validation-14183494.gif");
+                setImgsrc("/free-animated-icon-validation-14183494.gif");
             } else if (yearsOfExperience >= 5) {
-                setImgsrc("./free-animated-icon-verified-7920876.gif");
+                setImgsrc("/free-animated-icon-verified-7920876.gif");
 
             }
 

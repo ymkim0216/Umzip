@@ -179,10 +179,10 @@ const MainComponent = () => {
                 {requestId && requestId.price && <NewModal renewer={renewer} id={userInfo.id} setRequestId={setRequestId} requestId={requestId} setRequestMappingId={setRequestMappingId} requestMappingId={requestMappingId} isModalOpen={requestCheck} setIsModalOpen={setRequestCheck} />}
             </AnimatePresence>
             <div className="d-flex justify-content-center align-items-center" style={{ height: '90vh', width: '100%', marginTop: "7rem" }}>
-                <motion.div  className="col-10">
+                <motion.div className="col-10">
                     <div className="col-12 px-3">
                         <div className="row my-5" style={{ height: '50%' }}>
-                            <motion.div initial={{ opacity: 0 , y:100}} animate={{ opacity: 1 , y:0}} exit={{ opacity: 0, y:100 }}  className=" col-2 p-3 gap-3 d-flex flex-column align-items-center justify-content-center text-center" >
+                            <motion.div initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 100 }} className=" col-2 p-3 gap-3 d-flex flex-column align-items-center justify-content-center text-center" >
                                 <img src={userInfo.profileImage} alt="Profile" style={{ maxWidth: '100px', height: 'auto', borderRadius: '50%', objectFit: 'cover' }} />
                                 <h5 className="m-0">{userInfo.name}님</h5>
                                 <h5 className='m-0'>안녕하세요</h5  >
@@ -257,29 +257,32 @@ const MainComponent = () => {
                                     </motion.button>
                                 </div>
                             </motion.div>
-                            <motion.div initial={{ opacity: 0 , x:100}} animate={{ opacity: 1 , x:0}} exit={{ opacity: 0, x:100 }} className="col-10 p-5 gap-4 d-flex flex-column ">
+                            <motion.div initial={{ opacity: 0, x: 100 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 100 }} className="col-10 p-5 gap-4 d-flex flex-column ">
 
                                 <div className="d-flex justify-content-between mx-5">
                                     <div className="bg-white shadow rounded-3 p-2  justify-content-center align-items-center ">
                                         <Status />
                                     </div>
                                     <div className="d-flex gap-4">
-                                        <motion.button
-                                            type="button"
-                                            whileHover={{ background: 'linear-gradient(to right bottom, #ACB6E5, #005bea)' }}
-                                            className="btn  d-flex justify-content-center gap-4 align-items-center"
-                                            style={{
-                                                background: 'linear-gradient(to right bottom, #005bea, #ACB6E5)',
-                                                // width: '80%',
-                                                border: 'none',
-                                                color: '#fff', // 텍스트 색상 조정
-                                                borderRadius: '8px', // 둥근 모서리 조정
-                                                boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
-                                            }}
-                                            onClick={hadleDelivery}
-                                        >
-                                            <p className='m-0'>용달 신청</p>
-                                        </motion.button>
+                                        <div>
+                                            <motion.button
+                                                type="button"
+                                                whileHover={{ background: 'linear-gradient(to right bottom, #ACB6E5, #005bea)' }}
+                                                className="btn  d-flex justify-content-center gap-4 align-items-center"
+                                                style={{
+                                                    background: 'linear-gradient(to right bottom, #005bea, #ACB6E5)',
+                                                    // width: '80%',
+                                                    border: 'none',
+                                                    color: '#fff', // 텍스트 색상 조정
+                                                    borderRadius: '8px', // 둥근 모서리 조정
+                                                    boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)', // 그림자 효과 추가
+                                                }}
+                                                onClick={hadleDelivery}
+                                            >
+                                                <p className='m-0'>용달 신청</p>
+                                            </motion.button>
+                                        </div>
+
                                         <motion.button
                                             type="button"
                                             whileHover={{ background: 'linear-gradient(to right bottom, #ACB6E5, #005bea)' }}

@@ -607,7 +607,10 @@ export default function DeliveryForm() {
                 </motion.div>
               </AnimatePresence>
 
-              <div style={{ height: "100%", width: "100%", border: "solid 1px #006EEE" }} className=" p-3 shadow rounded-5 ">{whereEnd.address && whereStart.address && <Map key={`${whereStart.lat}-${whereStart.lon}-${whereEnd.lat}-${whereEnd.lon}`} start_lat={whereStart.lat} start_lon={whereStart.lon} end_lat={whereEnd.lat} end_lon={whereEnd.lon} setCarDistance={setCarDistance} setCarTime={setCarTime} />}</div>
+              <div style={{ height: "450px", width: "450px%", border: "solid 1px #006EEE" }} className=" p-3 shadow rounded-5  justify-content-center align-items-center d-flex">
+                {!(whereEnd.address && whereStart.address) && <img style={{width:"10rem" ,height:"10rem"}} src="/free-animated-icon-map-6839004.gif"/>}
+                {whereEnd.address && whereStart.address && <Map key={`${whereStart.lat}-${whereStart.lon}-${whereEnd.lat}-${whereEnd.lon}`} start_lat={whereStart.lat} start_lon={whereStart.lon} end_lat={whereEnd.lat} end_lon={whereEnd.lon} setCarDistance={setCarDistance} setCarTime={setCarTime} />}
+                </div>
             </div>
           </div>
 
