@@ -73,6 +73,7 @@ function HelpComments({ toggleModal }) {
         await commentChoic(commentId);
         // 성공적으로 처리되면 댓글 리스트를 새로고침합니다.
         await loadComment();
+        fetchData()
       } catch (error) {
         // 에러 처리를 합니다.
         console.error("채택 처리 실패:", error);

@@ -105,7 +105,7 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
       {/* 제안 거절시 */}
       {code === 4 && (
         <div className={styles.rejectedOfferContainer}>
-          <h5>Rejected offer</h5>
+                    <span>Cancel</span>
           <img src="/cancel.png" className={styles.rejectedOfferIcon} alt="Cancel" />
         </div>
       )}
@@ -113,7 +113,7 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
       {/* 제안 취소시 */}
       {code === 5 && (
         <div className={styles.rejectedOfferContainer}>
-          <h5>Rejected offer</h5>
+          <span>Cancel</span>
           <img src="/cancel.png" className={styles.rejectedOfferIcon} alt="Cancel" />
         </div>
       )}
@@ -121,7 +121,7 @@ function ReplyTo({ chatModal, role, status, mappingId, reissuing, memberId }) {
       {/* 업무 완료시 */}
       {code === 6 && (
         <div className={styles.clearOfferContainer}>
-          <h5>Rejected offer</h5>
+          <span>Complete</span>
           <img src="/cancel.png" className={styles.clearOfferIcon} alt="Cancel" />
         </div>
       )}
