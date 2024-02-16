@@ -29,8 +29,8 @@ export default function ChatModalList({ toggleDropdown, setChatList, name, chat,
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   };
-  const truncatedTitle = chat.length > 10
-  ? chat.slice(0, 10) + '...'
+  const truncatedTitle = chat.length > 9
+  ? chat.slice(0, 9) + '...'
   : chat
   useEffect(() => {
     scrollToBottom();
